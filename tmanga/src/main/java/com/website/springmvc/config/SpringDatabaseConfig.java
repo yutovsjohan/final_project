@@ -11,6 +11,20 @@ import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import com.website.springmvc.entities.author;
+import com.website.springmvc.entities.bill;
+import com.website.springmvc.entities.billdetail;
+import com.website.springmvc.entities.category;
+import com.website.springmvc.entities.comic;
+import com.website.springmvc.entities.contact;
+import com.website.springmvc.entities.news;
+import com.website.springmvc.entities.notification;
+import com.website.springmvc.entities.orderstatus;
+import com.website.springmvc.entities.publishcompany;
+import com.website.springmvc.entities.role;
+import com.website.springmvc.entities.users;
+
+
 
 @EnableTransactionManagement
 @Configuration
@@ -20,7 +34,8 @@ public class SpringDatabaseConfig extends WebMvcConfigurerAdapter {
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource);
 		sessionFactory.setPackagesToScan(new String[] { "com.website.springmvc.entities" });
-		sessionFactory.setAnnotatedClasses();
+		sessionFactory.setAnnotatedClasses(author.class, bill.class, billdetail.class, category.class, comic.class, contact.class,
+				news.class, notification.class, orderstatus.class, publishcompany.class, role.class, users.class);
 		sessionFactory.setHibernateProperties(hibernateProperties());
 		return sessionFactory;
 	}
@@ -38,7 +53,7 @@ public class SpringDatabaseConfig extends WebMvcConfigurerAdapter {
 	public BasicDataSource getDataSource() {
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://localhost:3306/website");
+		dataSource.setUrl("jdbc:mysql://localhost:3306/manga");
 		dataSource.setUsername("root");
 		dataSource.setPassword("");
 		dataSource.setInitialSize(10);
