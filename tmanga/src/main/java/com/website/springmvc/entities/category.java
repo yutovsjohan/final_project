@@ -40,7 +40,24 @@ public class category implements java.io.Serializable{
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+			
+	public category(int id, String name, String unsignedName, byte status, Set<comic> comics) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.unsignedName = unsignedName;
+		this.status = status;
+		this.comics = comics;
+	}
+
+	public category(String name, String unsignedName, byte status, Set<comic> comics) {
+		super();
+		this.name = name;
+		this.unsignedName = unsignedName;
+		this.status = status;
+		this.comics = comics;
+	}
+
 	public int getId() {
 		return id;
 	}

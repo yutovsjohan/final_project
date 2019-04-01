@@ -4,6 +4,10 @@ import java.util.List;
 
 public abstract class DAO<T> {
 	public abstract List<T> getAll();
+	
+	public List<T> getFor() {
+		return null;
+	}
 
 	public abstract T get(Long id);
 

@@ -16,6 +16,12 @@ public class NewsDAO extends DAO<news>{
 	private SessionFactory sessionFactory;
 	
 	@Override
+	public List<news> getFor(){
+		Session session = this.sessionFactory.getCurrentSession();
+		return session.createQuery("from news where banner = 1").list();
+	}
+	
+	@Override
 	public List<news> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from news").list();
@@ -25,7 +31,7 @@ public class NewsDAO extends DAO<news>{
 	public news get(Long id) {
 		Session session = this.sessionFactory.getCurrentSession();
 		return (news) session.get(news.class, new Long(id));
-	}
+	}	
 
 	@Override
 	public news add(news News) {
@@ -68,5 +74,5 @@ public class NewsDAO extends DAO<news>{
 			return Boolean.TRUE;
 		}
 		return Boolean.FALSE;
-	}
+	}		
 }
