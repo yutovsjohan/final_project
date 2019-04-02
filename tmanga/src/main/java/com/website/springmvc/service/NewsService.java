@@ -16,6 +16,14 @@ public class NewsService {
 	@Autowired
 	DAO<news> newsDao;
 	
+	public List<news> getNewsForBanner(){
+		return newsDao.getFor();
+	}
+	
+	public List<news> getNews(){
+		return newsDao.getForNew();
+	}
+	
 	public List<news> getAll() {
 		return newsDao.getAll();
 	}
@@ -38,9 +46,5 @@ public class NewsService {
 
 	public Boolean delete(Long id) {
 		return newsDao.delete(id);
-	}
-	
-	public List<news> getNewsForBanner(){
-		return newsDao.getFor();
-	}
+	}		
 }

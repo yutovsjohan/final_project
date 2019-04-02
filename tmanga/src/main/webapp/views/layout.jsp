@@ -54,14 +54,14 @@
 			<div class="row">
 				<div class="col-sm-4">
 					<div class="logo pull-left">
-						<a href="trang-chu"><img src="<c:url value="/images/logo.png" />" style="width:40px; height:40px;" alt="" /><span style="font-size:24px; font-weight:bold;"> T-Manga</span></a>
+						<a href="index"><img src="<c:url value="/images/logo.png" />" style="width:40px; height:40px;" alt="" /><span style="font-size:24px; font-weight:bold;"> T-Manga</span></a>
 					</div>						
 				</div>
 				<div class="col-sm-8">
 					<div class="shop-menu pull-right">
 						<ul class="nav navbar-nav">
 							<li><a href="#"><i class="fa fa-user" ></i> Đăng ký</a></li>
-							<li><a href="dang-nhap"><i class="fa fa-lock" ></i> Đăng nhập</a></li>
+							<li><a href="login"><i class="fa fa-lock" ></i> Đăng nhập</a></li>
 							<li><a href="#" id="gio-hang"><i class="fa fa-shopping-cart"></i>Giỏ hàng trống</a></li>
 						</ul>
 					</div>
@@ -86,7 +86,7 @@
 			<div id="navbar" class="navbar-collapse collapse">
 				<div class="col-sm-7 col-lg-7 col-xs-12 col-md-7">
 				<ul class="nav navbar-nav">
-					<li><a href="trang-chu"  >Trang chủ</a></li>							
+					<li><a href="index"  >Trang chủ</a></li>							
 					<li><a href="#" >Tin tức</a></li>
 					<li><a href="#" >Giới thiệu</a></li>
 					<li><a href="#" >Liên hệ</a></li>

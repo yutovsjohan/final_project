@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.website.springmvc.entities.comic;
 import com.website.springmvc.service.AuthorService;
 import com.website.springmvc.service.CategoryService;
+import com.website.springmvc.service.ComicService;
 import com.website.springmvc.service.NewsService;
 import com.website.springmvc.service.PublishCompanyService;
 
@@ -26,31 +28,40 @@ public class HomeController {
 	@Autowired
 	private NewsService newsService;
 	
-	ModelAndView model = new ModelAndView();
+	@Autowired
+	private ComicService comicService;	
 	
-	private void getModel() {
+	private void getSideBar(ModelAndView model) {
 		model.setViewName("layout");
 		model.addObject("sb","sidebar");
-	}
-	
-	@RequestMapping(value = {"/", "trang-chu", "/index"}, method = RequestMethod.GET)
-	public ModelAndView getHome(){		
-		getModel();
 		
 		model.addObject("categories", categoryService.getAll());
 		model.addObject("authors", authorService.getAll());
 		model.addObject("pcs", publishCompanyService.getAll());
-		model.addObject("news", newsService.getNewsForBanner());
+	}
+	
+	@RequestMapping(value = {"/", "trang-chu", "/index"}, method = RequestMethod.GET)
+	public ModelAndView getHome(){		
+		ModelAndView model = new ModelAndView();
+		
+		getSideBar(model);	
 		
 		model.addObject("views","content");
 		model.addObject("title","T-Manga");
 		
+		model.addObject("news", newsService.getNewsForBanner());		
+		model.addObject("topSelling", comicService.getComicForTopSelling());
+		model.addObject("newComic", comicService.getNewComicInHomePage());
+		model.addObject("otherComic", comicService.getOtherComicInHomePage());
+				
 		return model;
 	}
 	
-	@RequestMapping(value = "/dang-nhap", method = RequestMethod.GET)
+	@RequestMapping(value = {"/login" , "/dang-nhap"}, method = RequestMethod.GET)
 	public ModelAndView getLogin(){
-		getModel();
+		ModelAndView model = new ModelAndView();
+		
+		getSideBar(model);
 		
 		model.addObject("views","login");
 		model.addObject("title","Đăng nhập");

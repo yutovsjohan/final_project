@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 	
 
 	<!-- silder -->
@@ -56,39 +56,50 @@
 
 	<div id="recommended-item-carousel" class="carousel slide " data-ride="carousel">
 		<div class="carousel-inner">
-			<% 
-				int dem = 0;
-				for(int i = 1; i <= 3; i++) { 
-			%>
-			<div class="item <% if(i == 1) { %> active <% } %>">
-				<% for(int j = 1; j <= 4; j++) {  dem++; %>
-				<div class="col-sm-3 col-xs-6 ">
-					<div class="product-image-wrapper">
-						<div class="single-products">
-							<div class="productinfo text-center">
-								<a href="#" title="Pokemon Đặc Biệt tập 16">
-									<div class="btn btn-primary" style="position: absolute; left: 5px;"><%= dem %></div>
-									<img src="<c:url value="/images/products/pokemon-tap-16.png" />" alt="Pokemon Đặc Biệt tập 16" style="width:150px; height:200px; margin-top:25px;" />												
-									<h5 style="height:50px; ">Pokemon Đặc Biệt tập 16</h5>
-									<h5 style="background-color: green; color:white">Phát hành: 26-08-2015</h5>
-
-									<h5>
-										<span style="margin-right: 15px; font-size: 18px;  color: red;">20,000 <u>đ</u></span>
-										<span style="text-decoration: line-through; color: black; font-size: 12px;">22,000 <u>đ</u></span>
-									</h5>
-								</a>
-
-								<button dataId="4" dataName="Pokemon Đặc Biệt tập 16" class="btn btn-info them-vao-gio-hang" title="Thêm vào giỏ hàng" style="background-color: #337ab7; border-color: #337ab7" ><i class="fa fa-shopping-cart" aria-hidden="true"></i></button>	
-
-								<a href="#" class="btn btn-info" title="Xem chi tiết" ><i class="fa fa-search" aria-hidden="true"></i></a>
-
+			<c:set var = "number" scope = "session" value = "-1"/>
+			<c:forEach var="ts" items="${topSelling}">
+				<c:set var = "number" scope = "session" value = "${number + 1 }" />
+				<c:choose>
+					<c:when test="${number == 0 }">
+						<div class="item active">
+					</c:when>
+					<c:when test="${number % 4 == 0 }">
+						<div class="item ">
+					</c:when>
+				</c:choose>
+					
+					<div class="col-sm-3 col-xs-6 ">
+						<div class="product-image-wrapper">
+							<div class="single-products">
+								<div class="productinfo text-center">
+									<a href="detail/${ts.unsignedName }">
+										<div class="btn btn-primary" style="position: absolute; left: 5px;">${number + 1 }</div>
+										<img src="<c:url value="/images/products/${ts.image }" />" title="${ts.name }" alt="${ts.image }" style="width:150px; height:200px; margin-top:25px;" />
+										<h5 style="height:50px; ">${ts.name }</h5>
+										<h5 style="background-color: green; color:white">Phát hành: <fmt:formatDate pattern = "dd-MM-yyyy" value = "${ts.publishDate }" /></h5>
+										<h5 style="font-size: 18px; color: red;"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${ts.price}" /> <u>đ</u></h5>
+									</a>
+								
+									<c:choose>
+										<c:when test="${ts.amount == 0 }">
+											<a href="#" class="btn btn-danger" title="Báo tôi khi có hàng" style="background-color: crimson; border-color: crimson"><i class="fa fa-bullhorn" aria-hidden="true" ></i></a>
+										</c:when>
+										<c:otherwise>
+											<button dataId="" dataName="" class="btn btn-info them-vao-gio-hang" title="Thêm vào giỏ hàng" style="background-color: #337ab7; border-color: #337ab7"><i class="fa fa-shopping-cart" aria-hidden="true"></i></button>
+										</c:otherwise>
+									</c:choose>						
+									
+									<a href="detail/${ts.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a>
+	
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<% } %>		
-			</div>
-			<% } %>	
+				
+				<c:if test="${number % 4 == 3 }">
+					</div>
+				</c:if>
+			</c:forEach>
 		</div>
 		
 		<a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev" >
@@ -109,28 +120,33 @@
 			<hr style="border: 1px solid orange; margin-top:0px">
 		</div>
 		<div>
-			<% for(int j = 1; j <= 4; j++) {  dem++; %>
-			<div class="col-lg-3  col-sm-6 col-xs-6">
-				<div class="product-image-wrapper">
-					<div class="single-products">
-						<div class="productinfo text-center">
-							<a href="#" title="">
-								<img src="<c:url value="/images/products/pokemon-tap-16.png" />" alt="" style="width:150px; height:200px; margin-top:25px;" />
-								<h5 style="height:50px; ">Pokemon Đặc Biệt tập 16</h5>
-								<h5 style="background-color: green; color:white">Phát hành: 26-08-2015</h5>
-
-								<h5 style="font-size: 18px; color: red;">20,000 <u>đ</u></h5>
-							</a>
-
-							<button dataId="430" dataName="" class="btn btn-info them-vao-gio-hang" title="Thêm vào giỏ hàng" style="background-color: #337ab7; border-color: #337ab7"><i class="fa fa-shopping-cart" aria-hidden="true"></i></button>						
-							
-							<a href="#" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a>
-
+			<c:forEach var="nc" items="${newComic }">
+				<div class="col-lg-3  col-sm-6 col-xs-6">
+					<div class="product-image-wrapper">
+						<div class="single-products">
+							<div class="productinfo text-center">
+								<a href="detail/${nc.unsignedName }">
+									<img src="<c:url value="/images/products/${nc.image }" />" title="${nc.name }" alt="${nc.image }" style="width:150px; height:200px; margin-top:25px;" />
+									<h5 style="height:50px; ">${nc.name }</h5>
+									<h5 style="background-color: green; color:white">Phát hành: <fmt:formatDate pattern = "dd-MM-yyyy" value = "${nc.publishDate }" /></h5>
+									<h5 style="font-size: 18px; color: red;"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${nc.price}" /> <u>đ</u></h5>
+								</a>
+								
+								<c:choose>
+									<c:when test="${nc.amount == 0 }">
+										<a href="#" class="btn btn-danger" title="Báo tôi khi có hàng" style="background-color: crimson; border-color: crimson"><i class="fa fa-bullhorn" aria-hidden="true" ></i></a>
+									</c:when>
+									<c:otherwise>
+										<button dataId="" dataName="" class="btn btn-info them-vao-gio-hang" title="Thêm vào giỏ hàng" style="background-color: #337ab7; border-color: #337ab7"><i class="fa fa-shopping-cart" aria-hidden="true"></i></button>
+									</c:otherwise>
+								</c:choose>						
+								
+								<a href="detail/${nc.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<% } %>
+			</c:forEach>
 		</div>
 	<!--/truyện tranh mới-->
 	
@@ -142,26 +158,33 @@
 			<hr style="border: 1px solid orange; margin-top:0px">
 		</div>
 		<div>
-			<% for(int j = 1; j <= 4; j++) {  dem++; %>
-			<div class="col-lg-3  col-sm-6 col-xs-6">
-				<div class="product-image-wrapper">
-					<div class="single-products">
-						<div class="productinfo text-center">
-							<a href="#" title="">
-								<img src="<c:url value="/images/products/pokemon-tap-16.png" />" alt="" style="width:150px; height:200px; margin-top:25px;" />
-								<h5 style="height:50px; ">Pokemon Đặc Biệt tập 16</h5>
-								<h5 style="background-color: green; color:white">Phát hành: 26-08-2015</h5>
-
-								<h5 style="font-size: 18px; color: red;">20,000 <u>đ</u></h5>
-							</a>
-							<a href="#" class="btn btn-danger" title="Báo tôi khi có hàng" style="background-color: crimson; border-color: crimson"><i class="fa fa-bullhorn" aria-hidden="true" ></i></a>
-							
-							<a href="#" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a>
-
+			<c:forEach var="oc" items="${otherComic }">
+				<div class="col-lg-3  col-sm-6 col-xs-6">
+					<div class="product-image-wrapper">
+						<div class="single-products">
+							<div class="productinfo text-center">
+								<a href="detail/${oc.unsignedName }">
+									<img src="<c:url value="/images/products/${oc.image }" />" title="${oc.name }" alt="${oc.image }" style="width:150px; height:200px; margin-top:25px;" />
+									<h5 style="height:50px; ">${oc.name }</h5>
+									<h5 style="background-color: green; color:white">Phát hành: <fmt:formatDate pattern = "dd-MM-yyyy" value = "${oc.publishDate }" /></h5>
+									<h5 style="font-size: 18px; color: red;"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${oc.price}" /> <u>đ</u></h5>
+								</a>
+								
+								<c:choose>
+									<c:when test="${oc.amount == 0 }">
+										<a href="#" class="btn btn-danger" title="Báo tôi khi có hàng" style="background-color: crimson; border-color: crimson"><i class="fa fa-bullhorn" aria-hidden="true" ></i></a>
+									</c:when>
+									<c:otherwise>
+										<button dataId="" dataName="" class="btn btn-info them-vao-gio-hang" title="Thêm vào giỏ hàng" style="background-color: #337ab7; border-color: #337ab7"><i class="fa fa-shopping-cart" aria-hidden="true"></i></button>
+									</c:otherwise>
+								</c:choose>								
+								
+								<a href="detail/${oc.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a>
+	
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<% } %>
+			</c:forEach>
 		</div>
 	<!--/Truyện tranh khác-->

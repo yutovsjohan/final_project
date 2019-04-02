@@ -16,6 +16,36 @@ public class ComicDAO extends DAO<comic>{
 	private SessionFactory sessionFactory;
 	
 	@Override
+	public List<comic> getForTopSelling(){
+		Session session = this.sessionFactory.getCurrentSession();
+		return session.createQuery("from comic order by quantitySold desc").setMaxResults(12).list();
+	}
+	
+	@Override
+	public List<comic> getForNew(){
+		Session session = this.sessionFactory.getCurrentSession();
+		return session.createQuery("from comic order by publishDate desc").setMaxResults(36).list();
+	}
+	
+	@Override
+	public List<comic> getForNewInHome(){
+		Session session = this.sessionFactory.getCurrentSession();
+		return session.createQuery("from comic order by publishDate desc").setMaxResults(4).list();
+	}
+	
+	@Override
+	public List<comic> getForOther(){
+		Session session = this.sessionFactory.getCurrentSession();
+		return session.createQuery("from comic where idCategory = 7 order by publishDate desc").list();
+	}
+	
+	@Override
+	public List<comic> getForOtherInHome(){
+		Session session = this.sessionFactory.getCurrentSession();
+		return session.createQuery("from comic where idCategory = 7 order by publishDate desc").setMaxResults(4).list();
+	}
+	
+	@Override
 	public List<comic> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from comic").list();
@@ -69,5 +99,4 @@ public class ComicDAO extends DAO<comic>{
 		}
 		return Boolean.FALSE;
 	}
-
 }
