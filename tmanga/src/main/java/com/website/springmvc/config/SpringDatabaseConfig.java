@@ -55,7 +55,7 @@ public class SpringDatabaseConfig extends WebMvcConfigurerAdapter {
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 		dataSource.setUrl("jdbc:mysql://localhost:3306/manga?zeroDateTimeBehavior=convertToNull");
 		dataSource.setUsername("root");
-		dataSource.setPassword("");
+		dataSource.setPassword("root");
 		dataSource.setInitialSize(10);
 		return dataSource;
 	}
