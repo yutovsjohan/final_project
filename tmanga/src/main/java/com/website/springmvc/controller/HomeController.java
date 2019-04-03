@@ -11,7 +11,6 @@ import com.website.springmvc.Services.CategoryService;
 import com.website.springmvc.Services.ComicService;
 import com.website.springmvc.Services.NewsService;
 import com.website.springmvc.Services.PublishCompanyService;
-import com.website.springmvc.entities.comic;
 
 @Controller
 @RequestMapping(value="/controller")
@@ -31,7 +30,14 @@ public class HomeController {
 	@Autowired
 	private ComicService comicService;	
 	
-	private void getSideBar(ModelAndView model) {
+	@RequestMapping(value = {"/", "trang-chu", "/index"}, method = RequestMethod.GET)
+	public ModelAndView getHomePage(){		
+		ModelAndView model = new ModelAndView();
+		getHome(model);						
+		return model;
+	}	
+	
+	public void getSideBar(ModelAndView model) {
 		model.setViewName("layout");
 		model.addObject("sb","sidebar");
 		
@@ -40,32 +46,15 @@ public class HomeController {
 		model.addObject("pcs", publishCompanyService.getAll());
 	}
 	
-	@RequestMapping(value = {"/", "trang-chu", "/index"}, method = RequestMethod.GET)
-	public ModelAndView getHome(){		
-		ModelAndView model = new ModelAndView();
+	public void getHome(ModelAndView model) {
+		getSideBar(model);
 		
-		getSideBar(model);	
-		
-		model.addObject("views","content");
+		model.addObject("views","index");
 		model.addObject("title","T-Manga");
 		
 		model.addObject("news", newsService.getNewsForBanner());		
 		model.addObject("topSelling", comicService.getComicForTopSelling());
 		model.addObject("newComic", comicService.getNewComicInHomePage());
 		model.addObject("otherComic", comicService.getOtherComicInHomePage());
-				
-		return model;
-	}
-	
-	@RequestMapping(value = {"/login" , "/dang-nhap"}, method = RequestMethod.GET)
-	public ModelAndView getLogin(){
-		ModelAndView model = new ModelAndView();
-		
-		getSideBar(model);
-		
-		model.addObject("views","login");
-		model.addObject("title","Đăng nhập");
-		
-		return model;
-	}
+	}	
 }
