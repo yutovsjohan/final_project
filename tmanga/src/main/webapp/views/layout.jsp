@@ -21,8 +21,10 @@
 <link href="<c:url value="/resources/css/main.css" />" rel="stylesheet">
 <link href="<c:url value="/resources/css/style.css" />" rel="stylesheet">
 
+<link href="<c:url value="/resources/css/register.css" />" rel="stylesheet">
+
 </head>
-<body>
+<body style="background-color:#f0f0fa;">
 <header id="header"><!--header-->
 	<div class="header_top" style="background-color: #15224f;"><!--header_top-->
 		<div class="container">
@@ -60,7 +62,7 @@
 				<div class="col-sm-8">
 					<div class="shop-menu pull-right">
 						<ul class="nav navbar-nav">
-							<li><a href="#"><i class="fa fa-user" ></i> Đăng ký</a></li>
+							<li><a href="signup"><i class="fa fa-user" ></i> Đăng ký</a></li>
 							<li><a href="login"><i class="fa fa-lock" ></i> Đăng nhập</a></li>
 							<li><a href="#" id="gio-hang"><i class="fa fa-shopping-cart"></i>Giỏ hàng trống</a></li>
 						</ul>
