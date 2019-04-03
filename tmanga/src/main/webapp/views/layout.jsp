@@ -62,8 +62,17 @@
 				<div class="col-sm-8">
 					<div class="shop-menu pull-right">
 						<ul class="nav navbar-nav">
-							<li><a href="signup"><i class="fa fa-user" ></i> Đăng ký</a></li>
-							<li><a href="login"><i class="fa fa-lock" ></i> Đăng nhập</a></li>
+							<c:choose>
+								<c:when test="${sessionScope.account.email != null}">
+									<li><a href="#"><i class="fa fa-user" ></i> Xin chào ${sessionScope.account.name }</a></li>
+									<li><a href="logout"><i class="fa fa-sign-out" ></i> Đăng xuất</a></li>
+								</c:when>
+								<c:otherwise>
+									<li><a href="signup"><i class="fa fa-user" ></i> Đăng ký</a></li>
+									<li><a href="login"><i class="fa fa-lock" ></i> Đăng nhập</a></li>
+								</c:otherwise>
+							</c:choose>
+							
 							<li><a href="#" id="gio-hang"><i class="fa fa-shopping-cart"></i>Giỏ hàng trống</a></li>
 						</ul>
 					</div>

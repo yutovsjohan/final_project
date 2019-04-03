@@ -22,15 +22,15 @@
 			<div class="panel-heading">Thông tin đăng nhập</div>
 			
 			<div class="panel-body">
-				<form action="http://localhost:1207/QLbansach/public/dang-nhap" method="post">
+				<form action="login" method="post">
 				<input type="hidden" name="_token" value="Y1O1F3RtL7O24rLqVCbuLyAizm9YJXTcyZZqdj2R">
 				  <div class="form-group">
 				    <label for="email">Email *</label>
-				    <input type="email" class="form-control" name="email" >
+				    <input type="email" class="form-control" name="email" placeholder="nhập email" >
 				  </div>
 				  <div class="form-group">
 				    <label for="password">Mật khẩu *</label>
-				    <input type="password" class="form-control" name="password" >
+				    <input type="password" class="form-control" name="password" placeholder="nhập password">
 				  </div>
 
 				  <button type="submit" class="btn btn-info" style="background-color: #428bca">Đăng nhập</button>
