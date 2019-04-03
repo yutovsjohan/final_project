@@ -65,12 +65,31 @@ public class users implements java.io.Serializable{
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "delivery")
 	private Set<bill> delivery = new HashSet<bill>();
-	
+
 	public users() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
+	public users(String name, String email, String password, String address, String phone) {
+		super();
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.address = address;
+		this.phone = phone;
+	}
+
+	public users(int id, String name, String email, String password, String address, String phone) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.address = address;
+		this.phone = phone;
+	}
+
 	public int getId() {
 		return id;
 	}
