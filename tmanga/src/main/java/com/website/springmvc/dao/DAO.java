@@ -27,6 +27,14 @@ public abstract class DAO<T> {
 		return null;
 	}
 	
+	public T get(String email) {
+		return null;
+	}
+	
+	public T get(int id) {
+		return null;
+	}
+	
 	public abstract List<T> getAll();
 	
 	public abstract T get(Long id);
