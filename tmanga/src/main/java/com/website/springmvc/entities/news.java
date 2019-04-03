@@ -12,6 +12,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 @Entity
 @Table(name = "news", catalog = "manga")
 public class news implements java.io.Serializable{
@@ -43,6 +45,7 @@ public class news implements java.io.Serializable{
 	@Column(name = "banner")
 	private byte banner;
 
+	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", nullable = false, updatable = false)
 	private Date created_at;

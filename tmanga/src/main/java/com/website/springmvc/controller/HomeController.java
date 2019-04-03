@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.website.springmvc.Services.AuthorService;
+import com.website.springmvc.Services.CategoryService;
+import com.website.springmvc.Services.ComicService;
+import com.website.springmvc.Services.NewsService;
+import com.website.springmvc.Services.PublishCompanyService;
 import com.website.springmvc.entities.comic;
-import com.website.springmvc.service.AuthorService;
-import com.website.springmvc.service.CategoryService;
-import com.website.springmvc.service.ComicService;
-import com.website.springmvc.service.NewsService;
-import com.website.springmvc.service.PublishCompanyService;
 
 @Controller
 @RequestMapping(value="/controller")
