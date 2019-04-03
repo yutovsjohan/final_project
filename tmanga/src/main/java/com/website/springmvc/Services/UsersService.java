@@ -15,7 +15,15 @@ public class UsersService {
 	
 	@Autowired
 	DAO<users> usersDAO;
-
+	
+	public users get(int id){
+		return usersDAO.get(id);
+	}
+	
+	public users get(String email){
+		return usersDAO.get(email);
+	}
+	
 	public List<users> getAll(){
 		return usersDAO.getAll();
 	}
