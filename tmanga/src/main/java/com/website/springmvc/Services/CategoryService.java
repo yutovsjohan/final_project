@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.website.springmvc.DAO.DAO;
+import com.website.springmvc.entities.author;
 import com.website.springmvc.entities.category;
 
 @Transactional
@@ -14,6 +15,14 @@ import com.website.springmvc.entities.category;
 public class CategoryService {
 	@Autowired
 	DAO<category> categoryDao;
+	
+	public category get(int id) {
+		return categoryDao.get(id);
+	}
+	
+	public category get(String name) {
+		return categoryDao.get(name);
+	}
 	
 	public List<category> getAll() {
 		return categoryDao.getAll();

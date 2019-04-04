@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.website.springmvc.DAO.DAO;
+import com.website.springmvc.entities.author;
 import com.website.springmvc.entities.publishcompany;
 
 @Transactional
@@ -14,6 +15,14 @@ import com.website.springmvc.entities.publishcompany;
 public class PublishCompanyService {
 	@Autowired
 	DAO<publishcompany> publishCompanyDao;
+	
+	public publishcompany get(int id) {
+		return publishCompanyDao.get(id);
+	}
+	
+	public publishcompany get(String name) {
+		return publishCompanyDao.get(name);
+	}
 	
 	public List<publishcompany> getAll() {
 		return publishCompanyDao.getAll();

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.website.springmvc.DAO.DAO;
+import com.website.springmvc.entities.author;
 import com.website.springmvc.entities.comic;
 
 @Transactional
@@ -14,6 +15,18 @@ import com.website.springmvc.entities.comic;
 public class ComicService {
 	@Autowired
 	DAO<comic> comicDao;
+		
+	public List<comic> getListForAuthor(int id) {
+		return comicDao.getListForAuthor(id);
+	}
+	
+	public comic get(String name) {
+		return comicDao.get(name);
+	}
+	
+	public List<comic> getList(String key, int id){
+		return comicDao.getList(key, id);
+	}
 	
 	public List<comic> getAll() {
 		return comicDao.getAll();

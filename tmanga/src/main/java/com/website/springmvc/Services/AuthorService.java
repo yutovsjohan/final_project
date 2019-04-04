@@ -15,6 +15,14 @@ public class AuthorService {
 	@Autowired
 	DAO<author> authorDao;
 	
+	public author get(String name) {
+		return authorDao.get(name);
+	}
+	
+	public author get(int id) {
+		return authorDao.get(id);
+	}
+	
 	public List<author> getAll() {
 		return authorDao.getAll();
 	}
