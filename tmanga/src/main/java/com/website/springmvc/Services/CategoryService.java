@@ -2,6 +2,8 @@ package com.website.springmvc.Services;
 
 import java.util.List;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,14 +18,18 @@ public class CategoryService {
 	@Autowired
 	DAO<category> categoryDao;
 	
+	@Autowired
+	private SessionFactory sessionFactory;
+	
 	public category get(int id) {
-		return categoryDao.get(id);
+		Session session = this.sessionFactory.getCurrentSession();
+		return (category) session.get(category.class, new Integer(id));
 	}
 	
 	public category get(String name) {
-		return categoryDao.get(name);
+		Session session = this.sessionFactory.getCurrentSession();
+		return (category) session.createQuery("from category where unsignedName like :keyword").setParameter("keyword", name).uniqueResult();
 	}
-	
 	public List<category> getAll() {
 		return categoryDao.getAll();
 	}

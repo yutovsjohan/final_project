@@ -17,18 +17,6 @@ public class PublishComapyDAO extends DAO<publishcompany>{
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public publishcompany get(int id) {
-		Session session = this.sessionFactory.getCurrentSession();
-		return (publishcompany) session.get(publishcompany.class, new Integer(id));
-	}
-	
-	@Override
-	public publishcompany get(String name) {
-		Session session = this.sessionFactory.getCurrentSession();
-		return (publishcompany) session.createQuery("from publishcompany where unsignedName like :keyword").setParameter("keyword", name).uniqueResult();
-	}
-	
-	@Override
 	public List<publishcompany> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from publishcompany").list();

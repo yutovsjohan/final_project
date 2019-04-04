@@ -18,18 +18,6 @@ public class CategoryDAO extends DAO<category>{
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public category get(int id) {
-		Session session = this.sessionFactory.getCurrentSession();
-		return (category) session.get(category.class, new Integer(id));
-	}
-	
-	@Override
-	public category get(String name) {
-		Session session = this.sessionFactory.getCurrentSession();
-		return (category) session.createQuery("from category where unsignedName like :keyword").setParameter("keyword", name).uniqueResult();
-	}
-	
-	@Override
 	public List<category> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from category").list();

@@ -13,19 +13,7 @@ import com.website.springmvc.entities.author;
 public class AuthorDAO extends DAO<author>{
 	
 	@Autowired
-	private SessionFactory sessionFactory;
-	
-	@Override
-	public author get(String name) {
-		Session session = this.sessionFactory.getCurrentSession();
-		return (author) session.createQuery("from author where unsignedName like :keyword").setParameter("keyword", name).uniqueResult();
-	}
-	
-	@Override
-	public author get(int id) {
-		Session session = this.sessionFactory.getCurrentSession();
-		return (author) session.get(author.class, new Integer(id));
-	}
+	private SessionFactory sessionFactory;	
 	
 	@Override
 	public List<author> getAll() {

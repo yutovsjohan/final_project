@@ -2,6 +2,9 @@ package com.website.springmvc.Services;
 
 import java.util.List;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,16 +19,57 @@ public class ComicService {
 	@Autowired
 	DAO<comic> comicDao;
 		
-	public List<comic> getListForAuthor(int id) {
-		return comicDao.getListForAuthor(id);
+	@Autowired
+	private SessionFactory sessionFactory;
+	
+	public List<comic> getListForAuthor(int id){
+		Session session = this.sessionFactory.getCurrentSession();
+		return session.createQuery("from comic where idAuthor = :keyword order by quantitySold desc").setParameter("keyword", id).setMaxResults(4).list();
 	}
 	
 	public comic get(String name) {
-		return comicDao.get(name);
+		Session session = this.sessionFactory.getCurrentSession();
+		return (comic) session.createQuery("from comic where unsignedName like :keyword").setParameter("keyword", name).uniqueResult();
 	}
 	
-	public List<comic> getList(String key, int id){
-		return comicDao.getList(key, id);
+	public List<comic> getListComic(String key, int id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		String hql = "";
+		Query query = null;
+		if(key.equalsIgnoreCase("category")) {
+			hql = "from comic where idCategory = :keyword";
+			query = session.createQuery(hql).setParameter("keyword", id);
+		}	
+		else if(key.equalsIgnoreCase("author")) {
+			hql = "from comic where idAuthor = :keyword";
+			query = session.createQuery(hql).setParameter("keyword", id);
+		}
+		else if(key.equalsIgnoreCase("publishing-company")) {
+			hql = "from comic where idPublishCompany = :keyword";
+			query = session.createQuery(hql).setParameter("keyword", id);
+		}
+		
+		return query.list(); 
+	}
+
+	public List<comic> getComicForTopSelling(){
+		Session session = this.sessionFactory.getCurrentSession();
+		return session.createQuery("from comic order by quantitySold desc").setMaxResults(12).list();
+	}
+
+	public List<comic> getNewComic(){
+		Session session = this.sessionFactory.getCurrentSession();
+		return session.createQuery("from comic order by publishDate desc").setMaxResults(36).list();
+	}
+
+	public List<comic> getNewComicInHomePage(){
+		Session session = this.sessionFactory.getCurrentSession();
+		return session.createQuery("from comic order by publishDate desc").setMaxResults(4).list();
+	}
+
+	public List<comic> getOtherComicInHomePage(){
+		Session session = this.sessionFactory.getCurrentSession();
+		return session.createQuery("from comic where idCategory = 7 order by publishDate desc").list();
 	}
 	
 	public List<comic> getAll() {
@@ -50,25 +94,10 @@ public class ComicService {
 
 	public Boolean delete(Long id) {
 		return comicDao.delete(id);
-	}
+	}	
 	
-	public List<comic> getComicForTopSelling(){
-		return comicDao.getForTopSelling();
-	}
-	
-	public List<comic> getNewComic(){
-		return comicDao.getForNew();
-	}
-	
-	public List<comic> getNewComicInHomePage(){
-		return comicDao.getForNewInHome();
-	}
-	
-	public List<comic> getOtherComic(){
-		return comicDao.getForOther();
-	}
-	
-	public List<comic> getOtherComicInHomePage(){
-		return comicDao.getForOtherInHome();
+	public List<comic> getForOtherInHome(){
+		Session session = this.sessionFactory.getCurrentSession();
+		return session.createQuery("from comic where idCategory = 7 order by publishDate desc").setMaxResults(4).list();
 	}
 }

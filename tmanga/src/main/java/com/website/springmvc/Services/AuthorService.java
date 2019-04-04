@@ -2,6 +2,8 @@ package com.website.springmvc.Services;
 
 import java.util.List;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,12 +17,17 @@ public class AuthorService {
 	@Autowired
 	DAO<author> authorDao;
 	
+	@Autowired
+	private SessionFactory sessionFactory;
+	
 	public author get(String name) {
-		return authorDao.get(name);
+		Session session = this.sessionFactory.getCurrentSession();
+		return (author) session.createQuery("from author where unsignedName like :keyword").setParameter("keyword", name).uniqueResult();
 	}
 	
 	public author get(int id) {
-		return authorDao.get(id);
+		Session session = this.sessionFactory.getCurrentSession();
+		return (author) session.get(author.class, new Integer(id));
 	}
 	
 	public List<author> getAll() {

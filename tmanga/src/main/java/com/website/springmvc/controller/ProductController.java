@@ -1,5 +1,7 @@
 package com.website.springmvc.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +13,8 @@ import com.website.springmvc.Services.AuthorService;
 import com.website.springmvc.Services.CategoryService;
 import com.website.springmvc.Services.ComicService;
 import com.website.springmvc.Services.PublishCompanyService;
+import com.website.springmvc.entities.comic;
+import com.website.springmvc.libs.GetModel;
 
 @Controller
 @RequestMapping(value="/controller")
@@ -26,6 +30,9 @@ public class ProductController {
 	
 	@Autowired
 	private ComicService comicService;	
+	
+	@Autowired
+	GetModel getModel;
 	
 	@RequestMapping(value = "/product", method = RequestMethod.GET)
 	public ModelAndView getViewProductPage(@RequestParam(name = "q") String key, @RequestParam(name = "un") String name){		
@@ -47,11 +54,16 @@ public class ProductController {
 			id = publishCompanyService.get(name).getId();
 		}
 		
-		getSideBar(model);
+		List<comic> comics = comicService.getListComic(key, id);
+		
+		int totalComic = comics.size();
+		int totalPage = totalComic / 12;
+		
+		getModel.getSideBar(model);
 		
 		model.addObject("views","productList");
 		model.addObject("title",title);
-		model.addObject("comiclist", comicService.getList(key, id));
+		model.addObject("comiclist", comics);
 		return model;
 	}	
 	
@@ -63,7 +75,7 @@ public class ProductController {
 		int idCategory = comicService.get(name).getCategory().getId();
 		int idPC = comicService.get(name).getPublishcompany().getId();
 		
-		getSideBar(model);
+		getModel.getSideBar(model);
 		
 		model.addObject("views","productDetail");
 		model.addObject("title", comicService.get(name).getName());
@@ -74,14 +86,31 @@ public class ProductController {
 		model.addObject("listComicForAuthor", comicService.getListForAuthor(idAuthor));
 		
 		return model;
-	}
+	}	
 	
-	public void getSideBar(ModelAndView model) {
-		model.setViewName("layout");
-		model.addObject("sb","sidebar");
+	@RequestMapping(value = "/test", method = RequestMethod.GET)
+	public ModelAndView getTest(){
+		ModelAndView model = new ModelAndView();
 		
-		model.addObject("categories", categoryService.getAll());
-		model.addObject("authors", authorService.getAll());
-		model.addObject("pcs", publishCompanyService.getAll());
+		model.setViewName("../index");
+		
+		model.addObject("totalpage",getTotalPage());
+		
+		return model;
+	}	
+	
+	public int getTotalPage(){
+		List<comic> comics = comicService.getListComic("category", 1);
+		
+		int totalPage = 0;
+		
+		int totalComic = comics.size();
+		totalPage = totalComic / 10;
+		
+		if(totalComic % 10 != 0){
+			totalPage++;
+		}
+						
+		return totalPage;
 	}
 }

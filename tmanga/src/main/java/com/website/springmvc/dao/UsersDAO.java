@@ -16,18 +16,6 @@ public class UsersDAO extends DAO<users>{
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public users get(String email) {
-		Session session = this.sessionFactory.getCurrentSession();
-		return (users) session.createSQLQuery("from users where email like ?").setParameter(0, "%" + email + "%").uniqueResult();
-	}
-	
-	@Override
-	public users get(int id) {
-		Session session = this.sessionFactory.getCurrentSession();
-		return (users) session.get(users.class, id);
-	}
-	
-	@Override
 	public List<users> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from users").list();

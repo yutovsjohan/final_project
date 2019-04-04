@@ -21,6 +21,7 @@ import com.website.springmvc.Services.PublishCompanyService;
 import com.website.springmvc.Services.UsersService;
 import com.website.springmvc.entities.role;
 import com.website.springmvc.entities.users;
+import com.website.springmvc.libs.GetModel;
 import com.website.springmvc.libs.TripleDES;
 
 @Controller
@@ -44,10 +45,13 @@ public class UserController {
 	@Autowired
 	private ComicService comicService;	
 	
+	@Autowired
+	GetModel getModel;
+	
 	@RequestMapping(value = {"/signup" , "/dang-ky"}, method = RequestMethod.GET)
 	public ModelAndView getRegistrationPage(){
 		ModelAndView model = new ModelAndView();
-		getRegistration(model);
+		getModel.getRegistration(model);
 		return model;
 	}
 	
@@ -63,13 +67,13 @@ public class UserController {
 			
 			usersService.add(users);
 			
-			getLogin(model);
+			getModel.getLogin(model);
 			
 			model.addObject("mes", "Success");
 			model.addObject("alert", "success");
 		}
 		else{
-			getRegistration(model);
+			getModel.getRegistration(model);
 			
 			model.addObject("mes","Email exist");	
 			model.addObject("alert", "danger");
@@ -80,7 +84,7 @@ public class UserController {
 	@RequestMapping(value = {"/login" , "/dang-nhap"}, method = RequestMethod.GET)
 	public ModelAndView getLoginPage(){
 		ModelAndView model = new ModelAndView();
-		getLogin(model);
+		getModel.getLogin(model);
 		return model;
 	}	
 	
@@ -93,11 +97,11 @@ public class UserController {
 		if(check == -1) {
 			model.addObject("mes","Email và password của bạn sai");			
 			model.addObject("alert", "danger");
-			getLogin(model);
+			getModel.getLogin(model);
 		} 
 		else {
 			session.setAttribute("account", usersService.get(check));
-			getHome(model);
+			getModel.getHome(model);
 			
 		}
 		return model;
@@ -108,44 +112,7 @@ public class UserController {
 		session.removeAttribute("account");
 		return "redirect:index";
 	}
-	
-	public void getSideBar(ModelAndView model) {
-		model.setViewName("layout");
-		model.addObject("sb","sidebar");
 		
-		model.addObject("categories", categoryService.getAll());
-		model.addObject("authors", authorService.getAll());
-		model.addObject("pcs", publishCompanyService.getAll());
-	}
-	
-	public void getRegistration(ModelAndView model){
-		getSideBar(model);	
-		
-		model.addObject("views","register");
-		model.addObject("title","Đăng ký");
-			
-		model.addObject("users",new users());
-	}
-	
-	public void getLogin(ModelAndView model){		
-		getSideBar(model);
-		
-		model.addObject("views","login");
-		model.addObject("title","Đăng nhập");		
-	}
-	
-	public void getHome(ModelAndView model) {
-		getSideBar(model);
-		
-		model.addObject("views","index");
-		model.addObject("title","T-Manga");
-		
-		model.addObject("news", newsService.getNewsForBanner());		
-		model.addObject("topSelling", comicService.getComicForTopSelling());
-		model.addObject("newComic", comicService.getNewComicInHomePage());
-		model.addObject("otherComic", comicService.getOtherComicInHomePage());
-	}	
-	
 	private boolean checkEmail(String email) {
 		List<users> listusers = usersService.getAll();
 		users u = new users();

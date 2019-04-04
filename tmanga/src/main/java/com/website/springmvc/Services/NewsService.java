@@ -2,6 +2,8 @@ package com.website.springmvc.Services;
 
 import java.util.List;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,13 +17,18 @@ import com.website.springmvc.entities.news;
 public class NewsService {
 	@Autowired
 	DAO<news> newsDao;
+
+	@Autowired
+	private SessionFactory sessionFactory;
 	
 	public List<news> getNewsForBanner(){
-		return newsDao.getFor();
+		Session session = this.sessionFactory.getCurrentSession();
+		return session.createQuery("from news where banner = 1").list();
 	}
-	
+
 	public List<news> getNews(){
-		return newsDao.getForNew();
+		Session session = this.sessionFactory.getCurrentSession();
+		return session.createQuery("from news").list();
 	}
 	
 	public List<news> getAll() {

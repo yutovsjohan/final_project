@@ -2,6 +2,8 @@ package com.website.springmvc.Services;
 
 import java.util.List;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,12 +18,17 @@ public class UsersService {
 	@Autowired
 	DAO<users> usersDAO;
 	
-	public users get(int id){
-		return usersDAO.get(id);
+	@Autowired
+	private SessionFactory sessionFactory;
+	
+	public users get(String email) {
+		Session session = this.sessionFactory.getCurrentSession();
+		return (users) session.createSQLQuery("from users where email like ?").setParameter(0, "%" + email + "%").uniqueResult();
 	}
 	
-	public users get(String email){
-		return usersDAO.get(email);
+	public users get(int id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		return (users) session.get(users.class, id);
 	}
 	
 	public List<users> getAll(){
