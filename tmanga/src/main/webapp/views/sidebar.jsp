@@ -13,8 +13,16 @@
 					<c:if test="${number != 1}">
 						<hr>
 					</c:if>						
-					<a href="category/${category.unsignedName }">
-						<div id="menu_doc" dataHref="#">
+					<a href="product?q=category&un=${category.unsignedName }">
+						<c:choose>
+							<c:when test="${title == category.name}">
+								<div id="menu_doc" dataHref="#" class="actived">		
+							</c:when>
+							<c:otherwise>
+								<div id="menu_doc" dataHref="#">	
+							</c:otherwise>
+						</c:choose>
+						
 							${category.name }
 						</div>						
 					</a>
@@ -33,8 +41,15 @@
 					<c:if test="${number != 1}">
 						<hr>
 					</c:if>	
-					<a href="author/${author.unsignedName }">
-						<div id="menu_doc" dataHref="#">
+					<a href="product?q=author&un=${author.unsignedName }">
+						<c:choose>
+							<c:when test="${title == author.name}">
+								<div id="menu_doc" dataHref="#" class="actived">		
+							</c:when>
+							<c:otherwise>
+								<div id="menu_doc" dataHref="#">	
+							</c:otherwise>
+						</c:choose>
 							${author.name }	
 						</div>
 					</a>
@@ -53,8 +68,15 @@
 					<c:if test="${number != 1}">
 						<hr>
 					</c:if>	
-					<a href="publishing-company/${pc.unsignedName }">
-						<div id="menu_doc" dataHref="#">
+					<a href="product?q=publishing-company&un=${pc.unsignedName }">
+						<c:choose>
+							<c:when test="${title == pc.name}">
+								<div id="menu_doc" dataHref="#" class="actived">		
+							</c:when>
+							<c:otherwise>
+								<div id="menu_doc" dataHref="#">	
+							</c:otherwise>
+						</c:choose>
 							${pc.name }
 						</div>
 					</a>
