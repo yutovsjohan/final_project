@@ -33,15 +33,15 @@ public class comic implements java.io.Serializable{
 	private String unsignedName;
 	
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idCategory", nullable = false)
 	private category category;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idAuthor", nullable = false)
 	private author author;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idPublishCompany", nullable = false)
 	private publishcompany publishcompany;
 
