@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.website.springmvc.entities.author;
 import com.website.springmvc.entities.category;
 
 
@@ -15,6 +16,18 @@ public class CategoryDAO extends DAO<category>{
 
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+	@Override
+	public category get(int id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		return (category) session.get(category.class, new Integer(id));
+	}
+	
+	@Override
+	public category get(String name) {
+		Session session = this.sessionFactory.getCurrentSession();
+		return (category) session.createQuery("from category where unsignedName like :keyword").setParameter("keyword", name).uniqueResult();
+	}
 	
 	@Override
 	public List<category> getAll() {

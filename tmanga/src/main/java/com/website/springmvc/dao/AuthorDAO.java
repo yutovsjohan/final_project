@@ -16,6 +16,18 @@ public class AuthorDAO extends DAO<author>{
 	private SessionFactory sessionFactory;
 	
 	@Override
+	public author get(String name) {
+		Session session = this.sessionFactory.getCurrentSession();
+		return (author) session.createQuery("from author where unsignedName like :keyword").setParameter("keyword", name).uniqueResult();
+	}
+	
+	@Override
+	public author get(int id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		return (author) session.get(author.class, new Integer(id));
+	}
+	
+	@Override
 	public List<author> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from author").list();

@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.website.springmvc.entities.author;
 import com.website.springmvc.entities.publishcompany;
 
 @Repository
@@ -14,6 +15,18 @@ public class PublishComapyDAO extends DAO<publishcompany>{
 
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+	@Override
+	public publishcompany get(int id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		return (publishcompany) session.get(publishcompany.class, new Integer(id));
+	}
+	
+	@Override
+	public publishcompany get(String name) {
+		Session session = this.sessionFactory.getCurrentSession();
+		return (publishcompany) session.createQuery("from publishcompany where unsignedName like :keyword").setParameter("keyword", name).uniqueResult();
+	}
 	
 	@Override
 	public List<publishcompany> getAll() {

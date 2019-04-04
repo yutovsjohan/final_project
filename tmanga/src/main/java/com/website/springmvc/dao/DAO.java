@@ -7,6 +7,14 @@ public abstract class DAO<T> {
 		return null;
 	}
 	
+	public List<T> getListForAuthor(int id) {
+		return null;
+	}
+	
+	public List<T> getList(String key, int id) {
+		return null;
+	}
+	
 	public List<T> getForTopSelling() {
 		return null;
 	}
@@ -27,7 +35,7 @@ public abstract class DAO<T> {
 		return null;
 	}
 	
-	public T get(String email) {
+	public T get(String name) {
 		return null;
 	}
 	
