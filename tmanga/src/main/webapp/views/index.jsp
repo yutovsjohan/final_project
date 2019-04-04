@@ -72,7 +72,7 @@
 						<div class="product-image-wrapper">
 							<div class="single-products">
 								<div class="productinfo text-center">
-									<a href="detail/${ts.unsignedName }">
+									<a href="detail?c=${ts.unsignedName }">
 										<div class="btn btn-primary" style="position: absolute; left: 5px;">${number + 1 }</div>
 										<img src="<c:url value="/images/products/${ts.image }" />" title="${ts.name }" alt="${ts.image }" style="width:150px; height:200px; margin-top:25px;" />
 										<h5 style="height:50px; ">${ts.name }</h5>
@@ -89,7 +89,16 @@
 										</c:otherwise>
 									</c:choose>						
 									
-									<a href="detail/${ts.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a>
+									<c:choose>
+										<c:when test="${sessionScope.account.email != null}">
+											<a href="#" class="btn btn-warning" title="Hủy yêu thích"><i class="fa fa-heart" aria-hidden="true" ></i></a>
+										</c:when>
+										<c:otherwise>
+											<a href="#" class="btn btn-warning" title="Thêm vào danh sách yêu thích"><i class="fa fa-heart-o" aria-hidden="true" ></i></a>
+										</c:otherwise>
+									</c:choose>
+								
+									<a href="detail?c=${ts.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a>
 	
 								</div>
 							</div>
@@ -125,7 +134,7 @@
 					<div class="product-image-wrapper">
 						<div class="single-products">
 							<div class="productinfo text-center">
-								<a href="detail/${nc.unsignedName }">
+								<a href="detail?c=${nc.unsignedName }">
 									<img src="<c:url value="/images/products/${nc.image }" />" title="${nc.name }" alt="${nc.image }" style="width:150px; height:200px; margin-top:25px;" />
 									<h5 style="height:50px; ">${nc.name }</h5>
 									<h5 style="background-color: green; color:white">Phát hành: <fmt:formatDate pattern = "dd-MM-yyyy" value = "${nc.publishDate }" /></h5>
@@ -141,7 +150,7 @@
 									</c:otherwise>
 								</c:choose>						
 								
-								<a href="detail/${nc.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a>
+								<a href="detail?c=${nc.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a>
 							</div>
 						</div>
 					</div>
@@ -163,7 +172,7 @@
 					<div class="product-image-wrapper">
 						<div class="single-products">
 							<div class="productinfo text-center">
-								<a href="detail/${oc.unsignedName }">
+								<a href="detail?c=${oc.unsignedName }">
 									<img src="<c:url value="/images/products/${oc.image }" />" title="${oc.name }" alt="${oc.image }" style="width:150px; height:200px; margin-top:25px;" />
 									<h5 style="height:50px; ">${oc.name }</h5>
 									<h5 style="background-color: green; color:white">Phát hành: <fmt:formatDate pattern = "dd-MM-yyyy" value = "${oc.publishDate }" /></h5>
@@ -179,7 +188,7 @@
 									</c:otherwise>
 								</c:choose>								
 								
-								<a href="detail/${oc.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a>
+								<a href="detail?c=${oc.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a>
 	
 							</div>
 						</div>
