@@ -6,18 +6,12 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.website.springmvc.Services.AuthorService;
-import com.website.springmvc.Services.CategoryService;
-import com.website.springmvc.Services.ComicService;
-import com.website.springmvc.Services.NewsService;
-import com.website.springmvc.Services.PublishCompanyService;
 import com.website.springmvc.Services.UsersService;
 import com.website.springmvc.entities.role;
 import com.website.springmvc.entities.users;
@@ -29,21 +23,6 @@ import com.website.springmvc.libs.TripleDES;
 public class UserController {
 	@Autowired
 	private UsersService usersService;
-	
-	@Autowired
-	private CategoryService categoryService;
-	
-	@Autowired
-	private AuthorService authorService;
-	
-	@Autowired
-	private PublishCompanyService publishCompanyService;
-
-	@Autowired
-	private NewsService newsService;
-	
-	@Autowired
-	private ComicService comicService;	
 	
 	@Autowired
 	GetModel getModel;
