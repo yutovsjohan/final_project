@@ -58,9 +58,7 @@ public class ProductController {
 		}
 		
 		List<comic> comics = comicService.getListComic(key, id);
-		
-		List<comic> comics_pagi = comicService.getListComic(key, id, 12*(page-1), 12);
-		
+
 		int totalPage = 0;
 		
 		int totalComic = comics.size();
@@ -70,6 +68,8 @@ public class ProductController {
 			totalPage++;
 		}		
 				
+		comics = comicService.getListComic(key, id, 12*(page-1), 12);
+		
 		getModel.getSideBar(model);
 		
 		model.addObject("key", key);
@@ -77,9 +77,8 @@ public class ProductController {
 		
 		model.addObject("views","productList");
 		model.addObject("title",title);
-		model.addObject("comics_pagi", comics);
 		
-		model.addObject("comiclist", comics_pagi);
+		model.addObject("comiclist", comics);
 		model.addObject("totalpage", totalPage);
 		model.addObject("pageselected", page);
 		return model;
@@ -105,5 +104,39 @@ public class ProductController {
 		
 		return model;
 	}	
+	
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public ModelAndView getViewProductPage(@RequestParam(name = "k") String key,
+										@RequestParam(name = "p", defaultValue = "1") int page,
+										@RequestParam(name = "s", defaultValue = "1") int sort) {
+		ModelAndView model = new ModelAndView();
+		
+		List<comic> comics = comicService.getListComic(key);
+
+		int totalPage = 0;
+		
+		int totalComic = comics.size();
+		totalPage = totalComic / 12;
+		
+		if(totalComic % 12 != 0){
+			totalPage++;
+		}		
+		
+		comics = comicService.getListComic(key, 12*(page-1), 12);
+		
+		getModel.getSideBar(model);
+				
+		model.addObject("views","productList");
+		model.addObject("title", "Tìm kiếm " + key);
+		
+		model.addObject("k",key);
+		model.addObject("key","search");
+		
+		model.addObject("comiclist", comics);
+		model.addObject("totalpage", totalPage);
+		model.addObject("totalcomic", totalComic);
+		model.addObject("pageselected", page);
+		return model;
+	}
 
 }

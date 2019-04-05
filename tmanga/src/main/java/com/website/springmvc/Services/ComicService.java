@@ -22,6 +22,21 @@ public class ComicService {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
+	public List<comic> getListComic(String name){
+		Session session = this.sessionFactory.getCurrentSession();
+		return session.createQuery("from comic where name like :keyword").setParameter("keyword", "%" + name + "%").list();
+	}
+	
+	public List<comic> getListComic(String name, int firstResult, int maxResult){
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from comic where name like :keyword").setParameter("keyword", "%" + name + "%");
+		
+		query.setFirstResult(firstResult);
+		query.setMaxResults(maxResult);
+		
+		return query.list();
+	}
+	
 	public List<comic> getListForAuthor(int id){
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from comic where idAuthor = :keyword order by quantitySold desc").setParameter("keyword", id).setMaxResults(4).list();
