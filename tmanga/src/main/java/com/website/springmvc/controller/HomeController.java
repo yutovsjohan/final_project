@@ -6,11 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.website.springmvc.Services.AuthorService;
-import com.website.springmvc.Services.CategoryService;
-import com.website.springmvc.Services.ComicService;
-import com.website.springmvc.Services.NewsService;
-import com.website.springmvc.Services.PublishCompanyService;
 import com.website.springmvc.libs.GetModel;
 
 @Controller
