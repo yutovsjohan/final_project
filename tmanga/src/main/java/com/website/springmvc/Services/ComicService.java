@@ -32,6 +32,11 @@ public class ComicService {
 		return (comic) session.createQuery("from comic where unsignedName like :keyword").setParameter("keyword", name).uniqueResult();
 	}
 	
+	public comic get(int id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		return (comic) session.get(comic.class, new Integer(id));
+	}
+	
 	public List<comic> getListComic(String key, int id) {
 		Session session = this.sessionFactory.getCurrentSession();
 		String hql = "";
@@ -51,6 +56,30 @@ public class ComicService {
 		
 		return query.list(); 
 	}
+	
+	public List<comic> getListComic(String key, int id, int firstResult, int maxResult) {
+		Session session = this.sessionFactory.getCurrentSession();
+		String hql = "";
+		Query query = null;
+		
+		if(key.equalsIgnoreCase("category")) {
+			hql = "from comic where idCategory = :keyword";
+			query = session.createQuery(hql).setParameter("keyword", id);
+		}	
+		else if(key.equalsIgnoreCase("author")) {
+			hql = "from comic where idAuthor = :keyword";
+			query = session.createQuery(hql).setParameter("keyword", id);
+		}
+		else if(key.equalsIgnoreCase("publishing-company")) {
+			hql = "from comic where idPublishCompany = :keyword";
+			query = session.createQuery(hql).setParameter("keyword", id);
+		}
+		
+		query.setFirstResult(firstResult);
+		query.setMaxResults(maxResult);
+		
+		return query.list(); 
+	}
 
 	public List<comic> getComicForTopSelling(){
 		Session session = this.sessionFactory.getCurrentSession();
@@ -67,9 +96,14 @@ public class ComicService {
 		return session.createQuery("from comic order by publishDate desc").setMaxResults(4).list();
 	}
 
-	public List<comic> getOtherComicInHomePage(){
+	public List<comic> getOtherComic(){
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from comic where idCategory = 7 order by publishDate desc").list();
+	}
+	
+	public List<comic> getOtherComicInHomePage(){
+		Session session = this.sessionFactory.getCurrentSession();
+		return session.createQuery("from comic where idCategory = 7 order by publishDate desc").setMaxResults(4).list();
 	}
 	
 	public List<comic> getAll() {
@@ -94,10 +128,5 @@ public class ComicService {
 
 	public Boolean delete(Long id) {
 		return comicDao.delete(id);
-	}	
-	
-	public List<comic> getForOtherInHome(){
-		Session session = this.sessionFactory.getCurrentSession();
-		return session.createQuery("from comic where idCategory = 7 order by publishDate desc").setMaxResults(4).list();
-	}
+	}		
 }

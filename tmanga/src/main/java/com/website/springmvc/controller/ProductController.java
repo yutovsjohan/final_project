@@ -35,7 +35,10 @@ public class ProductController {
 	GetModel getModel;
 	
 	@RequestMapping(value = "/product", method = RequestMethod.GET)
-	public ModelAndView getViewProductPage(@RequestParam(name = "q") String key, @RequestParam(name = "un") String name){		
+	public ModelAndView getViewProductPage(@RequestParam(name = "q") String key, 
+										   	@RequestParam(name = "un") String name,
+											@RequestParam(name = "p", defaultValue = "1") int page,
+											@RequestParam(name = "s", defaultValue = "1") int sort){		
 		ModelAndView model = new ModelAndView();
 		
 		String title = "";
@@ -56,14 +59,29 @@ public class ProductController {
 		
 		List<comic> comics = comicService.getListComic(key, id);
 		
-		int totalComic = comics.size();
-		int totalPage = totalComic / 12;
+		List<comic> comics_pagi = comicService.getListComic(key, id, 12*(page-1), 12);
 		
+		int totalPage = 0;
+		
+		int totalComic = comics.size();
+		totalPage = totalComic / 12;
+		
+		if(totalComic % 12 != 0){
+			totalPage++;
+		}		
+				
 		getModel.getSideBar(model);
+		
+		model.addObject("key", key);
+		model.addObject("name", name);
 		
 		model.addObject("views","productList");
 		model.addObject("title",title);
-		model.addObject("comiclist", comics);
+		model.addObject("comics_pagi", comics);
+		
+		model.addObject("comiclist", comics_pagi);
+		model.addObject("totalpage", totalPage);
+		model.addObject("pageselected", page);
 		return model;
 	}	
 	
@@ -87,30 +105,5 @@ public class ProductController {
 		
 		return model;
 	}	
-	
-	@RequestMapping(value = "/test", method = RequestMethod.GET)
-	public ModelAndView getTest(){
-		ModelAndView model = new ModelAndView();
-		
-		model.setViewName("../index");
-		
-		model.addObject("totalpage",getTotalPage());
-		
-		return model;
-	}	
-	
-	public int getTotalPage(){
-		List<comic> comics = comicService.getListComic("category", 1);
-		
-		int totalPage = 0;
-		
-		int totalComic = comics.size();
-		totalPage = totalComic / 10;
-		
-		if(totalComic % 10 != 0){
-			totalPage++;
-		}
-						
-		return totalPage;
-	}
+
 }

@@ -4,6 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
+<div class="col-md-9 ">
 	<span style="color:orange; font-weight:bold; font-size:20px; float: left" >${title }</span>
 	<form method="get" action="#">	
 		<button type="submit" class="btn btn-info" style="float: right; margin-left: 10px;">Sắp xếp</button>
@@ -54,5 +55,44 @@
 					</div>
 				</div>
 			</div>	
-		</c:forEach>	
+		</c:forEach>			
 	</div>
+	
+	<ul class="pagination">
+		<c:if test="${totalpage != 1 }">
+			<c:choose>
+				<c:when test="${1 == pageselected }">
+					<li class="disabled"><span> << </span></li>
+					<li class="disabled"><span> < </span></li>					
+				</c:when>
+				<c:otherwise>
+					<li> <a rel="next" href="product?q=${key }&un=${name}&p=1"> << </a></li>
+					<li> <a rel="next" href="product?q=${key }&un=${name}&p=${pageselected - 1}"> < </a></li>					
+				</c:otherwise>
+			</c:choose>
+			
+			<c:forEach var = "i" begin="1" end="${totalpage }">
+				<c:choose>
+					<c:when test="${i == pageselected }">
+						<li class="active"><span>${i }</span></li>
+					</c:when>
+					<c:otherwise>
+						<li><a href="product?q=${key }&un=${name}&p=${i}">${i }</a></li>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+			
+			<c:choose>
+				<c:when test="${totalpage == pageselected }">
+					<li class="disabled"><span> > </span></li>
+					<li class="disabled"><span> >> </span></li>
+				</c:when>
+				<c:otherwise>
+					<li><a href="product?q=${key }&un=${name}&p=${pageselected + 1}" rel="next"> > </a></li>
+					<li><a href="product?q=${key }&un=${name}&p=${totalpage}" rel="next"> >> </a></li>
+				</c:otherwise>
+			</c:choose>
+			
+		</c:if>
+	</ul>
+</div>

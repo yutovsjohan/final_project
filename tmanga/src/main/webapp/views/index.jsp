@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 	
-
+<div class="col-md-9 ">
 	<!-- silder -->
 	<div id="myCarousel" class="carousel slide" data-ride="carousel">
 		<!-- Indicators -->
@@ -89,6 +89,7 @@
 										</c:otherwise>
 									</c:choose>						
 									
+									<c:if test="${a }">
 									<c:choose>
 										<c:when test="${sessionScope.account.email != null}">
 											<a href="#" class="btn btn-warning" title="Hủy yêu thích"><i class="fa fa-heart" aria-hidden="true" ></i></a>
@@ -97,7 +98,8 @@
 											<a href="#" class="btn btn-warning" title="Thêm vào danh sách yêu thích"><i class="fa fa-heart-o" aria-hidden="true" ></i></a>
 										</c:otherwise>
 									</c:choose>
-								
+									</c:if>
+									
 									<a href="detail?c=${ts.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a>
 	
 								</div>
@@ -197,3 +199,4 @@
 			</c:forEach>
 		</div>
 	<!--/Truyện tranh khác-->
+</div>

@@ -20,6 +20,7 @@
 <link href="<c:url value="/resources/css/responsive.css" />" rel="stylesheet">
 <link href="<c:url value="/resources/css/main.css" />" rel="stylesheet">
 <link href="<c:url value="/resources/css/style.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/cart.css" />" rel="stylesheet">
 
 <link href="<c:url value="/resources/css/register.css" />" rel="stylesheet">
 
@@ -83,7 +84,15 @@
 								</c:otherwise>
 							</c:choose>
 							
-							<li><a href="#" id="gio-hang"><i class="fa fa-shopping-cart"></i>Giỏ hàng trống</a></li>
+							<c:choose>
+								<c:when test="${sessionScope.quantity != null}">
+									<li><a href="cart" id="gio-hang"><i class="fa fa-shopping-cart"></i>Giỏ hàng (có ${sessionScope.quantity } sản phẩm)</a></li>
+								</c:when>
+								<c:otherwise>
+									<li><a href="cart" id="gio-hang"><i class="fa fa-shopping-cart"></i>Giỏ hàng trống</a></li>
+								</c:otherwise>
+							</c:choose>
+							
 						</ul>
 					</div>
 				</div>
@@ -146,14 +155,14 @@
 <!-- content -->
 <section>
 	<div class="container">
-		<div class="row">
-			<div class="col-md-3">
+		<div class="row">			
+			<c:if test="${sb != '' }">
 				<c:import url="${sb }.jsp" />
-			</div>
+			</c:if>			
 			
-			<div class="col-md-9 ">
+			<c:if test="${views != ''}">
 				<c:import url="${views }.jsp" />
-			</div>
+			</c:if>
 			
 		</div>
 	</div>
@@ -271,6 +280,7 @@
     <script src="<c:url value="/resources/js/jquery.prettyPhoto.js" />" ></script>
     <script src="<c:url value="/resources/js/main.js" />" ></script>
     <script src="<c:url value="/resources/js/jquery.elevatezoom.js" />" ></script>
+    <script src="<c:url value="/resources/js/cart.js" />" ></script>
     
     <script type="text/javascript">
 		$(document).ready(function(){
@@ -298,5 +308,7 @@
 	        zoomWindowFadeOut: 750                
 	    });
 	</script>
+	
+	
 </body>
 </html>

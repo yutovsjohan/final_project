@@ -3,6 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!-- menu -->
+<div class="col-md-3">
 	<div class="panel panel-primary">
 		<div class="panel-heading">Danh mục sản phẩm</div>
 		<div class="panel-body">
@@ -84,4 +85,5 @@
 			</c:forEach>
 		</div>
 	</div>		
+</div>
 <!-- /menu -->

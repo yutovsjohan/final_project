@@ -23,7 +23,25 @@
 
 </head>
 <body>
-	${totalpage }	
+	<div id="text">
+		<c:forEach var="cm" items="${comic }">
+			<p>${cm.name }</p>
+		</c:forEach>
+	</div>
+	
+	<div class="pagination-container">
+		<nav>
+			<ul class="pagination">
+				<li class="disabled"><span><</span></li>
+				<li class="active"><span>1</span></li>
+				<li><a href="http://localhost:1207/QLbansach/public/danh-muc/pokemon-dac-biet?sort=1&amp;page=2">2</a></li>
+				<li><a href="http://localhost:1207/QLbansach/public/danh-muc/pokemon-dac-biet?sort=1&amp;page=3">3</a></li>
+				<li><a href="http://localhost:1207/QLbansach/public/danh-muc/pokemon-dac-biet?sort=1&amp;page=4">4</a></li>
+				<li><a href="http://localhost:1207/QLbansach/public/danh-muc/pokemon-dac-biet?sort=1&amp;page=5">5</a></li>
+				<li><a href="http://localhost:1207/QLbansach/public/danh-muc/pokemon-dac-biet?sort=1&amp;page=2" rel="next">></a></li>
+			</ul>
+		</nav>
+	</div>	
 	<script src="<c:url value="/resources/js/jquery.js" />" ></script>
 	<script src="<c:url value="/resources/js/bootstrap.min.js" />" ></script>
 	<script src="<c:url value="/resources/js/jquery.scrollUp.min.js" />" ></script>
@@ -32,9 +50,11 @@
     <script src="<c:url value="/resources/js/main.js" />" ></script>
 	
 	<script type="text/javascript">
-		$(document).ready(function(){
-			
-		}
+		$(document).ready(function(){			
+			for(var i = 0 ; i<10;i++){
+			    $("pagination").append('<li><a href="#">'+(i+1)+'</a></li> ');
+			}			
+		})
 	</script>
 </body>
 </html>

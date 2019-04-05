@@ -64,4 +64,12 @@ public class GetModel {
 		model.addObject("views","login");
 		model.addObject("title","Đăng nhập");		
 	}
+	
+	public void getCart(ModelAndView model){
+				
+		model.setViewName("layout");
+		model.addObject("sb","");
+		model.addObject("views","cart");
+		model.addObject("title","Giỏ hàng");
+	}
 }
