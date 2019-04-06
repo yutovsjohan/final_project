@@ -73,62 +73,30 @@
 					<li class="disabled"><span> < </span></li>					
 				</c:when>
 				<c:otherwise>
-					<c:choose>
-						<c:when test="${key == 'search' }">
-							<li> <a rel="next" href="search?k=${k }&p=1"> << </a></li>
-							<li> <a rel="next" href="search?k=${k }&p=${pageselected - 1}"> < </a></li>
-						</c:when>
-						<c:otherwise>
-							<li> <a rel="next" href="product?q=${key }&un=${name}&p=1"> << </a></li>
-							<li> <a rel="next" href="product?q=${key }&un=${name}&p=${pageselected - 1}"> < </a></li>
-						</c:otherwise>
-					</c:choose>					
+					<li> <a rel="next" href="${href }&p=1"> << </a></li>
+					<li> <a rel="next" href="${href }&p=${pageselected - 1}"> < </a></li>									
 				</c:otherwise>
 			</c:choose>
-			
-			<c:choose>
-				<c:when test="${key == 'search' }">
-					<c:forEach var = "i" begin="1" end="${totalpage }">
-						<c:choose>
-							<c:when test="${i == pageselected }">
-								<li class="active"><span>${i }</span></li>
-							</c:when>
-							<c:otherwise>
-								<li><a href="search?k=${k }&p=${i}">${i }</a></li>
-							</c:otherwise>
-						</c:choose>
-					</c:forEach>
-				</c:when>
-				<c:otherwise>
-					<c:forEach var = "i" begin="1" end="${totalpage }">
-						<c:choose>
-							<c:when test="${i == pageselected }">
-								<li class="active"><span>${i }</span></li>
-							</c:when>
-							<c:otherwise>
-								<li><a href="product?q=${key }&un=${name}&p=${i}">${i }</a></li>
-							</c:otherwise>
-						</c:choose>
-					</c:forEach>
-				</c:otherwise>
-			</c:choose>
-			
+
+			<c:forEach var = "i" begin="1" end="${totalpage }">
+				<c:choose>
+					<c:when test="${i == pageselected }">
+						<li class="active"><span>${i }</span></li>
+					</c:when>
+					<c:otherwise>
+						<li><a href="${href }&p=${i}">${i }</a></li>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+				
 			<c:choose>
 				<c:when test="${totalpage == pageselected }">
 					<li class="disabled"><span> > </span></li>
 					<li class="disabled"><span> >> </span></li>
 				</c:when>
 				<c:otherwise>
-					<c:choose>
-						<c:when test="${key == 'search' }">
-							<li><a href="search?k=${k }&p=${pageselected + 1}" rel="next"> > </a></li>
-							<li><a href="search?k=${k }&p=${totalpage}" rel="next"> >> </a></li>
-						</c:when>
-						<c:otherwise>
-							<li><a href="product?q=${key }&un=${name}&p=${pageselected + 1}" rel="next"> > </a></li>
-							<li><a href="product?q=${key }&un=${name}&p=${totalpage}" rel="next"> >> </a></li>
-						</c:otherwise>
-					</c:choose>
+					<li><a href="${href }&p=${pageselected + 1}" rel="next"> > </a></li>
+					<li><a href="${href }&p=${totalpage}" rel="next"> >> </a></li>
 				</c:otherwise>
 			</c:choose>
 			

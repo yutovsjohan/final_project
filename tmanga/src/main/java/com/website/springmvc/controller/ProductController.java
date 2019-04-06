@@ -72,8 +72,10 @@ public class ProductController {
 		
 		getModel.getSideBar(model);
 		
+		String href = "product?q=" + key + "&un=" + name;
+		
 		model.addObject("key", key);
-		model.addObject("name", name);
+		model.addObject("href", href);
 		
 		model.addObject("views","productList");
 		model.addObject("title",title);
@@ -129,13 +131,15 @@ public class ProductController {
 		model.addObject("views","productList");
 		model.addObject("title", "Tìm kiếm " + key);
 		
+		String href = "search?k=" + key;
 		model.addObject("k",key);
 		model.addObject("key","search");
+		model.addObject("href", href);
 		
 		model.addObject("comiclist", comics);
 		model.addObject("totalpage", totalPage);
-		model.addObject("totalcomic", totalComic);
 		model.addObject("pageselected", page);
+		model.addObject("totalcomic", totalComic);
 		return model;
 	}
 
