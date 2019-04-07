@@ -39,43 +39,98 @@ public class CartController {
 	@RequestMapping(value = "/addtocart", method = RequestMethod.GET)
 	public void getAddToCart(@RequestParam("id") int idComic, 
 							@RequestParam(name = "amount", defaultValue = "1") int amount,
+							@RequestParam(name = "action", defaultValue = "add") String action,
 							HttpSession session, HttpServletResponse response) {
 		String str = "";
-
-		comic comic = comicService.get(idComic);
-		cart cart = new cart();
-		int amountInCart = 0;
 		
-		if(session.getAttribute("cart") != null) {
-			ArrayList<item> items =  (ArrayList<item>) ((cart) session.getAttribute("cart")).getList();
-			HashMap<Integer, item> hashcart = new HashMap<>();
-			for (int i = 0; i < items.size(); i++) {
-				hashcart.put(items.get(i).getComic().getId(), items.get(i));
-			}
-			cart.setCart(hashcart);
-			amountInCart = cart.getItemForId(idComic).getAmount();
-		}
-				
-		if(amount <= 0) {
+		if(amount < 0) {
 			str = "Số lượng không thể âm hoặc bằng 0";
 		}
-		else if(comic.getAmount() == 0) {
-				str = "Truyện này tạm hết hàng";
-		}
-		else if( (amount + amountInCart) > comic.getAmount()) {
-			str = comic.getName() + " cần số lượng tối đa được phép mua là " + comic.getAmount();
-		}
-		else {						
-			for(int i = 1; i <= amount; i++) {
-				cart.add(idComic, comic);
-			}
+		else {
+			comic comic = comicService.get(idComic);
+			cart cart = new cart();
+			int amountInCart = 0;
+			boolean f = false;
 			
-			session.setAttribute("cart", cart);
-			str = "added";
-		}				
+			if(session.getAttribute("cart") != null) {
+				ArrayList<item> items =  (ArrayList<item>) ((cart) session.getAttribute("cart")).getList();
+				HashMap<Integer, item> hashcart = new HashMap<>();
+				for (int i = 0; i < items.size(); i++) {
+					hashcart.put(items.get(i).getComic().getId(), items.get(i));
+					if(items.get(i).getComic().getId() == idComic) {
+						f = true;
+					}
+				}
+				cart.setCart(hashcart);
+				if(f) {
+					amountInCart = cart.getItemForId(idComic).getAmount();
+				}
+			}					
+			
+			if(comic.getAmount() == 0) {
+				cart.delete(idComic);
+				str = "Truyện này tạm hết hàng";
+			}
+			else {	
+				if(action.equalsIgnoreCase("add")) {
+					if( amount + amountInCart > comic.getAmount()) {
+						str = comic.getName() + " cần số lượng tối đa được phép mua là " + comic.getAmount();
+					}
+					else if(amount != 0){
+						cart.add(idComic, comic, amount);
+						session.setAttribute("cart", cart);	
+						str = "added";
+					}
+				}
+				
+				else {
+					if(amount == 0) {
+						cart.delete(idComic);
+						str = "removed";
+					}
+					else if( amount > comic.getAmount() || amount < 0) {
+						str = "invalid";
+					}
+					else {
+						amount -= cart.getItemForId(idComic).getAmount();
+						cart.add(idComic, comic, amount);
+						str = "updated";
+					}
+					
+					if(cart.quantity() == 0) {
+						session.removeAttribute("cart");
+					}
+					else {
+						session.setAttribute("cart", cart);
+					}
+				}						
+			}				
+			try {
+				response.getWriter().print(str);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}	
+	
+	@RequestMapping(value = "/removeitem", method = RequestMethod.GET)
+	public void getRemoveItem(@RequestParam("id") int idComic, HttpSession session, HttpServletResponse response){
+		String str = "";
+		if(session.getAttribute("cart") != null) {
+			cart cart = (cart) session.getAttribute("cart");
+			cart.delete(idComic);
+			if(cart.quantity() == 0) {
+				session.removeAttribute("cart");
+			}
+			else {
+				session.setAttribute("cart", cart);
+			}
+			str = "removed";
+		}
 		try {
 			response.getWriter().print(str);
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

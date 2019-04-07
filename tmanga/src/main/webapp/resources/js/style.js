@@ -27,6 +27,7 @@ $(document).ready(function(){
     $('.them-vao-gio-hang').click(function(){		
 		var itemcount = parseInt($("#itemcount").text());
 		var route = "addtocart";
+		var action = 'add';
 		
 		var amount = 1;
 		var id=$(this).attr('dataId');
@@ -42,7 +43,8 @@ $(document).ready(function(){
 			type : 'GET',
 			data : {
 				id : id,
-				amount : amount
+				amount : amount,
+				action : action
 			},
 			success: function(data){
 				//console.log(data); 
@@ -73,6 +75,7 @@ $(document).ready(function(){
 		var amount = parseInt($('#sl').val());
 		var id = parseInt($('#idComic').val());
 		var name = $('#nameComic').text();
+		var action = 'add';
 		
 		if(amount == 0){
 			return;
@@ -89,7 +92,8 @@ $(document).ready(function(){
 			type : 'GET',
 			data : {
 				id : id,
-				amount : amount
+				amount : amount,
+				action : action
 			},
 			success: function(data){
 				//console.log(data); 

@@ -26,13 +26,13 @@ public class cart {
 		this.cart = cart;
 	}
 	
-	public void add(int id, comic comic) {
+	public void add(int id, comic comic, int amount) {
 		if(cart.containsKey(id)) {
 			item a = cart.get(id);
-			a.setAmount(a.getAmount() + 1);
+			a.setAmount(a.getAmount() + amount);
 		}
 		else {
-			item a = new item(comic,1); 
+			item a = new item(comic, amount); 
 			cart.put(id, a);
 		}
 	}
