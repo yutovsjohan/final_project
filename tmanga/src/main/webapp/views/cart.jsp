@@ -20,7 +20,7 @@
 			    <label class="product-line-price">Total</label>
 			  </div>
 			  
-			 <c:forEach var="item" items="${sessionScope.cart }">
+			 <c:forEach var="item" items="${sessionScope.cart.getList() }">
 				  <div class="product">
 				    <div class="product-image">
 				      <a href="detail?c=${item.comic.unsignedName }" title="${item.comic.name }">
@@ -53,7 +53,7 @@
 			  <div class="totals">
 			    <div class="totals-item">
 			      <label>Subtotal</label>
-			      <div class="totals-value" id="cart-subtotal"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${sessionScope.total }" /> <u>đ</u></div>
+			      <div class="totals-value" id="cart-subtotal"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${sessionScope.cart.total() }" /> <u>đ</u></div>
 			    </div>
 			    <div class="totals-item">
 			      <label>Tax (5%)</label>

@@ -68,4 +68,14 @@ public class cart {
 		}
 		return total;
 	}
+	
+	public item getItemForId(int id) {
+		item item = new item();
+		for (item i : cart.values()) {
+			if(i.comic.getId() == id) {
+				item = i;
+			}
+		}
+		return item;
+	}
 }

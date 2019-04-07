@@ -85,11 +85,13 @@
 							</c:choose>
 							
 							<c:choose>
-								<c:when test="${sessionScope.quantity != null}">
-									<li><a href="cart" id="gio-hang"><i class="fa fa-shopping-cart"></i>Giỏ hàng (có ${sessionScope.quantity } sản phẩm)</a></li>
+								<c:when test="${sessionScope.cart != null}">
+									<li><a href="cart" id="gio-hang"><i class="fa fa-shopping-cart"></i>Giỏ hàng (có ${sessionScope.cart.quantity() } sản phẩm)</a></li>
+									<span id="itemcount" hidden> ${sessionScope.cart.quantity() }</span>
 								</c:when>
 								<c:otherwise>
 									<li><a href="cart" id="gio-hang"><i class="fa fa-shopping-cart"></i>Giỏ hàng trống</a></li>
+									<span id="itemcount" hidden>0</span>
 								</c:otherwise>
 							</c:choose>
 							
@@ -116,7 +118,7 @@
 			<div id="navbar" class="navbar-collapse collapse">
 				<div class="col-sm-7 col-lg-7 col-xs-12 col-md-7">
 				<ul class="nav navbar-nav">
-					<li><a href="index"  >Trang chủ</a></li>							
+					<li><a href="index" <c:if test="${views == 'index' }">class="actived"</c:if> >Trang chủ</a></li>							
 					<li><a href="#" >Tin tức</a></li>
 					<li><a href="#" >Giới thiệu</a></li>
 					<li><a href="#" >Liên hệ</a></li>
@@ -281,34 +283,7 @@
     <script src="<c:url value="/resources/js/main.js" />" ></script>
     <script src="<c:url value="/resources/js/jquery.elevatezoom.js" />" ></script>
     <script src="<c:url value="/resources/js/cart.js" />" ></script>
-    
-    <script type="text/javascript">
-		$(document).ready(function(){
-			$('.forget-password').click(function(){
-				$('.form-forget-password').removeAttr('hidden');
-			})
-		
-			// $('.change-password').click(function(){
-			// 	$('.form-change-password').removeAttr('hidden');
-			// })
-		
-			$('.guimail').click(function(){
-		      $('.guimail').attr('hidden','');
-		    });
-		})
-	</script>
-	
-	
-	<script>
-	    $("#hinh").elevateZoom({
-	        zoomType: "inner",
-	        scrollZoom : true,
-	        cursor: "crosshair",
-	        zoomWindowFadeIn: 500,
-	        zoomWindowFadeOut: 750                
-	    });
-	</script>
-	
-	
+    <script src="<c:url value="/resources/js/style.js" />" ></script>
+
 </body>
 </html>

@@ -28,9 +28,9 @@
 		</div>
 		
 		<div class="col-md-7 col-sm-6">
-			<form method="POST" action="addComic">
-				<input type="text" value="${comic.id }" name="idComic" hidden />
-				<h2 style="color: red">${comic.name }</h2>
+			
+				<input type="text" value="${comic.id }" name="idComic" id="idComic" hidden />
+				<h2 style="color: red" id="nameComic">${comic.name }</h2>
 				<br>
 				<p>Tình trạng: 				
 					<c:choose>
@@ -64,7 +64,7 @@
 					</tr>
 					<tr>
 						<td>Nhà xuất bản</td>
-						<td><a href="product?q=publish-company&un=${publishcompany.unsignedName }">${publishcompany.name }</a></td>
+						<td><a href="product?q=publishing-company&un=${publishcompany.unsignedName }">${publishcompany.name }</a></td>
 					</tr>
 					<tr>
 						<td>Ngày phát hành</td>
@@ -93,14 +93,8 @@
 	               
 				<div>                 
 					<span style="float: left; margin-right: 50px; padding-top: 7px;">Số lượng</span>
-					<div class="input-group" style="width: 105px;">
-						<span class="input-group-btn">
-							<button class="btn btn-default" type="button" id="cong">+</button>
-						</span>
-						<input type="text" class="form-control" name="sl" id="sl" value=1 min=1 max=10 maxlength=2 size=2 readonly> 
-						<span class="input-group-btn">
-							<button class="btn btn-default" type="button" id="tru">-</button>
-						</span>
+					<div class="input-group" style="width: 100px;">
+						<input type="number" class="form-control" name="sl" id="sl" value=1 min=1  >
 					</div>
 				</div>
 				
@@ -111,12 +105,12 @@
 							<span style="font-weight:bold; color:red; font-size:25px" >TẠM HẾT HÀNG</span>
 						</c:when>
 						<c:otherwise>
-							<button type="submit" class="btn btn-lg btn-info" title="Thêm vào giỏ hàng" style="background-color: #337ab7; border-color: #337ab7"><i class="fa fa-shopping-cart" aria-hidden="true"> Thêm vào giỏ hàng</i></button>	
+							<button type="submit" class="btn btn-lg btn-info addtocart" title="Thêm vào giỏ hàng" style="background-color: #337ab7; border-color: #337ab7"><i class="fa fa-shopping-cart" aria-hidden="true"> Thêm vào giỏ hàng</i></button>	
 						</c:otherwise>
 					</c:choose>
 					
 	            </div>
-	           </form>
+	           
 		</div> 
 	
 	</div>
@@ -164,7 +158,7 @@
 								<a href="#" class="btn btn-danger" title="Báo tôi khi có hàng" style="background-color: crimson; border-color: crimson"><i class="fa fa-bullhorn" aria-hidden="true" ></i></a>
 							</c:when>
 							<c:otherwise>
-								<button dataId="" dataName="" class="btn btn-info them-vao-gio-hang" title="Thêm vào giỏ hàng" style="background-color: #337ab7; border-color: #337ab7"><i class="fa fa-shopping-cart" aria-hidden="true"></i></button>
+								<button dataId="${cm.id }" dataName="${cm.name }" class="btn btn-info them-vao-gio-hang" title="Thêm vào giỏ hàng" style="background-color: #337ab7; border-color: #337ab7"><i class="fa fa-shopping-cart" aria-hidden="true"></i></button>
 							</c:otherwise>
 						</c:choose>
 						<a href="detail?c=${cm.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a></div>

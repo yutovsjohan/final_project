@@ -1,8 +1,10 @@
 package com.website.springmvc.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,38 +34,57 @@ public class CartController {
 		ModelAndView model = new ModelAndView();		
 		getModel.getCart(model);		
 		return model;	
-	}
+	}	
 	
-	@RequestMapping(value = "/addComic", method = RequestMethod.POST)
-	public ModelAndView getAddComic(@RequestParam("idComic") int idComic, 
-									@RequestParam("sl") int amount, HttpSession session){
-		ModelAndView model = new ModelAndView();
-		
+	@RequestMapping(value = "/addtocart", method = RequestMethod.GET)
+	public void getAddToCart(@RequestParam("id") int idComic, 
+							@RequestParam(name = "amount", defaultValue = "1") int amount,
+							HttpSession session, HttpServletResponse response) {
+		String str = "";
+
+		comic comic = comicService.get(idComic);
 		cart cart = new cart();
+		int amountInCart = 0;
 		
 		if(session.getAttribute("cart") != null) {
-			ArrayList<item> items =  (ArrayList<item>) session.getAttribute("cart");
+			ArrayList<item> items =  (ArrayList<item>) ((cart) session.getAttribute("cart")).getList();
 			HashMap<Integer, item> hashcart = new HashMap<>();
 			for (int i = 0; i < items.size(); i++) {
 				hashcart.put(items.get(i).getComic().getId(), items.get(i));
 			}
 			cart.setCart(hashcart);
+			amountInCart = cart.getItemForId(idComic).getAmount();
 		}
-		
-		comic comic = comicService.get(idComic);
-		
-		if(comic.getAmount() == 0) {
+				
+		if(amount <= 0) {
+			str = "Số lượng không thể âm hoặc bằng 0";
+		}
+		else if(comic.getAmount() == 0) {
+				str = "Truyện này tạm hết hàng";
+		}
+		else if( (amount + amountInCart) > comic.getAmount()) {
+			str = comic.getName() + " cần số lượng tối đa được phép mua là " + comic.getAmount();
+		}
+		else {						
+			for(int i = 1; i <= amount; i++) {
+				cart.add(idComic, comic);
+			}
 			
-		}
-		else {
-			cart.add(idComic, comic);
-			session.setAttribute("cart", cart.getList());
-			session.setAttribute("quantity", cart.quantity());
-			session.setAttribute("total",cart.total());
+			session.setAttribute("cart", cart);
+			str = "added";
 		}				
-		
-		getModel.getCart(model);
-		
-		return model;
+		try {
+			response.getWriter().print(str);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping(value = "/deletecart", method = RequestMethod.GET)
+	public ModelAndView getDeteleCart(HttpSession session){
+		ModelAndView model = new ModelAndView();
+		session.removeAttribute("cart");
+		getModel.getCart(model);		
+		return model;	
 	}
 }
