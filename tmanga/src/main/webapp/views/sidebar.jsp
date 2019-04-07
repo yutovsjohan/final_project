@@ -12,7 +12,7 @@
 				<c:set var = "number" scope = "session" value = "${number + 1 }" />
 				<c:if test="${category.status == 1 }">
 					<c:if test="${number != 1}">
-						<hr>
+						<hr style="border: 1px solid #eee;">
 					</c:if>						
 					<a href="product?q=category&un=${category.unsignedName }">
 						<c:choose>
@@ -40,7 +40,7 @@
 				<c:set var = "number" scope = "session" value = "${number + 1 }" />
 				<c:if test="${author.status == 1 }">
 					<c:if test="${number != 1}">
-						<hr>
+						<hr style="border: 1px solid #eee;">
 					</c:if>	
 					<a href="product?q=author&un=${author.unsignedName }">
 						<c:choose>
@@ -67,7 +67,7 @@
 				<c:set var = "number" scope = "session" value = "${number + 1 }" />
 				<c:if test="${pc.status == 1 }">
 					<c:if test="${number != 1}">
-						<hr>
+						<hr style="border: 1px solid #eee;">
 					</c:if>	
 					<a href="product?q=publishing-company&un=${pc.unsignedName }">
 						<c:choose>
