@@ -69,11 +69,55 @@
 				 	<button class="checkout">Cập nhật lại</button>
 				 	<a href="deletecart"><button class="btn btn-danger" >Xóa giỏ hàng</button></a>	
 				</div>
+				<br><br>
+				<c:choose>
+					<c:when test="${sessionScope.account != null}">					
+						<div class="panel panel-primary">
+				            <div class="panel-heading">
+				                <h3 class="panel-title">Thông tin khách hàng</h3>
+				            </div>
+				            <div class="panel-body">
+				                <table class="table table-hover">                    
+				                    <tr>
+				                        <th>Họ tên</th>
+				                        <td><input type="text" class="form-control" name="hoten" value="${sessionScope.account.name }" readonly placeholder=""></td>
+				                    </tr>
+				                    <tr>
+				                        <th>Email</th>
+				                        <td><input type="email" class="form-control" name="email" value="${sessionScope.account.email }" readonly placeholder=""></td>
+				                    </tr>
+				                    <tr>
+				                        <th>Điện thoại</th>
+				                        <td><input type="text" class="form-control" name="dienthoai" value="${sessionScope.account.phone }" readonly placeholder=""></td>
+				                    </tr>
+				                    <tr>
+				                        <th>Địa chỉ</th>
+				                        <td><input type="text" class="form-control" name="diachi" value="${sessionScope.account.address }" readonly placeholder=""></p></td>
+				                    </tr>
+				                    <tr>
+				                        <th>Lời nhắn</th>
+				                        <td><textarea rows="4" cols="50" class="form-control" name="ghichu" placeholder="Nhập lời nhắn"></textarea></td>
+				                    </tr>	
+				                    <tr>
+				                    	<th></th>
+				                    	<td><a href="${pageContext.request.contextPath}/controller/user/information"><button type="button" class="btn btn-info">Chỉnh sửa thông tin cá nhân</button></a></td>
+				                    </tr>			                    
+				                </table>
+				            </div>
+				        </div>
+				        
+			            <a href="#"><button type="button" class="btn btn-success" style="float:right" >Chuẩn bị đặt hàng</button></a>
+			            
+					</c:when>
+					<c:otherwise>
+						<p class="alert alert-danger">Bạn cần phải <a href="login">đăng nhập</a> để đặt hàng hoặc <a href="signup">đăng ký</a> tài khoản</p> 
+					</c:otherwise>
+				</c:choose>
 			</c:when>
 			<c:otherwise>
-				<p>Giỏ hàng trống. <a href="index"> Quay lại để mua </a>.</p>
+				<p class="glyphicon glyphicon-ok"> <span style="font-family:'Roboto', sans-serif">Giỏ hàng của bạn hiện chưa có sản phẩm nào, hãy <a href="index">quay lại để mua hàng.</a> </span> </p>
 			</c:otherwise>
-		</c:choose>
+		</c:choose>		
 	</div>
 </div>
 

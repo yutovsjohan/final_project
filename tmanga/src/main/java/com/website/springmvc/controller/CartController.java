@@ -136,10 +136,8 @@ public class CartController {
 	}
 	
 	@RequestMapping(value = "/deletecart", method = RequestMethod.GET)
-	public ModelAndView getDeteleCart(HttpSession session){
-		ModelAndView model = new ModelAndView();
+	public String getDeteleCart(HttpSession session){
 		session.removeAttribute("cart");
-		getModel.getCart(model);		
-		return model;	
+		return "redirect:/controller/cart";
 	}
 }

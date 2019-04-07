@@ -13,6 +13,15 @@ $(document).ready(function(){
       $('.guimail').attr('hidden','');
     });
 	
+	$("#changePassword").change(function(){
+      if($(this).is(":checked")){
+        $(".password").removeAttr('disabled');
+      }
+      else{
+        $(".password").attr('disabled',''); 
+      }
+    });
+	
 //page view product detail
 
 	$("#hinh").elevateZoom({

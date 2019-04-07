@@ -17,10 +17,10 @@
 					<a href="product?q=category&un=${category.unsignedName }">
 						<c:choose>
 							<c:when test="${title == category.name}">
-								<div id="menu_doc" dataHref="#" class="actived">		
+								<div id="menu_doc" class="actived">		
 							</c:when>
 							<c:otherwise>
-								<div id="menu_doc" dataHref="#">	
+								<div id="menu_doc">	
 							</c:otherwise>
 						</c:choose>
 						
@@ -45,10 +45,10 @@
 					<a href="product?q=author&un=${author.unsignedName }">
 						<c:choose>
 							<c:when test="${title == author.name}">
-								<div id="menu_doc" dataHref="#" class="actived">		
+								<div id="menu_doc" class="actived">		
 							</c:when>
 							<c:otherwise>
-								<div id="menu_doc" dataHref="#">	
+								<div id="menu_doc">	
 							</c:otherwise>
 						</c:choose>
 							${author.name }	
@@ -72,10 +72,10 @@
 					<a href="product?q=publishing-company&un=${pc.unsignedName }">
 						<c:choose>
 							<c:when test="${title == pc.name}">
-								<div id="menu_doc" dataHref="#" class="actived">		
+								<div id="menu_doc" class="actived">		
 							</c:when>
 							<c:otherwise>
-								<div id="menu_doc" dataHref="#">	
+								<div id="menu_doc">	
 							</c:otherwise>
 						</c:choose>
 							${pc.name }

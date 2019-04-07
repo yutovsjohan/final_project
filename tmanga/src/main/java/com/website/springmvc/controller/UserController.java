@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.website.springmvc.Services.BillService;
+import com.website.springmvc.Services.BilldetailService;
 import com.website.springmvc.Services.UsersService;
 import com.website.springmvc.entities.role;
 import com.website.springmvc.entities.users;
@@ -23,6 +25,12 @@ import com.website.springmvc.libs.TripleDES;
 public class UserController {
 	@Autowired
 	private UsersService usersService;
+	
+	@Autowired
+	private BilldetailService billdetailService; 
+	
+	@Autowired
+	private BillService billService; 
 	
 	@Autowired
 	GetModel getModel;
@@ -91,7 +99,9 @@ public class UserController {
 		session.removeAttribute("account");
 		return "redirect:index";
 	}
-		
+	
+	
+
 	private boolean checkEmail(String email) {
 		List<users> listusers = usersService.getAll();
 		users u = new users();

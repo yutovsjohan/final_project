@@ -36,12 +36,14 @@ $('.product-quantity input').change( function() {
 				
 				$("#itemcount").text(itemcount);				
 				
-				var str = "<i class=\"fa fa-shopping-cart\"></i>Giỏ hàng (có " + itemcount + " sản phẩm)";
-				$('#gio-hang').html(str);
-				
 				if(itemcount == 0){
 					$(".shopping-cart").fadeOut(fadeTime);
 					$("#mycart").html('<p>Giỏ hàng trống. <a href="index"> Quay lại để mua </a>.</p>');
+					$('#gio-hang').html('<i class=\"fa fa-shopping-cart\"></i>Giỏ hàng trổng');
+				}
+				else{
+					var str = "<i class=\"fa fa-shopping-cart\"></i>Giỏ hàng (có " + itemcount + " sản phẩm)";
+					$('#gio-hang').html(str);
 				}
 			}			
 		}

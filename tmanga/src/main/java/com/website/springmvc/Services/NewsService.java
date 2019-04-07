@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.website.springmvc.DAO.DAO;
-import com.website.springmvc.DAO.NewsDAO;
 import com.website.springmvc.entities.news;
 
 @Transactional

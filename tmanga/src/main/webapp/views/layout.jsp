@@ -67,7 +67,7 @@
 			<div class="row">
 				<div class="col-sm-4">
 					<div class="logo pull-left">
-						<a href="index"><img src="<c:url value="/images/logo.png" />" style="width:40px; height:40px;" alt="" /><span style="font-size:24px; font-weight:bold;"> T-Manga</span></a>
+						<a href="${pageContext.request.contextPath}/controller/index"><img src="<c:url value="/images/logo.png" />" style="width:40px; height:40px;" alt="" /><span style="font-size:24px; font-weight:bold;"> T-Manga</span></a>
 					</div>						
 				</div>
 				<div class="col-sm-8">
@@ -75,22 +75,22 @@
 						<ul class="nav navbar-nav">
 							<c:choose>
 								<c:when test="${sessionScope.account.email != null}">
-									<li><a href="#"><i class="fa fa-user" ></i> Xin chào ${sessionScope.account.name }</a></li>
-									<li><a href="logout"><i class="fa fa-sign-out" ></i> Đăng xuất</a></li>
+									<li><a href="${pageContext.request.contextPath}/controller/user/home"><i class="fa fa-user" ></i> Xin chào ${sessionScope.account.name }</a></li>
+									<li><a href="${pageContext.request.contextPath}/controller/logout"><i class="fa fa-sign-out" ></i> Đăng xuất</a></li>
 								</c:when>
 								<c:otherwise>
-									<li><a href="signup"><i class="fa fa-user" ></i> Đăng ký</a></li>
-									<li><a href="login"><i class="fa fa-lock" ></i> Đăng nhập</a></li>
+									<li><a href="${pageContext.request.contextPath}/controller/signup"><i class="fa fa-user" ></i> Đăng ký</a></li>
+									<li><a href="${pageContext.request.contextPath}/controller/login"><i class="fa fa-lock" ></i> Đăng nhập</a></li>
 								</c:otherwise>
 							</c:choose>
 							
 							<c:choose>
 								<c:when test="${sessionScope.cart != null}">
-									<li><a href="cart" id="gio-hang"><i class="fa fa-shopping-cart"></i>Giỏ hàng (có ${sessionScope.cart.quantity() } sản phẩm)</a></li>
+									<li><a href="${pageContext.request.contextPath}/controller/cart" id="gio-hang"><i class="fa fa-shopping-cart"></i>Giỏ hàng (có ${sessionScope.cart.quantity() } sản phẩm)</a></li>
 									<span id="itemcount" hidden> ${sessionScope.cart.quantity() }</span>
 								</c:when>
 								<c:otherwise>
-									<li><a href="cart" id="gio-hang"><i class="fa fa-shopping-cart"></i>Giỏ hàng trống</a></li>
+									<li><a href="${pageContext.request.contextPath}/controller/cart" id="gio-hang"><i class="fa fa-shopping-cart"></i>Giỏ hàng trống</a></li>
 									<span id="itemcount" hidden>0</span>
 								</c:otherwise>
 							</c:choose>
@@ -118,26 +118,26 @@
 			<div id="navbar" class="navbar-collapse collapse">
 				<div class="col-sm-7 col-lg-7 col-xs-12 col-md-7">
 				<ul class="nav navbar-nav">
-					<li><a href="index" <c:if test="${views == 'index' }">class="actived"</c:if> >Trang chủ</a></li>							
-					<li><a href="#" >Tin tức</a></li>
-					<li><a href="#" >Giới thiệu</a></li>
-					<li><a href="#" >Liên hệ</a></li>
+					<li><a href="${pageContext.request.contextPath}/controller/index" <c:if test="${views == 'index' }">class="actived"</c:if> >Trang chủ</a></li>							
+					<li><a href="${pageContext.request.contextPath}/controller/#" >Tin tức</a></li>
+					<li><a href="${pageContext.request.contextPath}/controller/#" >Giới thiệu</a></li>
+					<li><a href="${pageContext.request.contextPath}/controller/#" >Liên hệ</a></li>
 					
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hỗ trợ khách hàng <span class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="#" >Theo dõi đơn hàng</a></li>
-							<li><a href="#">Hướng dẫn đặt hàng</a></li>
-							<li><a href="#">Phương thức vận chuyển</a></li>
-                               <li><a href="#">Phương thức thanh toán</a></li>
-                               <li><a href="#">Chính sách đổi trả</a></li>
+							<li><a href="${pageContext.request.contextPath}/controller/#" >Theo dõi đơn hàng</a></li>
+							<li><a href="${pageContext.request.contextPath}/controller/#">Hướng dẫn đặt hàng</a></li>
+							<li><a href="${pageContext.request.contextPath}/controller/#">Phương thức vận chuyển</a></li>
+                               <li><a href="${pageContext.request.contextPath}/controller/#">Phương thức thanh toán</a></li>
+                               <li><a href="${pageContext.request.contextPath}/controller/#">Chính sách đổi trả</a></li>
 						</ul>
 					</li>
 				</ul>
 				</div>
 				<div class="col-sm-5 col-lg-5 col-xs-12 col-md-5">
 				<ul class="nav navbar-nav navbar-right">
-					<form class="navbar-form" role="search" method="get" action="search">
+					<form class="navbar-form" role="search" method="get" action="${pageContext.request.contextPath}/controller/search">
 						<div class="input-group">
 							<input type="text" class="form-control" placeholder="Tìm truyện" name="k">
 							<div class="input-group-btn">

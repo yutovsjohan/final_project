@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.website.springmvc.Services.AuthorService;
+import com.website.springmvc.Services.BilldetailService;
 import com.website.springmvc.Services.CategoryService;
 import com.website.springmvc.Services.ComicService;
 import com.website.springmvc.Services.NewsService;
@@ -27,10 +28,11 @@ public class GetModel {
 	
 	@Autowired
 	private ComicService comicService;	
-	
+		
 	public void getSideBar(ModelAndView model) {
 		model.setViewName("layout");
 		model.addObject("sb","sidebar");
+		model.addObject("hreftemp","");
 		
 		model.addObject("categories", categoryService.getAll());
 		model.addObject("authors", authorService.getAll());
@@ -71,5 +73,39 @@ public class GetModel {
 		model.addObject("sb","");
 		model.addObject("views","cart");
 		model.addObject("title","Giỏ hàng");
+	}
+	
+	public void getSideBarUser(ModelAndView model) {
+		model.setViewName("layout");
+		model.addObject("sb","user/sidebarUser");
+		model.addObject("hreftemp","../");
+	}
+	
+	public void getUserHome(ModelAndView model) {
+		getSideBarUser(model);
+				
+		model.addObject("views","user/userHome");
+		model.addObject("title","Tài khoản của bạn");
+	}
+	
+	public void getUserInfo(ModelAndView model) {
+		getSideBarUser(model);
+				
+		model.addObject("views","user/userInfo");
+		model.addObject("title","Chỉnh sửa thông tin cá nhân");
+	}
+	
+	public void getFavoriteList(ModelAndView model) {
+		getSideBarUser(model);
+				
+		model.addObject("views","user/favoriteList");
+		model.addObject("title","Danh sách sản phẩm yêu thích");
+	}
+	
+	public void getOrderHistory(ModelAndView model) {
+		getSideBarUser(model);
+				
+		model.addObject("views","user/orderHistory");
+		model.addObject("title","Đơn hàng đã đặt");
 	}
 }
