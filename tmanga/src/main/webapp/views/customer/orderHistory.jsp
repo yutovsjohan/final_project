@@ -30,6 +30,7 @@
 				      </tr>
 				  </thead>
 				  <c:forEach var="bill" items="bills">
+				  	<c:if test="${bill.idUser == sessionScope.account.id }">
 					  <tbody>
 					      <tr>
 					         <td>${bill.id }</td>
@@ -47,6 +48,7 @@
 					         </td>
 					      </tr>
 					  </tbody>
+					</c:if>
 				  </c:forEach>
 				</table>
 			</c:otherwise>

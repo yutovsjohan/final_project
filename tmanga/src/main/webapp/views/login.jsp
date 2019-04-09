@@ -4,8 +4,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <div class="col-md-9 ">
-	<h2 style="color:blue">Đăng nhập</h2>
-	<hr style="border:2px solid blue">  
+	<!-- <h2 style="color:blue">Đăng nhập</h2>
+	<hr style="border:2px solid blue">   -->
 	
 	<c:if test="${mes != null }">
 		<div class="alert alert-${alert }" role="alert">
@@ -14,18 +14,26 @@
 		</div>
 	</c:if> 
 	<br>
+		
+	<div class="box">
+	<form class="" action="login" method="post">
+		<h1>Thông tin đăng nhập</h1>
+		<input type="text" name="email" placeholder="nhập email">
+		<input type="password" name="password" placeholder="nhập password">
+		<input type="submit" name="" value="Đăng nhập">
+	</form>
+	<a class="btn btn-info forget-password">Quên mật khẩu</a>
+	</div>
 	
-	 
-	<br>
 	
-	<div class="row">
+	<!-- <div class="row" hidden>
 		<div class="col-sm-10">
 			<div class="panel panel-primary">
 				<div class="panel-heading">Thông tin đăng nhập</div>
 				
 				<div class="panel-body">
 					<form action="login" method="post">
-					<input type="hidden" name="_token" value="Y1O1F3RtL7O24rLqVCbuLyAizm9YJXTcyZZqdj2R">
+					<input type="hidden" name="" value="">
 					  <div class="form-group">
 					    <label for="email">Email *</label>
 					    <input type="email" class="form-control" name="email" placeholder="nhập email" >
@@ -42,7 +50,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 	
 	<br><br>
 	
@@ -52,8 +60,8 @@
 				<div class="panel-heading">Tìm tài khoản của bạn</div>
 				
 				<div class="panel-body">
-					<form action="http://localhost:1207/QLbansach/public/quen-mat-khau-customer" method="post">
-					<input type="hidden" name="_token" value="Y1O1F3RtL7O24rLqVCbuLyAizm9YJXTcyZZqdj2R">
+					<form action="" method="post">
+					<input type="hidden" name="" value="">
 					  <div class="form-group">
 					    <label for="email">	
 							Vui lòng nhập email để tìm kiếm tài khoản.</label>

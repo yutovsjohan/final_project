@@ -60,8 +60,8 @@ public class users implements java.io.Serializable{
 			@JoinColumn(name = "idComic") })
 	private List<comic> comics = new ArrayList<comic>();
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idUser")
-	private Set<bill> idUser = new HashSet<bill>();
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idUser")
+	private Set<bill> bill = new HashSet<bill>();
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "delivery")
 	private Set<bill> delivery = new HashSet<bill>();

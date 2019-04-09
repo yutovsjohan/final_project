@@ -23,6 +23,7 @@
 <link href="<c:url value="/resources/css/cart.css" />" rel="stylesheet">
 
 <link href="<c:url value="/resources/css/register.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/login.css" />" rel="stylesheet">
 
 </head>
 <body style="background-color:#f0f0fa;">
@@ -75,7 +76,7 @@
 						<ul class="nav navbar-nav">
 							<c:choose>
 								<c:when test="${sessionScope.account.email != null}">
-									<li><a href="${pageContext.request.contextPath}/controller/user/home"><i class="fa fa-user" ></i> Xin chào ${sessionScope.account.name }</a></li>
+									<li><a href="${pageContext.request.contextPath}/controller/customer/edit"><i class="fa fa-user" ></i> Xin chào ${sessionScope.account.name }</a></li>
 									<li><a href="${pageContext.request.contextPath}/controller/logout"><i class="fa fa-sign-out" ></i> Đăng xuất</a></li>
 								</c:when>
 								<c:otherwise>
@@ -120,17 +121,17 @@
 				<ul class="nav navbar-nav">
 					<li><a href="${pageContext.request.contextPath}/controller/index" <c:if test="${views == 'index' }">class="actived"</c:if> >Trang chủ</a></li>							
 					<li><a href="${pageContext.request.contextPath}/controller/#" >Tin tức</a></li>
-					<li><a href="${pageContext.request.contextPath}/controller/#" >Giới thiệu</a></li>
-					<li><a href="${pageContext.request.contextPath}/controller/#" >Liên hệ</a></li>
+					<li><a href="${pageContext.request.contextPath}/controller/introduce" >Giới thiệu</a></li>
+					<li><a href="${pageContext.request.contextPath}/controller/contact" <c:if test="${views == 'contact' }">class="actived"</c:if> >Liên hệ</a></li>
 					
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hỗ trợ khách hàng <span class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="${pageContext.request.contextPath}/controller/#" >Theo dõi đơn hàng</a></li>
+							<li><a href="${pageContext.request.contextPath}/controller/trackOrder" <c:if test="${views == 'trackOrder' }">class="actived"</c:if> >Theo dõi đơn hàng</a></li>
 							<li><a href="${pageContext.request.contextPath}/controller/#">Hướng dẫn đặt hàng</a></li>
 							<li><a href="${pageContext.request.contextPath}/controller/#">Phương thức vận chuyển</a></li>
-                               <li><a href="${pageContext.request.contextPath}/controller/#">Phương thức thanh toán</a></li>
-                               <li><a href="${pageContext.request.contextPath}/controller/#">Chính sách đổi trả</a></li>
+                            <li><a href="${pageContext.request.contextPath}/controller/#">Phương thức thanh toán</a></li>
+                            <li><a href="${pageContext.request.contextPath}/controller/#">Chính sách đổi trả</a></li>
 						</ul>
 					</li>
 				</ul>

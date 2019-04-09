@@ -22,5 +22,24 @@ public class HomeController {
 		return model;
 	}	
 	
+	@RequestMapping(value = {"/gioi-thieu", "/introduce"}, method = RequestMethod.GET)
+	public ModelAndView getIntroducePage(){		
+		ModelAndView model = new ModelAndView();
+		getModel.getIntroduce(model);						
+		return model;
+	}	
 	
+	@RequestMapping(value = {"/lien-he", "/contact"}, method = RequestMethod.GET)
+	public ModelAndView getContactPage(){		
+		ModelAndView model = new ModelAndView();
+		getModel.getContact(model);						
+		return model;
+	}	
+	
+	@RequestMapping(value = "/trackOrder", method = RequestMethod.GET)
+	public ModelAndView getTrackOrderPage(){		
+		ModelAndView model = new ModelAndView();
+		getModel.getTrackOrder(model);						
+		return model;
+	}
 }

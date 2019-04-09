@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.website.springmvc.Services.AuthorService;
+import com.website.springmvc.Services.BillService;
 import com.website.springmvc.Services.BilldetailService;
 import com.website.springmvc.Services.CategoryService;
 import com.website.springmvc.Services.ComicService;
@@ -32,7 +33,6 @@ public class GetModel {
 	public void getSideBar(ModelAndView model) {
 		model.setViewName("layout");
 		model.addObject("sb","sidebar");
-		model.addObject("hreftemp","");
 		
 		model.addObject("categories", categoryService.getAll());
 		model.addObject("authors", authorService.getAll());
@@ -49,7 +49,7 @@ public class GetModel {
 		model.addObject("topSelling", comicService.getComicForTopSelling());
 		model.addObject("newComic", comicService.getNewComicInHomePage());
 		model.addObject("otherComic", comicService.getOtherComicInHomePage());
-	}	
+	}			
 	
 	public void getRegistration(ModelAndView model){
 		getSideBar(model);	
@@ -75,37 +75,50 @@ public class GetModel {
 		model.addObject("title","Giỏ hàng");
 	}
 	
-	public void getSideBarUser(ModelAndView model) {
+	public void getContact(ModelAndView model){		
+		getSideBar(model);
+		
+		model.addObject("views","contact");
+		model.addObject("title","Liên hệ");		
+	}
+	
+	public void getIntroduce(ModelAndView model){		
+		getSideBar(model);
+		
+		model.addObject("views","introduce");
+		model.addObject("title","Giới thiệu");		
+	}
+	
+	public void getTrackOrder(ModelAndView model){		
+		getSideBar(model);
+		
+		model.addObject("views","trackOrder");
+		model.addObject("title","Theo dõi đơn hàng");		
+	}
+	
+	public void getSideBarCustomer(ModelAndView model) {
 		model.setViewName("layout");
-		model.addObject("sb","user/sidebarUser");
-		model.addObject("hreftemp","../");
+		model.addObject("sb","customer/sidebarCustomer");
 	}
 	
-	public void getUserHome(ModelAndView model) {
-		getSideBarUser(model);
+	public void getCustomerEditInfo(ModelAndView model) {
+		getSideBarCustomer(model);
 				
-		model.addObject("views","user/userHome");
-		model.addObject("title","Tài khoản của bạn");
-	}
-	
-	public void getUserInfo(ModelAndView model) {
-		getSideBarUser(model);
-				
-		model.addObject("views","user/userInfo");
-		model.addObject("title","Chỉnh sửa thông tin cá nhân");
+		model.addObject("views","customer/customerEditInformation");
+		model.addObject("title","Tài khoản của tôi");
 	}
 	
 	public void getFavoriteList(ModelAndView model) {
-		getSideBarUser(model);
+		getSideBarCustomer(model);
 				
-		model.addObject("views","user/favoriteList");
+		model.addObject("views","customer/favoriteList");
 		model.addObject("title","Danh sách sản phẩm yêu thích");
 	}
 	
 	public void getOrderHistory(ModelAndView model) {
-		getSideBarUser(model);
+		getSideBarCustomer(model);
 				
-		model.addObject("views","user/orderHistory");
+		model.addObject("views","customer/orderHistory");
 		model.addObject("title","Đơn hàng đã đặt");
 	}
 }

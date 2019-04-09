@@ -36,9 +36,9 @@ public class notification implements java.io.Serializable{
 	@Column(name = "status")
 	private byte status;
 		
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idComic", nullable = false)
-	private comic comic;
+	private comic idComic;
 	
 	public notification() {
 		super();

@@ -27,7 +27,7 @@ public class billdetail implements java.io.Serializable{
 	@Column(name = "amount")
 	private byte amount;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idComic", nullable = false)
 	private comic comic;
 	
@@ -63,5 +63,25 @@ public class billdetail implements java.io.Serializable{
 
 	public void setAmount(byte amount) {
 		this.amount = amount;
+	}
+
+
+	public comic getComic() {
+		return comic;
+	}
+
+
+	public void setComic(comic comic) {
+		this.comic = comic;
+	}
+
+
+	public bill getBill() {
+		return bill;
+	}
+
+
+	public void setBill(bill bill) {
+		this.bill = bill;
 	}
 }

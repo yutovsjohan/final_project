@@ -15,6 +15,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "bill", catalog = "manga")
@@ -25,7 +29,9 @@ public class bill implements java.io.Serializable{
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
 	private int id;
-
+	
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "orderDate")
 	private Date orderDate;
 	
@@ -33,7 +39,7 @@ public class bill implements java.io.Serializable{
 	private int total;
 	
 	@Column(name = "status")
-	private byte status;
+	private String status;
 	
 	@Column(name = "deliveryDate")
 	private Date deliveryDate;
@@ -53,11 +59,11 @@ public class bill implements java.io.Serializable{
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "comic")
 	private Set<billdetail> billdetail = new HashSet<billdetail>();
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idUser", nullable = false)
 	private users idUser;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "delivery", nullable = false)
 	private users delivery;
 		
@@ -90,11 +96,11 @@ public class bill implements java.io.Serializable{
 		this.total = total;
 	}
 
-	public byte getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(byte status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 
@@ -128,6 +134,38 @@ public class bill implements java.io.Serializable{
 
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	public Set<orderstatus> getOrderstatus() {
+		return orderstatus;
+	}
+
+	public void setOrderstatus(Set<orderstatus> orderstatus) {
+		this.orderstatus = orderstatus;
+	}
+
+	public Set<billdetail> getBilldetail() {
+		return billdetail;
+	}
+
+	public void setBilldetail(Set<billdetail> billdetail) {
+		this.billdetail = billdetail;
+	}
+
+	public users getIdUser() {
+		return idUser;
+	}
+
+	public void setIdUser(users idUser) {
+		this.idUser = idUser;
+	}
+
+	public users getDelivery() {
+		return delivery;
+	}
+
+	public void setDelivery(users delivery) {
+		this.delivery = delivery;
 	}
 	
 }

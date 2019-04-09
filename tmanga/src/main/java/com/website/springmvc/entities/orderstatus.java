@@ -60,5 +60,13 @@ public class orderstatus implements java.io.Serializable{
 	public void setNote(String note) {
 		this.note = note;
 	}
+
+	public bill getBill() {
+		return bill;
+	}
+
+	public void setBill(bill bill) {
+		this.bill = bill;
+	}
 	
 }

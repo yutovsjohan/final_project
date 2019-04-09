@@ -33,33 +33,19 @@ public class CustomerController {
 	@Autowired
 	GetModel getModel;
 	
-	@RequestMapping(value = "/user/home", method = RequestMethod.GET)
-	public ModelAndView getUserHome(HttpSession session) {
+	@RequestMapping(value = "/customer/edit", method = RequestMethod.GET)
+	public ModelAndView getCustomerEditInfo(HttpSession session) {
 		ModelAndView model = new ModelAndView();
 		if(session.getAttribute("account") != null) {
-			getModel.getUserHome(model);
-			int id = ((users) session.getAttribute("account")).getId();
-			model.addObject("bills", billService.get(id));
+			getModel.getCustomerEditInfo(model);
 		}
 		else {
 			getModel.getHome(model);			
 		}
 		return model;
-	}
+	}	
 	
-	@RequestMapping(value = "/user/information", method = RequestMethod.GET)
-	public ModelAndView getUserInfo(HttpSession session) {
-		ModelAndView model = new ModelAndView();
-		if(session.getAttribute("account") != null) {
-			getModel.getUserInfo(model);			
-		}
-		else {
-			getModel.getHome(model);
-		}
-		return model;
-	}
-	
-	@RequestMapping(value = "/user/favoriteList", method = RequestMethod.GET)
+	@RequestMapping(value = "/customer/favoriteList", method = RequestMethod.GET)
 	public ModelAndView getFavoriteList(HttpSession session) {
 		ModelAndView model = new ModelAndView();
 		if(session.getAttribute("account") != null) {
@@ -71,13 +57,14 @@ public class CustomerController {
 		return model;
 	}
 	
-	@RequestMapping(value = "/user/orderHistory", method = RequestMethod.GET)
+	@RequestMapping(value = "/customer/orderHistory", method = RequestMethod.GET)
 	public ModelAndView getOrderHistory(HttpSession session) {
 		ModelAndView model = new ModelAndView();
 		if(session.getAttribute("account") != null) {
 			getModel.getOrderHistory(model);
-			int id = ((users) session.getAttribute("account")).getId();
-			model.addObject("bills", billService.get(id));
+			
+			//int id = ((users) session.getAttribute("account")).getId();
+			model.addObject("bills", billService.getAll());
 		}
 		else {
 			getModel.getHome(model);

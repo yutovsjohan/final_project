@@ -1,6 +1,25 @@
 
 $(document).ready(function() {
  
+$('#r_order').click(function(){
+	$('#r_order').css("display","none");
+	$('#order').css("display","");
+	$('#order').prop("type","submit");
+	
+	$('#deletecart').css("display","none");
+	$('.checkout').css("display","none");
+	$('#note').attr("readonly","");
+	
+	
+	$('.product-quantity input').each(function () {
+		$(this).attr("readonly","");
+	})
+	
+	$('.product-removal').each(function () {
+		$(this).attr("hidden","");
+	})
+});
+
 /* Set rates + misc */
 var taxRate = 0;
 var shippingRate = 15.00; 

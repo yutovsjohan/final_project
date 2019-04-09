@@ -6,7 +6,7 @@
 
 <c:if test="${(sessionScope.account != null)}">
 	<div class="col-md-9 ">
-		<h2 style="color: chocolate">Chỉnh sửa thông tin cá nhân</h2>
+		<h2 style="color: chocolate">Thông tin tài khoản</h2>
 		<hr>
 		
 		<c:if test="${mes != null }">

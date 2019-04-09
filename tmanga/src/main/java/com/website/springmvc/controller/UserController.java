@@ -56,13 +56,13 @@ public class UserController {
 			
 			getModel.getLogin(model);
 			
-			model.addObject("mes", "Success");
+			model.addObject("mes", "Đăng ký thành công");
 			model.addObject("alert", "success");
 		}
 		else{
 			getModel.getRegistration(model);
 			
-			model.addObject("mes","Email exist");	
+			model.addObject("mes","Email này đã có người sử dụng");	
 			model.addObject("alert", "danger");
 		}
 		return model;
@@ -123,6 +123,7 @@ public class UserController {
 			if(u.getEmail().equalsIgnoreCase(email)) {
 				if(TripleDES.Decrypt(u.getPassword(), "123").equalsIgnoreCase(password)) {
 					j = u.getId();
+					break;
 				}				
 			}			
 		}

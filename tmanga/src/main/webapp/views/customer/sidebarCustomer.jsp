@@ -8,24 +8,13 @@
 	<div class="col-md-3 ">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				Tài khoản của bạn
+				Tài khoản của tôi
 			</div>
 			<div class="panel-body">
-				<a href="home">
-				<c:choose>
-					<c:when test="${title == 'Tài khoản của bạn' }"><div id="menu_doc" class="actived"> </c:when>
-					<c:otherwise><div id="menu_doc"  > </c:otherwise>
-				</c:choose>				
-						Thông tin của tôi
-					</div>
-				</a>
-				<hr>
-				<a href="information">
-				<c:choose>
-					<c:when test="${title == 'Chỉnh sửa thông tin cá nhân' }"><div id="menu_doc" class="actived"> </c:when>
-					<c:otherwise><div id="menu_doc"  > </c:otherwise>
-				</c:choose>					
-						Chỉnh sửa thông tin cá nhân
+				
+				<a href="edit">
+					<div id="menu_doc" <c:if test="${views == 'customer/customerEditInformation' }">class="actived"</c:if> >					
+						Thông tin tài khoản
 					</div>
 				</a>
 				<!-- <hr>
@@ -36,19 +25,13 @@
 				</a> -->
 				<hr>
 				<a href="favoriteList">
-				<c:choose>
-					<c:when test="${title == 'Danh sách sản phẩm yêu thích' }"><div id="menu_doc" class="actived"> </c:when>
-					<c:otherwise><div id="menu_doc"  > </c:otherwise>
-				</c:choose>
+					<div id="menu_doc" <c:if test="${views == 'customer/favoriteList' }">class="actived"</c:if> >					
 						Sản phẩm yêu thích
 					</div>
 				</a>
 				<hr>
 				<a href="orderHistory">
-				<c:choose>
-					<c:when test="${title == 'Đơn hàng đã đặt' }"><div id="menu_doc" class="actived"> </c:when>
-					<c:otherwise><div id="menu_doc"  > </c:otherwise>
-				</c:choose>
+					<div id="menu_doc" <c:if test="${views == 'customer/orderHistory' }">class="actived"</c:if> >					
 						Đơn hàng đã đặt
 					</div>
 				</a>

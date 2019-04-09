@@ -20,6 +20,11 @@ public class BillService {
 	@Autowired
 	DAO<bill> billDAO;
 	
+	public List<bill> getBillOfUser(int iduser) {
+		Session session = this.sessionFactory.getCurrentSession();
+		return session.createQuery("from bill where idUser = :keyword").setParameter("keyword", iduser).list();
+	}
+	
 	public bill get(int id) {
 		Session session = this.sessionFactory.getCurrentSession();
 		return (bill) session.get(bill.class, new Integer(id));

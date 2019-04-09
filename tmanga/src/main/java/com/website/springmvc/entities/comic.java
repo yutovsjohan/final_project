@@ -78,10 +78,10 @@ public class comic implements java.io.Serializable{
 	@Column(name = "status")
 	private byte status;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "comic")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idComic")
 	private Set<notification> notification = new HashSet<notification>();
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "comic")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "comic")
 	private Set<billdetail> billdetail = new HashSet<billdetail>();
 			
 	public comic() {
@@ -225,12 +225,12 @@ public class comic implements java.io.Serializable{
 		this.publishcompany = publishcompany;
 	}
 
-	public Set<notification> getNotification() {
-		return notification;
-	}
-
-	public void setNotification(Set<notification> notification) {
-		this.notification = notification;
-	}
+//	public Set<notification> getNotification() {
+//		return notification;
+//	}
+//
+//	public void setNotification(Set<notification> notification) {
+//		this.notification = notification;
+//	}
 
 }

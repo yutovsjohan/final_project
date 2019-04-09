@@ -16,10 +16,25 @@ import com.website.springmvc.entities.comic;
 @Service
 public class ComicService {
 	@Autowired
+	private SessionFactory sessionFactory;
+	
+	@Autowired
 	DAO<comic> comicDao;
 		
-	@Autowired
-	private SessionFactory sessionFactory;
+	public Boolean updateComic(comic comic) {
+		Session session = this.sessionFactory.getCurrentSession();
+		String hql = "update comic set amount = :amount where id = :id";
+		 
+		Query query = session.createQuery(hql);
+		query.setParameter("amount", comic.getAmount());
+		query.setParameter("id", comic.getId());
+		 
+		int rowsAffected = query.executeUpdate();
+		if (rowsAffected > 0) {
+			return true;
+		}
+		return false;
+	}
 	
 	public List<comic> getListComic(String name){
 		Session session = this.sessionFactory.getCurrentSession();
