@@ -26,7 +26,7 @@ public class role implements java.io.Serializable{
 	@Column(name = "name", length = 255)
 	private String name;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "role")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "role")
 	private Set<users> users = new HashSet<users>();
 
 	public role() {

@@ -104,7 +104,7 @@ public class CartController {
 		String str = "";
 		
 		if(amount < 0) {
-			str = "Số lượng không thể âm hoặc bằng 0";
+			str = "Số lượng không thể âm";
 		}
 		else {
 			comic comic = comicService.get(idComic);
@@ -149,7 +149,7 @@ public class CartController {
 						str = "removed";
 					}
 					else if( amount > comic.getAmount() || amount < 0) {
-						str = "invalid";
+						str = comic.getName() + " cần số lượng tối đa được phép mua là " + comic.getAmount();
 					}
 					else {
 						amount -= cart.getItemForId(idComic).getAmount();
@@ -218,10 +218,10 @@ public class CartController {
 			
 			if(f) {
 				bill bill = new bill();
-				bill.setIdUser( (users) session.getAttribute("account"));
+				//bill.setIdUser( (users) session.getAttribute("account"));
 				bill.setTotal(((cart) session.getAttribute("cart")).total() + 15000 );
 				bill.setStatus("Chưa xác nhận đơn hàng");
-				bill.setDelivery(usersService.get(2));
+				//bill.setDelivery(usersService.get(2));
 				billService.add(bill);
 										
 				

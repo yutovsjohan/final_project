@@ -87,11 +87,11 @@
 							
 							<c:choose>
 								<c:when test="${sessionScope.cart != null}">
-									<li><a href="${pageContext.request.contextPath}/controller/cart" id="gio-hang"><i class="fa fa-shopping-cart"></i>Giỏ hàng (có ${sessionScope.cart.quantity() } sản phẩm)</a></li>
+									<li><a href="${pageContext.request.contextPath}/controller/cart" id="gio-hang"><i class="fa fa-shopping-cart"></i>Giỏ hàng <span class="itemcount">${sessionScope.cart.quantity() }</span></a></li>
 									<span id="itemcount" hidden> ${sessionScope.cart.quantity() }</span>
 								</c:when>
 								<c:otherwise>
-									<li><a href="${pageContext.request.contextPath}/controller/cart" id="gio-hang"><i class="fa fa-shopping-cart"></i>Giỏ hàng trống</a></li>
+									<li><a href="${pageContext.request.contextPath}/controller/cart" id="gio-hang"><i class="fa fa-shopping-cart"></i>Giỏ hàng <span class="itemcount">0</span></a></li>
 									<span id="itemcount" hidden>0</span>
 								</c:otherwise>
 							</c:choose>
@@ -102,9 +102,7 @@
 			</div>
 		</div>
 	</div><!--/header-middle-->
-
-
-
+    
 	<div class="container"><!--header-bottom-->
 		<nav class="navbar navbar-default" style="font-size:15px; background-color:white; border-color:white" >
 			<div class="container-fluid">
@@ -120,8 +118,8 @@
 				<div class="col-sm-7 col-lg-7 col-xs-12 col-md-7">
 				<ul class="nav navbar-nav">
 					<li><a href="${pageContext.request.contextPath}/controller/index" <c:if test="${views == 'index' }">class="actived"</c:if> >Trang chủ</a></li>							
-					<li><a href="${pageContext.request.contextPath}/controller/#" >Tin tức</a></li>
-					<li><a href="${pageContext.request.contextPath}/controller/introduce" >Giới thiệu</a></li>
+					<li><a href="${pageContext.request.contextPath}/controller/#" <c:if test="${views == 'news' }">class="actived"</c:if>>Tin tức</a></li>
+					<li><a href="${pageContext.request.contextPath}/controller/introduce" <c:if test="${views == 'introduce' }">class="actived"</c:if> >Giới thiệu</a></li>
 					<li><a href="${pageContext.request.contextPath}/controller/contact" <c:if test="${views == 'contact' }">class="actived"</c:if> >Liên hệ</a></li>
 					
 					<li class="dropdown">
@@ -267,7 +265,7 @@
 			<!-- Modal content-->
 			<div class="modal-content">	      
 				<div class="modal-body">
-					<p>Đã thêm <b></b> vào giỏ hàng.</p>
+					<p></p>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-info" data-dismiss="modal">Close</button>

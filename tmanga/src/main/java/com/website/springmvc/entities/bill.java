@@ -28,7 +28,7 @@ public class bill implements java.io.Serializable{
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
-	private int id;
+	private Long id;
 	
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
@@ -67,16 +67,32 @@ public class bill implements java.io.Serializable{
 	@JoinColumn(name = "delivery", nullable = false)
 	private users delivery;
 		
+	public users getDelivery() {
+		return delivery;
+	}
+
+	public void setDelivery(users delivery) {
+		this.delivery = delivery;
+	}
+
+	public users getIdUser() {
+		return idUser;
+	}
+
+	public void setIdUser(users idUser) {
+		this.idUser = idUser;
+	}
+
 	public bill() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -151,21 +167,4 @@ public class bill implements java.io.Serializable{
 	public void setBilldetail(Set<billdetail> billdetail) {
 		this.billdetail = billdetail;
 	}
-
-	public users getIdUser() {
-		return idUser;
-	}
-
-	public void setIdUser(users idUser) {
-		this.idUser = idUser;
-	}
-
-	public users getDelivery() {
-		return delivery;
-	}
-
-	public void setDelivery(users delivery) {
-		this.delivery = delivery;
-	}
-	
 }

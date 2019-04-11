@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -69,29 +70,56 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = {"/login" , "/dang-nhap"}, method = RequestMethod.GET)
-	public ModelAndView getLoginPage(){
+	public ModelAndView getLoginPage(@RequestParam(name = "mes", defaultValue = "") String mes,
+									@RequestParam(name = "alert", defaultValue = "") String alert){
 		ModelAndView model = new ModelAndView();
+		if(mes != ""){
+			model.addObject("mes", mes);
+			model.addObject("alert", alert);
+		}
 		getModel.getLogin(model);
 		return model;
-	}	
+	}
+
+	
+//	@RequestMapping(value = "/login", method = RequestMethod.POST)	
+//	public ModelAndView login(@RequestParam("email") String email, 
+//						@RequestParam("password") String password,
+//						HttpSession session) {
+//		ModelAndView model = new ModelAndView();
+//		long check = checkLogin(email, password);
+//		if(check == -1) {
+//			model.addObject("mes","Email và password của bạn sai");			
+//			model.addObject("alert", "danger");
+//			getModel.getLogin(model);
+//		} 
+//		else {
+//			session.setAttribute("account", usersService.get(check));
+//			getModel.getHome(model);
+//			
+//		}
+//		return model;
+//	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)	
-	public ModelAndView login(@RequestParam("email") String email, 
+	public String login(@RequestParam("email") String email, 
 						@RequestParam("password") String password,
-						HttpSession session) {
-		ModelAndView model = new ModelAndView();
-		int check = checkLogin(email, password);
+						HttpSession session, Model model) {
+		//ModelAndView model = new ModelAndView();
+		String str = "";
+		long check = checkLogin(email, password);
 		if(check == -1) {
-			model.addObject("mes","Email và password của bạn sai");			
-			model.addObject("alert", "danger");
-			getModel.getLogin(model);
+			model.addAttribute("mes","Email và password của bạn sai");			
+			model.addAttribute("alert", "danger");
+//			getModel.getLogin(model);
+			str = "redirect:/controller/login";
 		} 
 		else {
 			session.setAttribute("account", usersService.get(check));
-			getModel.getHome(model);
-			
+//			getModel.getHome(model);
+			str = "redirect:/controller/index";			
 		}
-		return model;
+		return str;
 	}
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -114,10 +142,10 @@ public class UserController {
 		return false;
 	}
 	
-	private int checkLogin(String email, String password) {
+	private Long checkLogin(String email, String password) {
 		List<users> listusers = usersService.getAll();
 		users u = new users();
-		int j = -1;
+		long j = -1;
 		for (int i = 0; i < listusers.size(); i++) {
 			u = listusers.get(i);
 			if(u.getEmail().equalsIgnoreCase(email)) {

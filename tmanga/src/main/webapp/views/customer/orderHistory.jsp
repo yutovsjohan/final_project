@@ -29,8 +29,8 @@
 				          <th>#</th>
 				      </tr>
 				  </thead>
-				  <c:forEach var="bill" items="bills">
-				  	<c:if test="${bill.idUser == sessionScope.account.id }">
+				  <c:forEach var="bill" items="${bills}">
+				  	<c:if test="${bill.idUser.id == sessionScope.account.id }">
 					  <tbody>
 					      <tr>
 					         <td>${bill.id }</td>

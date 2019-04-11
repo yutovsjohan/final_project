@@ -63,8 +63,9 @@ public class CustomerController {
 		if(session.getAttribute("account") != null) {
 			getModel.getOrderHistory(model);
 			
-			//int id = ((users) session.getAttribute("account")).getId();
-			model.addObject("bills", billService.getAll());
+			long id = ((users) session.getAttribute("account")).getId();
+			model.addObject("bills", billService.getBillOfUser(id));
+			
 		}
 		else {
 			getModel.getHome(model);

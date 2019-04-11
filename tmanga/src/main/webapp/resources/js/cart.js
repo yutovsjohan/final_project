@@ -58,13 +58,20 @@ $('.product-quantity input').change( function() {
 				if(itemcount == 0){
 					$(".shopping-cart").fadeOut(fadeTime);
 					$("#mycart").html('<p>Giỏ hàng trống. <a href="index"> Quay lại để mua </a>.</p>');
-					$('#gio-hang').html('<i class=\"fa fa-shopping-cart\"></i>Giỏ hàng trổng');
+					$('#gio-hang').html('<i class=\"fa fa-shopping-cart\"></i>Giỏ hàng <span class="itemcount">0</span>');
 				}
 				else{
-					var str = "<i class=\"fa fa-shopping-cart\"></i>Giỏ hàng (có " + itemcount + " sản phẩm)";
+					var str = '<i class=\"fa fa-shopping-cart\"></i>Giỏ hàng <span class="itemcount"> ' + itemcount + '</span';
 					$('#gio-hang').html(str);
 				}
-			}			
+			
+			}
+			else{
+				if(amount > 0){
+					$('#modal-da-them-vao-gio-hang .modal-body p').html(data);
+					$('#modal-da-them-vao-gio-hang').modal('show');
+				}
+			}
 		}
 	})
 	
@@ -72,11 +79,16 @@ $('.product-quantity input').change( function() {
 	if(amount == 0){
 		removeItem(this);
 	}
-	else{
+	else if(amount < 0){
+		$(this).val('1');
+		alert('Số lượng không thể âm');
+	}
+	else if(amount > $(this).attr('max')){
+		
+	}
+	else if(amount > 0){
 		updateQuantity(this);
 	}
-	
-	
 	
 });
 
@@ -112,10 +124,10 @@ $('.product-removal button').click( function() {
 	if(itemcount == 0){
 		$(".shopping-cart").fadeOut(fadeTime);
 		$("#mycart").html('<p>Giỏ hàng trống. <a href="index"> Quay lại để mua </a>.</p>');
-		$('#gio-hang').html('<i class=\"fa fa-shopping-cart\"></i>Giỏ hàng trổng');
+		$('#gio-hang').html('<i class=\"fa fa-shopping-cart\"></i>Giỏ hàng <span class="itemcount">0</span>');
 	}
 	else{
-		var str = "<i class=\"fa fa-shopping-cart\"></i>Giỏ hàng (có " + itemcount + " sản phẩm)";
+		var str = '<i class=\"fa fa-shopping-cart\"></i>Giỏ hàng <span class="itemcount"> ' + itemcount + '</span';
 		$('#gio-hang').html(str);
 	}
 	

@@ -59,14 +59,14 @@ $(document).ready(function(){
 				//console.log(data); 
 				if(data=="added"){
 					$('#modal-da-them-vao-gio-hang').modal('show');
-					$('#modal-da-them-vao-gio-hang .modal-body').html("<p>Đã thêm <b></b> vào giỏ hàng.</p>");
+					$('#modal-da-them-vao-gio-hang .modal-body p').html("Đã thêm <b></b> vào giỏ hàng.");
 					$('#modal-da-them-vao-gio-hang .modal-body b').html(name);
 					
 					itemcount++;
 					console.log(itemcount); 
 					$("#itemcount").text(itemcount);
 					
-					var str = "<i class=\"fa fa-shopping-cart\"></i>Giỏ hàng (có " + itemcount + " sản phẩm)";
+					var str = '<i class=\"fa fa-shopping-cart\"></i>Giỏ hàng <span class="itemcount"> ' + itemcount + '</span';
 					$('#gio-hang').html(str);
 				}
 				else{
@@ -90,8 +90,8 @@ $(document).ready(function(){
 			return;
 		}
 		else if(amount < 0){
-			$('#modal-da-them-vao-gio-hang').modal('show');
 			$('#modal-da-them-vao-gio-hang .modal-body p').html("Số lượng không thể âm");
+			$('#modal-da-them-vao-gio-hang').modal('show');			
 			return;
 		}
 		
@@ -108,14 +108,14 @@ $(document).ready(function(){
 				//console.log(data); 
 				if(data=="added"){
 					$('#modal-da-them-vao-gio-hang').modal('show');
-					$('#modal-da-them-vao-gio-hang .modal-body').html("<p>Đã thêm <b></b> vào giỏ hàng.</p>");
+					$('#modal-da-them-vao-gio-hang .modal-body').html("Đã thêm <b></b> vào giỏ hàng.");
 					$('#modal-da-them-vao-gio-hang .modal-body b').html(name);
 					
 					itemcount += amount;
 					console.log(itemcount); 
 					$("#itemcount").text(itemcount);
 					
-					var str = "<i class=\"fa fa-shopping-cart\"></i>Giỏ hàng (có " + itemcount + " sản phẩm)";
+					var str = '<i class=\"fa fa-shopping-cart\"></i>Giỏ hàng <span class="itemcount"> ' + itemcount + '</span';
 					$('#gio-hang').html(str);
 				}
 				else{
