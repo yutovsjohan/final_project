@@ -218,10 +218,10 @@ public class CartController {
 			
 			if(f) {
 				bill bill = new bill();
-				//bill.setIdUser( (users) session.getAttribute("account"));
+				bill.setIdUser( (users) session.getAttribute("account"));
 				bill.setTotal(((cart) session.getAttribute("cart")).total() + 15000 );
 				bill.setStatus("Chưa xác nhận đơn hàng");
-				//bill.setDelivery(usersService.get(2));
+				bill.setDelivery(usersService.get(2));
 				billService.add(bill);
 										
 				

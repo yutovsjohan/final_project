@@ -26,13 +26,7 @@ import com.website.springmvc.libs.TripleDES;
 public class UserController {
 	@Autowired
 	private UsersService usersService;
-	
-	@Autowired
-	private BilldetailService billdetailService; 
-	
-	@Autowired
-	private BillService billService; 
-	
+
 	@Autowired
 	GetModel getModel;
 	
@@ -81,42 +75,19 @@ public class UserController {
 		return model;
 	}
 
-	
-//	@RequestMapping(value = "/login", method = RequestMethod.POST)	
-//	public ModelAndView login(@RequestParam("email") String email, 
-//						@RequestParam("password") String password,
-//						HttpSession session) {
-//		ModelAndView model = new ModelAndView();
-//		long check = checkLogin(email, password);
-//		if(check == -1) {
-//			model.addObject("mes","Email và password của bạn sai");			
-//			model.addObject("alert", "danger");
-//			getModel.getLogin(model);
-//		} 
-//		else {
-//			session.setAttribute("account", usersService.get(check));
-//			getModel.getHome(model);
-//			
-//		}
-//		return model;
-//	}
-	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)	
 	public String login(@RequestParam("email") String email, 
 						@RequestParam("password") String password,
 						HttpSession session, Model model) {
-		//ModelAndView model = new ModelAndView();
 		String str = "";
-		long check = checkLogin(email, password);
+		int check = checkLogin(email, password);
 		if(check == -1) {
 			model.addAttribute("mes","Email và password của bạn sai");			
 			model.addAttribute("alert", "danger");
-//			getModel.getLogin(model);
 			str = "redirect:/controller/login";
 		} 
 		else {
 			session.setAttribute("account", usersService.get(check));
-//			getModel.getHome(model);
 			str = "redirect:/controller/index";			
 		}
 		return str;
@@ -142,10 +113,10 @@ public class UserController {
 		return false;
 	}
 	
-	private Long checkLogin(String email, String password) {
+	private int checkLogin(String email, String password) {
 		List<users> listusers = usersService.getAll();
 		users u = new users();
-		long j = -1;
+		int j = -1;
 		for (int i = 0; i < listusers.size(); i++) {
 			u = listusers.get(i);
 			if(u.getEmail().equalsIgnoreCase(email)) {
