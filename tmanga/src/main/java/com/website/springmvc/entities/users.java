@@ -21,8 +21,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "users", catalog = "manga")
-public class users implements java.io.Serializable{
+@Table(name = "Users", catalog = "manga")
+public class Users implements java.io.Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -47,7 +47,7 @@ public class users implements java.io.Serializable{
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idRole", nullable = false)
-	private role role;
+	private Role role;
 	
 	@Column(name = "active")
 	private byte active;
@@ -58,20 +58,20 @@ public class users implements java.io.Serializable{
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "favoritelist", joinColumns = { @JoinColumn(name = "idUser") }, inverseJoinColumns = {
 			@JoinColumn(name = "idComic") })
-	private List<comic> comics = new ArrayList<comic>();
+	private List<Comic> comics = new ArrayList<Comic>();
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idUser")
-	private Set<bill> bill = new HashSet<bill>();
+	private Set<Bill> bill = new HashSet<Bill>();
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "delivery")
-	private Set<bill> delivery = new HashSet<bill>();
+	private Set<Bill> delivery = new HashSet<Bill>();
 
-	public users() {
+	public Users() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
-	public users(String name, String email, String password, String address, String phone) {
+	public Users(String name, String email, String password, String address, String phone) {
 		super();
 		this.name = name;
 		this.email = email;
@@ -80,7 +80,7 @@ public class users implements java.io.Serializable{
 		this.phone = phone;
 	}
 
-	public users(int id, String name, String email, String password, String address, String phone) {
+	public Users(int id, String name, String email, String password, String address, String phone) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -138,11 +138,11 @@ public class users implements java.io.Serializable{
 		this.phone = phone;
 	}
 
-	public role getRole() {
+	public Role getRole() {
 		return role;
 	}
 
-	public void setRole(role role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
 

@@ -15,7 +15,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "publishcompany", catalog = "manga")
-public class publishcompany implements java.io.Serializable{
+public class PublishCompany implements java.io.Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -33,10 +33,10 @@ public class publishcompany implements java.io.Serializable{
 	private byte status;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "publishcompany")
-	private Set<comic> comics = new HashSet<comic>();
+	private Set<Comic> comics = new HashSet<Comic>();
 	
 	
-	public publishcompany() {
+	public PublishCompany() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

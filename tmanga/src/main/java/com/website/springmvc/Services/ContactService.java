@@ -7,32 +7,32 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.website.springmvc.DAO.DAO;
-import com.website.springmvc.entities.contact;
+import com.website.springmvc.entities.Contact;
 
 @Transactional
 @Service
 public class ContactService {
 	
 	@Autowired
-	DAO<contact> contactDAO;
+	DAO<Contact> contactDAO;
 	
-	public List<contact> getAll(){
+	public List<Contact> getAll(){
 		return contactDAO.getAll();
 	}
 	
-	public contact get(Long id){
+	public Contact get(Long id){
 		return contactDAO.get(id);
 	}
 	
-	public contact add(contact t){
+	public Contact add(Contact t){
 		return contactDAO.add(t);
 	}
 	
-	public Boolean update(contact t){
+	public Boolean update(Contact t){
 		return contactDAO.update(t);
 	}
 	
-	public Boolean delete(contact t){
+	public Boolean delete(Contact t){
 		return contactDAO.delete(t);
 	}
 	

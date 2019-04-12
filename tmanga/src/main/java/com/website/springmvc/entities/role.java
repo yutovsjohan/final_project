@@ -15,7 +15,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "role", catalog = "manga")
-public class role implements java.io.Serializable{
+public class Role implements java.io.Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -27,9 +27,9 @@ public class role implements java.io.Serializable{
 	private String name;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "role")
-	private Set<users> users = new HashSet<users>();
+	private Set<Users> Users = new HashSet<Users>();
 
-	public role() {
+	public Role() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

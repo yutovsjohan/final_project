@@ -6,12 +6,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.website.springmvc.Services.AuthorService;
 import com.website.springmvc.Services.BillService;
-import com.website.springmvc.Services.BilldetailService;
+import com.website.springmvc.Services.BillDetailService;
 import com.website.springmvc.Services.CategoryService;
 import com.website.springmvc.Services.ComicService;
 import com.website.springmvc.Services.NewsService;
 import com.website.springmvc.Services.PublishCompanyService;
-import com.website.springmvc.entities.users;
+import com.website.springmvc.entities.Users;
 
 @Service
 public class GetModel {
@@ -55,16 +55,16 @@ public class GetModel {
 		getSideBar(model);	
 		
 		model.addObject("views","register");
-		model.addObject("title","Đăng ký");
+		model.addObject("title","Ä�Äƒng kÃ½");
 			
-		model.addObject("users",new users());
+		model.addObject("users",new Users());
 	}
 	
 	public void getLogin(ModelAndView model){		
 		getSideBar(model);
 		
 		model.addObject("views","login");
-		model.addObject("title","Đăng nhập");		
+		model.addObject("title","Ä�Äƒng nháº­p");		
 	}
 	
 	public void getCart(ModelAndView model){
@@ -72,28 +72,28 @@ public class GetModel {
 		model.setViewName("layout");
 		model.addObject("sb","");
 		model.addObject("views","cart");
-		model.addObject("title","Giỏ hàng");
+		model.addObject("title","Giá»� hÃ ng");
 	}
 	
 	public void getContact(ModelAndView model){		
 		getSideBar(model);
 		
 		model.addObject("views","contact");
-		model.addObject("title","Liên hệ");		
+		model.addObject("title","LiÃªn há»‡");		
 	}
 	
 	public void getIntroduce(ModelAndView model){		
 		getSideBar(model);
 		
 		model.addObject("views","introduce");
-		model.addObject("title","Giới thiệu");		
+		model.addObject("title","Giá»›i thiá»‡u");		
 	}
 	
 	public void getTrackOrder(ModelAndView model){		
 		getSideBar(model);
 		
 		model.addObject("views","trackOrder");
-		model.addObject("title","Theo dõi đơn hàng");		
+		model.addObject("title","Theo dÃµi Ä‘Æ¡n hÃ ng");		
 	}
 	
 	public void getSideBarCustomer(ModelAndView model) {
@@ -105,20 +105,20 @@ public class GetModel {
 		getSideBarCustomer(model);
 				
 		model.addObject("views","customer/customerEditInformation");
-		model.addObject("title","Tài khoản của tôi");
+		model.addObject("title","TÃ i khoáº£n cá»§a tÃ´i");
 	}
 	
 	public void getFavoriteList(ModelAndView model) {
 		getSideBarCustomer(model);
 				
 		model.addObject("views","customer/favoriteList");
-		model.addObject("title","Danh sách sản phẩm yêu thích");
+		model.addObject("title","Danh sÃ¡ch sáº£n pháº©m yÃªu thÃ­ch");
 	}
 	
 	public void getOrderHistory(ModelAndView model) {
 		getSideBarCustomer(model);
 				
 		model.addObject("views","customer/orderHistory");
-		model.addObject("title","Đơn hàng đã đặt");
+		model.addObject("title","Ä�Æ¡n hÃ ng Ä‘Ã£ Ä‘áº·t");
 	}
 }

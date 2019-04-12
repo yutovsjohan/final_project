@@ -7,36 +7,36 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.website.springmvc.entities.contact;
+import com.website.springmvc.entities.Contact;
 
 
 @Repository
-public class ContactDAO extends DAO<contact>{
+public class ContactDAO extends DAO<Contact>{
 
 	@Autowired
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public List<contact> getAll() {
+	public List<Contact> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from contact").list();
 	}
 
 	@Override
-	public contact get(Long id) {
+	public Contact get(Long id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return (contact) session.get(contact.class, new Long(id));
+		return (Contact) session.get(Contact.class, new Long(id));
 	}
 
 	@Override
-	public contact add(contact Con) {
+	public Contact add(Contact Con) {
 		Session session = this.sessionFactory.getCurrentSession();
 		session.save(Con);
 		return Con;
 	}
 
 	@Override
-	public Boolean update(contact Con) {
+	public Boolean update(Contact Con) {
 		Session session = this.sessionFactory.getCurrentSession();
 		try {
 			session.update(Con);
@@ -47,7 +47,7 @@ public class ContactDAO extends DAO<contact>{
 	}
 
 	@Override
-	public Boolean delete(contact Con) {
+	public Boolean delete(Contact Con) {
 		Session session = this.sessionFactory.getCurrentSession();
 		if (null != Con) {
 			try {
@@ -63,7 +63,7 @@ public class ContactDAO extends DAO<contact>{
 	@Override
 	public Boolean delete(Long id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		contact Con = (contact) session.load(contact.class, new Long(id));
+		Contact Con = (Contact) session.load(Contact.class, new Long(id));
 		if (null != Con) {
 			session.delete(Con);
 			return Boolean.TRUE;

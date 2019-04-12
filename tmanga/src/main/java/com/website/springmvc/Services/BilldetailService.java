@@ -9,39 +9,39 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.website.springmvc.DAO.DAO;
-import com.website.springmvc.entities.billdetail;
+import com.website.springmvc.entities.BillDetail;
 
 @Transactional
 @Service
-public class BilldetailService {
+public class BillDetailService {
 	@Autowired
 	private SessionFactory sessionFactory;
 
 	@Autowired
-	DAO<billdetail> billdetailDAO;
+	DAO<BillDetail> billdetailDAO;
 	
-	public billdetail get(int id) {
+	public BillDetail get(int id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return (billdetail) session.get(billdetail.class, new Integer(id));
+		return (BillDetail) session.get(BillDetail.class, new Integer(id));
 	}
 	
-	public List<billdetail> getAll(){
+	public List<BillDetail> getAll(){
 		return billdetailDAO.getAll();
 	}
 	
-	public billdetail get(Long id){
+	public BillDetail get(Long id){
 		return billdetailDAO.get(id);
 	}
 	
-	public billdetail add(billdetail t){
+	public BillDetail add(BillDetail t){
 		return billdetailDAO.add(t);
 	}
 	
-	public Boolean update(billdetail t){
+	public Boolean update(BillDetail t){
 		return billdetailDAO.update(t);
 	}
 	
-	public Boolean delete(billdetail t){
+	public Boolean delete(BillDetail t){
 		return billdetailDAO.delete(t);
 	}
 	

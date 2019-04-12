@@ -13,7 +13,7 @@ import com.website.springmvc.Services.AuthorService;
 import com.website.springmvc.Services.CategoryService;
 import com.website.springmvc.Services.ComicService;
 import com.website.springmvc.Services.PublishCompanyService;
-import com.website.springmvc.entities.comic;
+import com.website.springmvc.entities.Comic;
 import com.website.springmvc.libs.GetModel;
 
 @Controller
@@ -57,7 +57,7 @@ public class ProductController {
 			id = publishCompanyService.get(name).getId();
 		}
 		
-		List<comic> comics = comicService.getListComic(key, id);
+		List<Comic> comics = comicService.getListComic(key, id);
 
 		int totalPage = 0;
 		
@@ -113,7 +113,7 @@ public class ProductController {
 										@RequestParam(name = "s", defaultValue = "1") int sort) {
 		ModelAndView model = new ModelAndView();
 		
-		List<comic> comics = comicService.getListComic(key);
+		List<Comic> comics = comicService.getListComic(key);
 
 		int totalPage = 0;
 		
@@ -187,7 +187,7 @@ public class ProductController {
 			id = publishCompanyService.get(name).getId();
 		}
 		
-		List<comic> comics = comicService.getListComic(key, id);
+		List<Comic> comics = comicService.getListComic(key, id);
 
 		int totalPage = 0;
 		

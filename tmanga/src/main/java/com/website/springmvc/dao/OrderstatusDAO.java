@@ -7,35 +7,35 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.website.springmvc.entities.orderstatus;
+import com.website.springmvc.entities.OrderStatus;
 
 @Repository
-public class OrderstatusDAO extends DAO<orderstatus>{
+public class OrderStatusDAO extends DAO<OrderStatus>{
 	
 	@Autowired
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public List<orderstatus> getAll() {
+	public List<OrderStatus> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from orderstatus").list();
 	}
 
 	@Override
-	public orderstatus get(Long id) {
+	public OrderStatus get(Long id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return (orderstatus) session.get(orderstatus.class, new Long(id));
+		return (OrderStatus) session.get(OrderStatus.class, new Long(id));
 	}
 
 	@Override
-	public orderstatus add(orderstatus Order) {
+	public OrderStatus add(OrderStatus Order) {
 		Session session = this.sessionFactory.getCurrentSession();
 		session.save(Order);
 		return Order;
 	}
 
 	@Override
-	public Boolean update(orderstatus Order) {
+	public Boolean update(OrderStatus Order) {
 		Session session = this.sessionFactory.getCurrentSession();
 		try {
 			session.update(Order);
@@ -46,7 +46,7 @@ public class OrderstatusDAO extends DAO<orderstatus>{
 	}
 
 	@Override
-	public Boolean delete(orderstatus Order) {
+	public Boolean delete(OrderStatus Order) {
 		Session session = this.sessionFactory.getCurrentSession();
 		if (null != Order) {
 			try {
@@ -62,7 +62,7 @@ public class OrderstatusDAO extends DAO<orderstatus>{
 	@Override
 	public Boolean delete(Long id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		orderstatus Order = (orderstatus) session.load(orderstatus.class, new Long(id));
+		OrderStatus Order = (OrderStatus) session.load(OrderStatus.class, new Long(id));
 		if (null != Order) {
 			session.delete(Order);
 			return Boolean.TRUE;

@@ -7,35 +7,35 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.website.springmvc.entities.notification;
+import com.website.springmvc.entities.Notification;
 
 @Repository
-public class NotificationDAO extends DAO<notification>{
+public class NotificationDAO extends DAO<Notification>{
 
 	@Autowired
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public List<notification> getAll() {
+	public List<Notification> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from notification").list();
 	}
 
 	@Override
-	public notification get(Long id) {
+	public Notification get(Long id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return (notification) session.get(notification.class, new Long(id));
+		return (Notification) session.get(Notification.class, new Long(id));
 	}
 
 	@Override
-	public notification add(notification Noti) {
+	public Notification add(Notification Noti) {
 		Session session = this.sessionFactory.getCurrentSession();
 		session.save(Noti);
 		return Noti;
 	}
 
 	@Override
-	public Boolean update(notification Noti) {
+	public Boolean update(Notification Noti) {
 		Session session = this.sessionFactory.getCurrentSession();
 		try {
 			session.update(Noti);
@@ -46,7 +46,7 @@ public class NotificationDAO extends DAO<notification>{
 	}
 
 	@Override
-	public Boolean delete(notification Noti) {
+	public Boolean delete(Notification Noti) {
 		Session session = this.sessionFactory.getCurrentSession();
 		if (null != Noti) {
 			try {
@@ -62,7 +62,7 @@ public class NotificationDAO extends DAO<notification>{
 	@Override
 	public Boolean delete(Long id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		notification Noti = (notification) session.load(notification.class, new Long(id));
+		Notification Noti = (Notification) session.load(Notification.class, new Long(id));
 		if (null != Noti) {
 			session.delete(Noti);
 			return Boolean.TRUE;

@@ -7,37 +7,37 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.website.springmvc.entities.author;
-import com.website.springmvc.entities.category;
+import com.website.springmvc.entities.Author;
+import com.website.springmvc.entities.Category;
 
 
 @Repository
-public class CategoryDAO extends DAO<category>{
+public class CategoryDAO extends DAO<Category>{
 
 	@Autowired
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public List<category> getAll() {
+	public List<Category> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from category").list();
 	}
 
 	@Override
-	public category get(Long id) {
+	public Category get(Long id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return (category) session.get(category.class, new Long(id));
+		return (Category) session.get(Category.class, new Long(id));
 	}
 
 	@Override
-	public category add(category Cate) {
+	public Category add(Category Cate) {
 		Session session = this.sessionFactory.getCurrentSession();
 		session.save(Cate);
 		return Cate;
 	}
 
 	@Override
-	public Boolean update(category Cate) {
+	public Boolean update(Category Cate) {
 		Session session = this.sessionFactory.getCurrentSession();
 		try {
 			session.update(Cate);
@@ -48,7 +48,7 @@ public class CategoryDAO extends DAO<category>{
 	}
 
 	@Override
-	public Boolean delete(category Cate) {
+	public Boolean delete(Category Cate) {
 		Session session = this.sessionFactory.getCurrentSession();
 		if (null != Cate) {
 			try {
@@ -64,7 +64,7 @@ public class CategoryDAO extends DAO<category>{
 	@Override
 	public Boolean delete(Long id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		category Cate = (category) session.load(category.class, new Long(id));
+		Category Cate = (Category) session.load(Category.class, new Long(id));
 		if (null != Cate) {
 			session.delete(Cate);
 			return Boolean.TRUE;

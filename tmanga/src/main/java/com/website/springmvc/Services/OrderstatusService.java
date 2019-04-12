@@ -7,32 +7,32 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.website.springmvc.DAO.DAO;
-import com.website.springmvc.entities.orderstatus;
+import com.website.springmvc.entities.OrderStatus;
 
 @Transactional
 @Service
-public class OrderstatusService {
+public class OrderStatusService {
 	
 	@Autowired
-	DAO<orderstatus> orderDAO;
+	DAO<OrderStatus> orderDAO;
 	
-	public List<orderstatus> getAll(){
+	public List<OrderStatus> getAll(){
 		return orderDAO.getAll();
 	}
 	
-	public orderstatus get(Long id){
+	public OrderStatus get(Long id){
 		return orderDAO.get(id);
 	}
 	
-	public orderstatus add(orderstatus t){
+	public OrderStatus add(OrderStatus t){
 		return orderDAO.add(t);
 	}
 	
-	public Boolean update(orderstatus t){
+	public Boolean update(OrderStatus t){
 		return orderDAO.update(t);
 	}
 	
-	public Boolean delete(orderstatus t){
+	public Boolean delete(OrderStatus t){
 		return orderDAO.delete(t);
 	}
 	

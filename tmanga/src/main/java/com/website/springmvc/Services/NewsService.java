@@ -9,44 +9,44 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.website.springmvc.DAO.DAO;
-import com.website.springmvc.entities.news;
+import com.website.springmvc.entities.News;
 
 @Transactional
 @Service
 public class NewsService {
 	@Autowired
-	DAO<news> newsDao;
+	DAO<News> newsDao;
 
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	public List<news> getNewsForBanner(){
+	public List<News> getNewsForBanner(){
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from news where banner = 1").list();
 	}
 
-	public List<news> getNews(){
+	public List<News> getNews(){
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from news").list();
 	}
 	
-	public List<news> getAll() {
+	public List<News> getAll() {
 		return newsDao.getAll();
 	}
 
-	public news get(Long id) {
+	public News get(Long id) {
 		return newsDao.get(id);
 	}
 
-	public news add(news news) {
+	public News add(News news) {
 		return newsDao.add(news);
 	}
 
-	public Boolean update(news news) {
+	public Boolean update(News news) {
 		return newsDao.update(news);
 	}
 
-	public Boolean delete(news news) {
+	public Boolean delete(News news) {
 		return newsDao.delete(news);
 	}
 

@@ -7,35 +7,35 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.website.springmvc.entities.bill;
+import com.website.springmvc.entities.Bill;
 
 @Repository
-public class BillDAO extends DAO<bill>{
+public class BillDAO extends DAO<Bill>{
 
 	@Autowired
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public List<bill> getAll() {
+	public List<Bill> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
-		return session.createQuery("from bill").list();
+		return session.createQuery("from Bill").list();
 	}
 
 	@Override
-	public bill get(Long id) {
+	public Bill get(Long id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return (bill) session.get(bill.class, new Long(id));
+		return (Bill) session.get(Bill.class, new Long(id));
 	}
 
 	@Override
-	public bill add(bill Bil) {
+	public Bill add(Bill Bil) {
 		Session session = this.sessionFactory.getCurrentSession();
 		session.save(Bil);
 		return Bil;
 	}
 
 	@Override
-	public Boolean update(bill Bil) {
+	public Boolean update(Bill Bil) {
 		Session session = this.sessionFactory.getCurrentSession();
 		try {
 			session.update(Bil);
@@ -46,7 +46,7 @@ public class BillDAO extends DAO<bill>{
 	}
 
 	@Override
-	public Boolean delete(bill Bil) {
+	public Boolean delete(Bill Bil) {
 		Session session = this.sessionFactory.getCurrentSession();
 		if (null != Bil) {
 			try {
@@ -62,7 +62,7 @@ public class BillDAO extends DAO<bill>{
 	@Override
 	public Boolean delete(Long id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		bill Bil = (bill) session.load(bill.class, new Long(id));
+		Bill Bil = (Bill) session.load(Bill.class, new Long(id));
 		if (null != Bil) {
 			session.delete(Bil);
 			return Boolean.TRUE;

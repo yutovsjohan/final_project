@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.website.springmvc.DAO.DAO;
-import com.website.springmvc.entities.comic;
+import com.website.springmvc.entities.Comic;
 
 @Transactional
 @Service
@@ -19,9 +19,9 @@ public class ComicService {
 	private SessionFactory sessionFactory;
 	
 	@Autowired
-	DAO<comic> comicDao;
+	DAO<Comic> comicDao;
 		
-	public Boolean updateComic(comic comic) {
+	public Boolean updateComic(Comic comic) {
 		Session session = this.sessionFactory.getCurrentSession();
 		String hql = "update comic set amount = :amount where id = :id";
 		 
@@ -36,12 +36,12 @@ public class ComicService {
 		return false;
 	}
 	
-	public List<comic> getListComic(String name){
+	public List<Comic> getListComic(String name){
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from comic where name like :keyword").setParameter("keyword", "%" + name + "%").list();
 	}
 	
-	public List<comic> getListComic(String name, int firstResult, int maxResult){
+	public List<Comic> getListComic(String name, int firstResult, int maxResult){
 		Session session = this.sessionFactory.getCurrentSession();
 		Query query = session.createQuery("from comic where name like :keyword").setParameter("keyword", "%" + name + "%");
 		
@@ -51,22 +51,22 @@ public class ComicService {
 		return query.list();
 	}
 	
-	public List<comic> getListForAuthor(int id){
+	public List<Comic> getListForAuthor(int id){
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from comic where idAuthor = :keyword order by quantitySold desc").setParameter("keyword", id).setMaxResults(4).list();
 	}
 	
-	public comic get(String name) {
+	public Comic get(String name) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return (comic) session.createQuery("from comic where unsignedName like :keyword").setParameter("keyword", name).uniqueResult();
+		return (Comic) session.createQuery("from comic where unsignedName like :keyword").setParameter("keyword", name).uniqueResult();
 	}
 	
-	public comic get(int id) {
+	public Comic get(int id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return (comic) session.get(comic.class, new Integer(id));
+		return (Comic) session.get(Comic.class, new Integer(id));
 	}
 	
-	public List<comic> getListComic(String key, int id) {
+	public List<Comic> getListComic(String key, int id) {
 		Session session = this.sessionFactory.getCurrentSession();
 		String hql = "";
 		Query query = null;
@@ -86,7 +86,7 @@ public class ComicService {
 		return query.list(); 
 	}
 	
-	public List<comic> getListComic(String key, int id, int firstResult, int maxResult) {
+	public List<Comic> getListComic(String key, int id, int firstResult, int maxResult) {
 		Session session = this.sessionFactory.getCurrentSession();
 		String hql = "";
 		Query query = null;
@@ -110,48 +110,48 @@ public class ComicService {
 		return query.list(); 
 	}
 
-	public List<comic> getComicForTopSelling(){
+	public List<Comic> getComicForTopSelling(){
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from comic order by quantitySold desc").setMaxResults(12).list();
 	}
 
-	public List<comic> getNewComic(){
+	public List<Comic> getNewComic(){
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from comic order by publishDate desc").setMaxResults(36).list();
 	}
 
-	public List<comic> getNewComicInHomePage(){
+	public List<Comic> getNewComicInHomePage(){
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from comic order by publishDate desc").setMaxResults(4).list();
 	}
 
-	public List<comic> getOtherComic(){
+	public List<Comic> getOtherComic(){
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from comic where idCategory = 7 order by publishDate desc").list();
 	}
 	
-	public List<comic> getOtherComicInHomePage(){
+	public List<Comic> getOtherComicInHomePage(){
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from comic where idCategory = 7 order by publishDate desc").setMaxResults(4).list();
 	}
 	
-	public List<comic> getAll() {
+	public List<Comic> getAll() {
 		return comicDao.getAll();
 	}
 
-	public comic get(Long id) {
+	public Comic get(Long id) {
 		return comicDao.get(id);
 	}
 
-	public comic add(comic comic) {
+	public Comic add(Comic comic) {
 		return comicDao.add(comic);
 	}
 
-	public Boolean update(comic comic) {
+	public Boolean update(Comic comic) {
 		return comicDao.update(comic);
 	}
 
-	public Boolean delete(comic comic) {
+	public Boolean delete(Comic comic) {
 		return comicDao.delete(comic);
 	}
 

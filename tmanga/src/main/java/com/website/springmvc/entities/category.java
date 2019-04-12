@@ -15,7 +15,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "category", catalog = "manga")
-public class category implements java.io.Serializable{
+public class Category implements java.io.Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -33,15 +33,15 @@ public class category implements java.io.Serializable{
 	private byte status;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
-	private Set<comic> comics = new HashSet<comic>();
+	private Set<Comic> comics = new HashSet<Comic>();
 	
 	
-	public category() {
+	public Category() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 			
-	public category(int id, String name, String unsignedName, byte status, Set<comic> comics) {
+	public Category(int id, String name, String unsignedName, byte status, Set<Comic> comics) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -50,7 +50,7 @@ public class category implements java.io.Serializable{
 		this.comics = comics;
 	}
 
-	public category(String name, String unsignedName, byte status, Set<comic> comics) {
+	public Category(String name, String unsignedName, byte status, Set<Comic> comics) {
 		super();
 		this.name = name;
 		this.unsignedName = unsignedName;

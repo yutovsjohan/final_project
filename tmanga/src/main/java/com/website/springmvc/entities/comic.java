@@ -18,7 +18,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "comic", catalog = "manga")
-public class comic implements java.io.Serializable{
+public class Comic implements java.io.Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -35,15 +35,15 @@ public class comic implements java.io.Serializable{
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idCategory", nullable = false)
-	private category category;
+	private Category category;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idAuthor", nullable = false)
-	private author author;
+	private Author author;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idPublishCompany", nullable = false)
-	private publishcompany publishcompany;
+	private PublishCompany publishcompany;
 
 	@Column(name = "price")
 	private int price;
@@ -79,12 +79,12 @@ public class comic implements java.io.Serializable{
 	private byte status;
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idComic")
-	private Set<notification> notification = new HashSet<notification>();
+	private Set<Notification> notification = new HashSet<Notification>();
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "comic")
-	private Set<billdetail> billdetail = new HashSet<billdetail>();
+	private Set<BillDetail> billdetail = new HashSet<BillDetail>();
 			
-	public comic() {
+	public Comic() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -201,27 +201,27 @@ public class comic implements java.io.Serializable{
 		this.status = status;
 	}
 
-	public category getCategory() {
+	public Category getCategory() {
 		return category;
 	}
 
-	public void setCategory(category category) {
+	public void setCategory(Category category) {
 		this.category = category;
 	}
 
-	public author getAuthor() {
+	public Author getAuthor() {
 		return author;
 	}
 
-	public void setAuthor(author author) {
+	public void setAuthor(Author author) {
 		this.author = author;
 	}
 
-	public publishcompany getPublishcompany() {
+	public PublishCompany getPublishcompany() {
 		return publishcompany;
 	}
 
-	public void setPublishcompany(publishcompany publishcompany) {
+	public void setPublishcompany(PublishCompany publishcompany) {
 		this.publishcompany = publishcompany;
 	}
 

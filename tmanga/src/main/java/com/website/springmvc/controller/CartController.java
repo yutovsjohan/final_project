@@ -17,19 +17,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.website.springmvc.Services.BillService;
-import com.website.springmvc.Services.BilldetailService;
+import com.website.springmvc.Services.BillDetailService;
 import com.website.springmvc.Services.ComicService;
-import com.website.springmvc.Services.OrderstatusService;
+import com.website.springmvc.Services.OrderStatusService;
 import com.website.springmvc.Services.UsersService;
 import com.website.springmvc.config.MyConstants;
-import com.website.springmvc.entities.bill;
-import com.website.springmvc.entities.billdetail;
-import com.website.springmvc.entities.comic;
-import com.website.springmvc.entities.orderstatus;
-import com.website.springmvc.entities.users;
+import com.website.springmvc.entities.Bill;
+import com.website.springmvc.entities.BillDetail;
+import com.website.springmvc.entities.Comic;
+import com.website.springmvc.entities.OrderStatus;
+import com.website.springmvc.entities.Users;
 import com.website.springmvc.libs.GetModel;
-import com.website.springmvc.libs.cart;
-import com.website.springmvc.libs.item;
+import com.website.springmvc.libs.Cart;
+import com.website.springmvc.libs.Item;
 
 @Controller
 @RequestMapping(value="/controller")
@@ -44,13 +44,13 @@ public class CartController {
 	BillService billService;
 	
 	@Autowired
-	BilldetailService billDetailService;
+	BillDetailService billDetailService;
 	
 	@Autowired
 	UsersService usersService;
 	
 	@Autowired
-	OrderstatusService orderStatusService;
+	OrderStatusService orderStatusService;
 	
 	/*@Autowired
     public JavaMailSender emailSender;
@@ -104,17 +104,17 @@ public class CartController {
 		String str = "";
 		
 		if(amount < 0) {
-			str = "Số lượng không thể âm";
+            str = "Số lượng không thể âm";
 		}
 		else {
-			comic comic = comicService.get(idComic);
-			cart cart = new cart();
+			Comic comic = comicService.get(idComic);
+			Cart cart = new Cart();
 			int amountInCart = 0;
 			boolean f = false;
 			
 			if(session.getAttribute("cart") != null) {
-				ArrayList<item> items =  (ArrayList<item>) ((cart) session.getAttribute("cart")).getList();
-				HashMap<Integer, item> hashcart = new HashMap<>();
+				ArrayList<Item> items =  (ArrayList<Item>) ((Cart) session.getAttribute("cart")).getList();
+				HashMap<Integer, Item> hashcart = new HashMap<>();
 				for (int i = 0; i < items.size(); i++) {
 					hashcart.put(items.get(i).getComic().getId(), items.get(i));
 					if(items.get(i).getComic().getId() == idComic) {
@@ -129,12 +129,12 @@ public class CartController {
 			
 			if(comic.getAmount() == 0) {
 				cart.delete(idComic);
-				str = "Truyện này tạm hết hàng";
+                str = "Truyện này tạm hết hàng";
 			}
 			else {	
 				if(action.equalsIgnoreCase("add")) {
 					if( amount + amountInCart > comic.getAmount()) {
-						str = comic.getName() + " cần số lượng tối đa được phép mua là " + comic.getAmount();
+                        str = comic.getName() + " cần số lượng tối đa được phép mua là " + comic.getAmount();
 					}
 					else if(amount != 0){
 						cart.add(idComic, comic, amount);
@@ -149,7 +149,7 @@ public class CartController {
 						str = "removed";
 					}
 					else if( amount > comic.getAmount() || amount < 0) {
-						str = comic.getName() + " cần số lượng tối đa được phép mua là " + comic.getAmount();
+                        str = comic.getName() + " cần số lượng tối đa được phép mua là " + comic.getAmount();
 					}
 					else {
 						amount -= cart.getItemForId(idComic).getAmount();
@@ -177,7 +177,7 @@ public class CartController {
 	public void getRemoveItem(@RequestParam("id") int idComic, HttpSession session, HttpServletResponse response){
 		String str = "";
 		if(session.getAttribute("cart") != null) {
-			cart cart = (cart) session.getAttribute("cart");
+			Cart cart = (Cart) session.getAttribute("cart");
 			cart.delete(idComic);
 			if(cart.quantity() == 0) {
 				session.removeAttribute("cart");
@@ -207,7 +207,7 @@ public class CartController {
 		boolean f = true;
 		
 		if(session.getAttribute("cart") != null && session.getAttribute("account") != null) {
-			ArrayList<item> items =  (ArrayList<item>) ((cart) session.getAttribute("cart")).getList();
+			ArrayList<Item> items =  (ArrayList<Item>) ((Cart) session.getAttribute("cart")).getList();
 			
 			for (int i = 0; i < items.size(); i++) {
 				if(items.get(i).getComic().getAmount() < items.get(i).getAmount()) {
@@ -217,33 +217,33 @@ public class CartController {
 			}
 			
 			if(f) {
-				bill bill = new bill();
-				bill.setIdUser( (users) session.getAttribute("account"));
-				bill.setTotal(((cart) session.getAttribute("cart")).total() + 15000 );
-				bill.setStatus("Chưa xác nhận đơn hàng");
+				Bill bill = new Bill();
+				bill.setIdUser( (Users) session.getAttribute("account"));
+				bill.setTotal(((Cart) session.getAttribute("cart")).total() + 15000 );
+                bill.setStatus("Chưa xác nhận đơn hàng");
 				bill.setDelivery(usersService.get(2));
 				billService.add(bill);
 										
 				
-				billdetail billdetail = new billdetail();
-				comic comic = new comic();
+				BillDetail Billdetail = new BillDetail();
+				Comic comic = new Comic();
 				
 				for (int i = 0; i < items.size(); i++) {
 					comic = items.get(i).getComic();
 					
-					billdetail.setBill(bill);				
-					billdetail.setComic(comic);
-					billdetail.setAmount((byte) items.get(i).getAmount());
-					billdetail.setPrice(items.get(i).getComic().getPrice());
-					billDetailService.add(billdetail);
+					Billdetail.setBill(bill);				
+					Billdetail.setComic(comic);
+					Billdetail.setAmount((byte) items.get(i).getAmount());
+					Billdetail.setPrice(items.get(i).getComic().getPrice());
+					billDetailService.add(Billdetail);
 					
 					comic.setQuantitySold(comic.getQuantitySold() + items.get(i).getAmount());
 					comic.setAmount(comic.getAmount() - items.get(i).getAmount());
 					comicService.update(comic);
 				}
 				
-				orderstatus orderstatus = new orderstatus();
-				orderstatus.setContent("Đặt hàng thành công");
+				OrderStatus orderstatus = new OrderStatus();
+                orderstatus.setContent("Đặt hàng thành công");
 				orderstatus.setNote("kh");
 				orderstatus.setBill(bill);
 				orderStatusService.add(orderstatus);
@@ -259,11 +259,11 @@ public class CartController {
 		
 		if(f) {
 			model.addAttribute("alert","success");
-			model.addAttribute("mes","Đặt hàng thành công");
+            model.addAttribute("mes","Đặt hàng thành công");
 		}
 		else {
 			model.addAttribute("alert","danger");
-			model.addAttribute("mes","Đặt hàng thất bại");
+            model.addAttribute("mes","Đặt hàng thất bại");
 		}		
 		
 		return "redirect:/controller/cart";
