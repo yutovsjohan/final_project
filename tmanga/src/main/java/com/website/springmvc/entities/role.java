@@ -28,9 +28,12 @@ public class Role implements java.io.Serializable{
 	
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "role")
 	private Set<Users> Users = new HashSet<Users>();
 =======
+=======
+>>>>>>> parent of fba3364... fix error, update project part 2
 =======
 >>>>>>> parent of fba3364... fix error, update project part 2
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "role")

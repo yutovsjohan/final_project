@@ -65,7 +65,11 @@ public class CustomerController {
 			
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			int id = ((Users) session.getAttribute("account")).getId();
+=======
+			long id = ((users) session.getAttribute("account")).getId();
+>>>>>>> parent of fba3364... fix error, update project part 2
 =======
 			long id = ((users) session.getAttribute("account")).getId();
 >>>>>>> parent of fba3364... fix error, update project part 2

@@ -22,7 +22,11 @@ public class BillService {
 	
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public List<Bill> getBillOfUser(int iduser) {
+=======
+	public List<bill> getBillOfUser(long iduser) {
+>>>>>>> parent of fba3364... fix error, update project part 2
 =======
 	public List<bill> getBillOfUser(long iduser) {
 >>>>>>> parent of fba3364... fix error, update project part 2

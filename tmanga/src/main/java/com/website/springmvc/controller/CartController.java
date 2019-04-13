@@ -230,6 +230,9 @@ public class CartController {
 				bill.setStatus("Chưa xác nhận đơn hàng");
 				//bill.setDelivery(usersService.get(2));
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of fba3364... fix error, update project part 2
+=======
 >>>>>>> parent of fba3364... fix error, update project part 2
 =======
 >>>>>>> parent of fba3364... fix error, update project part 2

@@ -142,6 +142,7 @@ public class UserController {
 	
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	private int checkLogin(String email, String password) {
 		List<Users> listUsers = usersService.getAll();
 		Users u = new Users();
@@ -149,6 +150,8 @@ public class UserController {
 		for (int i = 0; i < listUsers.size(); i++) {
 			u = listUsers.get(i);
 =======
+=======
+>>>>>>> parent of fba3364... fix error, update project part 2
 =======
 >>>>>>> parent of fba3364... fix error, update project part 2
 	private Long checkLogin(String email, String password) {
