@@ -22,12 +22,12 @@ public class NewsService {
 	
 	public List<News> getNewsForBanner(){
 		Session session = this.sessionFactory.getCurrentSession();
-		return session.createQuery("from news where banner = 1").list();
+		return session.createQuery("from News where banner = 1").list();
 	}
 
 	public List<News> getNews(){
 		Session session = this.sessionFactory.getCurrentSession();
-		return session.createQuery("from news").list();
+		return session.createQuery("from News").list();
 	}
 	
 	public List<News> getAll() {

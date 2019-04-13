@@ -1,4 +1,3 @@
-
 $(document).ready(function(){
 //page login
 	$('.forget-password').click(function(){
@@ -126,4 +125,35 @@ $(document).ready(function(){
 		})
     });
     
+    $('.pagination li').click( function() {
+    	var data=$(this).attr('data');
+    	resetActive();
+    	
+    	$(this).addClass('active');
+    	
+//    	var route = "";
+//    	
+//    	$.ajax({
+//    			url : route,
+//    			type : 'GET',
+//    		data : {
+//    			id : id			
+//    		},
+//    		success: function(data){
+//    			//console.log(data); 
+//    			if(data=="removed"){								
+//    				
+//    			}
+//    		}
+//    	})
+    	
+    	
+    });
+    
+    function resetActive(){
+    	$('.pagination li').each(function () {
+    		$(this).removeClass('active');
+    	})
+    }
+   
 })

@@ -20,21 +20,9 @@ public class BillService {
 	@Autowired
 	DAO<Bill> billDAO;
 	
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	public List<Bill> getBillOfUser(int iduser) {
-=======
-	public List<bill> getBillOfUser(long iduser) {
->>>>>>> parent of fba3364... fix error, update project part 2
-=======
-	public List<bill> getBillOfUser(long iduser) {
->>>>>>> parent of fba3364... fix error, update project part 2
-=======
-	public List<bill> getBillOfUser(long iduser) {
->>>>>>> parent of fba3364... fix error, update project part 2
 		Session session = this.sessionFactory.getCurrentSession();
-		return session.createQuery("from bill where idUser.id = :keyword").setParameter("keyword", iduser).list();
+		return session.createQuery("from Bill where idUser.id = :keyword").setParameter("keyword", iduser).list();
 	}
 	
 	public Bill get(int id) {

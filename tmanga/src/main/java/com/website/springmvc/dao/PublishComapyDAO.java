@@ -19,7 +19,7 @@ public class PublishComapyDAO extends DAO<PublishCompany>{
 	@Override
 	public List<PublishCompany> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
-		return session.createQuery("from publishcompany").list();
+		return session.createQuery("from PublishCompany").list();
 	}
 
 	@Override

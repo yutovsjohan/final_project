@@ -18,7 +18,7 @@ public class NotificationDAO extends DAO<Notification>{
 	@Override
 	public List<Notification> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
-		return session.createQuery("from notification").list();
+		return session.createQuery("from Notification").list();
 	}
 
 	@Override

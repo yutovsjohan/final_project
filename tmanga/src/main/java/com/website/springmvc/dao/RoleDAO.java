@@ -18,7 +18,7 @@ public class RoleDAO extends DAO<Role>{
 	@Override
 	public List<Role> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
-		return session.createQuery("from role").list();
+		return session.createQuery("from Role").list();
 	}
 
 	@Override

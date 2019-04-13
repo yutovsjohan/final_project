@@ -217,25 +217,11 @@ public class CartController {
 			}
 			
 			if(f) {
-<<<<<<< HEAD
 				Bill bill = new Bill();
 				bill.setIdUser( (Users) session.getAttribute("account"));
 				bill.setTotal(((Cart) session.getAttribute("cart")).total() + 15000 );
                 bill.setStatus("Chưa xác nhận đơn hàng");
 				bill.setDelivery(usersService.get(2));
-=======
-				bill bill = new bill();
-				//bill.setIdUser( (users) session.getAttribute("account"));
-				bill.setTotal(((cart) session.getAttribute("cart")).total() + 15000 );
-				bill.setStatus("Chưa xác nhận đơn hàng");
-				//bill.setDelivery(usersService.get(2));
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> parent of fba3364... fix error, update project part 2
-=======
->>>>>>> parent of fba3364... fix error, update project part 2
-=======
->>>>>>> parent of fba3364... fix error, update project part 2
 				billService.add(bill);
 										
 				

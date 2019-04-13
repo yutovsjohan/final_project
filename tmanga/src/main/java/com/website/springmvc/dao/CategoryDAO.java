@@ -20,7 +20,7 @@ public class CategoryDAO extends DAO<Category>{
 	@Override
 	public List<Category> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
-		return session.createQuery("from category").list();
+		return session.createQuery("from Category").list();
 	}
 
 	@Override

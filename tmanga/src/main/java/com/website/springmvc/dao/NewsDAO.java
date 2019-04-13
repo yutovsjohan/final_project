@@ -18,7 +18,7 @@ public class NewsDAO extends DAO<News>{
 	@Override
 	public List<News> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
-		return session.createQuery("from news").list();
+		return session.createQuery("from News").list();
 	}
 
 	@Override

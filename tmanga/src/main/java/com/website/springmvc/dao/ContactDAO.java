@@ -19,7 +19,7 @@ public class ContactDAO extends DAO<Contact>{
 	@Override
 	public List<Contact> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
-		return session.createQuery("from contact").list();
+		return session.createQuery("from Contact").list();
 	}
 
 	@Override

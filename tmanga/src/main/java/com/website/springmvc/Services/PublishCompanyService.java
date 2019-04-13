@@ -27,7 +27,7 @@ public class PublishCompanyService {
 	
 	public PublishCompany get(String name) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return (PublishCompany) session.createQuery("from publishcompany where unsignedName like :keyword").setParameter("keyword", name).uniqueResult();
+		return (PublishCompany) session.createQuery("from PublishCompany where unsignedName like :keyword").setParameter("keyword", name).uniqueResult();
 	}
 	
 	public List<PublishCompany> getAll() {

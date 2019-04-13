@@ -21,26 +21,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-<<<<<<< HEAD
 @Table(name = "Users", catalog = "manga")
 public class Users implements java.io.Serializable{
 	private static final long serialVersionUID = 1L;
-=======
-@Table(name = "users", catalog = "manga")
-public class users implements java.io.Serializable{
-	private static final Long serialVersionUID = 1L;
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> parent of fba3364... fix error, update project part 2
-=======
->>>>>>> parent of fba3364... fix error, update project part 2
-=======
->>>>>>> parent of fba3364... fix error, update project part 2
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
-	private Long id;
+	private int id;
 	
 	@Column(name = "name", length = 255)
 	private String name;
@@ -78,83 +66,7 @@ public class users implements java.io.Serializable{
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "delivery")
 	private Set<Bill> delivery = new HashSet<Bill>();
 
-<<<<<<< HEAD
 	public Users() {
-=======
-	public List<comic> getComics() {
-		return comics;
-	}
-
-	public void setComics(List<comic> comics) {
-		this.comics = comics;
-	}
-
-	public Set<bill> getDelivery() {
-		return delivery;
-	}
-
-	public void setDelivery(Set<bill> delivery) {
-		this.delivery = delivery;
-	}
-
-	public Set<bill> getBill() {
-		return bill;
-	}
-
-	public void setBill(Set<bill> bill) {
-		this.bill = bill;
-	}
-
-	public List<comic> getComics() {
-		return comics;
-	}
-
-	public void setComics(List<comic> comics) {
-		this.comics = comics;
-	}
-
-	public Set<bill> getDelivery() {
-		return delivery;
-	}
-
-	public void setDelivery(Set<bill> delivery) {
-		this.delivery = delivery;
-	}
-
-	public Set<bill> getBill() {
-		return bill;
-	}
-
-	public void setBill(Set<bill> bill) {
-		this.bill = bill;
-	}
-
-	public List<comic> getComics() {
-		return comics;
-	}
-
-	public void setComics(List<comic> comics) {
-		this.comics = comics;
-	}
-
-	public Set<bill> getDelivery() {
-		return delivery;
-	}
-
-	public void setDelivery(Set<bill> delivery) {
-		this.delivery = delivery;
-	}
-
-	public Set<bill> getBill() {
-		return bill;
-	}
-
-	public void setBill(Set<bill> bill) {
-		this.bill = bill;
-	}
-
-	public users() {
->>>>>>> parent of fba3364... fix error, update project part 2
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -168,19 +80,7 @@ public class users implements java.io.Serializable{
 		this.phone = phone;
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	public Users(int id, String name, String email, String password, String address, String phone) {
-=======
-	public users(Long id, String name, String email, String password, String address, String phone) {
->>>>>>> parent of fba3364... fix error, update project part 2
-=======
-	public users(Long id, String name, String email, String password, String address, String phone) {
->>>>>>> parent of fba3364... fix error, update project part 2
-=======
-	public users(Long id, String name, String email, String password, String address, String phone) {
->>>>>>> parent of fba3364... fix error, update project part 2
 		super();
 		this.id = id;
 		this.name = name;
@@ -190,11 +90,11 @@ public class users implements java.io.Serializable{
 		this.phone = phone;
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

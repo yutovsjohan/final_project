@@ -18,7 +18,7 @@ public class BillDetailDAO extends DAO<BillDetail>{
 	@Override
 	public List<BillDetail> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
-		return session.createQuery("from billdetail").list();
+		return session.createQuery("from BillDetail").list();
 	}
 
 	@Override

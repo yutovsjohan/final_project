@@ -20,7 +20,7 @@ public class ComicDAO extends DAO<Comic>{
 	@Override
 	public List<Comic> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
-		return session.createQuery("from comic").list();
+		return session.createQuery("from Comic").list();
 	}
 
 	@Override

@@ -28,7 +28,7 @@ public class Bill implements java.io.Serializable{
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
-	private Long id;
+	private int id;
 	
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
@@ -67,42 +67,16 @@ public class Bill implements java.io.Serializable{
 	@JoinColumn(name = "delivery", nullable = false)
 	private Users delivery;
 		
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	public Bill() {
-=======
-=======
->>>>>>> parent of fba3364... fix error, update project part 2
-=======
->>>>>>> parent of fba3364... fix error, update project part 2
-	public users getDelivery() {
-		return delivery;
-	}
-
-	public void setDelivery(users delivery) {
-		this.delivery = delivery;
-	}
-
-	public users getIdUser() {
-		return idUser;
-	}
-
-	public void setIdUser(users idUser) {
-		this.idUser = idUser;
-	}
-
-	public bill() {
->>>>>>> parent of fba3364... fix error, update project part 2
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -177,9 +151,6 @@ public class Bill implements java.io.Serializable{
 	public void setBilldetail(Set<BillDetail> billdetail) {
 		this.billdetail = billdetail;
 	}
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 	public Users getIdUser() {
 		return idUser;
@@ -197,10 +168,4 @@ public class Bill implements java.io.Serializable{
 		this.delivery = delivery;
 	}
 	
-=======
->>>>>>> parent of fba3364... fix error, update project part 2
-=======
->>>>>>> parent of fba3364... fix error, update project part 2
-=======
->>>>>>> parent of fba3364... fix error, update project part 2
 }

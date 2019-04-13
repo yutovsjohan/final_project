@@ -22,7 +22,7 @@ public class AuthorService {
 	
 	public Author get(String name) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return (Author) session.createQuery("from author where unsignedName like :keyword").setParameter("keyword", name).uniqueResult();
+		return (Author) session.createQuery("from Author where unsignedName like :keyword").setParameter("keyword", name).uniqueResult();
 	}
 	
 	public Author get(int id) {

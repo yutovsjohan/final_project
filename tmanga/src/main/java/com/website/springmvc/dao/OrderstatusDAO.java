@@ -18,7 +18,7 @@ public class OrderStatusDAO extends DAO<OrderStatus>{
 	@Override
 	public List<OrderStatus> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
-		return session.createQuery("from orderstatus").list();
+		return session.createQuery("from OrderStatus").list();
 	}
 
 	@Override

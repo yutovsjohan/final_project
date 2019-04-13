@@ -55,7 +55,7 @@ public class GetModel {
 		getSideBar(model);	
 		
 		model.addObject("views","register");
-		model.addObject("title","Ä�Äƒng kÃ½");
+		model.addObject("title","Đăng ký");
 			
 		model.addObject("users",new Users());
 	}
@@ -64,7 +64,7 @@ public class GetModel {
 		getSideBar(model);
 		
 		model.addObject("views","login");
-		model.addObject("title","Ä�Äƒng nháº­p");		
+		model.addObject("title","Đăng nhập");		
 	}
 	
 	public void getCart(ModelAndView model){
@@ -72,28 +72,28 @@ public class GetModel {
 		model.setViewName("layout");
 		model.addObject("sb","");
 		model.addObject("views","cart");
-		model.addObject("title","Giá»� hÃ ng");
+		model.addObject("title","Giỏ hàng");
 	}
 	
 	public void getContact(ModelAndView model){		
 		getSideBar(model);
 		
 		model.addObject("views","contact");
-		model.addObject("title","LiÃªn há»‡");		
+		model.addObject("title","Liên hệ");		
 	}
 	
 	public void getIntroduce(ModelAndView model){		
 		getSideBar(model);
 		
 		model.addObject("views","introduce");
-		model.addObject("title","Giá»›i thiá»‡u");		
+		model.addObject("title","Giới thiệu");		
 	}
 	
 	public void getTrackOrder(ModelAndView model){		
 		getSideBar(model);
 		
 		model.addObject("views","trackOrder");
-		model.addObject("title","Theo dÃµi Ä‘Æ¡n hÃ ng");		
+		model.addObject("title","Theo dõi đơn hàng");		
 	}
 	
 	public void getSideBarCustomer(ModelAndView model) {
@@ -105,20 +105,20 @@ public class GetModel {
 		getSideBarCustomer(model);
 				
 		model.addObject("views","customer/customerEditInformation");
-		model.addObject("title","TÃ i khoáº£n cá»§a tÃ´i");
+		model.addObject("title","Tài khoản của tôi");
 	}
 	
 	public void getFavoriteList(ModelAndView model) {
 		getSideBarCustomer(model);
 				
 		model.addObject("views","customer/favoriteList");
-		model.addObject("title","Danh sÃ¡ch sáº£n pháº©m yÃªu thÃ­ch");
+		model.addObject("title","Danh sách yêu thích");
 	}
 	
 	public void getOrderHistory(ModelAndView model) {
 		getSideBarCustomer(model);
 				
 		model.addObject("views","customer/orderHistory");
-		model.addObject("title","Ä�Æ¡n hÃ ng Ä‘Ã£ Ä‘áº·t");
+		model.addObject("title","Đơn hàng đã đặt");
 	}
 }

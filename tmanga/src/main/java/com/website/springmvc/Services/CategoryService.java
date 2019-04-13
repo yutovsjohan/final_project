@@ -27,7 +27,7 @@ public class CategoryService {
 	
 	public Category get(String name) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return (Category) session.createQuery("from category where unsignedName like :keyword").setParameter("keyword", name).uniqueResult();
+		return (Category) session.createQuery("from Category where unsignedName like :keyword").setParameter("keyword", name).uniqueResult();
 	}
 	public List<Category> getAll() {
 		return categoryDao.getAll();

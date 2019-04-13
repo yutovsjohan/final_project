@@ -18,7 +18,7 @@ public class AuthorDAO extends DAO<Author>{
 	@Override
 	public List<Author> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
-		return session.createQuery("from author").list();
+		return session.createQuery("from Author").list();
 	}
 
 	@Override
