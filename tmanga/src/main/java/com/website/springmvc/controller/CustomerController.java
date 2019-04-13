@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.website.springmvc.Services.BillService;
-import com.website.springmvc.Services.BilldetailService;
+import com.website.springmvc.Services.BillDetailService;
 import com.website.springmvc.Services.ComicService;
 import com.website.springmvc.Services.UsersService;
-import com.website.springmvc.entities.users;
+import com.website.springmvc.entities.Users;
 import com.website.springmvc.libs.GetModel;
 
 @Controller
@@ -22,7 +22,7 @@ public class CustomerController {
 	private UsersService usersService;
 	
 	@Autowired
-	private BilldetailService billdetailService; 
+	private BillDetailService billDetailService; 
 	
 	@Autowired
 	private BillService billService; 
@@ -63,7 +63,7 @@ public class CustomerController {
 		if(session.getAttribute("account") != null) {
 			getModel.getOrderHistory(model);
 			
-			int id = ((users) session.getAttribute("account")).getId();
+			int id = ((Users) session.getAttribute("account")).getId();
 			model.addObject("bills", billService.getBillOfUser(id));
 		}
 		else {

@@ -16,7 +16,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "news", catalog = "manga")
-public class news implements java.io.Serializable{
+public class News implements java.io.Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -50,7 +50,7 @@ public class news implements java.io.Serializable{
     @Column(name = "created_at", nullable = false, updatable = false)
 	private Date created_at;
 		
-	public news(String title, String unsignedTitle, String summary, String content, String image, byte status,
+	public News(String title, String unsignedTitle, String summary, String content, String image, byte status,
 			byte banner, Date created_at) {
 		super();
 		this.title = title;
@@ -63,7 +63,7 @@ public class news implements java.io.Serializable{
 		this.created_at = created_at;
 	}
 
-	public news(int id, String title, String unsignedTitle, String summary, String content, String image, byte status,
+	public News(int id, String title, String unsignedTitle, String summary, String content, String image, byte status,
 			byte banner, Date created_at) {
 		super();
 		this.id = id;
@@ -77,7 +77,7 @@ public class news implements java.io.Serializable{
 		this.created_at = created_at;
 	}
 
-	public news() {
+	public News() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

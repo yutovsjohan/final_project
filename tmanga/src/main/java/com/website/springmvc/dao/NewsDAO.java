@@ -7,35 +7,35 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.website.springmvc.entities.news;
+import com.website.springmvc.entities.News;
 
 @Repository
-public class NewsDAO extends DAO<news>{
+public class NewsDAO extends DAO<News>{
 
 	@Autowired
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public List<news> getAll() {
+	public List<News> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from news").list();
 	}
 
 	@Override
-	public news get(Long id) {
+	public News get(Long id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return (news) session.get(news.class, new Long(id));
+		return (News) session.get(News.class, new Long(id));
 	}	
 
 	@Override
-	public news add(news News) {
+	public News add(News News) {
 		Session session = this.sessionFactory.getCurrentSession();
 		session.save(News);
 		return News;
 	}
 
 	@Override
-	public Boolean update(news News) {
+	public Boolean update(News News) {
 		Session session = this.sessionFactory.getCurrentSession();
 		try {
 			session.update(News);
@@ -46,7 +46,7 @@ public class NewsDAO extends DAO<news>{
 	}
 
 	@Override
-	public Boolean delete(news News) {
+	public Boolean delete(News News) {
 		Session session = this.sessionFactory.getCurrentSession();
 		if (null != News) {
 			try {
@@ -62,7 +62,7 @@ public class NewsDAO extends DAO<news>{
 	@Override
 	public Boolean delete(Long id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		news News = (news) session.load(news.class, new Long(id));
+		News News = (News) session.load(News.class, new Long(id));
 		if (null != News) {
 			session.delete(News);
 			return Boolean.TRUE;

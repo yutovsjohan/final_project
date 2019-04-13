@@ -22,7 +22,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "bill", catalog = "manga")
-public class bill implements java.io.Serializable{
+public class Bill implements java.io.Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -54,20 +54,20 @@ public class bill implements java.io.Serializable{
 	private String note;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "bill")
-	private Set<orderstatus> orderstatus = new HashSet<orderstatus>();
+	private Set<OrderStatus> orderstatus = new HashSet<OrderStatus>();
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "comic")
-	private Set<billdetail> billdetail = new HashSet<billdetail>();
+	private Set<BillDetail> billdetail = new HashSet<BillDetail>();
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idUser", nullable = false)
-	private users idUser;
+	private Users idUser;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "delivery", nullable = false)
-	private users delivery;
+	private Users delivery;
 		
-	public bill() {
+	public Bill() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -136,35 +136,35 @@ public class bill implements java.io.Serializable{
 		this.note = note;
 	}
 
-	public Set<orderstatus> getOrderstatus() {
+	public Set<OrderStatus> getOrderstatus() {
 		return orderstatus;
 	}
 
-	public void setOrderstatus(Set<orderstatus> orderstatus) {
+	public void setOrderstatus(Set<OrderStatus> orderstatus) {
 		this.orderstatus = orderstatus;
 	}
 
-	public Set<billdetail> getBilldetail() {
+	public Set<BillDetail> getBilldetail() {
 		return billdetail;
 	}
 
-	public void setBilldetail(Set<billdetail> billdetail) {
+	public void setBilldetail(Set<BillDetail> billdetail) {
 		this.billdetail = billdetail;
 	}
 
-	public users getIdUser() {
+	public Users getIdUser() {
 		return idUser;
 	}
 
-	public void setIdUser(users idUser) {
+	public void setIdUser(Users idUser) {
 		this.idUser = idUser;
 	}
 
-	public users getDelivery() {
+	public Users getDelivery() {
 		return delivery;
 	}
 
-	public void setDelivery(users delivery) {
+	public void setDelivery(Users delivery) {
 		this.delivery = delivery;
 	}
 	

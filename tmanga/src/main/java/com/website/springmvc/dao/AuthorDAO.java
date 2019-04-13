@@ -7,35 +7,35 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.website.springmvc.entities.author;
+import com.website.springmvc.entities.Author;
 
 @Repository
-public class AuthorDAO extends DAO<author>{
+public class AuthorDAO extends DAO<Author>{
 	
 	@Autowired
 	private SessionFactory sessionFactory;	
 	
 	@Override
-	public List<author> getAll() {
+	public List<Author> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from author").list();
 	}
 
 	@Override
-	public author get(Long id) {
+	public Author get(Long id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return (author) session.get(author.class, new Long(id));
+		return (Author) session.get(Author.class, new Long(id));
 	}
 
 	@Override
-	public author add(author Au) {
+	public Author add(Author Au) {
 		Session session = this.sessionFactory.getCurrentSession();
 		session.save(Au);
 		return Au;
 	}
 
 	@Override
-	public Boolean update(author Au) {
+	public Boolean update(Author Au) {
 		Session session = this.sessionFactory.getCurrentSession();
 		try {
 			session.update(Au);
@@ -46,7 +46,7 @@ public class AuthorDAO extends DAO<author>{
 	}
 
 	@Override
-	public Boolean delete(author Au) {
+	public Boolean delete(Author Au) {
 		Session session = this.sessionFactory.getCurrentSession();
 		if (null != Au) {
 			try {
@@ -62,7 +62,7 @@ public class AuthorDAO extends DAO<author>{
 	@Override
 	public Boolean delete(Long id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		author Au = (author) session.load(author.class, new Long(id));
+		Author Au = (Author) session.load(Author.class, new Long(id));
 		if (null != Au) {
 			session.delete(Au);
 			return Boolean.TRUE;

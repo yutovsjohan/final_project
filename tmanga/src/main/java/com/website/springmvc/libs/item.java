@@ -1,27 +1,27 @@
 package com.website.springmvc.libs;
 
-import com.website.springmvc.entities.comic;
+import com.website.springmvc.entities.Comic;
 
-public class item {
-	comic comic;
+public class Item {
+	Comic comic;
 	int amount;
 	
-	public item() {
+	public Item() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public item(comic comic, int amount) {
+	public Item(Comic comic, int amount) {
 		super();
 		this.comic = comic;
 		this.amount = amount;
 	}
 
-	public comic getComic() {
+	public Comic getComic() {
 		return comic;
 	}
 
-	public void setComic(comic comic) {
+	public void setComic(Comic comic) {
 		this.comic = comic;
 	}
 

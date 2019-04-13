@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "notification", catalog = "manga")
-public class notification implements java.io.Serializable{
+public class Notification implements java.io.Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -38,9 +38,9 @@ public class notification implements java.io.Serializable{
 		
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idComic", nullable = false)
-	private comic idComic;
+	private Comic idComic;
 	
-	public notification() {
+	public Notification() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

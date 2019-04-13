@@ -7,32 +7,32 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.website.springmvc.DAO.DAO;
-import com.website.springmvc.entities.notification;
+import com.website.springmvc.entities.Notification;
 
 @Transactional
 @Service
 public class NotificationService {
 	
 	@Autowired
-	DAO<notification> notiDAO;
+	DAO<Notification> notiDAO;
 	
-	public List<notification> getAll(){
+	public List<Notification> getAll(){
 		return notiDAO.getAll();
 	}
 	
-	public notification get(Long id){
+	public Notification get(Long id){
 		return notiDAO.get(id);
 	}
 	
-	public notification add(notification t){
+	public Notification add(Notification t){
 		return notiDAO.add(t);
 	}
 	
-	public Boolean update(notification t){
+	public Boolean update(Notification t){
 		return notiDAO.update(t);
 	}
 	
-	public Boolean delete(notification t){
+	public Boolean delete(Notification t){
 		return notiDAO.delete(t);
 	}
 	

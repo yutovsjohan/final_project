@@ -7,36 +7,36 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.website.springmvc.DAO.DAO;
-import com.website.springmvc.entities.role;
+import com.website.springmvc.entities.Role;
 
 @Transactional
 @Service
 public class RoleService {
 	
 	@Autowired
-	DAO<role> roleDAO;
+	DAO<Role> RoleDAO;
 	
-	public List<role> getAll(){
-		return roleDAO.getAll();
+	public List<Role> getAll(){
+		return RoleDAO.getAll();
 	}
 	
-	public role get(Long id){
-		return roleDAO.get(id);
+	public Role get(Long id){
+		return RoleDAO.get(id);
 	}
 	
-	public role add(role t){
-		return roleDAO.add(t);
+	public Role add(Role t){
+		return RoleDAO.add(t);
 	}
 	
-	public Boolean update(role t){
-		return roleDAO.update(t);
+	public Boolean update(Role t){
+		return RoleDAO.update(t);
 	}
 	
-	public Boolean delete(role t){
-		return roleDAO.delete(t);
+	public Boolean delete(Role t){
+		return RoleDAO.delete(t);
 	}
 	
 	public Boolean delete(Long id){
-		return roleDAO.delete(id);
+		return RoleDAO.delete(id);
 	}
 }

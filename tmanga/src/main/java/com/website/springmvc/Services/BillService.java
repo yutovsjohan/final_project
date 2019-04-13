@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.website.springmvc.DAO.DAO;
-import com.website.springmvc.entities.bill;
+import com.website.springmvc.entities.Bill;
 
 @Transactional
 @Service
@@ -18,35 +18,35 @@ public class BillService {
 	private SessionFactory sessionFactory;
 	
 	@Autowired
-	DAO<bill> billDAO;
+	DAO<Bill> billDAO;
 	
-	public List<bill> getBillOfUser(int iduser) {
+	public List<Bill> getBillOfUser(int iduser) {
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from bill where idUser.id = :keyword").setParameter("keyword", iduser).list();
 	}
 	
-	public bill get(int id) {
+	public Bill get(int id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return (bill) session.get(bill.class, new Integer(id));
+		return (Bill) session.get(Bill.class, new Integer(id));
 	}
 	
-	public List<bill> getAll(){
+	public List<Bill> getAll(){
 		return billDAO.getAll();
 	}
 	
-	public bill get(Long id){
+	public Bill get(Long id){
 		return billDAO.get(id);
 	}
 	
-	public bill add(bill t){
+	public Bill add(Bill t){
 		return billDAO.add(t);
 	}
 	
-	public Boolean update(bill t){
+	public Boolean update(Bill t){
 		return billDAO.update(t);
 	}
 	
-	public Boolean delete(bill t){
+	public Boolean delete(Bill t){
 		return billDAO.delete(t);
 	}
 	

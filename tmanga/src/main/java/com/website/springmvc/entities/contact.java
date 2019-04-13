@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "contact", catalog = "manga")
-public class contact implements java.io.Serializable{
+public class Contact implements java.io.Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -33,7 +33,7 @@ public class contact implements java.io.Serializable{
 	@Column(name = "status")
 	private byte status;
 	
-	public contact(String sender, String title, String content, byte view, byte status) {
+	public Contact(String sender, String title, String content, byte view, byte status) {
 		super();
 		this.sender = sender;
 		this.title = title;
@@ -42,7 +42,7 @@ public class contact implements java.io.Serializable{
 		this.status = status;
 	}
 
-	public contact(int id, String sender, String title, String content, byte view, byte status) {
+	public Contact(int id, String sender, String title, String content, byte view, byte status) {
 		super();
 		this.id = id;
 		this.sender = sender;
@@ -52,7 +52,7 @@ public class contact implements java.io.Serializable{
 		this.status = status;
 	}
 
-	public contact() {
+	public Contact() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

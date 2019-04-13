@@ -7,35 +7,35 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.website.springmvc.entities.billdetail;
+import com.website.springmvc.entities.BillDetail;
 
 @Repository
-public class BillDetailDAO extends DAO<billdetail>{
+public class BillDetailDAO extends DAO<BillDetail>{
 
 	@Autowired
 	private SessionFactory sessionFactory;
 
 	@Override
-	public List<billdetail> getAll() {
+	public List<BillDetail> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from billdetail").list();
 	}
 
 	@Override
-	public billdetail get(Long id) {
+	public BillDetail get(Long id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return (billdetail) session.get(billdetail.class, new Long(id));
+		return (BillDetail) session.get(BillDetail.class, new Long(id));
 	}
 
 	@Override
-	public billdetail add(billdetail detail) {
+	public BillDetail add(BillDetail detail) {
 		Session session = this.sessionFactory.getCurrentSession();
 		session.save(detail);
 		return detail;
 	}
 
 	@Override
-	public Boolean update(billdetail detail) {
+	public Boolean update(BillDetail detail) {
 		Session session = this.sessionFactory.getCurrentSession();
 		try {
 			session.update(detail);
@@ -46,7 +46,7 @@ public class BillDetailDAO extends DAO<billdetail>{
 	}
 
 	@Override
-	public Boolean delete(billdetail detail) {
+	public Boolean delete(BillDetail detail) {
 		Session session = this.sessionFactory.getCurrentSession();
 		if (null != detail) {
 			try {
@@ -62,7 +62,7 @@ public class BillDetailDAO extends DAO<billdetail>{
 	@Override
 	public Boolean delete(Long id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		billdetail detail = (billdetail) session.load(billdetail.class, new Long(id));
+		BillDetail detail = (BillDetail) session.load(BillDetail.class, new Long(id));
 		if (null != detail) {
 			session.delete(detail);
 			return Boolean.TRUE;

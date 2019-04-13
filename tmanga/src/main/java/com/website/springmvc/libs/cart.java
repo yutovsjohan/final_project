@@ -2,37 +2,37 @@ package com.website.springmvc.libs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import com.website.springmvc.entities.comic;
+import com.website.springmvc.entities.Comic;
 
 
-public class cart {
-	HashMap<Integer, item> cart;
+public class Cart {
+	HashMap<Integer, Item> cart;
 	
-	public cart() {
+	public Cart() {
 		super();
 		cart = new HashMap<>();
 	}
 
-	public cart(HashMap<Integer, item> cart) {
+	public Cart(HashMap<Integer, Item> cart) {
 		super();
 		this.cart = cart;
 	}
 
-	public HashMap<Integer, item> getCart() {
+	public HashMap<Integer, Item> getCart() {
 		return cart;
 	}
 
-	public void setCart(HashMap<Integer, item> cart) {
+	public void setCart(HashMap<Integer, Item> cart) {
 		this.cart = cart;
 	}
 	
-	public void add(int id, comic comic, int amount) {
+	public void add(int id, Comic comic, int amount) {
 		if(cart.containsKey(id)) {
-			item a = cart.get(id);
+			Item a = cart.get(id);
 			a.setAmount(a.getAmount() + amount);
 		}
 		else {
-			item a = new item(comic, amount); 
+			Item a = new Item(comic, amount); 
 			cart.put(id, a);
 		}
 	}
@@ -45,9 +45,9 @@ public class cart {
 		cart.clear();
 	}
 	
-	public ArrayList<item> getList(){
-		ArrayList<item> giohang = new ArrayList<>();
-		for (item i : cart.values()) {
+	public ArrayList<Item> getList(){
+		ArrayList<Item> giohang = new ArrayList<>();
+		for (Item i : cart.values()) {
 			giohang.add(i);
 		}
 		return giohang;
@@ -55,7 +55,7 @@ public class cart {
 	
 	public int total() {
 		int total=0;
-		for (item i : cart.values()) {
+		for (Item i : cart.values()) {
 			total += (i.getAmount() * i.getComic().getSale());
 		}
 		return total;
@@ -63,15 +63,15 @@ public class cart {
 	
 	public int quantity() {
 		int total=0;
-		for (item i : cart.values()) {
+		for (Item i : cart.values()) {
 			total += i.amount;
 		}
 		return total;
 	}
 	
-	public item getItemForId(int id) {
-		item item = new item();
-		for (item i : cart.values()) {
+	public Item getItemForId(int id) {
+		Item item = new Item();
+		for (Item i : cart.values()) {
 			if(i.comic.getId() == id) {
 				item = i;
 			}

@@ -9,44 +9,44 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.website.springmvc.DAO.DAO;
-import com.website.springmvc.entities.publishcompany;
+import com.website.springmvc.entities.PublishCompany;
 
 @Transactional
 @Service
 public class PublishCompanyService {
 	@Autowired
-	DAO<publishcompany> publishCompanyDao;
+	DAO<PublishCompany> publishCompanyDao;
 	
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	public publishcompany get(int id) {
+	public PublishCompany get(int id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return (publishcompany) session.get(publishcompany.class, new Integer(id));
+		return (PublishCompany) session.get(PublishCompany.class, new Integer(id));
 	}
 	
-	public publishcompany get(String name) {
+	public PublishCompany get(String name) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return (publishcompany) session.createQuery("from publishcompany where unsignedName like :keyword").setParameter("keyword", name).uniqueResult();
+		return (PublishCompany) session.createQuery("from publishcompany where unsignedName like :keyword").setParameter("keyword", name).uniqueResult();
 	}
 	
-	public List<publishcompany> getAll() {
+	public List<PublishCompany> getAll() {
 		return publishCompanyDao.getAll();
 	}
 
-	public publishcompany get(Long id) {
+	public PublishCompany get(Long id) {
 		return publishCompanyDao.get(id);
 	}
 
-	public publishcompany add(publishcompany publishcompany) {
+	public PublishCompany add(PublishCompany publishcompany) {
 		return publishCompanyDao.add(publishcompany);
 	}
 
-	public Boolean update(publishcompany publishcompany) {
+	public Boolean update(PublishCompany publishcompany) {
 		return publishCompanyDao.update(publishcompany);
 	}
 
-	public Boolean delete(publishcompany publishcompany) {
+	public Boolean delete(PublishCompany publishcompany) {
 		return publishCompanyDao.delete(publishcompany);
 	}
 

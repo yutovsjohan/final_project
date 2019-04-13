@@ -7,35 +7,35 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.website.springmvc.entities.users;
+import com.website.springmvc.entities.Users;
 
 @Repository
-public class UsersDAO extends DAO<users>{
+public class UsersDAO extends DAO<Users>{
 
 	@Autowired
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public List<users> getAll() {
+	public List<Users> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
-		return session.createQuery("from users").list();
+		return session.createQuery("from Users").list();
 	}
 
 	@Override
-	public users get(Long id) {
+	public Users get(Long id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return (users) session.get(users.class, new Long(id));
+		return (Users) session.get(Users.class, new Long(id));
 	}
 
 	@Override
-	public users add(users u) {
+	public Users add(Users u) {
 		Session session = this.sessionFactory.getCurrentSession();
 		session.save(u);
 		return u;
 	}
 
 	@Override
-	public Boolean update(users u) {
+	public Boolean update(Users u) {
 		Session session = this.sessionFactory.getCurrentSession();
 		try {
 			session.update(u);
@@ -46,7 +46,7 @@ public class UsersDAO extends DAO<users>{
 	}
 
 	@Override
-	public Boolean delete(users u) {
+	public Boolean delete(Users u) {
 		Session session = this.sessionFactory.getCurrentSession();
 		if (null != u) {
 			try {
@@ -62,7 +62,7 @@ public class UsersDAO extends DAO<users>{
 	@Override
 	public Boolean delete(Long id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		users u = (users) session.load(users.class, new Long(id));
+		Users u = (Users) session.load(Users.class, new Long(id));
 		if (null != u) {
 			session.delete(u);
 			return Boolean.TRUE;

@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "orderstatus", catalog = "manga")
-public class orderstatus implements java.io.Serializable{
+public class OrderStatus implements java.io.Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -30,9 +30,9 @@ public class orderstatus implements java.io.Serializable{
 		
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idBill", nullable = false)
-	private bill bill;
+	private Bill bill;
 	
-	public orderstatus() {
+	public OrderStatus() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -61,11 +61,11 @@ public class orderstatus implements java.io.Serializable{
 		this.note = note;
 	}
 
-	public bill getBill() {
+	public Bill getBill() {
 		return bill;
 	}
 
-	public void setBill(bill bill) {
+	public void setBill(Bill bill) {
 		this.bill = bill;
 	}
 	

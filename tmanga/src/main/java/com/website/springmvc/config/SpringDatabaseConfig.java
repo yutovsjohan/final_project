@@ -11,18 +11,18 @@ import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import com.website.springmvc.entities.author;
-import com.website.springmvc.entities.bill;
-import com.website.springmvc.entities.billdetail;
-import com.website.springmvc.entities.category;
-import com.website.springmvc.entities.comic;
-import com.website.springmvc.entities.contact;
-import com.website.springmvc.entities.news;
-import com.website.springmvc.entities.notification;
-import com.website.springmvc.entities.orderstatus;
-import com.website.springmvc.entities.publishcompany;
-import com.website.springmvc.entities.role;
-import com.website.springmvc.entities.users;
+import com.website.springmvc.entities.Author;
+import com.website.springmvc.entities.Bill;
+import com.website.springmvc.entities.BillDetail;
+import com.website.springmvc.entities.Category;
+import com.website.springmvc.entities.Comic;
+import com.website.springmvc.entities.Contact;
+import com.website.springmvc.entities.News;
+import com.website.springmvc.entities.Notification;
+import com.website.springmvc.entities.OrderStatus;
+import com.website.springmvc.entities.PublishCompany;
+import com.website.springmvc.entities.Role;
+import com.website.springmvc.entities.Users;
 
 
 
@@ -34,8 +34,8 @@ public class SpringDatabaseConfig extends WebMvcConfigurerAdapter {
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource);
 		sessionFactory.setPackagesToScan(new String[] { "com.website.springmvc.entities" });
-		sessionFactory.setAnnotatedClasses(author.class, bill.class, billdetail.class, category.class, comic.class, contact.class,
-				news.class, notification.class, orderstatus.class, publishcompany.class, role.class, users.class);
+		sessionFactory.setAnnotatedClasses(Author.class, Bill.class, BillDetail.class, Category.class, Comic.class, Contact.class,
+				News.class, Notification.class, OrderStatus.class, PublishCompany.class, Role.class, Users.class);
 		sessionFactory.setHibernateProperties(hibernateProperties());
 		return sessionFactory;
 	}

@@ -15,7 +15,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "author", catalog = "manga")
-public class author implements java.io.Serializable{
+public class Author implements java.io.Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -33,9 +33,9 @@ public class author implements java.io.Serializable{
 	private byte status;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
-	private Set<comic> comics = new HashSet<comic>();
+	private Set<Comic> comics = new HashSet<Comic>();
 
-	public author() {
+	public Author() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -72,11 +72,11 @@ public class author implements java.io.Serializable{
 		this.status = status;
 	}
 
-	public Set<comic> getComics() {
+	public Set<Comic> getComics() {
 		return comics;
 	}
 
-	public void setComics(Set<comic> comics) {
+	public void setComics(Set<Comic> comics) {
 		this.comics = comics;
 	}	
 }

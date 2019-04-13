@@ -7,36 +7,36 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.website.springmvc.entities.author;
-import com.website.springmvc.entities.publishcompany;
+import com.website.springmvc.entities.Author;
+import com.website.springmvc.entities.PublishCompany;
 
 @Repository
-public class PublishComapyDAO extends DAO<publishcompany>{
+public class PublishComapyDAO extends DAO<PublishCompany>{
 
 	@Autowired
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public List<publishcompany> getAll() {
+	public List<PublishCompany> getAll() {
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from publishcompany").list();
 	}
 
 	@Override
-	public publishcompany get(Long id) {
+	public PublishCompany get(Long id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return (publishcompany) session.get(publishcompany.class, new Long(id));
+		return (PublishCompany) session.get(PublishCompany.class, new Long(id));
 	}
 
 	@Override
-	public publishcompany add(publishcompany Pub) {
+	public PublishCompany add(PublishCompany Pub) {
 		Session session = this.sessionFactory.getCurrentSession();
 		session.save(Pub);
 		return Pub;
 	}
 
 	@Override
-	public Boolean update(publishcompany Pub) {
+	public Boolean update(PublishCompany Pub) {
 		Session session = this.sessionFactory.getCurrentSession();
 		try {
 			session.update(Pub);
@@ -47,7 +47,7 @@ public class PublishComapyDAO extends DAO<publishcompany>{
 	}
 
 	@Override
-	public Boolean delete(publishcompany Pub) {
+	public Boolean delete(PublishCompany Pub) {
 		Session session = this.sessionFactory.getCurrentSession();
 		if (null != Pub) {
 			try {
@@ -63,7 +63,7 @@ public class PublishComapyDAO extends DAO<publishcompany>{
 	@Override
 	public Boolean delete(Long id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		publishcompany Pub = (publishcompany) session.load(publishcompany.class, new Long(id));
+		PublishCompany Pub = (PublishCompany) session.load(PublishCompany.class, new Long(id));
 		if (null != Pub) {
 			session.delete(Pub);
 			return Boolean.TRUE;

@@ -13,11 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.website.springmvc.Services.BillService;
-import com.website.springmvc.Services.BilldetailService;
 import com.website.springmvc.Services.UsersService;
-import com.website.springmvc.entities.role;
-import com.website.springmvc.entities.users;
+import com.website.springmvc.entities.Role;
+import com.website.springmvc.entities.Users;
 import com.website.springmvc.libs.GetModel;
 import com.website.springmvc.libs.TripleDES;
 
@@ -38,26 +36,26 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public ModelAndView saveUsers(@ModelAttribute("users") users users){
+	public ModelAndView saveUsers(@ModelAttribute("Users") Users Users){
 		ModelAndView model = new ModelAndView();
-		if(!checkEmail(users.getEmail())){
-			role role = new role();
-			role.setId(2);
-			users.setRole(role);
+		if(!checkEmail(Users.getEmail())){
+			Role Role = new Role();
+			Role.setId(2);
+			Users.setRole(Role);
 			
-			users.setPassword(TripleDES.Encrypt(users.getPassword(), "123"));
+			Users.setPassword(TripleDES.Encrypt(Users.getPassword(), "123"));
 			
-			usersService.add(users);
+			usersService.add(Users);
 			
 			getModel.getLogin(model);
 			
-			model.addObject("mes", "Đăng ký thành công");
+            model.addObject("mes", "Đăng ký thành công");
 			model.addObject("alert", "success");
 		}
 		else{
 			getModel.getRegistration(model);
 			
-			model.addObject("mes","Email này đã có người sử dụng");	
+            model.addObject("mes","Email này đã có người sử dụng");    	
 			model.addObject("alert", "danger");
 		}
 		return model;
@@ -82,7 +80,7 @@ public class UserController {
 		String str = "";
 		int check = checkLogin(email, password);
 		if(check == -1) {
-			model.addAttribute("mes","Email và password của bạn sai");			
+            model.addAttribute("mes","Email và password của bạn sai");            			
 			model.addAttribute("alert", "danger");
 			str = "redirect:/controller/login";
 		} 
@@ -102,10 +100,10 @@ public class UserController {
 	
 
 	private boolean checkEmail(String email) {
-		List<users> listusers = usersService.getAll();
-		users u = new users();
-		for (int i = 0; i < listusers.size(); i++) {
-			u = listusers.get(i);
+		List<Users> listUsers = usersService.getAll();
+		Users u = new Users();
+		for (int i = 0; i < listUsers.size(); i++) {
+			u = listUsers.get(i);
 			if(u.getEmail().equalsIgnoreCase(email)) {
 				return true;
 			}
@@ -114,11 +112,11 @@ public class UserController {
 	}
 	
 	private int checkLogin(String email, String password) {
-		List<users> listusers = usersService.getAll();
-		users u = new users();
+		List<Users> listUsers = usersService.getAll();
+		Users u = new Users();
 		int j = -1;
-		for (int i = 0; i < listusers.size(); i++) {
-			u = listusers.get(i);
+		for (int i = 0; i < listUsers.size(); i++) {
+			u = listUsers.get(i);
 			if(u.getEmail().equalsIgnoreCase(email)) {
 				if(TripleDES.Decrypt(u.getPassword(), "123").equalsIgnoreCase(password)) {
 					j = u.getId();

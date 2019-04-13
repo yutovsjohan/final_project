@@ -1298,15 +1298,15 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `address`, `phone`, `idRole`, `active`, `passcode`) VALUES
-(1, 'Nguyễn Thanh Toàn', 'tmangavn@gmail.com', '$2y$10$r6edoCe1HUMuHFFM4l8XvO1cziZPwSw9rkcEX/tzZr93iqbgVwzGq', '96 Phạm Đình Hổ P2 Q6, TP.HCM', '01267375655', 1, 1, NULL),
-(2, 'Nguyễn Hồng Ân', 'annguyen995@gmail.com', '$2y$10$Fyfpioslr1H5vYkKN2RchuS5YIpEsHquzIBVLUdqQPryOqwyX8xJi', '78 Mai Xuân Thưởng, Phường 2, Quận 6, TP.HCM', '01627084523', 3, 1, NULL),
-(3, 'Nguyễn Phúc Pin', 'pinnguyen129596@gmail.com', '$2y$10$qzHNcGHCLV9L1oVtnMRoT.lL.Our.zAiqb8Sqo9M.KdPgrny19dVa', '258 Chu Văn An Phường 2, Quận 6, TP.HCM', '01288537606', 3, 1, NULL),
-(4, 'Nguyễn Thanh Toàn', 'blackruby0712@gmail.com', '$2y$10$ME3NcxZePaT6GB8YNw2eP.hGnXeTM6YBV8MWnpfhNkkN5.ysJ4s1S', '96 Phạm Văn Chí Phường 6 Quận 6', '01265652787', 1, 0, NULL),
-(5, 'Nguyễn Thành Đạt', 'yutovsjohan@gmail.com', '$2y$10$D0Tsr/R.8CanyKjTgEs6heq.7Jd7Tk5fuRoLvEsPQfQbvkkJ9fpwC', '125 Nguyễn Trãi,  phường 14, Quận 5, TP.HCM', '01267375655', 2, 1, 'X3jK0r6YKTkH'),
-(6, 'Hồ Thị Lựu', 'yutovsjohan02@gmail.com', '$2y$10$8J3LomX4WBEX6OYrAhAcHOw1DwevqRxbC2shzxxjy5rhVyGqeRG6m', '76 Lê Văn Sỹ Phường 11 Quận 3', '01286805259', 2, 0, NULL),
-(7, 'Nguyễn Thanh Xuân', 'yutovsjohan01@gmail.com', '$2y$10$xTCqZgvnuSbHctZFVMJ8kO/bCvBjeIUgrQ6b.y6EFPCqXz3ySbR2q', '120 Nguyễn Thị Minh Khai, Phường 6, Quận 1, TPHCM', '01686548081', 2, 1, NULL),
-(8, 'Phạm Hoàng Nam', 'yutovsjohan03@gmail.com', '$2y$10$4KCSsU46xRre0c08t6KcNukx0IMqe50/qoPrVv.gmljpGvM0gvqa6', '270 Hải Thượng Lãn Ông, phường 14, Quận 5', '01621023850', 2, 0, NULL),
-(9, 'Hoàng Việt Nam', 'blackwing123123123123@gmail.com', '$2y$10$e/kpt7pOUSVYauIpkcyMMugWTEZLNFewFp5vq8vWrz3/CF9KIXYdi', '1075 Tạ Quang Bửu, Phường 6 Quận 8', '01285554642', 2, 0, NULL);
+(1, 'Nguyễn Thanh Toàn', 'tmangavn@gmail.com', '89jp+y58D9Q=', '96 Phạm Đình Hổ P2 Q6, TP.HCM', '01267375655', 1, 1, NULL),
+(2, 'Nguyễn Hồng Ân', 'annguyen995@gmail.com', '89jp+y58D9Q=', '78 Mai Xuân Thưởng, Phường 2, Quận 6, TP.HCM', '01627084523', 3, 1, NULL),
+(3, 'Nguyễn Phúc Pin', 'pinnguyen129596@gmail.com', '89jp+y58D9Q=', '258 Chu Văn An Phường 2, Quận 6, TP.HCM', '01288537606', 3, 1, NULL),
+(4, 'Nguyễn Thanh Toàn', 'blackruby0712@gmail.com', '89jp+y58D9Q=', '96 Phạm Văn Chí Phường 6 Quận 6', '01265652787', 1, 0, NULL),
+(5, 'Nguyễn Thành Đạt', 'yutovsjohan@gmail.com', '89jp+y58D9Q=', '125 Nguyễn Trãi,  phường 14, Quận 5, TP.HCM', '01267375655', 2, 1, 'X3jK0r6YKTkH'),
+(6, 'Hồ Thị Lựu', 'yutovsjohan02@gmail.com', '89jp+y58D9Q=', '76 Lê Văn Sỹ Phường 11 Quận 3', '01286805259', 2, 0, NULL),
+(7, 'Nguyễn Thanh Xuân', 'yutovsjohan01@gmail.com', '89jp+y58D9Q=', '120 Nguyễn Thị Minh Khai, Phường 6, Quận 1, TPHCM', '01686548081', 2, 1, NULL),
+(8, 'Phạm Hoàng Nam', 'yutovsjohan03@gmail.com', '89jp+y58D9Q=', '270 Hải Thượng Lãn Ông, phường 14, Quận 5', '01621023850', 2, 0, NULL),
+(9, 'Hoàng Việt Nam', 'blackwing123123123123@gmail.com', '89jp+y58D9Q=', '1075 Tạ Quang Bửu, Phường 6 Quận 8', '01285554642', 2, 0, NULL);
 
 --
 -- Indexes for dumped tables

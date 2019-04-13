@@ -9,44 +9,44 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.website.springmvc.DAO.DAO;
-import com.website.springmvc.entities.author;
+import com.website.springmvc.entities.Author;
 
 @Transactional
 @Service
 public class AuthorService {
 	@Autowired
-	DAO<author> authorDao;
+	DAO<Author> authorDao;
 	
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	public author get(String name) {
+	public Author get(String name) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return (author) session.createQuery("from author where unsignedName like :keyword").setParameter("keyword", name).uniqueResult();
+		return (Author) session.createQuery("from author where unsignedName like :keyword").setParameter("keyword", name).uniqueResult();
 	}
 	
-	public author get(int id) {
+	public Author get(int id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return (author) session.get(author.class, new Integer(id));
+		return (Author) session.get(Author.class, new Integer(id));
 	}
 	
-	public List<author> getAll() {
+	public List<Author> getAll() {
 		return authorDao.getAll();
 	}
 
-	public author get(Long id) {
+	public Author get(Long id) {
 		return authorDao.get(id);
 	}
 
-	public author add(author author) {
+	public Author add(Author author) {
 		return authorDao.add(author);
 	}
 
-	public Boolean update(author author) {
+	public Boolean update(Author author) {
 		return authorDao.update(author);
 	}
 
-	public Boolean delete(author author) {
+	public Boolean delete(Author author) {
 		return authorDao.delete(author);
 	}
 

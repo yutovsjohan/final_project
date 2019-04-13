@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "billdetail", catalog = "manga")
-public class billdetail implements java.io.Serializable{
+public class BillDetail implements java.io.Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -29,13 +29,13 @@ public class billdetail implements java.io.Serializable{
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idComic", nullable = false)
-	private comic comic;
+	private Comic comic;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idBill", nullable = false)
-	private bill bill;
+	private Bill bill;
 
-	public billdetail() {
+	public BillDetail() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -66,22 +66,22 @@ public class billdetail implements java.io.Serializable{
 	}
 
 
-	public comic getComic() {
+	public Comic getComic() {
 		return comic;
 	}
 
 
-	public void setComic(comic comic) {
+	public void setComic(Comic comic) {
 		this.comic = comic;
 	}
 
 
-	public bill getBill() {
+	public Bill getBill() {
 		return bill;
 	}
 
 
-	public void setBill(bill bill) {
+	public void setBill(Bill bill) {
 		this.bill = bill;
 	}
 }
