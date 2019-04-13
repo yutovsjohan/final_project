@@ -143,6 +143,7 @@ public class ProductController {
 		return model;
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 	
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public ModelAndView test(@RequestParam(name = "q", defaultValue = "") String key, 
@@ -189,6 +190,8 @@ public class ProductController {
 		}
 		
 		List<Comic> comics = comicService.getListComic(key, id);
+=======
+>>>>>>> parent of fba3364... fix error, update project part 2
 =======
 >>>>>>> parent of fba3364... fix error, update project part 2
 

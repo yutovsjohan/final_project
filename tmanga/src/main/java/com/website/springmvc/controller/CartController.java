@@ -229,6 +229,9 @@ public class CartController {
 				bill.setTotal(((cart) session.getAttribute("cart")).total() + 15000 );
 				bill.setStatus("Chưa xác nhận đơn hàng");
 				//bill.setDelivery(usersService.get(2));
+<<<<<<< HEAD
+>>>>>>> parent of fba3364... fix error, update project part 2
+=======
 >>>>>>> parent of fba3364... fix error, update project part 2
 				billService.add(bill);
 										

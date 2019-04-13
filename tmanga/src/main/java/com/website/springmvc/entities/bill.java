@@ -68,8 +68,11 @@ public class Bill implements java.io.Serializable{
 	private Users delivery;
 		
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public Bill() {
 =======
+=======
+>>>>>>> parent of fba3364... fix error, update project part 2
 	public users getDelivery() {
 		return delivery;
 	}
@@ -172,6 +175,7 @@ public class Bill implements java.io.Serializable{
 		this.billdetail = billdetail;
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	public Users getIdUser() {
 		return idUser;
@@ -189,6 +193,8 @@ public class Bill implements java.io.Serializable{
 		this.delivery = delivery;
 	}
 	
+=======
+>>>>>>> parent of fba3364... fix error, update project part 2
 =======
 >>>>>>> parent of fba3364... fix error, update project part 2
 }

@@ -29,6 +29,9 @@ public class Users implements java.io.Serializable{
 @Table(name = "users", catalog = "manga")
 public class users implements java.io.Serializable{
 	private static final Long serialVersionUID = 1L;
+<<<<<<< HEAD
+>>>>>>> parent of fba3364... fix error, update project part 2
+=======
 >>>>>>> parent of fba3364... fix error, update project part 2
 	
 	@Id
@@ -99,6 +102,30 @@ public class users implements java.io.Serializable{
 		this.bill = bill;
 	}
 
+	public List<comic> getComics() {
+		return comics;
+	}
+
+	public void setComics(List<comic> comics) {
+		this.comics = comics;
+	}
+
+	public Set<bill> getDelivery() {
+		return delivery;
+	}
+
+	public void setDelivery(Set<bill> delivery) {
+		this.delivery = delivery;
+	}
+
+	public Set<bill> getBill() {
+		return bill;
+	}
+
+	public void setBill(Set<bill> bill) {
+		this.bill = bill;
+	}
+
 	public users() {
 >>>>>>> parent of fba3364... fix error, update project part 2
 		super();
@@ -115,7 +142,11 @@ public class users implements java.io.Serializable{
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public Users(int id, String name, String email, String password, String address, String phone) {
+=======
+	public users(Long id, String name, String email, String password, String address, String phone) {
+>>>>>>> parent of fba3364... fix error, update project part 2
 =======
 	public users(Long id, String name, String email, String password, String address, String phone) {
 >>>>>>> parent of fba3364... fix error, update project part 2
