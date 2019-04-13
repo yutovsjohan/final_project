@@ -141,15 +141,7 @@
 							<h5 style="height:50px; ">${cm.name }</h5>
 							<h5 style="background-color: green; color:white">Phát hành: <fmt:formatDate pattern = "dd-MM-yyyy" value = "${cm.publishDate }" /></h5>
 							<h5>
-								<c:choose>
-									<c:when test="${cm.price == cm.sale }">
-										<span style="margin-right: 15px; font-size: 18px;  color: red;"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${cm.price}" /> <u>đ</u></span>
-									</c:when>
-									<c:otherwise>
-										<span style="margin-right: 15px; font-size: 18px;  color: red;"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${cm.sale}" /> <u>đ</u></span>
-										<span style="text-decoration: line-through; color: black; font-size: 12px;"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${cm.price}" /> <u>đ</u></span>	
-									</c:otherwise>
-								</c:choose>
+								<span style="margin-right: 15px; font-size: 18px;  color: red;"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${cm.sale}" /> <u>đ</u></span>
 							</h5>
 						</a>
 						

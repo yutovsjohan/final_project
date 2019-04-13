@@ -7,7 +7,7 @@
 	<!-- <h2 style="color:blue">Đăng nhập</h2>
 	<hr style="border:2px solid blue">   -->
 	
-	<c:if test="${mes != null }">
+	<c:if test="${mes != '' }">
 		<div class="alert alert-${alert }" role="alert">
 			${mes }
 		 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>

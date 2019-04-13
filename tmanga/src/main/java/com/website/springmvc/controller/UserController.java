@@ -64,11 +64,9 @@ public class UserController {
 	@RequestMapping(value = {"/login" , "/dang-nhap"}, method = RequestMethod.GET)
 	public ModelAndView getLoginPage(@RequestParam(name = "mes", defaultValue = "") String mes,
 									@RequestParam(name = "alert", defaultValue = "") String alert){
-		ModelAndView model = new ModelAndView();
-		if(mes != ""){
-			model.addObject("mes", mes);
-			model.addObject("alert", alert);
-		}
+		ModelAndView model = new ModelAndView();		
+		model.addObject("mes", mes);
+		model.addObject("alert", alert);		
 		getModel.getLogin(model);
 		return model;
 	}

@@ -125,35 +125,52 @@ $(document).ready(function(){
 		})
     });
     
-    $('.pagination li').click( function() {
-    	var data=$(this).attr('data');
-    	resetActive();
-    	
-    	$(this).addClass('active');
-    	
-//    	var route = "";
+//    $('.pagination li').click( function() {
+//    	var data = parseInt($(this).attr('data'));
+//    	reset();  
+//    	$(this).addClass('active');
 //    	
+//    	var page = parseInt($("#page").val());
+//    	var totalpage = parseInt($("#totalpage").val());
+//    	
+//    	if(data == -1){
+//    		page = 1;
+//    	}
+//    	else if(data == -2){
+//    		page--;
+//    	}
+//    	else if(data == -3){
+//    		page++;
+//    	}
+//    	else if(data == -4){
+//    		page = totalpage;
+//    	}
+//    	else {
+//    		page = data;
+//    	}
+//    	    	
 //    	$.ajax({
-//    			url : route,
+//    			url : "pagination",
 //    			type : 'GET',
 //    		data : {
-//    			id : id			
+//    			page : page,
+//    			totalpage : totalpage
 //    		},
 //    		success: function(data){
-//    			//console.log(data); 
-//    			if(data=="removed"){								
-//    				
-//    			}
+//    			$('.pagination').html(data);
 //    		}
 //    	})
-    	
-    	
-    });
-    
-    function resetActive(){
-    	$('.pagination li').each(function () {
-    		$(this).removeClass('active');
-    	})
-    }
+//    	
+//    	
+//    });
+//    
+//    function reset(){
+//    	$('.pagination li').each(function () {
+//    		$(this).removeClass('active');
+//    	})
+//    	$('.listcomic').each(function () {
+//    		$(this).attr('hidden','');
+//    	})
+//    }
    
 })

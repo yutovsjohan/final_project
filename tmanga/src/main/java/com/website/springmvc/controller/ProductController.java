@@ -1,6 +1,9 @@
 package com.website.springmvc.controller;
 
+import java.io.IOException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,54 +38,81 @@ public class ProductController {
 	GetModel getModel;
 	
 	@RequestMapping(value = "/product", method = RequestMethod.GET)
-	public ModelAndView getViewProductPage(@RequestParam(name = "q") String key, 
-										   	@RequestParam(name = "un") String name,
+	public ModelAndView getViewProductPage(@RequestParam(name = "a", defaultValue = "") String action,											
+											@RequestParam(name = "q", defaultValue = "") String key, 
+										   	@RequestParam(name = "un", defaultValue = "") String name,
 											@RequestParam(name = "p", defaultValue = "1") int page,
 											@RequestParam(name = "s", defaultValue = "1") int sort){		
 		ModelAndView model = new ModelAndView();
 		
 		String title = "";
 		int id = 1;
+		String href = "";
 		
-		if(key.equalsIgnoreCase("category")) {
-			title = categoryService.get(name).getName();
-			id = categoryService.get(name).getId();
+		List<Comic> comics;
+		
+		if(action.equalsIgnoreCase("search")) {
+			comics = comicService.getListComic(key,0,0);
+						
+			model.addObject("title", "Tìm kiếm " + key);
+			
+			href = "product?a=search&q=" + key;
+			
+			model.addObject("key", "search");			
+			model.addObject("k",key);
+		}
+		else {			
+			if(key.equalsIgnoreCase("category")) {
+				title = categoryService.get(name).getName();
+				id = categoryService.get(name).getId();
+			}	
+			else if(key.equalsIgnoreCase("author")) {
+				title = authorService.get(name).getName();
+				id = authorService.get(name).getId();
+			}
+			else if(key.equalsIgnoreCase("publishing-company")) {
+				title = publishCompanyService.get(name).getName();
+				id = publishCompanyService.get(name).getId();
+			}
+			
+			comics = comicService.getListComic(key, id, 0, 0);
+			
+			model.addObject("title",title);
+			href = "product?a=pl&q=" + key + "&un=" + name;
+			
+			model.addObject("key", key);
+			
 		}	
-		else if(key.equalsIgnoreCase("author")) {
-			title = authorService.get(name).getName();
-			id = authorService.get(name).getId();
-		}
-		else if(key.equalsIgnoreCase("publishing-company")) {
-			title = publishCompanyService.get(name).getName();
-			id = publishCompanyService.get(name).getId();
-		}
 		
-		List<Comic> comics = comicService.getListComic(key, id);
-
 		int totalPage = 0;
+		int totalComic = 0;		
 		
-		int totalComic = comics.size();
+		totalComic = comics.size();
 		totalPage = totalComic / 12;
 		
 		if(totalComic % 12 != 0){
 			totalPage++;
 		}		
-				
-		comics = comicService.getListComic(key, id, 12*(page-1), 12);
-		
-		getModel.getSideBar(model);
-		
-		String href = "product?q=" + key + "&un=" + name;
-		
-		model.addObject("key", key);
-		model.addObject("href", href);
-		
-		model.addObject("views","productList");
-		model.addObject("title",title);
 		
 		model.addObject("comiclist", comics);
+		
+		if(action.equalsIgnoreCase("search")) {
+			comics = comicService.getListComic(key,12*(page-1), 12);
+		}
+		else {
+			comics = comicService.getListComic(key, id, 12*(page-1), 12);
+		}
+						
+		model.addObject("comiclist_pagi", comics);
 		model.addObject("totalpage", totalPage);
 		model.addObject("pageselected", page);
+		model.addObject("totalcomic", totalComic);
+		
+		model.addObject("href", href);
+		model.addObject("views","productList");			
+		
+		getModel.getSideBar(model);
+						
 		return model;
 	}	
 	
@@ -106,112 +136,18 @@ public class ProductController {
 		
 		return model;
 	}	
-	
-	@RequestMapping(value = "/search", method = RequestMethod.GET)
-	public ModelAndView getViewProductPage(@RequestParam(name = "k") String key,
-										@RequestParam(name = "p", defaultValue = "1") int page,
-										@RequestParam(name = "s", defaultValue = "1") int sort) {
-		ModelAndView model = new ModelAndView();
-		
-		List<Comic> comics = comicService.getListComic(key);
-
-		int totalPage = 0;
-		
-		int totalComic = comics.size();
-		totalPage = totalComic / 12;
-		
-		if(totalComic % 12 != 0){
-			totalPage++;
-		}		
-		
-		comics = comicService.getListComic(key, 12*(page-1), 12);
-		
-		getModel.getSideBar(model);
-				
-		model.addObject("views","productList");
-		model.addObject("title", "Tìm kiếm " + key);
-		
-		String href = "search?k=" + key;
-		model.addObject("k",key);
-		model.addObject("key","search");
-		model.addObject("href", href);
-		
-		model.addObject("comiclist", comics);
-		model.addObject("totalpage", totalPage);
-		model.addObject("pageselected", page);
-		model.addObject("totalcomic", totalComic);
-		return model;
-	}
-	
-	@RequestMapping(value = "/test", method = RequestMethod.GET)
-	public ModelAndView test(@RequestParam(name = "q", defaultValue = "") String key, 
-										   	@RequestParam(name = "un",defaultValue = "") String name,
-											@RequestParam(name = "p", defaultValue = "1") int page,
-											@RequestParam(name = "s", defaultValue = "1") int sort){		
-		ModelAndView model = new ModelAndView();		
-		
-		getModel.getSideBar(model);
-		
-		key = "category";
-		name = "pokemon-dac-biet";		
-		
-		pagination(model, name, key, page);
-		
-		String href = "product?q=" + key + "&un=" + name;
-		
-		model.addObject("key", key);
-		model.addObject("href", href);
-		
-		model.addObject("views","../test");		
-		model.addObject("pageselected", page);
-				
-		return model;
-	}	
-	
-	public void pagination(ModelAndView model, String name, String key, int page) {
+			
+	@RequestMapping(value = "/pagination", method = RequestMethod.GET)
+	public void pagination(HttpServletResponse response, 
+						@RequestParam(name = "page", defaultValue = "1") int page,
+						@RequestParam(name = "totalpage", defaultValue = "1") int totalpage) {
 		String str = "";
-		
-		String title = "";		
-		int id = 1;
-		
-		if(key.equalsIgnoreCase("category")) {
-			title = categoryService.get(name).getName();
-			id = categoryService.get(name).getId();
-		}	
-		else if(key.equalsIgnoreCase("author")) {
-			title = authorService.get(name).getName();
-			id = authorService.get(name).getId();
+		if(page != 1) {
+			str += "<li data=\"-1\"> <a rel=\"next\"> << </a></li>";
+			str += "<li data=\"-2\"><a rel=\"next\"> < </a></li>";
 		}
-		else if(key.equalsIgnoreCase("publishing-company")) {
-			title = publishCompanyService.get(name).getName();
-			id = publishCompanyService.get(name).getId();
-		}
-		
-		List<Comic> comics = comicService.getListComic(key, id);
-
-		int totalPage = 0;
-		
-		int totalComic = comics.size();
-		totalPage = totalComic / 12;
-		
-		if(totalComic % 12 != 0){
-			totalPage++;
-		}		
 				
-		comics = comicService.getListComic(key, id, 12*(page-1), 12);
-		
-		str += "<ul class=\"pagination\">";
-		
-		if(page == 1) {
-			str += "<li class=\"disabled\" data=\"<<\"><span> << </span></li>";
-			str += "<li class=\"disabled\" data=\"<\"><span> < </span></li>";
-		}
-		else {
-			str += "<li data=\"<<\"> <a rel=\"next\"> << </a></li>";
-			str += "<li data=\"<\"><a rel=\"next\"> < </a></li>";
-		}
-		
-		for (int j = 1; j <= totalPage ; j++) {
+		for (int j = 1; j <= totalpage ; j++) {
 			if(j == page) {
 				str += "<li class=\"active\" data=\"" + j + "\"><span>" + j + "</span></li>";
 			}
@@ -220,21 +156,16 @@ public class ProductController {
 			}
 		}
 		
-		if(page == totalPage) {
-			str += "<li class=\"disabled\" data=\">\"><span> > </span></li>";
-			str += "<li class=\"disabled\" data=\">>\"><span> >> </span></li>";
-		}
-		else {
-			str += "<li data=\">\"><a rel=\"next\"> > </a></li>";
-			str += "<li data=\">>\"><a rel=\"next\"> >> </a></li>";
+		if(page != totalpage) {
+			str += "<li data=\"-3\"><a rel=\"next\"> > </a></li>";
+			str += "<li data=\"-4\"><a rel=\"next\"> >> </a></li>";
 		}
 		
-		str += "</ul>";
-		
-		model.addObject("title",title);
-		
-		model.addObject("comiclist", comics);
-		model.addObject("totalpage", totalPage);
-		model.addObject("pagination", str);
+		try {
+			response.getWriter().print(str);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

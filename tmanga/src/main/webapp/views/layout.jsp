@@ -136,9 +136,10 @@
 				</div>
 				<div class="col-sm-5 col-lg-5 col-xs-12 col-md-5">
 				<ul class="nav navbar-nav navbar-right">
-					<form class="navbar-form" role="search" method="get" action="${pageContext.request.contextPath}/controller/search">
+					<form class="navbar-form" role="search" method="get" action="${pageContext.request.contextPath}/controller/product">
 						<div class="input-group">
-							<input type="text" class="form-control" placeholder="Tìm truyện" name="k">
+							<input type="text" class="form-control" placeholder="Tìm truyện" name="q">
+							<input hidden name="a" value="search"/>
 							<div class="input-group-btn">
 								<button class="btn btn-default" type="submit" style="height:34px"><i class="glyphicon glyphicon-search"></i></button>
 							</div>

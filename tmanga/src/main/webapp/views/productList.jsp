@@ -26,27 +26,18 @@
 	 <div class="clearfix"></div>
 	<hr style="border: 1px solid orange; margin-top:0px">
 	<div class="row">
+		<c:set var = "number" scope = "session" value = "0"/>
 		<c:forEach var="comic" items="${comiclist}">
-			<div class="col-lg-3  col-sm-6 col-xs-6">
+			<c:set var = "number" scope = "session" value = "${number + 1 }" />
+			<div class="col-lg-3  col-sm-6 col-xs-6 listcomic" data="${number }" <c:if test="${number > 12 }">hidden</c:if> >
 				<div class="product-image-wrapper">
 					<div class="single-products">
 						<div class="productinfo text-center">
 							<a href="detail?c=${comic.unsignedName }" title="${comic.name }">
 								<img src="<c:url value="/images/products/${comic.image }" />" alt="${comic.name }" style="width:150px; height:200px; margin-top:25px;" />
 								<h5 style="height:50px; ">${comic.name }</h5>
-								<h5 style="background-color: green; color:white">Phát hành: <fmt:formatDate pattern = "dd-MM-yyyy" value = "${comic.publishDate }" /></h5>
-								
-								<h5>
-									<c:choose>
-										<c:when test="${comic.price == comic.sale }">
-											<span style="margin-right: 15px; font-size: 18px;  color: red;"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${comic.price}" /> <u>đ</u></span>
-										</c:when>
-										<c:otherwise>
-											<span style="margin-right: 15px; font-size: 18px;  color: red;"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${comic.sale}" /> <u>đ</u></span>
-											<span style="text-decoration: line-through; color: black; font-size: 12px;"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${comic.price}" /> <u>đ</u></span>	
-										</c:otherwise>
-									</c:choose>
-								</h5>						
+								<h5 style="background-color: green; color:white">Phát hành: <fmt:formatDate pattern = "dd-MM-yyyy" value = "${comic.publishDate }" /></h5>								
+								<h5><span style="margin-right: 15px; font-size: 18px;  color: red;"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${comic.sale}" /> <u>đ</u></span></h5>				
 							</a>
 							<c:choose>
 								<c:when test="${comic.amount == 0 }">
@@ -66,41 +57,33 @@
 	</div>
 	
 	<ul class="pagination">
-		<c:if test="${totalpage != 1 }">
-			<c:choose>
-				<c:when test="${1 == pageselected }">
-					<li class="disabled"><span> << </span></li>
-					<li class="disabled"><span> < </span></li>					
-				</c:when>
-				<c:otherwise>
-					<li> <a rel="next" href="${href }&p=1"> << </a></li>
-					<li> <a rel="next" href="${href }&p=${pageselected - 1}"> < </a></li>									
-				</c:otherwise>
-			</c:choose>
+		<c:if test="${totalpage != 1 && totalpage != 0 }">
+			<c:if test="${1 != pageselected }">
+				<li data="-1" id="_pre"><a rel="next"> << </a></li>
+				<li data="-2" id="pre"><a rel="next"> < </a></li>
+			</c:if>			
 
 			<c:forEach var = "i" begin="1" end="${totalpage }">
 				<c:choose>
 					<c:when test="${i == pageselected }">
-						<li class="active"><span>${i }</span></li>
+						<li data="${i }" class="active"><span>${i }</span></li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="${href }&p=${i}">${i }</a></li>
+						<li data="${i }"><a>${i }</a></li>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
 				
-			<c:choose>
-				<c:when test="${totalpage == pageselected }">
-					<li class="disabled"><span> > </span></li>
-					<li class="disabled"><span> >> </span></li>
-				</c:when>
-				<c:otherwise>
-					<li><a href="${href }&p=${pageselected + 1}" rel="next"> > </a></li>
-					<li><a href="${href }&p=${totalpage}" rel="next"> >> </a></li>
-				</c:otherwise>
-			</c:choose>
+			<c:if test="${totalpage != pageselected }">
+				<li data="-3" id="next"><a rel="next"> > </a></li>
+				<li data="-4" id="_next"><a rel="next"> >> </a></li>
+			</c:if>	
 			
 		</c:if>
 	</ul>
+	
+	<input hidden value="${pageselected }" id="page" />
+	<input hidden value="${totalpage }" id="totalpage" />
+	<input hidden value="${href }" id="href" />
 </div>
 	

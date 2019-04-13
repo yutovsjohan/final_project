@@ -77,7 +77,7 @@
 										<img src="<c:url value="/images/products/${ts.image }" />" title="${ts.name }" alt="${ts.image }" style="width:150px; height:200px; margin-top:25px;" />
 										<h5 style="height:50px; ">${ts.name }</h5>
 										<h5 style="background-color: green; color:white">Phát hành: <fmt:formatDate pattern = "dd-MM-yyyy" value = "${ts.publishDate }" /></h5>
-										<h5 style="font-size: 18px; color: red;"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${ts.price}" /> <u>đ</u></h5>
+										<h5 style="font-size: 18px; color: red;"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${ts.sale}" /> <u>đ</u></h5>
 									</a>
 								
 									<c:choose>
@@ -140,7 +140,7 @@
 									<img src="<c:url value="/images/products/${nc.image }" />" title="${nc.name }" alt="${nc.image }" style="width:150px; height:200px; margin-top:25px;" />
 									<h5 style="height:50px; ">${nc.name }</h5>
 									<h5 style="background-color: green; color:white">Phát hành: <fmt:formatDate pattern = "dd-MM-yyyy" value = "${nc.publishDate }" /></h5>
-									<h5 style="font-size: 18px; color: red;"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${nc.price}" /> <u>đ</u></h5>
+									<h5 style="font-size: 18px; color: red;"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${nc.sale}" /> <u>đ</u></h5>
 								</a>
 								
 								<c:choose>
@@ -178,7 +178,7 @@
 									<img src="<c:url value="/images/products/${oc.image }" />" title="${oc.name }" alt="${oc.image }" style="width:150px; height:200px; margin-top:25px;" />
 									<h5 style="height:50px; ">${oc.name }</h5>
 									<h5 style="background-color: green; color:white">Phát hành: <fmt:formatDate pattern = "dd-MM-yyyy" value = "${oc.publishDate }" /></h5>
-									<h5 style="font-size: 18px; color: red;"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${oc.price}" /> <u>đ</u></h5>
+									<h5 style="font-size: 18px; color: red;"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${oc.sale}" /> <u>đ</u></h5>
 								</a>
 								
 								<c:choose>

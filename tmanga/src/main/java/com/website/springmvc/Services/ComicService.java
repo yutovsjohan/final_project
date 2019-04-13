@@ -20,18 +20,15 @@ public class ComicService {
 	
 	@Autowired
 	DAO<Comic> comicDao;
-		
-	public List<Comic> getListComic(String name){
-		Session session = this.sessionFactory.getCurrentSession();
-		return session.createQuery("from Comic where name like :keyword").setParameter("keyword", "%" + name + "%").list();
-	}
 	
 	public List<Comic> getListComic(String name, int firstResult, int maxResult){
 		Session session = this.sessionFactory.getCurrentSession();
 		Query query = session.createQuery("from Comic where name like :keyword").setParameter("keyword", "%" + name + "%");
 		
-		query.setFirstResult(firstResult);
-		query.setMaxResults(maxResult);
+		if(maxResult != 0) {
+			query.setFirstResult(firstResult);
+			query.setMaxResults(maxResult);
+		}
 		
 		return query.list();
 	}
@@ -43,34 +40,14 @@ public class ComicService {
 	
 	public Comic get(String name) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return (Comic) session.createQuery("from Comic where unsignedName like :keyword").setParameter("keyword", name).uniqueResult();
+		return (Comic) session.createQuery("from Comic where unsignedName = :keyword").setParameter("keyword", name).uniqueResult();
 	}
 	
 	public Comic get(int id) {
 		Session session = this.sessionFactory.getCurrentSession();
 		return (Comic) session.get(Comic.class, new Integer(id));
 	}
-	
-	public List<Comic> getListComic(String key, int id) {
-		Session session = this.sessionFactory.getCurrentSession();
-		String hql = "";
-		Query query = null;
-		if(key.equalsIgnoreCase("category")) {
-			hql = "from Comic where idCategory = :keyword";
-			query = session.createQuery(hql).setParameter("keyword", id);
-		}	
-		else if(key.equalsIgnoreCase("author")) {
-			hql = "from Comic where idAuthor = :keyword";
-			query = session.createQuery(hql).setParameter("keyword", id);
-		}
-		else if(key.equalsIgnoreCase("publishing-company")) {
-			hql = "from Comic where idPublishCompany = :keyword";
-			query = session.createQuery(hql).setParameter("keyword", id);
-		}
 		
-		return query.list(); 
-	}
-	
 	public List<Comic> getListComic(String key, int id, int firstResult, int maxResult) {
 		Session session = this.sessionFactory.getCurrentSession();
 		String hql = "";
@@ -89,8 +66,10 @@ public class ComicService {
 			query = session.createQuery(hql).setParameter("keyword", id);
 		}
 		
-		query.setFirstResult(firstResult);
-		query.setMaxResults(maxResult);
+		if(maxResult != 0) {
+			query.setFirstResult(firstResult);
+			query.setMaxResults(maxResult);
+		}
 		
 		return query.list(); 
 	}

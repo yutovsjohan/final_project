@@ -14,7 +14,7 @@
 					<c:if test="${number != 1}">
 						<hr style="border: 1px solid #eee;">
 					</c:if>						
-					<a href="${pageContext.request.contextPath}/controller/product?q=category&un=${category.unsignedName }">
+					<a href="${pageContext.request.contextPath}/controller/product?a=pl&q=category&un=${category.unsignedName }">
 						<c:choose>
 							<c:when test="${title == category.name}">
 								<div id="menu_doc" class="actived">		
@@ -42,7 +42,7 @@
 					<c:if test="${number != 1}">
 						<hr style="border: 1px solid #eee;">
 					</c:if>	
-					<a href="${pageContext.request.contextPath}/controller/product?q=author&un=${author.unsignedName }">
+					<a href="${pageContext.request.contextPath}/controller/product?a=pl&q=author&un=${author.unsignedName }">
 						<c:choose>
 							<c:when test="${title == author.name}">
 								<div id="menu_doc" class="actived">		
@@ -69,7 +69,7 @@
 					<c:if test="${number != 1}">
 						<hr style="border: 1px solid #eee;">
 					</c:if>	
-					<a href="${pageContext.request.contextPath}/controller/product?q=publishing-company&un=${pc.unsignedName }">
+					<a href="${pageContext.request.contextPath}/controller/product?a=pl&q=publishing-company&un=${pc.unsignedName }">
 						<c:choose>
 							<c:when test="${title == pc.name}">
 								<div id="menu_doc" class="actived">		
