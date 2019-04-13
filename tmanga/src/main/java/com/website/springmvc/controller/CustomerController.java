@@ -63,8 +63,13 @@ public class CustomerController {
 		if(session.getAttribute("account") != null) {
 			getModel.getOrderHistory(model);
 			
+<<<<<<< HEAD
 			int id = ((Users) session.getAttribute("account")).getId();
+=======
+			long id = ((users) session.getAttribute("account")).getId();
+>>>>>>> parent of fba3364... fix error, update project part 2
 			model.addObject("bills", billService.getBillOfUser(id));
+			
 		}
 		else {
 			getModel.getHome(model);

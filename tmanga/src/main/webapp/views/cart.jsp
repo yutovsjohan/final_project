@@ -73,7 +73,7 @@
 					      <label>Thành tiền</label>
 					      <div class="totals-value" id="cart-total" style="font-size: 20px; color: red; font-weight: bold;"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${sessionScope.cart.total() + 15000 }" /></div>
 					    </div>
-					  </div>
+					  </div>					 	
 					 	<a href="deletecart" id="deletecart"><button class="btn btn-danger" >Xóa giỏ hàng</button></a>	
 					</div>
 					<br><br>

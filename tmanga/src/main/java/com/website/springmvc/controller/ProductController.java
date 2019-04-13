@@ -142,6 +142,7 @@ public class ProductController {
 		model.addObject("totalcomic", totalComic);
 		return model;
 	}
+<<<<<<< HEAD
 	
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public ModelAndView test(@RequestParam(name = "q", defaultValue = "") String key, 
@@ -188,53 +189,7 @@ public class ProductController {
 		}
 		
 		List<Comic> comics = comicService.getListComic(key, id);
+=======
+>>>>>>> parent of fba3364... fix error, update project part 2
 
-		int totalPage = 0;
-		
-		int totalComic = comics.size();
-		totalPage = totalComic / 12;
-		
-		if(totalComic % 12 != 0){
-			totalPage++;
-		}		
-				
-		comics = comicService.getListComic(key, id, 12*(page-1), 12);
-		
-		str += "<ul class=\"pagination\">";
-		
-		if(page == 1) {
-			str += "<li class=\"disabled\" data=\"<<\"><span> << </span></li>";
-			str += "<li class=\"disabled\" data=\"<\"><span> < </span></li>";
-		}
-		else {
-			str += "<li data=\"<<\"> <a rel=\"next\"> << </a></li>";
-			str += "<li data=\"<\"><a rel=\"next\"> < </a></li>";
-		}
-		
-		for (int j = 1; j <= totalPage ; j++) {
-			if(j == page) {
-				str += "<li class=\"active\" data=\"" + j + "\"><span>" + j + "</span></li>";
-			}
-			else {
-				str += "<li data=\"" + j + "\"><a>" + j + "</a></li>";
-			}
-		}
-		
-		if(page == totalPage) {
-			str += "<li class=\"disabled\" data=\">\"><span> > </span></li>";
-			str += "<li class=\"disabled\" data=\">>\"><span> >> </span></li>";
-		}
-		else {
-			str += "<li data=\">\"><a rel=\"next\"> > </a></li>";
-			str += "<li data=\">>\"><a rel=\"next\"> >> </a></li>";
-		}
-		
-		str += "</ul>";
-		
-		model.addObject("title",title);
-		
-		model.addObject("comiclist", comics);
-		model.addObject("totalpage", totalPage);
-		model.addObject("pagination", str);
-	}
 }

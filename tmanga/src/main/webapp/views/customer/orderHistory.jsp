@@ -29,7 +29,7 @@
 				          <th>#</th>
 				      </tr>
 				  </thead>
-				  <c:forEach var="bill" items="${bills }">
+				  <c:forEach var="bill" items="${bills}">
 				  	<c:if test="${bill.idUser.id == sessionScope.account.id }">
 					  <tbody>
 					      <tr>

@@ -26,8 +26,13 @@ public class Role implements java.io.Serializable{
 	@Column(name = "name", length = 255)
 	private String name;
 	
+<<<<<<< HEAD
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "role")
 	private Set<Users> Users = new HashSet<Users>();
+=======
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "role")
+	private Set<users> users = new HashSet<users>();
+>>>>>>> parent of fba3364... fix error, update project part 2
 
 	public Role() {
 		super();
