@@ -83,9 +83,6 @@ public class Comic implements java.io.Serializable{
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "comic")
 	private Set<BillDetail> billdetail = new HashSet<BillDetail>();
-	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "comic")
-	private Set<CartDetail> cartdetail = new HashSet<CartDetail>();
 			
 	public Comic() {
 		super();
