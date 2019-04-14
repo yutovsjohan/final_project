@@ -1,5 +1,7 @@
 package com.website.springmvc.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -13,10 +15,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.website.springmvc.Services.CartDetailService;
+import com.website.springmvc.Services.CartService;
 import com.website.springmvc.Services.UsersService;
+import com.website.springmvc.entities.Cart;
+import com.website.springmvc.entities.CartDetail;
 import com.website.springmvc.entities.Role;
 import com.website.springmvc.entities.Users;
 import com.website.springmvc.libs.GetModel;
+import com.website.springmvc.libs.GioHang;
+import com.website.springmvc.libs.Item;
 import com.website.springmvc.libs.TripleDES;
 
 @Controller
@@ -25,6 +33,12 @@ public class UserController {
 	@Autowired
 	private UsersService usersService;
 
+	@Autowired
+	CartService cartService;
+	
+	@Autowired
+	CartDetailService cartDetailService;
+	
 	@Autowired
 	GetModel getModel;
 	
@@ -76,14 +90,71 @@ public class UserController {
 						@RequestParam("password") String password,
 						HttpSession session, Model model) {
 		String str = "";
-		int check = checkLogin(email, password);
-		if(check == -1) {
+		int idUser = checkLogin(email, password);
+		if(idUser == -1) {
             model.addAttribute("mes","Email và password của bạn sai");            			
 			model.addAttribute("alert", "danger");
 			str = "redirect:/controller/login";
 		} 
 		else {
-			session.setAttribute("account", usersService.get(check));
+			session.setAttribute("account", usersService.get(idUser));
+			
+			if(session.getAttribute("cart") != null) {				
+				Cart cart = new Cart();
+				if(cartService.getCartByUser(idUser) != null) {
+					cart = cartService.getCartByUser(idUser);
+				}
+				else { 
+					cart.setIdUser(((Users) session.getAttribute("account")));
+					cartService.add(cart);
+				}		
+								
+				List<CartDetail> listCartDetail = cartDetailService.getDetailByIdCart(cart.getId());
+				for(int i = 0; i < listCartDetail.size(); i++) {
+					cartDetailService.delete(listCartDetail.get(i).getId());
+				}
+				
+				CartDetail cartDetail = new CartDetail();
+				
+				ArrayList<Item> items =  (ArrayList<Item>) ((GioHang) session.getAttribute("cart")).getList();
+				int idComic;
+				for (int i = 0; i < items.size(); i++) {
+					idComic = items.get(i).getComic().getId();
+					if(cartDetailService.getDetailByCartAndProduct(cart.getId(), idComic) != null) {
+						cartDetail = cartDetailService.getDetailByCartAndProduct(cart.getId(), idComic);
+					}
+					else {
+						cartDetail.setCart(cart);
+						cartDetail.setComic(items.get(i).getComic());
+					}										
+					cartDetail.setAmount((byte)items.get(i).getAmount());							
+					if(cartDetailService.getDetailByCartAndProduct(cart.getId(), idComic) != null) {
+						cartDetailService.update(cartDetail);
+					}
+					else {
+						cartDetailService.add(cartDetail);
+					}
+				}
+			}			
+			else if(checkCart(idUser) != 0) {
+				List<CartDetail> listCartDetail = cartDetailService.getDetailByIdCart(checkCart(idUser));
+				
+				if(listCartDetail != null) {
+					Item item;
+					GioHang gioHang = new GioHang();
+					HashMap<Integer, Item> hashCart = new HashMap<>();
+					
+					for (int i = 0; i < listCartDetail.size(); i++) {
+						item = new Item();
+						item.setComic(listCartDetail.get(i).getComic());
+						item.setAmount(listCartDetail.get(i).getAmount());
+						hashCart.put(listCartDetail.get(i).getComic().getId(), item);
+					}
+					gioHang.setCart(hashCart);
+					session.removeAttribute("cart");
+					session.setAttribute("cart", gioHang);
+				}
+			}
 			str = "redirect:/controller/index";			
 		}
 		return str;
@@ -92,6 +163,7 @@ public class UserController {
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpSession session) {
 		session.removeAttribute("account");
+		session.removeAttribute("cart");
 		return "redirect:index";
 	}
 	
@@ -123,5 +195,13 @@ public class UserController {
 			}			
 		}
 		return j;
+	}
+	
+	private long checkCart(int iduser) {
+		long i = 0;
+		if(cartService.getCartByUser(iduser) != null ) {
+			i = cartService.getCartByUser(iduser).getId();
+		}
+		return i;
 	}
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.website.springmvc.DAO.DAO;
+import com.website.springmvc.entities.Cart;
 import com.website.springmvc.entities.CartDetail;
 
 @Transactional
@@ -19,6 +20,16 @@ public class CartDetailService {
 
 	@Autowired
 	DAO<CartDetail> cartDetailDAO;
+	
+	public List<CartDetail> getDetailByIdCart(long idCart){
+		Session session = this.sessionFactory.getCurrentSession();
+		return session.createQuery("from CartDetail where cart.id = :idCart").setParameter("idCart", idCart).list();
+	}
+	
+	public CartDetail getDetailByCartAndProduct(Long idCart, int idComic) {
+		Session session = this.sessionFactory.getCurrentSession();
+		return (CartDetail) session.createQuery("from CartDetail where cart.id = :idCart and comic.id = :idComic").setParameter("idCart", idCart).setParameter("idComic", idComic).uniqueResult();
+	}
 	
 	public CartDetail get(int id) {
 		Session session = this.sessionFactory.getCurrentSession();

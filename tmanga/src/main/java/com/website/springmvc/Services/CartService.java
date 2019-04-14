@@ -20,9 +20,9 @@ public class CartService {
 	@Autowired
 	DAO<Cart> cartDAO;
 	
-	public List<Cart> getCartByUser(int iduser) {
+	public Cart getCartByUser(int iduser) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return session.createQuery("from Cart where idUser.id = :keyword").setParameter("keyword", iduser).list();
+		return (Cart) session.createQuery("from Cart where idUser.id = :keyword").setParameter("keyword", iduser).uniqueResult();
 	}
 	
 	public Cart get(int id) {

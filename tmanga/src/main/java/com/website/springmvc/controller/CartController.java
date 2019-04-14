@@ -3,6 +3,7 @@ package com.website.springmvc.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.website.springmvc.Services.BillService;
+import com.website.springmvc.Services.CartDetailService;
+import com.website.springmvc.Services.CartService;
 import com.website.springmvc.Services.BillDetailService;
 import com.website.springmvc.Services.ComicService;
 import com.website.springmvc.Services.OrderStatusService;
@@ -24,6 +27,8 @@ import com.website.springmvc.Services.UsersService;
 import com.website.springmvc.config.MyConstants;
 import com.website.springmvc.entities.Bill;
 import com.website.springmvc.entities.BillDetail;
+import com.website.springmvc.entities.Cart;
+import com.website.springmvc.entities.CartDetail;
 import com.website.springmvc.entities.Comic;
 import com.website.springmvc.entities.OrderStatus;
 import com.website.springmvc.entities.Users;
@@ -51,6 +56,12 @@ public class CartController {
 	
 	@Autowired
 	OrderStatusService orderStatusService;
+	
+	@Autowired
+	CartService cartService;
+	
+	@Autowired
+	CartDetailService cartDetailService;
 	
 	/*@Autowired
     public JavaMailSender emailSender;
@@ -86,13 +97,37 @@ public class CartController {
 	
 	@RequestMapping(value = { "/cart", "/gio-hang" }, method = RequestMethod.GET)
 	public ModelAndView getCartPage(@RequestParam(name = "alert", defaultValue = "") String alert, 
-									@RequestParam(name = "mes", defaultValue = "") String mes){
+									@RequestParam(name = "mes", defaultValue = "") String mes,
+									HttpSession session){
 		ModelAndView model = new ModelAndView();		
 		if(!mes.equalsIgnoreCase("")) {
 			model.addObject("mes",mes);
 			model.addObject("alert",alert);
 		}
-		getModel.getCart(model);		
+		getModel.getCart(model);
+		if(session.getAttribute("account") != null) {	
+			int idUser = ((Users) session.getAttribute("account")).getId();
+			if(checkCart(idUser) != 0) {
+				List<CartDetail> listCartDetail = cartDetailService.getDetailByIdCart(checkCart(idUser));
+				
+				if(listCartDetail != null) {
+					Item item;
+					GioHang gioHang = new GioHang();
+					HashMap<Integer, Item> hashCart = new HashMap<>();
+					
+					for (int i = 0; i < listCartDetail.size(); i++) {
+						item = new Item();
+						item.setComic(listCartDetail.get(i).getComic());
+						item.setAmount(listCartDetail.get(i).getAmount());
+						hashCart.put(listCartDetail.get(i).getComic().getId(), item);
+					}
+					gioHang.setCart(hashCart);
+					session.removeAttribute("cart");
+					session.setAttribute("cart", gioHang);
+				}
+			}
+		}
+			
 		return model;	
 	}	
 	
@@ -108,27 +143,27 @@ public class CartController {
 		}
 		else {
 			Comic comic = comicService.get(idComic);
-			GioHang cart = new GioHang();
+			GioHang gioHang = new GioHang();
 			int amountInCart = 0;
 			boolean f = false;
 			
 			if(session.getAttribute("cart") != null) {
 				ArrayList<Item> items =  (ArrayList<Item>) ((GioHang) session.getAttribute("cart")).getList();
-				HashMap<Integer, Item> hashcart = new HashMap<>();
+				HashMap<Integer, Item> hashCart = new HashMap<>();
 				for (int i = 0; i < items.size(); i++) {
-					hashcart.put(items.get(i).getComic().getId(), items.get(i));
+					hashCart.put(items.get(i).getComic().getId(), items.get(i));
 					if(items.get(i).getComic().getId() == idComic) {
 						f = true;
 					}
 				}
-				cart.setCart(hashcart);
+				gioHang.setCart(hashCart);
 				if(f) {
-					amountInCart = cart.getItemForId(idComic).getAmount();
+					amountInCart = gioHang.getItemForId(idComic).getAmount();
 				}
 			}					
 			
 			if(comic.getAmount() == 0) {
-				cart.delete(idComic);
+				gioHang.delete(idComic);
                 str = "Truyện này tạm hết hàng";
 			}
 			else {	
@@ -137,33 +172,87 @@ public class CartController {
                         str = comic.getName() + " cần số lượng tối đa được phép mua là " + comic.getAmount();
 					}
 					else if(amount != 0){
-						cart.add(idComic, comic, amount);
-						session.setAttribute("cart", cart);	
-						str = "added";
+						gioHang.add(idComic, comic, amount);
+						session.setAttribute("cart", gioHang);	
+						str = "added";						
 					}
 				}
 				
 				else {
 					if(amount == 0) {
-						cart.delete(idComic);
+						gioHang.delete(idComic);
 						str = "removed";
 					}
 					else if( amount > comic.getAmount() || amount < 0) {
                         str = comic.getName() + " cần số lượng tối đa được phép mua là " + comic.getAmount();
 					}
 					else {
-						amount -= cart.getItemForId(idComic).getAmount();
-						cart.add(idComic, comic, amount);
+						amount -= gioHang.getItemForId(idComic).getAmount();
+						gioHang.add(idComic, comic, amount);
 						str = "updated";
 					}
 					
-					if(cart.quantity() == 0) {
+					if(gioHang.quantity() == 0) {
+						if(session.getAttribute("cart") != null && session.getAttribute("account") != null){
+							int idUser = ((Users) session.getAttribute("account")).getId();
+							Cart cart = cartService.getCartByUser(idUser);
+							CartDetail cartDetail = cartDetailService.getDetailByCartAndProduct(cart.getId(), idComic);
+							
+							cartDetailService.delete(cartDetail.getId());
+						}
 						session.removeAttribute("cart");
 					}
 					else {
-						session.setAttribute("cart", cart);
+						session.setAttribute("cart", gioHang);						
+					}										
+				}	
+				
+				if(session.getAttribute("cart") != null && session.getAttribute("account") != null){
+					Cart cart = new Cart();
+					int idUser = ((Users) session.getAttribute("account")).getId();
+					if(cartService.getCartByUser(idUser) != null) {
+						cart = cartService.getCartByUser(idUser);
 					}
-				}						
+					else { 
+						cart.setIdUser(((Users) session.getAttribute("account")));
+						cartService.add(cart);
+					}											
+					
+					CartDetail cartDetail = new CartDetail();
+					
+					ArrayList<Item> items =  (ArrayList<Item>) ((GioHang) session.getAttribute("cart")).getList();
+					
+					List<CartDetail> listCartDetail = cartDetailService.getDetailByIdCart(cart.getId());
+					for(int i = 0; i < listCartDetail.size(); i++) {
+						cartDetailService.delete(listCartDetail.get(i).getId());
+					}
+					
+					for (int i = 0; i < items.size(); i++) {	
+//						if(cartDetailService.getDetailByCartAndProduct(cart.getId(), idComic) != null) {
+//							cartDetail = cartDetailService.getDetailByCartAndProduct(cart.getId(), idComic);
+//							cartDetail.setAmount((byte)items.get(i).getAmount());
+//							cartDetailService.update(cartDetail);
+//						}
+//						else {
+//							cartDetail.setCart(cart);
+//							cartDetail.setComic(items.get(i).getComic());
+//							cartDetail.setAmount((byte)items.get(i).getAmount());
+//							cartDetailService.add(cartDetail);
+//						}	
+						
+						cartDetail.setCart(cart);
+						cartDetail.setComic(items.get(i).getComic());
+						cartDetail.setAmount((byte)items.get(i).getAmount());
+						cartDetailService.add(cartDetail);
+						
+//						if(cartDetailService.getDetailByCartAndProduct(cart.getId(), idComic) != null) {
+//							cartDetailService.update(cartDetail);
+//						}
+//						else {
+//							cartDetailService.add(cartDetail);
+//						}
+					}					
+				}
 			}				
 			try {
 				response.getWriter().print(str);
@@ -177,15 +266,22 @@ public class CartController {
 	public void getRemoveItem(@RequestParam("id") int idComic, HttpSession session, HttpServletResponse response){
 		String str = "";
 		if(session.getAttribute("cart") != null) {
-			GioHang cart = (GioHang) session.getAttribute("cart");
-			cart.delete(idComic);
-			if(cart.quantity() == 0) {
+			if(session.getAttribute("cart") != null && session.getAttribute("account") != null){
+				int idUser = ((Users) session.getAttribute("account")).getId();
+				Cart cart = cartService.getCartByUser(idUser);
+				CartDetail cartDetail = cartDetailService.getDetailByCartAndProduct(cart.getId(), idComic);
+				cartDetailService.delete(cartDetail.getId());
+			}
+			
+			GioHang gioHang = (GioHang) session.getAttribute("cart");
+			gioHang.delete(idComic);
+			if(gioHang.quantity() == 0) {
 				session.removeAttribute("cart");
 			}
 			else {
-				session.setAttribute("cart", cart);
-			}
-			str = "removed";
+				session.setAttribute("cart", gioHang);
+			}			
+			str = "removed";			
 		}
 		try {
 			response.getWriter().print(str);
@@ -197,6 +293,14 @@ public class CartController {
 	
 	@RequestMapping(value = "/deletecart", method = RequestMethod.GET)
 	public String getDeteleCart(HttpSession session){
+		if(session.getAttribute("cart") != null && session.getAttribute("account") != null){
+			int idUser = ((Users) session.getAttribute("account")).getId();
+			Cart cart = cartService.getCartByUser(idUser);
+			List<CartDetail> listCartDetail = cartDetailService.getDetailByIdCart(cart.getId());
+			for(int i = 0; i < listCartDetail.size(); i++) {
+				cartDetailService.delete(listCartDetail.get(i).getId());
+			}
+		}
 		session.removeAttribute("cart");
 		return "redirect:/controller/cart";
 	}
@@ -249,6 +353,13 @@ public class CartController {
 				orderStatusService.add(orderstatus);
 				
 				f = true;
+				
+				int idUser = ((Users) session.getAttribute("account")).getId();
+				Cart cart = cartService.getCartByUser(idUser);
+				List<CartDetail> listCartDetail = cartDetailService.getDetailByIdCart(cart.getId());
+				for(int i = 0; i < listCartDetail.size(); i++) {
+					cartDetailService.delete(listCartDetail.get(i).getId());
+				}
 				session.removeAttribute("cart");				
 			}			
 		}
@@ -267,6 +378,14 @@ public class CartController {
 		}		
 		
 		return "redirect:/controller/cart";
+	}
+	
+	private long checkCart(int iduser) {
+		long i = 0;
+		if(cartService.getCartByUser(iduser) != null ) {
+			i = cartService.getCartByUser(iduser).getId();
+		}
+		return i;
 	}
 
 }
