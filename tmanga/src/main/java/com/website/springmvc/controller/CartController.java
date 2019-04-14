@@ -28,7 +28,7 @@ import com.website.springmvc.entities.Comic;
 import com.website.springmvc.entities.OrderStatus;
 import com.website.springmvc.entities.Users;
 import com.website.springmvc.libs.GetModel;
-import com.website.springmvc.libs.Cart;
+import com.website.springmvc.libs.GioHang;
 import com.website.springmvc.libs.Item;
 
 @Controller
@@ -108,12 +108,12 @@ public class CartController {
 		}
 		else {
 			Comic comic = comicService.get(idComic);
-			Cart cart = new Cart();
+			GioHang cart = new GioHang();
 			int amountInCart = 0;
 			boolean f = false;
 			
 			if(session.getAttribute("cart") != null) {
-				ArrayList<Item> items =  (ArrayList<Item>) ((Cart) session.getAttribute("cart")).getList();
+				ArrayList<Item> items =  (ArrayList<Item>) ((GioHang) session.getAttribute("cart")).getList();
 				HashMap<Integer, Item> hashcart = new HashMap<>();
 				for (int i = 0; i < items.size(); i++) {
 					hashcart.put(items.get(i).getComic().getId(), items.get(i));
@@ -177,7 +177,7 @@ public class CartController {
 	public void getRemoveItem(@RequestParam("id") int idComic, HttpSession session, HttpServletResponse response){
 		String str = "";
 		if(session.getAttribute("cart") != null) {
-			Cart cart = (Cart) session.getAttribute("cart");
+			GioHang cart = (GioHang) session.getAttribute("cart");
 			cart.delete(idComic);
 			if(cart.quantity() == 0) {
 				session.removeAttribute("cart");
@@ -207,7 +207,7 @@ public class CartController {
 		boolean f = true;
 		
 		if(session.getAttribute("cart") != null && session.getAttribute("account") != null) {
-			ArrayList<Item> items =  (ArrayList<Item>) ((Cart) session.getAttribute("cart")).getList();
+			ArrayList<Item> items =  (ArrayList<Item>) ((GioHang) session.getAttribute("cart")).getList();
 			
 			for (int i = 0; i < items.size(); i++) {
 				if(items.get(i).getComic().getAmount() < items.get(i).getAmount()) {
@@ -219,7 +219,7 @@ public class CartController {
 			if(f) {
 				Bill bill = new Bill();
 				bill.setIdUser( (Users) session.getAttribute("account"));
-				bill.setTotal(((Cart) session.getAttribute("cart")).total() + 15000 );
+				bill.setTotal(((GioHang) session.getAttribute("cart")).total() + 15000 );
                 bill.setStatus("Chưa xác nhận đơn hàng");
 				bill.setDelivery(usersService.get(2));
 				billService.add(bill);

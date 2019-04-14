@@ -7,7 +7,15 @@
 <div class="col-md-9 ">
 	<!--contact-page-->
 	<div class="row">    		
-	    <div class="col-sm-12">    			   			
+	    <div class="col-sm-12">
+	    	<c:if test="${mes != null }">
+				<div class="alert alert-${alert }" role="alert">
+					${mes }
+				 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				</div>
+			</c:if> 
+			<br> 
+			   			   			
 	        <h2 class="text-center" style="color:orange">Liên hệ với chúng tôi</h2>    			    				    				
 	        <p>Hãy gọi liên hệ với chúng tôi để được trợ giúp:</p>
 	        <p><b>Số điện thoại:</b> 0126 737 5655</p>
@@ -28,15 +36,15 @@
 	            <h2 class="text-center" style="color:orange">Gửi tin nhắn cho chúng tôi</h2>
 	
 	            <div class="status alert alert-success" style="display: none"></div>
-	            <form id="main-contact-form" class="contact-form row" name="contact-form" method="post" action="">	               
+	            <form id="main-contact-form" class="contact-form row" name="contact-form" method="post" action="contact">	               
 	                <div class="form-group col-md-12">
-	                    <input type="email" name="email" class="form-control" placeholder="Nhập email (bắt buộc)">
+	                    <input type="email" name="email" class="form-control" placeholder="Nhập email (bắt buộc)" required="required">
 	                </div>
 	                <div class="form-group col-md-12">
-	                    <input type="text" name="tieude" class="form-control" placeholder="Nhập tên tiêu đề (bắt buộc)">
+	                    <input type="text" name="title" class="form-control" placeholder="Nhập tên tiêu đề (bắt buộc)" required="required">
 	                </div>
 	                <div class="form-group col-md-12">
-	                    <textarea class="form-control" name="noidung" rows="7" placeholder="Nhập tin nhắn (bắt buộc)"></textarea>
+	                    <textarea class="form-control" name="content" rows="7" placeholder="Nhập tin nhắn (bắt buộc)" required="required"></textarea>
 	                </div>                        
 	                <div class="form-group col-md-12">
 	                    <input type="submit" name="submit" class="btn btn-success pull-right" value="Gửi">

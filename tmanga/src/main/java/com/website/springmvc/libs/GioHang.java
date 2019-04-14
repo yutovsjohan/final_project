@@ -5,15 +5,15 @@ import java.util.HashMap;
 import com.website.springmvc.entities.Comic;
 
 
-public class Cart {
+public class GioHang {
 	HashMap<Integer, Item> cart;
 	
-	public Cart() {
+	public GioHang() {
 		super();
 		cart = new HashMap<>();
 	}
 
-	public Cart(HashMap<Integer, Item> cart) {
+	public GioHang(HashMap<Integer, Item> cart) {
 		super();
 		this.cart = cart;
 	}

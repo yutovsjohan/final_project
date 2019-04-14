@@ -59,24 +59,24 @@
 	<ul class="pagination">
 		<c:if test="${totalpage != 1 && totalpage != 0 }">
 			<c:if test="${1 != pageselected }">
-				<li data="-1" id="_pre"><a rel="next"> << </a></li>
-				<li data="-2" id="pre"><a rel="next"> < </a></li>
+				<li><a href="${href }&p=1" rel="next"> << </a></li>
+				<li><a href="${href }&p=${pageselected - 1}" rel="next"> < </a></li>
 			</c:if>			
 
 			<c:forEach var = "i" begin="1" end="${totalpage }">
 				<c:choose>
 					<c:when test="${i == pageselected }">
-						<li data="${i }" class="active"><span>${i }</span></li>
+						<li class="active"><span>${i }</span></li>
 					</c:when>
 					<c:otherwise>
-						<li data="${i }"><a>${i }</a></li>
+						<li><a href="${href }&p=${i}">${i }</a></li>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
 				
 			<c:if test="${totalpage != pageselected }">
-				<li data="-3" id="next"><a rel="next"> > </a></li>
-				<li data="-4" id="_next"><a rel="next"> >> </a></li>
+				<li><a href="${href }&p=${pageselected + 1}" rel="next"> > </a></li>
+				<li><a href="${href }&p=${totalpage}" rel="next"> >> </a></li>
 			</c:if>	
 			
 		</c:if>
