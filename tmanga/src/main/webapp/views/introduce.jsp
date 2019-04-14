@@ -7,7 +7,7 @@
 	<h2>Giới thiệu</h2>
 	<hr>
 	<p><a href="${pageContext.request.contextPath}/controller/index">T-Manga.vn</a> là website thương mại điện tử chuyên cung cấp các loại truyện tranh, manga, comic.</p><br>
-	<p>Với mục tiêu hướng tới chất lượng dịch vụ tốt nhất, khách hàng sẽ được trải nghiệm sử dụng dịch vụ và  mua hàng trực tuyến một cách thuận tiện, nhanh chóng, an toàn và uy tín. Khi thực hiện giao dịch trên <a href="{{route('index')}}">T-Manga.vn</a> khách hàng sẽ được hưởng những tiện ích sau:</p>
+	<p>Với mục tiêu hướng tới chất lượng dịch vụ tốt nhất, khách hàng sẽ được trải nghiệm sử dụng dịch vụ và  mua hàng trực tuyến một cách thuận tiện, nhanh chóng, an toàn và uy tín. Khi thực hiện giao dịch trên <a href="${pageContext.request.contextPath}/controller/index">T-Manga.vn</a> khách hàng sẽ được hưởng những tiện ích sau:</p>
 	<ul>
 		<li style="list-style-type: unset;"><b>Sách được bọc Plastic miễn phí.</b> </li>
 		<li style="list-style-type: unset;"><b>Mức giá cạnh tranh nhất.</b> (Tất cả các sách đều được giảm giá từ 10 – 30%)</li>

@@ -82,7 +82,7 @@
 								
 									<c:choose>
 										<c:when test="${ts.amount == 0 }">
-											<a href="#" class="btn btn-danger" title="Báo tôi khi có hàng" style="background-color: crimson; border-color: crimson"><i class="fa fa-bullhorn" aria-hidden="true" ></i></a>
+											<a href="${pageContext.request.contextPath}/controller/#" class="btn btn-danger" title="Báo tôi khi có hàng" style="background-color: crimson; border-color: crimson"><i class="fa fa-bullhorn" aria-hidden="true" ></i></a>
 										</c:when>
 										<c:otherwise>
 											<button dataId="${ts.id }" dataName="${ts.name }" class="btn btn-info them-vao-gio-hang" title="Thêm vào giỏ hàng" style="background-color: #337ab7; border-color: #337ab7"><i class="fa fa-shopping-cart" aria-hidden="true"></i></button>
@@ -92,15 +92,15 @@
 									<c:if test="${a }">
 									<c:choose>
 										<c:when test="${sessionScope.account.email != null}">
-											<a href="#" class="btn btn-warning" title="Hủy yêu thích"><i class="fa fa-heart" aria-hidden="true" ></i></a>
+											<a href="${pageContext.request.contextPath}/controller/#" class="btn btn-warning" title="Hủy yêu thích"><i class="fa fa-heart" aria-hidden="true" ></i></a>
 										</c:when>
 										<c:otherwise>
-											<a href="#" class="btn btn-warning" title="Thêm vào danh sách yêu thích"><i class="fa fa-heart-o" aria-hidden="true" ></i></a>
+											<a href="${pageContext.request.contextPath}/controller/#" class="btn btn-warning" title="Thêm vào danh sách yêu thích"><i class="fa fa-heart-o" aria-hidden="true" ></i></a>
 										</c:otherwise>
 									</c:choose>
 									</c:if>
 									
-									<a href="detail?c=${ts.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a>
+									<a href="${pageContext.request.contextPath}/controller/detail?c=${ts.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a>
 	
 								</div>
 							</div>
@@ -127,7 +127,7 @@
 	<div>
 		<div>
 			<span style="color:orange; font-weight:bold; font-size:20px">TRUYỆN TRANH MỚI </span>
-			<span><a href="#" style="float:right; margin-left: 10px; margin-top: 7px;">XEM THÊM >></a></span>
+			<span><a href="${pageContext.request.contextPath}/controller/#" style="float:right; margin-left: 10px; margin-top: 7px;">XEM THÊM >></a></span>
 			<hr style="border: 1px solid orange; margin-top:0px">
 		</div>
 		<div>
@@ -145,14 +145,14 @@
 								
 								<c:choose>
 									<c:when test="${nc.amount == 0 }">
-										<a href="#" class="btn btn-danger" title="Báo tôi khi có hàng" style="background-color: crimson; border-color: crimson"><i class="fa fa-bullhorn" aria-hidden="true" ></i></a>
+										<a href="${pageContext.request.contextPath}/controller/#" class="btn btn-danger" title="Báo tôi khi có hàng" style="background-color: crimson; border-color: crimson"><i class="fa fa-bullhorn" aria-hidden="true" ></i></a>
 									</c:when>
 									<c:otherwise>
 										<button dataId="${nc.id }" dataName="${nc.name }" class="btn btn-info them-vao-gio-hang" title="Thêm vào giỏ hàng" style="background-color: #337ab7; border-color: #337ab7"><i class="fa fa-shopping-cart" aria-hidden="true"></i></button>
 									</c:otherwise>
 								</c:choose>						
 								
-								<a href="detail?c=${nc.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a>
+								<a href="${pageContext.request.contextPath}/controller/detail?c=${nc.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a>
 							</div>
 						</div>
 					</div>
@@ -165,7 +165,7 @@
 	<div>
 		<div>
 			<span style="color:orange; font-weight:bold; font-size:20px">TRUYỆN TRANH KHÁC </span>
-			<span><a href="#" style="float:right; margin-left: 10px; margin-top: 7px;">XEM THÊM >></a></span>
+			<span><a href="${pageContext.request.contextPath}/controller/#" style="float:right; margin-left: 10px; margin-top: 7px;">XEM THÊM >></a></span>
 			<hr style="border: 1px solid orange; margin-top:0px">
 		</div>
 		<div>
@@ -174,7 +174,7 @@
 					<div class="product-image-wrapper">
 						<div class="single-products">
 							<div class="productinfo text-center">
-								<a href="${pageContext.request.contextPath}/controller/detail?c=${oc.unsignedName }">
+								<a href="${pageContext.request.contextPath}/controller/${pageContext.request.contextPath}/controller/detail?c=${oc.unsignedName }">
 									<img src="<c:url value="/images/products/${oc.image }" />" title="${oc.name }" alt="${oc.image }" style="width:150px; height:200px; margin-top:25px;" />
 									<h5 style="height:50px; ">${oc.name }</h5>
 									<h5 style="background-color: green; color:white">Phát hành: <fmt:formatDate pattern = "dd-MM-yyyy" value = "${oc.publishDate }" /></h5>
@@ -183,14 +183,14 @@
 								
 								<c:choose>
 									<c:when test="${oc.amount == 0 }">
-										<a href="#" class="btn btn-danger" title="Báo tôi khi có hàng" style="background-color: crimson; border-color: crimson"><i class="fa fa-bullhorn" aria-hidden="true" ></i></a>
+										<a href="${pageContext.request.contextPath}/controller/#" class="btn btn-danger" title="Báo tôi khi có hàng" style="background-color: crimson; border-color: crimson"><i class="fa fa-bullhorn" aria-hidden="true" ></i></a>
 									</c:when>
 									<c:otherwise>
 										<button dataId="${oc.id }" dataName="${oc.name }" class="btn btn-info them-vao-gio-hang" title="Thêm vào giỏ hàng" style="background-color: #337ab7; border-color: #337ab7"><i class="fa fa-shopping-cart" aria-hidden="true"></i></button>
 									</c:otherwise>
 								</c:choose>								
 								
-								<a href="detail?c=${oc.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a>
+								<a href="${pageContext.request.contextPath}/controller/detail?c=${oc.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a>
 	
 							</div>
 						</div>

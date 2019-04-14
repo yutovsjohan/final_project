@@ -52,7 +52,7 @@ public class ProductController {
 		List<Comic> comics;
 		
 		if(action.equalsIgnoreCase("search")) {
-			comics = comicService.getListComic(key,0,0);
+			comics = comicService.getListComic(key, 0, 0, sort);
 						
 			model.addObject("title", "Tìm kiếm " + key);
 			
@@ -75,13 +75,13 @@ public class ProductController {
 				id = publishCompanyService.get(name).getId();
 			}
 			
-			comics = comicService.getListComic(key, id, 0, 0);
+			comics = comicService.getListComic(key, id, 0, 0, sort);
 			
 			model.addObject("title",title);
 			href = "product?a=pl&q=" + key + "&un=" + name;
 			
 			model.addObject("key", key);
-			
+			model.addObject("un", name);
 		}	
 		
 		int totalPage = 0;
@@ -93,21 +93,20 @@ public class ProductController {
 		if(totalComic % 12 != 0){
 			totalPage++;
 		}		
-		
-		model.addObject("comiclist", comics);
-		
+				
 		if(action.equalsIgnoreCase("search")) {
-			comics = comicService.getListComic(key,12*(page-1), 12);
+			comics = comicService.getListComic(key, 12*(page-1), 12, sort);
 		}
 		else {
-			comics = comicService.getListComic(key, id, 12*(page-1), 12);
+			comics = comicService.getListComic(key, id, 12*(page-1), 12, sort);
 		}
 						
-		model.addObject("comiclist_pagi", comics);
+		model.addObject("comiclist", comics);
 		model.addObject("totalpage", totalPage);
 		model.addObject("pageselected", page);
 		model.addObject("totalcomic", totalComic);
 		
+		model.addObject("sort", sort);
 		model.addObject("href", href);
 		model.addObject("views","productList");			
 		

@@ -110,7 +110,7 @@ public class CartController {
 			if(checkCart(idUser) != 0) {
 				List<CartDetail> listCartDetail = cartDetailService.getDetailByIdCart(checkCart(idUser));
 				
-				if(listCartDetail != null) {
+				if(listCartDetail.size() != 0) {
 					Item item;
 					GioHang gioHang = new GioHang();
 					HashMap<Integer, Item> hashCart = new HashMap<>();

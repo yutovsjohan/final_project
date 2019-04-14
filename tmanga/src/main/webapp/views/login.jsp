@@ -16,13 +16,14 @@
 	<br>
 		
 	<div class="box">
-	<form class="" action="login" method="post">
+	<form class="" action="${pageContext.request.contextPath}/controller/login" method="post">
 		<h1>Thông tin đăng nhập</h1>
-		<input type="text" name="email" placeholder="nhập email">
+		<input type="email" name="email" placeholder="nhập email">
 		<input type="password" name="password" placeholder="nhập password">
 		<input type="submit" name="" value="Đăng nhập">
 	</form>
-	<a class="btn btn-info forget-password">Quên mật khẩu</a>
+	<br>
+	<a class="forgetps forget-password" style="display:inline">Quên mật khẩu</a>
 	</div>
 	
 	
@@ -60,7 +61,7 @@
 				<div class="panel-heading">Tìm tài khoản của bạn</div>
 				
 				<div class="panel-body">
-					<form action="" method="post">
+					<form action="${pageContext.request.contextPath}/controller/#" method="post">
 					<input type="hidden" name="" value="">
 					  <div class="form-group">
 					    <label for="email">	

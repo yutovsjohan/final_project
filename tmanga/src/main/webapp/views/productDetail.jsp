@@ -46,7 +46,7 @@
 				<table class="table table-hover">
 					<tr>
 						<td>Tác giả</td>
-						<td><a href="product?q=author&un=${author.unsignedName }">${author.name }</a></td>
+						<td><a href="${pageContext.request.contextPath}/controller/product?q=author&un=${author.unsignedName }">${author.name }</a></td>
 					</tr>
 					<tr>
 						<td>Tại T-Manga</td>
@@ -64,7 +64,7 @@
 					</tr>
 					<tr>
 						<td>Nhà xuất bản</td>
-						<td><a href="product?q=publishing-company&un=${publishcompany.unsignedName }">${publishcompany.name }</a></td>
+						<td><a href="${pageContext.request.contextPath}/controller/product?q=publishing-company&un=${publishcompany.unsignedName }">${publishcompany.name }</a></td>
 					</tr>
 					<tr>
 						<td>Ngày phát hành</td>
@@ -125,7 +125,7 @@
 			<span style="color:orange; font-weight:bold; font-size:20px">Truyện cùng tác giả</span>
 		</div>
 		<div class="col-sm-2" style="margin-top:8px; font-style:italic">
-			<a href="product?q=author&un=${author.unsignedName }">XEM THÊM >></a>
+			<a href="${pageContext.request.contextPath}/controller/product?q=author&un=${author.unsignedName }">XEM THÊM >></a>
 		</div>		
 	</div>
 	
@@ -136,7 +136,7 @@
 			<div class="product-image-wrapper">
 				<div class="single-products">
 					<div class="productinfo text-center">
-						<a href="detail?c=${cm.unsignedName }" title="${cm.name }">
+						<a href="${pageContext.request.contextPath}/controller/detail?c=${cm.unsignedName }" title="${cm.name }">
 							<img src="<c:url value="/images/products/${cm.image }"/>" alt="${cm.name }" style="width:150px; height:200px; margin-top:25px;" />
 							<h5 style="height:50px; ">${cm.name }</h5>
 							<h5 style="background-color: green; color:white">Phát hành: <fmt:formatDate pattern = "dd-MM-yyyy" value = "${cm.publishDate }" /></h5>
@@ -147,17 +147,17 @@
 						
 						<c:choose>
 							<c:when test="${cm.amount == 0 }">
-								<a href="#" class="btn btn-danger" title="Báo tôi khi có hàng" style="background-color: crimson; border-color: crimson"><i class="fa fa-bullhorn" aria-hidden="true" ></i></a>
+								<a href="${pageContext.request.contextPath}/controller/#" class="btn btn-danger" title="Báo tôi khi có hàng" style="background-color: crimson; border-color: crimson"><i class="fa fa-bullhorn" aria-hidden="true" ></i></a>
 							</c:when>
 							<c:otherwise>
 								<button dataId="${cm.id }" dataName="${cm.name }" class="btn btn-info them-vao-gio-hang" title="Thêm vào giỏ hàng" style="background-color: #337ab7; border-color: #337ab7"><i class="fa fa-shopping-cart" aria-hidden="true"></i></button>
 							</c:otherwise>
 						</c:choose>
-						<a href="detail?c=${cm.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a></div>
+						<a href="${pageContext.request.contextPath}/controller/detail?c=${cm.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a></div>
 				</div>
 			</div>
 		</div>
 	</c:forEach>
 	
-	<div class="fb-comments" data-href="http://localhost:8080/tmanga/controller/detail?c=${comic.unsignedName }" data-numposts="5"></div>
+	<div class="fb-comments" data-href="${pageContext.request.contextPath}/controller/detail?c=${comic.unsignedName }" data-numposts="5"></div>
 </div>

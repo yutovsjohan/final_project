@@ -21,9 +21,25 @@ public class ComicService {
 	@Autowired
 	DAO<Comic> comicDao;
 	
-	public List<Comic> getListComic(String name, int firstResult, int maxResult){
+	//search
+	public List<Comic> getListComic(String name, int firstResult, int maxResult, int sort){
 		Session session = this.sessionFactory.getCurrentSession();
-		Query query = session.createQuery("from Comic where name like :keyword").setParameter("keyword", "%" + name + "%");
+		Query query = null;
+		
+		if(sort == 1) {
+			query = session.createQuery("from Comic where name like :keyword order by publishDate desc");
+		}
+		else if(sort == 2) {
+			query = session.createQuery("from Comic where name like :keyword order by quantitySold desc");
+		}
+		else if(sort == 3) {
+			query = session.createQuery("from Comic where name like :keyword order by name asc");
+		}
+		else if(sort == 4) {
+			query = session.createQuery("from Comic where name like :keyword order by name desc");
+		}
+		
+		query.setParameter("keyword", "%" + name + "%");
 		
 		if(maxResult != 0) {
 			query.setFirstResult(firstResult);
@@ -47,22 +63,56 @@ public class ComicService {
 		Session session = this.sessionFactory.getCurrentSession();
 		return (Comic) session.get(Comic.class, new Integer(id));
 	}
-		
-	public List<Comic> getListComic(String key, int id, int firstResult, int maxResult) {
+	
+	//list product
+	public List<Comic> getListComic(String key, int id, int firstResult, int maxResult, int sort) {
 		Session session = this.sessionFactory.getCurrentSession();
 		String hql = "";
 		Query query = null;
 		
 		if(key.equalsIgnoreCase("category")) {
-			hql = "from Comic where idCategory = :keyword";
+			if(sort == 1) {
+				hql = "from Comic where idCategory = :keyword order by publishDate desc";
+			}		
+			else if(sort == 2) {
+				hql = "from Comic where idCategory = :keyword order by quantitySold desc";
+			}
+			else if(sort == 3) {
+				hql = "from Comic where idCategory = :keyword order by name asc";
+			}
+			else if(sort == 4) {
+				hql = "from Comic where idCategory = :keyword order by name desc";
+			}			
 			query = session.createQuery(hql).setParameter("keyword", id);
 		}	
 		else if(key.equalsIgnoreCase("author")) {
-			hql = "from Comic where idAuthor = :keyword";
+			if(sort == 1) {
+				hql = "from Comic where idAuthor = :keyword order by publishDate desc";
+			}
+			else if(sort == 2) {
+				hql = "from Comic where idAuthor = :keyword order by quantitySold desc";
+			}
+			else if(sort == 3) {
+				hql = "from Comic where idAuthor = :keyword order by name asc";
+			}
+			else if(sort == 4) {
+				hql = "from Comic where idAuthor = :keyword order by name desc";
+			}
 			query = session.createQuery(hql).setParameter("keyword", id);
 		}
 		else if(key.equalsIgnoreCase("publishing-company")) {
-			hql = "from Comic where idPublishCompany = :keyword";
+			if(sort == 1) {
+				hql = "from Comic where idPublishCompany = :keyword order by publishDate desc";
+			}
+			else if(sort == 2) {
+				hql = "from Comic where idPublishCompany = :keyword order by quantitySold desc";
+			}
+			else if(sort == 3) {
+				hql = "from Comic where idPublishCompany = :keyword order by name asc";
+			}
+			else if(sort == 4) {
+				hql = "from Comic where idPublishCompany = :keyword order by name desc";
+			}
 			query = session.createQuery(hql).setParameter("keyword", id);
 		}
 		

@@ -32,12 +32,12 @@
 					 <c:forEach var="item" items="${sessionScope.cart.getList() }">
 						  <div class="product">
 						    <div class="product-image">
-						      <a href="detail?c=${item.comic.unsignedName }" title="${item.comic.name }">
+						      <a href="${pageContext.request.contextPath}/controller/detail?c=${item.comic.unsignedName }" title="${item.comic.name }">
 						      	<img src="<c:url value="/images/products/${item.comic.image }"/>" alt="${item.comic.name }" >
 						      </a>
 						    </div>
 						    <div class="product-details">
-						      <a href="detail?c=${item.comic.unsignedName }" title="${item.comic.name }">
+						      <a href="${pageContext.request.contextPath}/controller/detail?c=${item.comic.unsignedName }" title="${item.comic.name }">
 						      	<div class="product-title">${item.comic.name }</div>
 						      </a>
 						      <p class="product-description"></p>
@@ -74,12 +74,12 @@
 					      <div class="totals-value" id="cart-total" style="font-size: 20px; color: red; font-weight: bold;"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${sessionScope.cart.total() + 15000 }" /></div>
 					    </div>
 					  </div>
-					 	<a href="deletecart" id="deletecart"><button class="btn btn-danger" >Xóa giỏ hàng</button></a>	
+					 	<a href="${pageContext.request.contextPath}/controller/deletecart" id="deletecart"><button class="btn btn-danger" >Xóa giỏ hàng</button></a>	
 					</div>
 					<br><br>
 					<c:choose>
 						<c:when test="${sessionScope.account != null}">		
-							<form action="order" method="post">			
+							<form action="${pageContext.request.contextPath}/controller/order" method="post">			
 								<div class="panel panel-primary">
 						            <div class="panel-heading">
 						                <h3 class="panel-title">Thông tin khách hàng</h3>
@@ -116,16 +116,17 @@
 						        
 					            <button id="order" type="button" class="btn btn-success" style="float:right; display:none"  >Đặt hàng</button>
 				            </form>
+				            <button id="r_order" type="button" class="btn btn-info" style="float:left" >Tiến hành đặt hàng</button></a>
 						</c:when>
 						<c:otherwise>
-							<p class="alert alert-danger">Bạn cần phải <a href="login">đăng nhập</a> để đặt hàng hoặc <a href="signup">đăng ký</a> tài khoản</p> 
+							<p class="alert alert-danger">Bạn cần phải <a href="${pageContext.request.contextPath}/controller/login">đăng nhập</a> để đặt hàng hoặc <a href="${pageContext.request.contextPath}/controller/signup">đăng ký</a> tài khoản</p> 
 						</c:otherwise>
 					</c:choose>
 				
-				<button id="r_order" type="button" class="btn btn-info" style="float:left" >Tiến hành đặt hàng</button></a>
+				
 			</c:when>
 			<c:otherwise>
-				<p class="glyphicon glyphicon-ok"> <span style="font-family:'Roboto', sans-serif">Giỏ hàng của bạn hiện chưa có sản phẩm nào, hãy <a href="index">quay lại để mua hàng.</a> </span> </p>
+				<p class="glyphicon glyphicon-ok"> <span style="font-family:'Roboto', sans-serif">Giỏ hàng của bạn hiện chưa có sản phẩm nào, hãy <a href="${pageContext.request.contextPath}/controller/index">quay lại để mua hàng.</a> </span> </p>
 			</c:otherwise>
 		</c:choose>		
 	</div>

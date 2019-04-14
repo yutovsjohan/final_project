@@ -36,7 +36,7 @@
 	            <h2 class="text-center" style="color:orange">Gửi tin nhắn cho chúng tôi</h2>
 	
 	            <div class="status alert alert-success" style="display: none"></div>
-	            <form id="main-contact-form" class="contact-form row" name="contact-form" method="post" action="contact">	               
+	            <form id="main-contact-form" class="contact-form row" name="contact-form" method="post" action="${pageContext.request.contextPath}/controller/contact">	               
 	                <div class="form-group col-md-12">
 	                    <input type="email" name="email" class="form-control" placeholder="Nhập email (bắt buộc)" required="required">
 	                </div>

@@ -195,7 +195,7 @@
                 	<li class="widget-container widget_nav_menu"><!-- widgets list -->
                     	<h1 class="title-widget">T-Manga</h1>
                        	<ul>
-							<li><a  href="#"><i class="fa fa-angle-double-right"></i>  Giới thiệu</a></li>
+							<li><a  href="${pageContext.request.contextPath}/controller/introduce"><i class="fa fa-angle-double-right"></i>  Giới thiệu</a></li>
                                <li><a  href="#"><i class="fa fa-angle-double-right"></i>  Chính sách bồi hoàn</a></li>
                                <li><a  href="#"><i class="fa fa-angle-double-right"></i>  Điều khoản sử dụng</a></li>
 							<li><a  href="#"><i class="fa fa-angle-double-right"></i>  Chính sách bảo mật</a></li>
@@ -209,10 +209,10 @@
                 	<li class="widget-container widget_nav_menu"><!-- widgets list -->
                     	<h1 class="title-widget">Tài khoản của bạn</h1>
                        	<ul>
-			 				<li><a href="#"><i class="fa fa-angle-double-right"></i> Xem giỏ hàng</a></li>
-							<li><a href="#"><i class="fa fa-angle-double-right"></i> Thông tin cá nhân</a></li>
-							<li><a href="#"><i class="fa fa-angle-double-right"></i> Sách yêu thích</a></li>
-							<li><a href="#"><i class="fa fa-angle-double-right"></i> Lịch sử giao dịch</a></li>
+			 				<li><a href="${pageContext.request.contextPath}/controller/cart"><i class="fa fa-angle-double-right"></i> Xem giỏ hàng</a></li>
+							<li><a href="${pageContext.request.contextPath}/controller/customer/edit"><i class="fa fa-angle-double-right"></i> Thông tin cá nhân</a></li>
+							<li><a href="${pageContext.request.contextPath}/controller/customer/favoriteList"><i class="fa fa-angle-double-right"></i> Sách yêu thích</a></li>
+							<li><a href="${pageContext.request.contextPath}/controller/customer/orderHistory"><i class="fa fa-angle-double-right"></i> Lịch sử giao dịch</a></li>
 						</ul>
                     </li>
 				</ul>

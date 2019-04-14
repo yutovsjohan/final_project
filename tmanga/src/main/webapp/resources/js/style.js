@@ -1,4 +1,16 @@
 $(document).ready(function(){
+//favorite list
+	$('.favoritelist').click(function(){
+		if(parseInt($(this).attr('data')) == 0){
+			$(this).html('<i class="fa fa-heart" aria-hidden="true" title="Hủy yêu thích"></i>');
+			$(this).attr('data','1');
+		}
+		else{
+			$(this).html('<i class="fa fa-heart-o" aria-hidden="true" title="Thêm vào danh sách yêu thích"></i>');
+			$(this).attr('data','0');
+		}
+	});	
+	
 //page login
 	$('.forget-password').click(function(){
 		$('.form-forget-password').removeAttr('hidden');
@@ -21,6 +33,33 @@ $(document).ready(function(){
       }
     });
 	
+//page register
+	$("#submit").click(function(){
+		var ps = $("#password").val();
+		var reps = $("#repassword").val();
+		var email = $("#email").val();
+		
+		if(isValidEmailAddress(email)) {
+			alert('Email không hợp lệ');
+			$("form").submit(function(e){
+		        e.preventDefault();
+		    });
+			return;
+		}
+		
+		if(ps != reps){
+			alert('Mật khẩu không khớp');
+			$("form").submit(function(e){
+		        e.preventDefault();
+		    });
+			return;
+		}
+	});
+	
+	function isValidEmailAddress(emailAddress) {
+	    var pattern = new RegExp(/^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i);
+	    return pattern.test(emailAddress);
+	};
 //page view product detail
 
 	$("#hinh").elevateZoom({

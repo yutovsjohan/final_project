@@ -15,7 +15,7 @@
 		</div>
 	</c:if> 
 	
-	<form class="form-horizontal" method="get" action="">
+	<form class="form-horizontal" method="get" action="${pageContext.request.contextPath}/controller/#">
 	  <div class="form-group">
 	    <label for="email" class="col-sm-2 control-label">Địa chỉ email</label>
 	    <div class="col-sm-10">
