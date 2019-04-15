@@ -16,7 +16,7 @@
 			</div>
 		</c:if> 
 		
-		<form action="#" method="post">		
+		<form action="${pageContext.request.contextPath}/controller/customer/edit" method="post">		
 		  <div class="form-group">
 		    <label for="email">Email</label>
 		    <input type="email" class="form-control" value="${sessionScope.account.email}" name="email" disabled="">

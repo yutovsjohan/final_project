@@ -51,6 +51,32 @@
 					</c:if>
 				  </c:forEach>
 				</table>
+				
+				<ul class="pagination">
+					<c:if test="${totalpage != 1 && totalpage != 0 }">
+						<c:if test="${1 != pageselected }">
+							<li><a href="${pageContext.request.contextPath}/controller/customer/orderHistory?p=1" rel="next"> << </a></li>
+							<li><a href="${pageContext.request.contextPath}/controller/customer/orderHistory?p=${pageselected - 1}" rel="next"> < </a></li>
+						</c:if>			
+			
+						<c:forEach var = "i" begin="1" end="${totalpage }">
+							<c:choose>
+								<c:when test="${i == pageselected }">
+									<li class="active"><span>${i }</span></li>
+								</c:when>
+								<c:otherwise>
+									<li><a href="${pageContext.request.contextPath}/controller/customer/orderHistory?p=${i}">${i }</a></li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+							
+						<c:if test="${totalpage != pageselected }">
+							<li><a href="${pageContext.request.contextPath}/controller/customer/orderHistory?p=${pageselected + 1}" rel="next"> > </a></li>
+							<li><a href="${pageContext.request.contextPath}/controller/customer/orderHistory?p=${totalpage}" rel="next"> >> </a></li>
+						</c:if>	
+						
+					</c:if>
+				</ul>
 			</c:otherwise>
 		</c:choose>
 	</div>

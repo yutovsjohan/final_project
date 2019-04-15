@@ -12,31 +12,31 @@
 			</div>
 			<div class="panel-body">
 				
-				<a href="edit">
+				<a href="${pageContext.request.contextPath}/controller/customer/edit">
 					<div id="menu_doc" <c:if test="${views == 'customer/customerEditInformation' }">class="actived"</c:if> >					
 						Thông tin tài khoản
 					</div>
 				</a>
 				<!-- <hr>
-				<a href="#">
+				<a href="${pageContext.request.contextPath}/controller/customer/#">
 					<div id="menu_doc">
 						Thông báo của tôi
 					</div>
 				</a> -->
 				<hr>
-				<a href="favoriteList">
+				<a href="${pageContext.request.contextPath}/controller/customer/favoriteList">
 					<div id="menu_doc" <c:if test="${views == 'customer/favoriteList' }">class="actived"</c:if> >					
 						Sản phẩm yêu thích
 					</div>
 				</a>
 				<hr>
-				<a href="orderHistory">
+				<a href="${pageContext.request.contextPath}/controller/customer/orderHistory">
 					<div id="menu_doc" <c:if test="${views == 'customer/orderHistory' }">class="actived"</c:if> >					
 						Đơn hàng đã đặt
 					</div>
 				</a>
 				<!--<hr>
-				<a href="#">				
+				<a href="${pageContext.request.contextPath}/controller/customer/#">				
 					<div id="menu_doc">
 						Sản phẩm đã mua
 					</div>

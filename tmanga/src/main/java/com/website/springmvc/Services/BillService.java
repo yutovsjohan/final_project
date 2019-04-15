@@ -2,6 +2,7 @@ package com.website.springmvc.Services;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,15 @@ public class BillService {
 	@Autowired
 	DAO<Bill> billDAO;
 	
-	public List<Bill> getBillByUser(int iduser) {
+	public List<Bill> getBillByUser(int iduser, int firstResult, int maxResult) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return session.createQuery("from Bill where idUser.id = :keyword").setParameter("keyword", iduser).list();
+		Query query = session.createQuery("from Bill where idUser.id = :keyword order by orderDate desc").setParameter("keyword", iduser);
+		
+		if(maxResult != 0) {
+			query.setFirstResult(firstResult);
+			query.setMaxResults(maxResult);
+		}
+		return query.list();
 	}
 	
 	public Bill get(int id) {
