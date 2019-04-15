@@ -1,14 +1,45 @@
 $(document).ready(function(){
 //favorite list
 	$('.favoritelist').click(function(){
+		var route = $("#route").val();
+		var key = 0;
+		var id = $(this).attr('dataId');
 		if(parseInt($(this).attr('data')) == 0){
 			$(this).html('<i class="fa fa-heart" aria-hidden="true" title="Hủy yêu thích"></i>');
 			$(this).attr('data','1');
+			key = 1;
 		}
 		else{
 			$(this).html('<i class="fa fa-heart-o" aria-hidden="true" title="Thêm vào danh sách yêu thích"></i>');
 			$(this).attr('data','0');
+			key = 2;
 		}
+		
+		$.ajax({
+			url : route,
+			type : 'POST',
+			data : {
+				key : key,
+				id : id
+			},
+			success: function(data){
+				var str = "";
+				if(key == 1){
+					str = "Thêm";
+				}
+				else {
+					str = "Hủy";
+				}
+				if(data == 'fail'){					
+					$('#modal-da-them-vao-gio-hang .modal-body p').html(str + " thất bại");
+					$('#modal-da-them-vao-gio-hang').modal('show');					
+				}
+				else{
+					$('#modal-da-them-vao-gio-hang .modal-body p').html(str + " thành công");
+					$('#modal-da-them-vao-gio-hang').modal('show');	
+				}
+			}
+		});
 	});	
 	
 //page login
@@ -33,33 +64,93 @@ $(document).ready(function(){
       }
     });
 	
-//page register
+//validate email, password (login, register page)
+	$("form").keyup(function() {
+		$("input[type=submit]").removeAttr('disabled');
+		$("#submit").css({
+			"cursor": "pointer"
+		});
+		$("#submit").prop("type","submit");
+	});
+	
+	$("form").change(function() {
+		$("input[type=submit]").removeAttr('disabled');
+		$("#submit").css({
+			"cursor": "pointer"
+		});
+		$("#submit").prop("type","submit");
+	});
+	
 	$("#submit").click(function(){
 		var ps = $("#password").val();
 		var reps = $("#repassword").val();
 		var email = $("#email").val();
+		var f = true;
 		
-		if(isValidEmailAddress(email)) {
-			alert('Email không hợp lệ');
-			$("form").submit(function(e){
-		        e.preventDefault();
-		    });
-			return;
+		if(!isValidEmailAddress(email)) {
+			alert('Email không hợp lệ');	
+			f = false;
+			
+//			$("form").submit(function(e){
+//		        e.preventDefault();
+//		    });			
 		}
 		
-		if(ps != reps){
+		else if(ps != reps){
 			alert('Mật khẩu không khớp');
-			$("form").submit(function(e){
-		        e.preventDefault();
-		    });
-			return;
+			f = false;
+			
+//			$("form").submit(function(e){
+//		        e.preventDefault();
+//		    });			
+		}
+		
+		if(!f){
+			$("input[type=submit]").attr('disabled','disabled');
+			$("#submit").css({
+				"cursor": "default"				
+			});
+			$("#submit").prop("type","disable");
 		}
 	});
 	
-	function isValidEmailAddress(emailAddress) {
-	    var pattern = new RegExp(/^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i);
-	    return pattern.test(emailAddress);
+	function isValidEmailAddress(email) {
+		var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+		 return regex.test(email);
 	};
+	
+//validate password (customer edit info)
+	$("#save").click(function(){
+		var ps = $("#password").val();
+		var reps = $("#repassword").val();
+		
+		if(ps != reps){
+			alert('Mật khẩu không khớp');
+			
+			$("#save").attr('disabled','disabled');
+			$("#save").css({
+				"cursor": "default"				
+			});
+			$("#save").prop("type","disable");
+		}
+	});
+	
+	$("form").keyup(function() {
+		$("#save").removeAttr('disabled');
+		$("#save").css({
+			"cursor": "pointer"
+		});
+		$("#save").prop("type","submit");
+	});
+	
+	$("form").change(function() {
+		$("#save").removeAttr('disabled');
+		$("#save").css({
+			"cursor": "pointer"
+		});
+		$("#save").prop("type","submit");
+	});
+	
 //page view product detail
 
 	$("#hinh").elevateZoom({

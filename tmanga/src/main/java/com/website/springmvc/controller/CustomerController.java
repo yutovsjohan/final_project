@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,16 +15,20 @@ import org.springframework.web.servlet.ModelAndView;
 import com.website.springmvc.Services.BillService;
 import com.website.springmvc.Services.BillDetailService;
 import com.website.springmvc.Services.ComicService;
+import com.website.springmvc.Services.OrderStatusService;
 import com.website.springmvc.Services.UsersService;
 import com.website.springmvc.entities.Bill;
+import com.website.springmvc.entities.BillDetail;
+import com.website.springmvc.entities.Comic;
 import com.website.springmvc.entities.Users;
 import com.website.springmvc.libs.GetModel;
+import com.website.springmvc.libs.TripleDES;
 
 @Controller
 @RequestMapping(value="/controller")
 public class CustomerController {
 	@Autowired
-	private UsersService usersService;
+	private UsersService userService;
 	
 	@Autowired
 	private BillDetailService billDetailService; 
@@ -35,13 +40,20 @@ public class CustomerController {
 	private ComicService comicService;
 	
 	@Autowired
+	private OrderStatusService orderStatusService;
+	
+	@Autowired
 	GetModel getModel;
 	
 	@RequestMapping(value = "/customer/edit", method = RequestMethod.GET)
-	public ModelAndView getCustomerEditInfo(HttpSession session) {
+	public ModelAndView getCustomerEditInfo(HttpSession session, 
+										@RequestParam(name = "mes", defaultValue = "") String mes,
+										@RequestParam(name = "alert", defaultValue = "") String alert) {
 		ModelAndView model = new ModelAndView();
 		if(session.getAttribute("account") != null) {
 			getModel.getCustomerEditInfo(model);
+			model.addObject("mes", mes);
+			model.addObject("alert", alert);
 		}
 		else {
 			getModel.getHome(model);			
@@ -50,8 +62,32 @@ public class CustomerController {
 	}	
 
 	@RequestMapping(value = "/customer/edit", method = RequestMethod.POST)
-	public String getEditInfo() {
+	public String getEditInfo(@RequestParam(name = "name") String name,
+							@RequestParam(name = "address") String address,
+							@RequestParam(name = "phone") String phone,
+							@RequestParam(name = "password", defaultValue = "") String password,
+							HttpSession session, Model model) {
 		String str = "";
+		if(session.getAttribute("account") != null) {
+			Users u = userService.get(((Users) session.getAttribute("account")).getId());
+			u.setName(name);
+			u.setAddress(address);
+			u.setPhone(phone);
+			
+			if(!password.equalsIgnoreCase("")) {
+				u.setPassword(TripleDES.Encrypt(u.getPassword(), "123"));
+			}
+			
+			userService.update(u);
+			session.setAttribute("account", u);
+			
+			model.addAttribute("mes", "Sửa thành công");
+			model.addAttribute("alert", "success");
+			str = "redirect:edit";
+		}
+		else {
+			str = "redirect:index";
+		}
 		return str;
 	}
 	
@@ -59,7 +95,29 @@ public class CustomerController {
 	public ModelAndView getFavoriteList(HttpSession session) {
 		ModelAndView model = new ModelAndView();
 		if(session.getAttribute("account") != null) {
-			getModel.getFavoriteList(model);			
+			getModel.getFavoriteList(model);		
+			List<Comic> comics = ((Users) session.getAttribute("account")).getComics();
+			
+			for (int i = 0; i < comics.size(); i++) {
+				if(comics.get(i) == null) {
+					comics.remove(i);
+				}
+			}
+			Users u = ((Users) session.getAttribute("account"));
+			u.setComics(comics);
+			userService.update(u);
+			
+			int totalPage = 0;
+			int totalComic = 0;		
+			
+			totalComic = comics.size();
+			totalPage = totalComic / 12;
+			
+			if(totalComic % 12 != 0){
+				totalPage++;
+			}	
+			
+			
 		}
 		else {
 			getModel.getHome(model);
@@ -73,7 +131,7 @@ public class CustomerController {
 		if(session.getAttribute("account") != null) {
 			getModel.getOrderHistory(model);
 			
-			int id = ((Users) session.getAttribute("account")).getId();
+			Long id = ((Users) session.getAttribute("account")).getId();
 			List<Bill> bills = billService.getBillByUser(id, 0, 0);
 			
 			int totalPage = 0;
@@ -98,4 +156,19 @@ public class CustomerController {
 		}
 		return model;
 	}
+	
+	@RequestMapping(value = "/customer/orderDetail", method = RequestMethod.GET)
+	public ModelAndView getOrderDetail(HttpSession session, @RequestParam(name = "id", defaultValue = "0") Long idBill) {
+		ModelAndView model = new ModelAndView();
+		if(session.getAttribute("account") != null && billService.getBillByIdBillAndUser(idBill, ((Users) session.getAttribute("account")).getId()) != null) {
+			getModel.getOrderDetail(model);
+			model.addObject("bill", billService.get(idBill));
+			model.addObject("billDetail", billDetailService.getBillDetailByIdBill(idBill));
+			model.addObject("orderStatus", orderStatusService.getOrderStatusByIdBill(idBill));
+		}
+		else {
+			getModel.getHome(model);
+		}
+		return model;
+	}	
 }

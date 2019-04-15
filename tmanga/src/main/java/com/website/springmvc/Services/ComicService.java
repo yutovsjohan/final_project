@@ -49,7 +49,7 @@ public class ComicService {
 		return query.list();
 	}
 	
-	public List<Comic> getListForAuthor(int id){
+	public List<Comic> getListForAuthor(Long id){
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from Comic where idAuthor = :keyword order by quantitySold desc").setParameter("keyword", id).setMaxResults(4).list();
 	}
@@ -65,7 +65,7 @@ public class ComicService {
 	}
 	
 	//list product
-	public List<Comic> getListComic(String key, int id, int firstResult, int maxResult, int sort) {
+	public List<Comic> getListComic(String key, long id, int firstResult, int maxResult, int sort) {
 		Session session = this.sessionFactory.getCurrentSession();
 		String hql = "";
 		Query query = null;

@@ -26,7 +26,7 @@ public class CartDetailService {
 		return session.createQuery("from CartDetail where cart.id = :idCart").setParameter("idCart", idCart).list();
 	}
 	
-	public CartDetail getDetailByCartAndProduct(Long idCart, int idComic) {
+	public CartDetail getDetailByCartAndProduct(Long idCart, Long idComic) {
 		Session session = this.sessionFactory.getCurrentSession();
 		return (CartDetail) session.createQuery("from CartDetail where cart.id = :idCart and comic.id = :idComic").setParameter("idCart", idCart).setParameter("idComic", idComic).uniqueResult();
 	}

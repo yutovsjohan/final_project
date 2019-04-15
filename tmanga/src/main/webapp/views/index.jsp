@@ -89,15 +89,24 @@
 										</c:otherwise>
 									</c:choose>						
 									
-									<c:if test="${a }">
-									<c:choose>
-										<c:when test="${sessionScope.account.email != null}">
-											<a href="${pageContext.request.contextPath}/controller/#" class="btn btn-warning" title="Hủy yêu thích"><i class="fa fa-heart" aria-hidden="true" ></i></a>
-										</c:when>
-										<c:otherwise>
-											<a href="${pageContext.request.contextPath}/controller/#" class="btn btn-warning" title="Thêm vào danh sách yêu thích"><i class="fa fa-heart-o" aria-hidden="true" ></i></a>
-										</c:otherwise>
-									</c:choose>
+									<c:set var = "flag" scope = "session" value = "false"/>
+									<c:if test="${sessionScope.account.email != null}">
+										<c:if test="${!empty sessionScope.account.comics}">
+											<c:forEach var="cfl" items="${sessionScope.account.comics }">
+												<c:if test="${cfl.id == ts.id }">
+													<c:set var = "flag" scope = "session" value = "true" />		
+												</c:if>									
+											</c:forEach>
+										</c:if>
+										
+										<c:choose>
+											<c:when test="${flag == true }">
+												<a class="btn btn-warning favoritelist" data="1" dataId=${ts.id }><i class="fa fa-heart" title="Hủy yêu thích" aria-hidden="true" ></i></a>
+											</c:when>
+											<c:otherwise>
+												<a class="btn btn-warning favoritelist" data="0" dataId=${ts.id }><i class="fa fa-heart-o" title="Thêm vào danh sách yêu thích" aria-hidden="true" ></i></a>
+											</c:otherwise>
+										</c:choose>							
 									</c:if>
 									
 									<a href="${pageContext.request.contextPath}/controller/detail?c=${ts.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a>
@@ -111,6 +120,7 @@
 					</div>
 				</c:if>
 			</c:forEach>
+			<input id="route" value="${pageContext.request.contextPath}/controller/favoritelist" hidden/>
 		</div>
 		
 		<a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev" >
@@ -150,7 +160,27 @@
 									<c:otherwise>
 										<button dataId="${nc.id }" dataName="${nc.name }" class="btn btn-info them-vao-gio-hang" title="Thêm vào giỏ hàng" style="background-color: #337ab7; border-color: #337ab7"><i class="fa fa-shopping-cart" aria-hidden="true"></i></button>
 									</c:otherwise>
-								</c:choose>						
+								</c:choose>		
+								
+								<c:set var = "flag" scope = "session" value = "false"/>
+									<c:if test="${sessionScope.account.email != null}">
+										<c:if test="${!empty sessionScope.account.comics}">
+											<c:forEach var="cfl" items="${sessionScope.account.comics }">
+												<c:if test="${cfl.id == nc.id }">
+													<c:set var = "flag" scope = "session" value = "true" />		
+												</c:if>									
+											</c:forEach>
+										</c:if>
+										
+										<c:choose>
+											<c:when test="${flag == true }">
+												<a class="btn btn-warning favoritelist" data="1" dataId=${nc.id }><i class="fa fa-heart" title="Hủy yêu thích" aria-hidden="true" ></i></a>
+											</c:when>
+											<c:otherwise>
+												<a class="btn btn-warning favoritelist" data="0" dataId=${nc.id }><i class="fa fa-heart-o" title="Thêm vào danh sách yêu thích" aria-hidden="true" ></i></a>
+											</c:otherwise>
+										</c:choose>							
+									</c:if>				
 								
 								<a href="${pageContext.request.contextPath}/controller/detail?c=${nc.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a>
 							</div>
@@ -158,6 +188,7 @@
 					</div>
 				</div>
 			</c:forEach>
+			<input id="route" value="${pageContext.request.contextPath}/controller/favoritelist" hidden/>
 		</div>
 	<!--/truyện tranh mới-->
 	
@@ -188,7 +219,27 @@
 									<c:otherwise>
 										<button dataId="${oc.id }" dataName="${oc.name }" class="btn btn-info them-vao-gio-hang" title="Thêm vào giỏ hàng" style="background-color: #337ab7; border-color: #337ab7"><i class="fa fa-shopping-cart" aria-hidden="true"></i></button>
 									</c:otherwise>
-								</c:choose>								
+								</c:choose>		
+								
+								<c:set var = "flag" scope = "session" value = "false"/>
+									<c:if test="${sessionScope.account.email != null}">
+										<c:if test="${!empty sessionScope.account.comics}">
+											<c:forEach var="cfl" items="${sessionScope.account.comics }">
+												<c:if test="${cfl.id == oc.id }">
+													<c:set var = "flag" scope = "session" value = "true" />		
+												</c:if>									
+											</c:forEach>
+										</c:if>
+										
+										<c:choose>
+											<c:when test="${flag == true }">
+												<a class="btn btn-warning favoritelist" data="1" dataId=${oc.id }><i class="fa fa-heart" title="Hủy yêu thích" aria-hidden="true" ></i></a>
+											</c:when>
+											<c:otherwise>
+												<a class="btn btn-warning favoritelist" data="0" dataId=${oc.id }><i class="fa fa-heart-o" title="Thêm vào danh sách yêu thích" aria-hidden="true" ></i></a>
+											</c:otherwise>
+										</c:choose>							
+									</c:if>						
 								
 								<a href="${pageContext.request.contextPath}/controller/detail?c=${oc.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a>
 	
@@ -197,6 +248,7 @@
 					</div>
 				</div>
 			</c:forEach>
+			<input id="route" value="${pageContext.request.contextPath}/controller/favoritelist" hidden/>
 		</div>
 	<!--/Truyện tranh khác-->
 </div>

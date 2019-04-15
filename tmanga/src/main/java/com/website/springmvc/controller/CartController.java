@@ -106,14 +106,14 @@ public class CartController {
 		}
 		getModel.getCart(model);
 		if(session.getAttribute("account") != null) {	
-			int idUser = ((Users) session.getAttribute("account")).getId();
+			Long idUser = ((Users) session.getAttribute("account")).getId();
 			if(checkCart(idUser) != 0) {
 				List<CartDetail> listCartDetail = cartDetailService.getDetailByIdCart(checkCart(idUser));
 				
 				if(listCartDetail.size() != 0) {
 					Item item;
 					GioHang gioHang = new GioHang();
-					HashMap<Integer, Item> hashCart = new HashMap<>();
+					HashMap<Long, Item> hashCart = new HashMap<>();
 					
 					for (int i = 0; i < listCartDetail.size(); i++) {
 						item = new Item();
@@ -132,7 +132,7 @@ public class CartController {
 	}	
 	
 	@RequestMapping(value = "/addtocart", method = RequestMethod.GET)
-	public void getAddToCart(@RequestParam("id") int idComic, 
+	public void getAddToCart(@RequestParam("id") Long idComic, 
 							@RequestParam(name = "amount", defaultValue = "1") int amount,
 							@RequestParam(name = "action", defaultValue = "add") String action,
 							HttpSession session, HttpServletResponse response) {
@@ -149,7 +149,7 @@ public class CartController {
 			
 			if(session.getAttribute("cart") != null) {
 				ArrayList<Item> items =  (ArrayList<Item>) ((GioHang) session.getAttribute("cart")).getList();
-				HashMap<Integer, Item> hashCart = new HashMap<>();
+				HashMap<Long, Item> hashCart = new HashMap<>();
 				for (int i = 0; i < items.size(); i++) {
 					hashCart.put(items.get(i).getComic().getId(), items.get(i));
 					if(items.get(i).getComic().getId() == idComic) {
@@ -194,7 +194,7 @@ public class CartController {
 					
 					if(gioHang.quantity() == 0) {
 						if(session.getAttribute("cart") != null && session.getAttribute("account") != null){
-							int idUser = ((Users) session.getAttribute("account")).getId();
+							Long idUser = ((Users) session.getAttribute("account")).getId();
 							Cart cart = cartService.getCartByUser(idUser);
 							CartDetail cartDetail = cartDetailService.getDetailByCartAndProduct(cart.getId(), idComic);
 							
@@ -209,7 +209,7 @@ public class CartController {
 				
 				if(session.getAttribute("cart") != null && session.getAttribute("account") != null){
 					Cart cart = new Cart();
-					int idUser = ((Users) session.getAttribute("account")).getId();
+					Long idUser = ((Users) session.getAttribute("account")).getId();
 					if(cartService.getCartByUser(idUser) != null) {
 						cart = cartService.getCartByUser(idUser);
 					}
@@ -263,11 +263,11 @@ public class CartController {
 	}	
 	
 	@RequestMapping(value = "/removeitem", method = RequestMethod.GET)
-	public void getRemoveItem(@RequestParam("id") int idComic, HttpSession session, HttpServletResponse response){
+	public void getRemoveItem(@RequestParam("id") Long idComic, HttpSession session, HttpServletResponse response){
 		String str = "";
 		if(session.getAttribute("cart") != null) {
 			if(session.getAttribute("cart") != null && session.getAttribute("account") != null){
-				int idUser = ((Users) session.getAttribute("account")).getId();
+				Long idUser = ((Users) session.getAttribute("account")).getId();
 				Cart cart = cartService.getCartByUser(idUser);
 				CartDetail cartDetail = cartDetailService.getDetailByCartAndProduct(cart.getId(), idComic);
 				cartDetailService.delete(cartDetail.getId());
@@ -294,7 +294,7 @@ public class CartController {
 	@RequestMapping(value = "/deletecart", method = RequestMethod.GET)
 	public String getDeteleCart(HttpSession session){
 		if(session.getAttribute("cart") != null && session.getAttribute("account") != null){
-			int idUser = ((Users) session.getAttribute("account")).getId();
+			Long idUser = ((Users) session.getAttribute("account")).getId();
 			Cart cart = cartService.getCartByUser(idUser);
 			List<CartDetail> listCartDetail = cartDetailService.getDetailByIdCart(cart.getId());
 			for(int i = 0; i < listCartDetail.size(); i++) {
@@ -354,7 +354,7 @@ public class CartController {
 				
 				f = true;
 				
-				int idUser = ((Users) session.getAttribute("account")).getId();
+				Long idUser = ((Users) session.getAttribute("account")).getId();
 				Cart cart = cartService.getCartByUser(idUser);
 				List<CartDetail> listCartDetail = cartDetailService.getDetailByIdCart(cart.getId());
 				for(int i = 0; i < listCartDetail.size(); i++) {
@@ -380,7 +380,7 @@ public class CartController {
 		return "redirect:/controller/cart";
 	}
 	
-	private long checkCart(int iduser) {
+	private long checkCart(Long iduser) {
 		long i = 0;
 		if(cartService.getCartByUser(iduser) != null ) {
 			i = cartService.getCartByUser(iduser).getId();

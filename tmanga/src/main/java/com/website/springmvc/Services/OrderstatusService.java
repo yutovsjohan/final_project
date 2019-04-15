@@ -2,6 +2,8 @@ package com.website.springmvc.Services;
 
 import java.util.List;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,9 +14,16 @@ import com.website.springmvc.entities.OrderStatus;
 @Transactional
 @Service
 public class OrderStatusService {
+	@Autowired
+	private SessionFactory sessionFactory;
 	
 	@Autowired
 	DAO<OrderStatus> orderDAO;
+	
+	public List<OrderStatus> getOrderStatusByIdBill(Long idBill) {
+		Session session = this.sessionFactory.getCurrentSession();
+		return session.createQuery("from OrderStatus where idBill = :idBill").setParameter("idBill", idBill).list();
+	}
 	
 	public List<OrderStatus> getAll(){
 		return orderDAO.getAll();

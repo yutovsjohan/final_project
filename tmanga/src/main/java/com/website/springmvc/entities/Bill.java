@@ -28,7 +28,7 @@ public class Bill implements java.io.Serializable{
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
-	private int id;
+	private Long id;
 	
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
@@ -53,7 +53,7 @@ public class Bill implements java.io.Serializable{
 	@Column(name = "note", length = 256)
 	private String note;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "bill")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "bill")
 	private Set<OrderStatus> orderstatus = new HashSet<OrderStatus>();
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "comic")
@@ -72,11 +72,11 @@ public class Bill implements java.io.Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

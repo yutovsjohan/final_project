@@ -13,6 +13,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "news", catalog = "manga")
@@ -22,7 +23,7 @@ public class News implements java.io.Serializable{
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
-	private int id;
+	private Long id;
 
 	@Column(name = "title", length = 255)
 	private String title;
@@ -49,44 +50,22 @@ public class News implements java.io.Serializable{
 	@Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", nullable = false, updatable = false)
 	private Date created_at;
-		
-	public News(String title, String unsignedTitle, String summary, String content, String image, byte status,
-			byte banner, Date created_at) {
-		super();
-		this.title = title;
-		this.unsignedTitle = unsignedTitle;
-		this.summary = summary;
-		this.content = content;
-		this.image = image;
-		this.status = status;
-		this.banner = banner;
-		this.created_at = created_at;
-	}
-
-	public News(int id, String title, String unsignedTitle, String summary, String content, String image, byte status,
-			byte banner, Date created_at) {
-		super();
-		this.id = id;
-		this.title = title;
-		this.unsignedTitle = unsignedTitle;
-		this.summary = summary;
-		this.content = content;
-		this.image = image;
-		this.status = status;
-		this.banner = banner;
-		this.created_at = created_at;
-	}
-
+	
+	@UpdateTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_at", nullable = false, updatable = true)
+	private Date updated_at;
+	
 	public News() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	

@@ -2,11 +2,18 @@ package com.website.springmvc.entities;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "contact", catalog = "manga")
@@ -16,7 +23,7 @@ public class Contact implements java.io.Serializable{
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
-	private int id;
+	private Long id;
 	
 	@Column(name = "sender", length = 100)
 	private String sender;
@@ -33,35 +40,26 @@ public class Contact implements java.io.Serializable{
 	@Column(name = "status")
 	private byte status;
 	
-	public Contact(String sender, String title, String content, byte view, byte status) {
-		super();
-		this.sender = sender;
-		this.title = title;
-		this.content = content;
-		this.view = view;
-		this.status = status;
-	}
-
-	public Contact(int id, String sender, String title, String content, byte view, byte status) {
-		super();
-		this.id = id;
-		this.sender = sender;
-		this.title = title;
-		this.content = content;
-		this.view = view;
-		this.status = status;
-	}
-
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at", nullable = false, updatable = false)
+	private Date created_at;
+	
+	@UpdateTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_at", nullable = false, updatable = true)
+	private Date updated_at;
+	
 	public Contact() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 		

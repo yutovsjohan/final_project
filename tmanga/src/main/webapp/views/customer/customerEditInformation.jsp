@@ -9,7 +9,7 @@
 		<h2 style="color: chocolate">Thông tin tài khoản</h2>
 		<hr>
 		
-		<c:if test="${mes != null }">
+		<c:if test="${mes != '' }">
 			<div class="alert alert-${alert }" role="alert">
 				${mes }
 			 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -23,27 +23,27 @@
 		  </div>  
 		  <div class="form-group">
 		    <label for="name">Họ tên</label>
-		    <input type="text" class="form-control" value="${sessionScope.account.name }" name="name" >
+		    <input type="text" class="form-control" value="${sessionScope.account.name }" name="name" required="required">
 		  </div>
 		  <div class="form-group">
 		    <label for="address">Địa chỉ</label>
-		    <input type="text" class="form-control" value="${sessionScope.account.address }" name="address">
+		    <input type="text" class="form-control" value="${sessionScope.account.address }" name="address" required="required">
 		  </div>
 		  <div class="form-group">
 		    <label for="phone">Điện thoại</label>
-		    <input type="text" class="form-control" value="${sessionScope.account.phone }" name="phone" >
+		    <input type="text" class="form-control" value="${sessionScope.account.phone }" name="phone" required="required">
 		  </div>
 		  <div class="form-group">
 		  	<input type="checkbox" name="changePassword" id="changePassword">
 		    <label for="changePassword"> Đổi mật khẩu</label>
-		    <input type="password" class="form-control password" name="password" disabled="">
+		    <input type="password" class="form-control password" name="password" id="password" disabled="" required="required">
 		  </div>
 		  <div class="form-group">
 		    <label for="password">Nhập lại mật khẩu</label>
-		    <input type="password" class="form-control password" name="repassword" disabled="">
+		    <input type="password" class="form-control password" name="repassword" id="repassword" disabled="" required="required">
 		  </div>
 		  
-		  <button type="submit" class="btn btn-success">Lưu</button>
+		  <button type="submit" class="btn btn-success" id="save">Lưu</button>
 		</form>
 	</div>
 </c:if>

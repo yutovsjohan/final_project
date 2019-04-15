@@ -40,10 +40,8 @@
 	 <div class="clearfix"></div>
 	<hr style="border: 1px solid orange; margin-top:0px">
 	<div class="row">
-		<c:set var = "number" scope = "session" value = "0"/>
 		<c:forEach var="comic" items="${comiclist}">
-			<c:set var = "number" scope = "session" value = "${number + 1 }" />
-			<div class="col-lg-3  col-sm-6 col-xs-6 listcomic" data="${number }" <c:if test="${number > 12 }">hidden</c:if> >
+			<div class="col-lg-3  col-sm-6 col-xs-6" >
 				<div class="product-image-wrapper">
 					<div class="single-products">
 						<div class="productinfo text-center">
@@ -62,9 +60,26 @@
 								</c:otherwise>
 							</c:choose>
 							
+							<c:set var = "flag" scope = "session" value = "false"/>
 							<c:if test="${sessionScope.account.email != null}">
-								<a class="btn btn-warning favoritelist" data="0"><i class="fa fa-heart-o" title="Thêm vào danh sách yêu thích" aria-hidden="true" ></i></a>
+								<c:if test="${!empty sessionScope.account.comics}">
+									<c:forEach var="cfl" items="${sessionScope.account.comics }">
+										<c:if test="${cfl.id == comic.id }">
+											<c:set var = "flag" scope = "session" value = "true" />		
+										</c:if>									
+									</c:forEach>
+								</c:if>
+								
+								<c:choose>
+									<c:when test="${flag == true }">
+										<a class="btn btn-warning favoritelist" data="1" dataId=${comic.id }><i class="fa fa-heart" title="Hủy yêu thích" aria-hidden="true" ></i></a>
+									</c:when>
+									<c:otherwise>
+										<a class="btn btn-warning favoritelist" data="0" dataId=${comic.id }><i class="fa fa-heart-o" title="Thêm vào danh sách yêu thích" aria-hidden="true" ></i></a>
+									</c:otherwise>
+								</c:choose>							
 							</c:if>
+							
 									
 							<a href="${pageContext.request.contextPath}/controller/detail?c=${comic.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a>						
 						</div>
@@ -73,7 +88,7 @@
 			</div>	
 		</c:forEach>			
 	</div>
-	
+	<input id="route" value="${pageContext.request.contextPath}/controller/favoritelist" hidden/>
 	<ul class="pagination">
 		<c:if test="${totalpage != 1 && totalpage != 0 }">
 			<c:if test="${1 != pageselected }">

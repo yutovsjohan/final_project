@@ -28,7 +28,7 @@ public class Users implements java.io.Serializable{
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
-	private int id;
+	private Long id;
 	
 	@Column(name = "name", length = 255)
 	private String name;
@@ -71,30 +71,11 @@ public class Users implements java.io.Serializable{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Users(String name, String email, String password, String address, String phone) {
-		super();
-		this.name = name;
-		this.email = email;
-		this.password = password;
-		this.address = address;
-		this.phone = phone;
-	}
-
-	public Users(int id, String name, String email, String password, String address, String phone) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.email = email;
-		this.password = password;
-		this.address = address;
-		this.phone = phone;
-	}
-
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -160,5 +141,13 @@ public class Users implements java.io.Serializable{
 
 	public void setPasscode(String passcode) {
 		this.passcode = passcode;
+	}
+
+	public List<Comic> getComics() {
+		return comics;
+	}
+
+	public void setComics(List<Comic> comics) {
+		this.comics = comics;
 	}
 }

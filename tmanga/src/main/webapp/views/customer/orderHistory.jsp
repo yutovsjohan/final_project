@@ -38,13 +38,13 @@
 					         <td>${sessionScope.account.address }</td>
 					         <td>
 					         	<c:choose>
-					         		<c:when test="${bill.active == 1 }">${bill.deliveryDate }</c:when>
+					         		<c:when test="${bill.active == 1 }"> <fmt:formatDate pattern = "dd-MM-yyyy" value = "${bill.deliveryDate }"/> </c:when>
 					         		<c:otherwise></c:otherwise>
 					         	</c:choose>
 					         </td>
 					         <td>${bill.status }</td>
 					         <td>
-					         	<a href="#"><i class="fa fa-info-circle fa-2x" aria-hidden="true" title="Xem chi tiết đơn hàng"></i></a>				
+					         	<a href="${pageContext.request.contextPath}/controller/customer/orderDetail?id=${bill.id}"><i class="fa fa-info-circle fa-2x" aria-hidden="true" title="Xem chi tiết đơn hàng"></i></a>				
 					         </td>
 					      </tr>
 					  </tbody>

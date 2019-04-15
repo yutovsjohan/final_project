@@ -6,27 +6,27 @@ import com.website.springmvc.entities.Comic;
 
 
 public class GioHang {
-	HashMap<Integer, Item> cart;
+	HashMap<Long, Item> cart;
 	
 	public GioHang() {
 		super();
 		cart = new HashMap<>();
 	}
 
-	public GioHang(HashMap<Integer, Item> cart) {
+	public GioHang(HashMap<Long, Item> cart) {
 		super();
 		this.cart = cart;
 	}
 
-	public HashMap<Integer, Item> getCart() {
+	public HashMap<Long, Item> getCart() {
 		return cart;
 	}
 
-	public void setCart(HashMap<Integer, Item> cart) {
+	public void setCart(HashMap<Long, Item> cart) {
 		this.cart = cart;
 	}
 	
-	public void add(int id, Comic comic, int amount) {
+	public void add(Long id, Comic comic, int amount) {
 		if(cart.containsKey(id)) {
 			Item a = cart.get(id);
 			a.setAmount(a.getAmount() + amount);
@@ -37,7 +37,7 @@ public class GioHang {
 		}
 	}
 	
-	public void delete(int id) {
+	public void delete(Long id) {
 		cart.remove(id);
 	}
 	
@@ -69,7 +69,7 @@ public class GioHang {
 		return total;
 	}
 	
-	public Item getItemForId(int id) {
+	public Item getItemForId(Long id) {
 		Item item = new Item();
 		for (Item i : cart.values()) {
 			if(i.comic.getId() == id) {

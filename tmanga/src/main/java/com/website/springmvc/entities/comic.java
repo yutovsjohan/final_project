@@ -24,7 +24,7 @@ public class Comic implements java.io.Serializable{
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
-	private int id;
+	private Long id;
 
 	@Column(name = "name", length = 255)
 	private String name;
@@ -57,7 +57,7 @@ public class Comic implements java.io.Serializable{
 	@Column(name = "publishDate")
 	private Date publishDate;
 
-	@Column(name = "size")
+	@Column(name = "size", length = 50)
 	private String size;
 
 	@Column(name = "weight")
@@ -92,11 +92,11 @@ public class Comic implements java.io.Serializable{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	

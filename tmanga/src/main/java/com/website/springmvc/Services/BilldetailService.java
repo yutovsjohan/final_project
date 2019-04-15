@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.website.springmvc.DAO.DAO;
+import com.website.springmvc.entities.Bill;
 import com.website.springmvc.entities.BillDetail;
 
 @Transactional
@@ -19,6 +20,11 @@ public class BillDetailService {
 
 	@Autowired
 	DAO<BillDetail> billdetailDAO;
+	
+	public List<BillDetail> getBillDetailByIdBill(Long idBill) {
+		Session session = this.sessionFactory.getCurrentSession();
+		return session.createQuery("from BillDetail where idBill = :idBill").setParameter("idBill", idBill).list();
+	}
 	
 	public BillDetail get(int id) {
 		Session session = this.sessionFactory.getCurrentSession();

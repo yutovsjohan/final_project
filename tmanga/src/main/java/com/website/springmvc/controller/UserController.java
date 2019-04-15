@@ -54,7 +54,7 @@ public class UserController {
 		ModelAndView model = new ModelAndView();
 		if(!checkEmail(Users.getEmail())){
 			Role Role = new Role();
-			Role.setId(2);
+			Role.setId((long) 2);
 			Users.setRole(Role);
 			
 			Users.setPassword(TripleDES.Encrypt(Users.getPassword(), "123"));
@@ -90,7 +90,7 @@ public class UserController {
 						@RequestParam("password") String password,
 						HttpSession session, Model model) {
 		String str = "";
-		int idUser = checkLogin(email, password);
+		Long idUser = checkLogin(email, password);
 		if(idUser == -1) {
             model.addAttribute("mes","Email và password của bạn sai");            			
 			model.addAttribute("alert", "danger");
@@ -117,7 +117,7 @@ public class UserController {
 				CartDetail cartDetail = new CartDetail();
 				
 				ArrayList<Item> items =  (ArrayList<Item>) ((GioHang) session.getAttribute("cart")).getList();
-				int idComic;
+				Long idComic;
 				for (int i = 0; i < items.size(); i++) {
 					idComic = items.get(i).getComic().getId();
 					if(cartDetailService.getDetailByCartAndProduct(cart.getId(), idComic) != null) {
@@ -142,7 +142,7 @@ public class UserController {
 				if(listCartDetail != null) {
 					Item item;
 					GioHang gioHang = new GioHang();
-					HashMap<Integer, Item> hashCart = new HashMap<>();
+					HashMap<Long, Item> hashCart = new HashMap<>();
 					
 					for (int i = 0; i < listCartDetail.size(); i++) {
 						item = new Item();
@@ -181,10 +181,10 @@ public class UserController {
 		return false;
 	}
 	
-	private int checkLogin(String email, String password) {
+	private long checkLogin(String email, String password) {
 		List<Users> listUsers = usersService.getAll();
 		Users u = new Users();
-		int j = -1;
+		long j = -1;
 		for (int i = 0; i < listUsers.size(); i++) {
 			u = listUsers.get(i);
 			if(u.getEmail().equalsIgnoreCase(email)) {
@@ -197,7 +197,7 @@ public class UserController {
 		return j;
 	}
 	
-	private long checkCart(int iduser) {
+	private long checkCart(Long iduser) {
 		long i = 0;
 		if(cartService.getCartByUser(iduser) != null ) {
 			i = cartService.getCartByUser(iduser).getId();

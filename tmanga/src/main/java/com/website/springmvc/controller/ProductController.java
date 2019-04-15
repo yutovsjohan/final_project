@@ -1,9 +1,11 @@
 package com.website.springmvc.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +18,9 @@ import com.website.springmvc.Services.AuthorService;
 import com.website.springmvc.Services.CategoryService;
 import com.website.springmvc.Services.ComicService;
 import com.website.springmvc.Services.PublishCompanyService;
+import com.website.springmvc.Services.UsersService;
 import com.website.springmvc.entities.Comic;
+import com.website.springmvc.entities.Users;
 import com.website.springmvc.libs.GetModel;
 
 @Controller
@@ -32,7 +36,10 @@ public class ProductController {
 	private PublishCompanyService publishCompanyService;
 	
 	@Autowired
-	private ComicService comicService;	
+	private ComicService comicService;
+	
+	@Autowired
+	private UsersService userService;
 	
 	@Autowired
 	GetModel getModel;
@@ -42,11 +49,12 @@ public class ProductController {
 											@RequestParam(name = "q", defaultValue = "") String key, 
 										   	@RequestParam(name = "un", defaultValue = "") String name,
 											@RequestParam(name = "p", defaultValue = "1") int page,
-											@RequestParam(name = "s", defaultValue = "1") int sort){		
+											@RequestParam(name = "s", defaultValue = "1") int sort,
+											HttpSession session){		
 		ModelAndView model = new ModelAndView();
 		
 		String title = "";
-		int id = 1;
+		long id = 1;
 		String href = "";
 		
 		List<Comic> comics;
@@ -108,8 +116,8 @@ public class ProductController {
 		
 		model.addObject("sort", sort);
 		model.addObject("href", href);
-		model.addObject("views","productList");			
-		
+		model.addObject("views","productList");	
+				
 		getModel.getSideBar(model);
 						
 		return model;
@@ -119,9 +127,9 @@ public class ProductController {
 	public ModelAndView getViewProductDetailPage(@RequestParam(name = "c") String name){
 		ModelAndView model = new ModelAndView();
 		
-		int idAuthor = comicService.get(name).getAuthor().getId();
-		int idCategory = comicService.get(name).getCategory().getId();
-		int idPC = comicService.get(name).getPublishcompany().getId();
+		Long idAuthor = comicService.get(name).getAuthor().getId();
+		Long idCategory = comicService.get(name).getCategory().getId();
+		Long idPC = comicService.get(name).getPublishcompany().getId();
 		
 		getModel.getSideBar(model);
 		
@@ -135,6 +143,53 @@ public class ProductController {
 		
 		return model;
 	}	
+	
+	@RequestMapping(value = "/favoritelist", method = RequestMethod.POST)
+	public void favoriteList(HttpServletResponse response, HttpSession session,
+						@RequestParam(name = "key", defaultValue = "0") int key,
+						@RequestParam(name = "id", defaultValue = "0") Long idComic) {
+		String str = "success";
+		
+		if(idComic == 0 || key == 0) {
+			str = "fail";
+		}
+		else if(key == 1) {
+			//add favorite list
+			Users u = (Users) session.getAttribute("account");
+			List<Comic> comics = u.getComics();
+			if(comics == null) {
+				comics = new ArrayList<Comic>();
+			}
+			comics.add(comicService.get(idComic));
+			u.setComics(comics);
+			
+			userService.update(u);
+		}
+		else if(key == 2) {
+			//remove favorite list
+			Users u = (Users) session.getAttribute("account");
+			List<Comic> comics = u.getComics();
+			for(int i = 0; i < comics.size(); i++) {
+				if((long)comics.get(i).getId() == (long)idComic) {
+					comics.remove(i);
+					break;
+				}
+			}
+			if(comics.size() == 0) {
+				comics = null;
+			}
+			u.setComics(comics);
+			
+			userService.update(u);
+		}
+		
+		try {
+			response.getWriter().print(str);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 			
 	@RequestMapping(value = "/pagination", method = RequestMethod.GET)
 	public void pagination(HttpServletResponse response, 

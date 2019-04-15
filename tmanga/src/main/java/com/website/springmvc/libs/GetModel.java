@@ -121,4 +121,11 @@ public class GetModel {
 		model.addObject("views","customer/orderHistory");
 		model.addObject("title","Đơn hàng đã đặt");
 	}
+	
+	public void getOrderDetail(ModelAndView model) {
+		getSideBarCustomer(model);
+				
+		model.addObject("views","customer/orderDetail");
+		model.addObject("title","Chi tiết đơn hàng");
+	}
 }

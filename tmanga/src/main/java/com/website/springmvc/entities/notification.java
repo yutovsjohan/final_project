@@ -2,6 +2,8 @@ package com.website.springmvc.entities;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "notification", catalog = "manga")
@@ -19,7 +26,7 @@ public class Notification implements java.io.Serializable{
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
-	private int id;
+	private Long id;
 	
 	@Column(name = "sender", length = 100)
 	private String sender;
@@ -40,17 +47,27 @@ public class Notification implements java.io.Serializable{
 	@JoinColumn(name = "idComic", nullable = false)
 	private Comic idComic;
 	
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at", nullable = false, updatable = false)
+	private Date created_at;
+	
+	@UpdateTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_at", nullable = false, updatable = true)
+	private Date updated_at;
+	
 	public Notification() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

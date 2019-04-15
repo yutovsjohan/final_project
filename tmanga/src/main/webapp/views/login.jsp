@@ -16,11 +16,11 @@
 	<br>
 		
 	<div class="box">
-	<form class="" action="${pageContext.request.contextPath}/controller/login" method="post">
+	<form action="${pageContext.request.contextPath}/controller/login" method="post">
 		<h1>Thông tin đăng nhập</h1>
-		<input type="email" name="email" placeholder="nhập email">
-		<input type="password" name="password" placeholder="nhập password">
-		<input type="submit" name="" value="Đăng nhập">
+		<input type="email" name="email" id="email" placeholder="nhập email" required="required">
+		<input type="password" name="password" placeholder="nhập password" required="required">
+		<input type="submit" name="" id="submit" value="Đăng nhập">
 	</form>
 	<br>
 	<a class="forgetps forget-password" style="display:inline">Quên mật khẩu</a>
