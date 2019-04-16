@@ -34,9 +34,13 @@ $(document).ready(function(){
 					$('#modal-da-them-vao-gio-hang .modal-body p').html(str + " thất bại");
 					$('#modal-da-them-vao-gio-hang').modal('show');					
 				}
-				else{
+				else if(data == 'success'){
 					$('#modal-da-them-vao-gio-hang .modal-body p').html(str + " thành công");
 					$('#modal-da-them-vao-gio-hang').modal('show');	
+				}
+				else if(data == 'exist'){
+					$('#modal-da-them-vao-gio-hang .modal-body p').html("Sản phẩm này đã được thêm");
+					$('#modal-da-them-vao-gio-hang').modal('show');
 				}
 			}
 		});

@@ -8,24 +8,24 @@
 	<h2 style="color: blue;font-weight: bold">Tra cứu tình trạng đơn hàng</h2>
 	<hr style="border: 1px solid blue">
 	
-	<c:if test="${mes != null }">
+	<c:if test="${mes != '' }">
 		<div class="alert alert-${alert }" role="alert">
 			${mes }
 		 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 		</div>
 	</c:if> 
 	
-	<form class="form-horizontal" method="get" action="${pageContext.request.contextPath}/controller/#">
+	<form class="form-horizontal" method="get" action="${pageContext.request.contextPath}/controller/trackOrder">
 	  <div class="form-group">
 	    <label for="email" class="col-sm-2 control-label">Địa chỉ email</label>
 	    <div class="col-sm-10">
-	      <input type="email" class="form-control" name="email">
+	      <input type="email" class="form-control" name="email" required="required" value="${email }">
 	    </div>
 	  </div>
 	  <div class="form-group">
 	    <label for="madh" class="col-sm-2 control-label">Mã đơn hàng</label>
 	    <div class="col-sm-10">
-	      <input type="text" class="form-control" name="madh" >
+	      <input type="number" class="form-control" name="idBill" required="required">
 	    </div>
 	  </div>
 	  <div class="form-group">

@@ -118,7 +118,7 @@
 				<div class="col-sm-7 col-lg-7 col-xs-12 col-md-7">
 				<ul class="nav navbar-nav">
 					<li><a href="${pageContext.request.contextPath}/controller/index" <c:if test="${views == 'index' }">class="actived"</c:if> >Trang chủ</a></li>							
-					<li><a href="${pageContext.request.contextPath}/controller/#" <c:if test="${views == 'news' }">class="actived"</c:if>>Tin tức</a></li>
+					<li><a href="${pageContext.request.contextPath}/controller/news" <c:if test="${views == 'news' }">class="actived"</c:if>>Tin tức</a></li>
 					<li><a href="${pageContext.request.contextPath}/controller/introduce" <c:if test="${views == 'introduce' }">class="actived"</c:if> >Giới thiệu</a></li>
 					<li><a href="${pageContext.request.contextPath}/controller/contact" <c:if test="${views == 'contact' }">class="actived"</c:if> >Liên hệ</a></li>
 					

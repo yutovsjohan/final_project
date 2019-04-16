@@ -1,5 +1,7 @@
 package com.website.springmvc.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -92,32 +94,35 @@ public class CustomerController {
 	}
 	
 	@RequestMapping(value = "/customer/favoriteList", method = RequestMethod.GET)
-	public ModelAndView getFavoriteList(HttpSession session) {
+	public ModelAndView getFavoriteList(HttpSession session, @RequestParam(name = "p", defaultValue = "1") int page) {
 		ModelAndView model = new ModelAndView();
 		if(session.getAttribute("account") != null) {
 			getModel.getFavoriteList(model);		
-			List<Comic> comics = ((Users) session.getAttribute("account")).getComics();
-			
-			for (int i = 0; i < comics.size(); i++) {
-				if(comics.get(i) == null) {
-					comics.remove(i);
-				}
-			}
-			Users u = ((Users) session.getAttribute("account"));
-			u.setComics(comics);
-			userService.update(u);
-			
+			Users u = userService.get(((Users) session.getAttribute("account")).getId());
+			List<Object[]> listResult = userService.getList(u.getId(), 0, 0);
+									
 			int totalPage = 0;
 			int totalComic = 0;		
 			
-			totalComic = comics.size();
+			totalComic = listResult.size();
 			totalPage = totalComic / 12;
 			
 			if(totalComic % 12 != 0){
 				totalPage++;
 			}	
+			listResult = userService.getList(u.getId(), 12*(page-1), 12);
 			
-			
+			List<Comic> comics = new ArrayList<Comic>(totalComic);
+			int k=0;
+			for (Object[] aRow : listResult) {
+				comics.add(k, (Comic) aRow[1]);
+				k++;
+			}
+						
+			model.addObject("comiclist", comics);
+			model.addObject("totalpage", totalPage);
+			model.addObject("pageselected", page);
+			model.addObject("totalcomic", totalComic);
 		}
 		else {
 			getModel.getHome(model);
@@ -165,6 +170,7 @@ public class CustomerController {
 			model.addObject("bill", billService.get(idBill));
 			model.addObject("billDetail", billDetailService.getBillDetailByIdBill(idBill));
 			model.addObject("orderStatus", orderStatusService.getOrderStatusByIdBill(idBill));
+			model.addObject("users", session.getAttribute("account"));
 		}
 		else {
 			getModel.getHome(model);

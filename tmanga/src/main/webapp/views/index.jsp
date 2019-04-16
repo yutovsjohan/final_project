@@ -27,7 +27,7 @@
 					<div class="item" style="padding-left: 0px;">
 				</c:otherwise>
 				</c:choose>
-		 				<a href="${pageContext.request.contextPath}/controller/news/${banner.title }">
+		 				<a href="${pageContext.request.contextPath}/controller/news-detail?un=${banner.unsignedTitle}">
 		 					<img src="<c:url value="/images/news/${banner.image }" />" title="${banner.title }" alt="${banner.title }" style="width: 100%; height: 500px">
 		 				</a>
 		 			</div>
@@ -120,7 +120,7 @@
 					</div>
 				</c:if>
 			</c:forEach>
-			<input id="route" value="${pageContext.request.contextPath}/controller/favoritelist" hidden/>
+			
 		</div>
 		
 		<a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev" >
@@ -188,7 +188,7 @@
 					</div>
 				</div>
 			</c:forEach>
-			<input id="route" value="${pageContext.request.contextPath}/controller/favoritelist" hidden/>
+			
 		</div>
 	<!--/truyện tranh mới-->
 	
@@ -248,7 +248,8 @@
 					</div>
 				</div>
 			</c:forEach>
-			<input id="route" value="${pageContext.request.contextPath}/controller/favoritelist" hidden/>
+			
 		</div>
 	<!--/Truyện tranh khác-->
+	<input id="route" value="${pageContext.request.contextPath}/controller/favoritelist" hidden/>
 </div>

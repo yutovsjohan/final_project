@@ -23,15 +23,15 @@ public class UsersService {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	public List<Comic> getListComic(Long idUser, int firstResult, int maxResult){
+	public List<Object[]> getList(Long idUser, int firstResult, int maxResult){
 		Session session = this.sessionFactory.getCurrentSession();
 		Query query = null;
-		//query = session.createQuery("from Users where comics");
-//		query.setParameter("keyword", idUser);
-//		if(maxResult != 0) {
-//			query.setFirstResult(firstResult);
-//			query.setMaxResults(maxResult);
-//		}
+		query = session.createQuery("from Users u join u.comics where u.id = :idUser");
+		query.setParameter("idUser", idUser);
+		if(maxResult != 0) {
+			query.setFirstResult(firstResult);
+			query.setMaxResults(maxResult);
+		}
 		return query.list();
 	}
 	

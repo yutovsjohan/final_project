@@ -107,7 +107,7 @@ public class ProductController {
 		}
 		else {
 			comics = comicService.getListComic(key, id, 12*(page-1), 12, sort);
-		}
+		}			
 						
 		model.addObject("comiclist", comics);
 		model.addObject("totalpage", totalPage);
@@ -155,13 +155,31 @@ public class ProductController {
 		}
 		else if(key == 1) {
 			//add favorite list
+			boolean f = true;
 			Users u = (Users) session.getAttribute("account");
-			List<Comic> comics = u.getComics();
-			if(comics == null) {
-				comics = new ArrayList<Comic>();
+			
+			List<Object[]> listResult = userService.getList(u.getId(), 0, 0);
+			Comic comic = new Comic();
+			
+			List<Comic> comics = new ArrayList<Comic>(listResult.size());
+						
+			int k = 0;
+			for (Object[] aRow : listResult) {
+				comic = (Comic) aRow[1];
+				if((long)comic.getId() == (long)idComic) {
+					f = false;					
+				}
+				else {
+					comics.add(k, (Comic) aRow[1]);
+				}
 			}
-			comics.add(comicService.get(idComic));
-			u.setComics(comics);
+			if(f) {
+				comics.add(comicService.get(idComic));
+				u.setComics(comics);
+			}
+			else {
+				str = "exist";
+			}
 			
 			userService.update(u);
 		}

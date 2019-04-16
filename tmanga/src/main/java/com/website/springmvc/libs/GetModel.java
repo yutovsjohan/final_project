@@ -11,6 +11,7 @@ import com.website.springmvc.Services.CategoryService;
 import com.website.springmvc.Services.ComicService;
 import com.website.springmvc.Services.NewsService;
 import com.website.springmvc.Services.PublishCompanyService;
+import com.website.springmvc.entities.News;
 import com.website.springmvc.entities.Users;
 
 @Service
@@ -87,6 +88,21 @@ public class GetModel {
 		
 		model.addObject("views","introduce");
 		model.addObject("title","Giới thiệu");		
+	}
+	
+	public void getNews(ModelAndView model){		
+		getSideBar(model);
+		
+		model.addObject("views","newsList");
+		model.addObject("title","Tin tức");		
+	}
+	
+	public void getNewsDetail(ModelAndView model, News news){		
+		getSideBar(model);
+		
+		model.addObject("views","newsDetail");
+		model.addObject("title",news.getTitle());
+		model.addObject("news",news);
 	}
 	
 	public void getTrackOrder(ModelAndView model){		

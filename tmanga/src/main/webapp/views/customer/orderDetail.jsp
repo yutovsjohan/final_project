@@ -3,7 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
-<c:if test="${(sessionScope.account != null)}">
+<c:if test="${(users != null)}">
 	<div class="col-md-9 ">
 		<h4 style="text-align: center;">Mã đơn hàng: ${bill.id }</h4>
 		<h4 style="text-align: center;">Ngày đặt hàng: <span style="color:green; font-weight: bold; font-size: 18px;"><fmt:formatDate pattern = "dd-MM-yyyy" value = "${bill.orderDate}" /></span></h4>
@@ -15,7 +15,7 @@
 		</h4>
 		<br>
 		
-		<c:if test="${mes != null }">
+		<c:if test="${mes != '' }">
 			<div class="alert alert-${alert }" role="alert">
 				${mes }
 			 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -42,14 +42,12 @@
 		</div>
 		
 		<br>		
-		<c:if test="${bill.active == 1 }">
-			<a href="#" dataId="${bill.id }" class="btn btn-warning delete"  style="float: left;"><i class="fa fa-trash-o fa-2x" aria-hidden="true"  title="Hủy đơn hàng" data-toggle="modal" data-target="#myModal"> Hủy đơn hàng</i></a>
-			<br><br><br>
-		</c:if>
+		
 		<c:if test="${bill.active == 0 }">
+			<a href="#" dataId="${bill.id }" class="btn btn-warning delete"  style="float: left;"><i class="fa fa-trash-o fa-2x" aria-hidden="true"  title="Hủy đơn hàng" data-toggle="modal" data-target="#myModal"> Hủy đơn hàng</i></a>
 	  		<form method="get" action="#">
 			    <input type="text" name="idBill" value="${bill.id }" hidden>
-			    <input type="text" name="email" value="${sessionScope.account.id }" hidden>    
+			    <input type="text" name="email" value="${users.id }" hidden>    
 			    <div class="guimail">
 			      <button class="btn btn-info" type="submit" style="float: right;" ><i class="fa fa-2x fa-envelope-o" aria-hidden="true"></i> Gửi lại mail xác nhận đặt hàng</button>
 			    </div>
@@ -68,10 +66,10 @@
 		    <tbody>
 		      <tr>
 		        <td>
-		          <p>Tên : ${sessionScope.account.name }</p>
-		          <p>Địa chỉ : ${sessionScope.account.address }</p>
-		          <p>Điện thoại : ${sessionScope.account.phone }</p>
-		          <p>Email : ${sessionScope.account.email }</p>
+		          <p>Tên : ${users.name }</p>
+		          <p>Địa chỉ : ${users.address }</p>
+		          <p>Điện thoại : ${users.phone }</p>
+		          <p>Email : ${users.email }</p>
 		        </td>
 		        <td>
 				<c:if test="${bill.active == 1 }">
@@ -132,8 +130,10 @@
 		  </tbody>
 		</table>
 	    
-	    <br>
-	    <a href="${pageContext.request.contextPath}/controller/customer/orderHistory" class="btn btn-info">Quay lại</a>
+	    <c:if test="${users == null }">
+		    <br>
+		    <a href="${pageContext.request.contextPath}/controller/customer/orderHistory" class="btn btn-info">Quay lại</a>
+	    </c:if>
 	</div>
 	
 	<div id="myModal" class="modal fade" role="dialog">
