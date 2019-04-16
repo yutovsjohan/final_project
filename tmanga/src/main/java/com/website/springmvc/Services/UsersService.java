@@ -37,7 +37,7 @@ public class UsersService {
 	
 	public Users get(String email) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return (Users) session.createSQLQuery("from Users where email like ?").setParameter(0, "%" + email + "%").uniqueResult();
+		return (Users) session.createQuery("from Users where email = :email").setParameter("email", email).uniqueResult();
 	}
 	
 	public Users get(int id) {

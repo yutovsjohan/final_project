@@ -187,8 +187,8 @@ public class CartController {
                         str = comic.getName() + " cần số lượng tối đa được phép mua là " + comic.getAmount();
 					}
 					else {
-						amount -= gioHang.getItemForId(idComic).getAmount();
-						gioHang.add(idComic, comic, amount);
+//						amount -= gioHang.getItemForId(idComic).getAmount();
+						gioHang.setAmount(idComic, comic, amount);
 						str = "updated";
 					}
 					

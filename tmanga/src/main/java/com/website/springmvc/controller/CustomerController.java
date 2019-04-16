@@ -19,6 +19,7 @@ import com.website.springmvc.Services.BillDetailService;
 import com.website.springmvc.Services.ComicService;
 import com.website.springmvc.Services.OrderStatusService;
 import com.website.springmvc.Services.UsersService;
+import com.website.springmvc.config.MyConstants;
 import com.website.springmvc.entities.Bill;
 import com.website.springmvc.entities.BillDetail;
 import com.website.springmvc.entities.Comic;
@@ -77,7 +78,7 @@ public class CustomerController {
 			u.setPhone(phone);
 			
 			if(!password.equalsIgnoreCase("")) {
-				u.setPassword(TripleDES.Encrypt(u.getPassword(), "123"));
+				u.setPassword(TripleDES.Encrypt(password, MyConstants.DES_KEY));
 			}
 			
 			userService.update(u);

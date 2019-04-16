@@ -10,5 +10,8 @@ public class MyConstants {
  
     // And receiver!
     public static final String FRIEND_EMAIL = "tmangavn@gmail.com";
+    
+    //Triple DES key
+    public static final String DES_KEY = "123";
  
 }

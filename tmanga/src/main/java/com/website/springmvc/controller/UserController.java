@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.website.springmvc.Services.CartDetailService;
 import com.website.springmvc.Services.CartService;
 import com.website.springmvc.Services.UsersService;
+import com.website.springmvc.config.MyConstants;
 import com.website.springmvc.entities.Cart;
 import com.website.springmvc.entities.CartDetail;
 import com.website.springmvc.entities.Role;
@@ -57,7 +58,7 @@ public class UserController {
 			Role.setId((long) 2);
 			Users.setRole(Role);
 			
-			Users.setPassword(TripleDES.Encrypt(Users.getPassword(), "123"));
+			Users.setPassword(TripleDES.Encrypt(Users.getPassword(), MyConstants.DES_KEY));
 			
 			usersService.add(Users);
 			
@@ -170,30 +171,21 @@ public class UserController {
 	
 
 	private boolean checkEmail(String email) {
-		List<Users> listUsers = usersService.getAll();
-		Users u = new Users();
-		for (int i = 0; i < listUsers.size(); i++) {
-			u = listUsers.get(i);
-			if(u.getEmail().equalsIgnoreCase(email)) {
-				return true;
-			}
-		}
-		return false;
+		if(usersService.get(email) == null)
+			return false;
+		else
+			return true;
 	}
 	
 	private long checkLogin(String email, String password) {
-		List<Users> listUsers = usersService.getAll();
-		Users u = new Users();
+		Users u = usersService.get(email);
 		long j = -1;
-		for (int i = 0; i < listUsers.size(); i++) {
-			u = listUsers.get(i);
-			if(u.getEmail().equalsIgnoreCase(email)) {
-				if(TripleDES.Decrypt(u.getPassword(), "123").equalsIgnoreCase(password)) {
-					j = u.getId();
-					break;
-				}				
-			}			
+		if(u != null){
+			if(TripleDES.Decrypt(u.getPassword(), MyConstants.DES_KEY).equalsIgnoreCase(password)) {
+				j = u.getId();
+			}
 		}
+			
 		return j;
 	}
 	

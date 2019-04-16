@@ -37,6 +37,17 @@ public class GioHang {
 		}
 	}
 	
+	public void setAmount(Long id, Comic comic, int amount){
+		if(cart.containsKey(id)) {
+			Item a = cart.get(id);
+			a.setAmount(amount);
+		}
+		else {
+			Item a = new Item(comic, amount); 
+			cart.put(id, a);
+		}
+	}
+	
 	public void delete(Long id) {
 		cart.remove(id);
 	}
