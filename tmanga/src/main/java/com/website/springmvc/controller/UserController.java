@@ -3,6 +3,8 @@ package com.website.springmvc.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
@@ -26,6 +28,7 @@ import com.website.springmvc.entities.Users;
 import com.website.springmvc.libs.GetModel;
 import com.website.springmvc.libs.GioHang;
 import com.website.springmvc.libs.Item;
+import com.website.springmvc.libs.SendEmail;
 import com.website.springmvc.libs.TripleDES;
 
 @Controller
@@ -174,6 +177,53 @@ public class UserController {
 		return "redirect:index";
 	}
 	
+	@RequestMapping(value = "/forgetpassword", method = RequestMethod.POST)
+	public String sendMailforgetPassword(@RequestParam("email") String email, Model model){
+		String str = "redirect:login";
+		if(usersService.get(email) != null){
+			Users u = usersService.get(email);
+
+			String passcode = UUID.randomUUID().toString();
+			u.setPasscode(passcode);
+			usersService.update(u);
+			String content = "";
+			
+			content += "<p>Xin chào " + u.getName() + ", chúng tôi thấy là quý khách đang gặp vấn đề về đăng nhập tài khoản. Để lấy lại tài khoản, xin quý khách vui lòng bấm vào link bên dưới, điền đầy đủ thông tin cùng với mã xác nhận để lấy lại tài khoản.</p>";
+			content += "<p>Mã xác nhận của quý khách là: " + u.getPasscode() + "</p>";
+			content += "<a href='http://localhost:8080/tmanga/controller/change-password?email=" + email + "'>Nhấn vào đây để đổi mật khẩu của bạn.</a>";
+			content += "<p>Kính chúc quý khách có một ngày tốt lành.</p>";
+			content += "<h3 style='color: blue; font-weight: bold;''><a href='http://localhost:8080/tmanga/controller/'>T-Manga.vn</a></h3>";
+			
+			SendEmail.sendGrid("yutovsjohan@gmail.com", email, "Quên mật khẩu", content, true);			
+		}
+		else {
+			model.addAttribute("mes", "Email không tồn tại");
+			model.addAttribute("alert", "danger");
+		}
+		return str;
+	}
+	
+	@RequestMapping(value = "/change-password", method = RequestMethod.GET)
+	public ModelAndView getForgetPassword(@RequestParam(name = "email", defaultValue = "") String email,
+								@RequestParam(name = "alert", defaultValue = "") String alert,
+								@RequestParam(name = "mes", defaultValue = "") String mes,
+								HttpSession session){
+		ModelAndView model = new ModelAndView();		
+		model.addObject("mes", mes);
+		model.addObject("alert", alert);	
+		
+		getModel.getForgetPassword(model, email);
+		
+		return model;
+	}
+	
+	@RequestMapping(value = "/change-password", method = RequestMethod.POST)
+	public String changePassword(@RequestParam("email") String email, Model model,
+								@RequestParam("password") String password){
+		String str = "";
+		return str;
+	}
+	
 	private boolean checkEmail(String email) {
 		if(usersService.get(email) == null)
 			return false;
@@ -198,6 +248,7 @@ public class UserController {
 		}
 		return i;
 	}
+	
 	private Long countCartDetailByCart(Long idCart) {
 		if(cartDetailService.countCartDetailByCart(idCart) != null) {
 			return cartDetailService.countCartDetailByCart(idCart);

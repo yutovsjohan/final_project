@@ -1,16 +1,9 @@
 package com.website.springmvc.config;
 
 public class MyConstants {
-	 
-    // Replace with your email here:  
-    public static final String MY_EMAIL = "tmangavn@gmail.com";
- 
-    // Replace password!!
-    public static final String MY_PASSWORD = "39608813";
- 
-    // And receiver!
-    public static final String FRIEND_EMAIL = "tmangavn@gmail.com";
-
     //Triple DES key
     public static final String DES_KEY = "123";
+    
+    //SENDGRID_API_KEY
+    public static final String SENDGRID_API_KEY = "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";
 }

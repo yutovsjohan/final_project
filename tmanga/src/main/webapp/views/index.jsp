@@ -254,7 +254,7 @@
 	<!--/Truyện tranh khác-->
 	
 	<!-- Truyện yêu thích -->
-	<c:if test="${favoritelist.size() != 0 }">
+	<c:if test="${favoritelist.size() != 0 && sessionScope.account.email != null}">
 		<div class="row">
 			<div class="col-sm-10">
 				<span style="color:orange; font-weight:bold; font-size:20px">Truyện yêu thích</span>

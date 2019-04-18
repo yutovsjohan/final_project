@@ -61,7 +61,7 @@
 				<div class="panel-heading">Tìm tài khoản của bạn</div>
 				
 				<div class="panel-body">
-					<form action="${pageContext.request.contextPath}/controller/#" method="post">
+					<form action="${pageContext.request.contextPath}/controller/forgetpassword" method="post">
 					<input type="hidden" name="" value="">
 					  <div class="form-group">
 					    <label for="email">	

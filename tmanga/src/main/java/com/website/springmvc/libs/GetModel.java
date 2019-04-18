@@ -115,6 +115,14 @@ public class GetModel {
 		model.addObject("title","Đăng nhập");		
 	}
 	
+	public void getForgetPassword(ModelAndView model, String email){
+		getSideBar(model);
+		
+		model.addObject("views", "changePassword");
+		model.addObject("title", "Đặt lại mật khẩu mới");
+		model.addObject("email", email);
+	}
+	
 	public void getProductList(ModelAndView model, String action, String key, String name, 
 								int page, int sort) {
 		getSideBar(model);
