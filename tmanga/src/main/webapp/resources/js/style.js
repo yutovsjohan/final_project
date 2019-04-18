@@ -1,4 +1,110 @@
 $(document).ready(function(){
+	//delete address
+	$(".removeAddress").click(function(){
+		if(confirm("Bạn có thực sự muốn xóa ?")){
+			var buttonRemoveId = parseInt($(this).attr('dataId'));			
+			var route = "removeAddress";
+			
+			$.ajax({
+				url : route,
+				type : 'POST',
+				data : {
+					id: buttonRemoveId
+				},
+				success: function(data){
+					if(data == 'success'){
+						var divId;
+						$('.addressBook').each(function () {
+							divId = parseInt($(this).attr('dataId'));
+							if(buttonRemoveId == divId){
+								$(this).remove();
+							}
+						})
+					}
+					else{
+						alert('Xóa thất bại');
+					}
+				}
+			})
+			
+			
+	    }
+	    else{
+	        return false;
+	    }
+	});
+	
+	//validate page create address
+	$("form").keyup(function() {
+		$("input[type=submit]").removeAttr('disabled');
+		$("#save").css({
+			"cursor": "pointer",
+		    "background-color": "#5cb85c"
+		});
+		$("#save").prop("type","submit");
+	});
+	
+	$("form").change(function() {
+		$("input[type=submit]").removeAttr('disabled');
+		$("#save").css({
+			"cursor": "pointer",
+			"background-color": "#5cb85c"
+		});
+		$("#save").prop("type","submit");
+	});
+	
+	$("#chooseDefault").change(function(){
+		if ($('#chooseDefault').is(":checked")){
+			$('#choose').val('1');
+		}
+		else{
+			$('#choose').val('0');
+		}
+	});
+	
+	$("#save").click(function(){
+		var city = parseInt($('#city').val());
+		var district = parseInt($('#district').val());
+				 
+		var f = true;
+		
+		if(city == 0){
+			alert('Bạn chưa chọn Tỉnh / Thành phố');
+			f = false;
+		}
+		
+		else if(district == 0){
+			alert('Bạn chưa chọn Quận / Huyện');
+			f = false;
+		}
+				
+		if(!f){
+			$("input[type=submit]").attr('disabled','disabled');
+			$("#save").css({
+				"cursor": "default",
+				"background-color": "grey"
+			});
+			$("#save").prop("type","disable");
+		}
+	});
+	
+	//create address book, select district from city
+	$('#city').change(function(){
+		var city = parseInt($('#city').val());
+		var route = "getDistrict";
+		
+		$.ajax({
+			url : route,
+			type : 'GET',
+			data : {
+				city: city
+			},
+			success: function(data){
+				$('#district').html(data);
+			}
+		})
+	});
+	
 //favorite list
 	$('.favoritelist').click(function(){
 		var route = $("#route").val();
@@ -93,20 +199,12 @@ $(document).ready(function(){
 		
 		if(!isValidEmailAddress(email)) {
 			alert('Email không hợp lệ');	
-			f = false;
-			
-//			$("form").submit(function(e){
-//		        e.preventDefault();
-//		    });			
+			f = false;				
 		}
 		
 		else if(ps != reps){
 			alert('Mật khẩu không khớp');
-			f = false;
-			
-//			$("form").submit(function(e){
-//		        e.preventDefault();
-//		    });			
+			f = false;				
 		}
 		
 		if(!f){
@@ -168,7 +266,13 @@ $(document).ready(function(){
 // button add to cart
     $('.them-vao-gio-hang').click(function(){		
 		var itemcount = parseInt($("#itemcount").text());
+		
 		var route = "addtocart";
+		if($('#fl').val() != null){
+			route = "../addtocart";
+		}
+		
+		
 		var action = 'add';
 		
 		var amount = 1;

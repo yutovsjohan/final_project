@@ -20,7 +20,7 @@ public class ComicService {
 	
 	@Autowired
 	DAO<Comic> comicDao;
-	
+		
 	//search
 	public List<Comic> getListComic(String name, int firstResult, int maxResult, int sort){
 		Session session = this.sessionFactory.getCurrentSession();
@@ -37,6 +37,21 @@ public class ComicService {
 		}
 		else if(sort == 4) {
 			query = session.createQuery("from Comic where name like :keyword order by name desc");
+		}
+		else if(sort == 5) {
+			query = session.createQuery("from Comic where name like :keyword and sale < 20000");
+		}
+		else if(sort == 6) {
+			query = session.createQuery("from Comic where name like :keyword and sale >= 20000 and sale <= 30000");
+		}
+		else if(sort == 7) {
+			query = session.createQuery("from Comic where name like :keyword and sale >= 30000 and sale <= 40000");
+		}
+		else if(sort == 8) {
+			query = session.createQuery("from Comic where name like :keyword and sale >= 40000 and sale <= 50000");
+		}
+		else if(sort == 9) {
+			query = session.createQuery("from Comic where name like :keyword and sale > 50000");
 		}
 		
 		query.setParameter("keyword", "%" + name + "%");
@@ -129,9 +144,17 @@ public class ComicService {
 		return session.createQuery("from Comic order by quantitySold desc").setMaxResults(12).list();
 	}
 
-	public List<Comic> getNewComic(){
+	public List<Comic> getNewComic(int firstResult, int maxResult){
 		Session session = this.sessionFactory.getCurrentSession();
-		return session.createQuery("from Comic order by publishDate desc").setMaxResults(36).list();
+		Query query = null;
+		query = session.createQuery("from Comic order by publishDate desc");
+						
+		if(maxResult != 0) {
+			query.setFirstResult(firstResult);
+			query.setMaxResults(maxResult);
+		}
+		
+		return query.list();
 	}
 
 	public List<Comic> getNewComicInHomePage(){

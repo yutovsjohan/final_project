@@ -13,20 +13,8 @@
 			<div class="panel-body">
 				
 				<a href="${pageContext.request.contextPath}/controller/customer/edit">
-					<div id="menu_doc" <c:if test="${views == 'customer/customerEditInformation' }">class="actived"</c:if> >					
+					<div id="menu_doc" <c:if test="${views == 'customer/Information' }">class="actived"</c:if> >					
 						Thông tin tài khoản
-					</div>
-				</a>
-				<!-- <hr>
-				<a href="${pageContext.request.contextPath}/controller/customer/#">
-					<div id="menu_doc">
-						Thông báo của tôi
-					</div>
-				</a> -->
-				<hr>
-				<a href="${pageContext.request.contextPath}/controller/customer/favoriteList">
-					<div id="menu_doc" <c:if test="${views == 'customer/favoriteList' }">class="actived"</c:if> >					
-						Sản phẩm yêu thích
 					</div>
 				</a>
 				<hr>
@@ -35,12 +23,28 @@
 						Đơn hàng đã đặt
 					</div>
 				</a>
-				<!--<hr>
-				<a href="${pageContext.request.contextPath}/controller/customer/#">				
+				
+				<hr>
+				<a href="${pageContext.request.contextPath}/controller/customer/addressBook">
+					<div id="menu_doc" <c:if test="${views == 'customer/addressBook' }">class="actived"</c:if> >					
+						Sổ địa chỉ
+					</div>
+				</a>
+				
+				<!-- <hr>
+				<a href="${pageContext.request.contextPath}/controller/customer/#">
 					<div id="menu_doc">
-						Sản phẩm đã mua
+						Thông báo của tôi
 					</div>
 				</a> -->
+				
+				<hr>
+				<a href="${pageContext.request.contextPath}/controller/customer/favoriteList">
+					<div id="menu_doc" <c:if test="${views == 'customer/favoriteList' }">class="actived"</c:if> >					
+						Sản phẩm yêu thích
+					</div>
+				</a>
+				
 				<hr>
 				<a href="../logout">
 					<div id="menu_doc" dataHref="logout">

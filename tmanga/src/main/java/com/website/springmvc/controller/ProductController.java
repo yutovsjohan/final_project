@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.website.springmvc.Services.AuthorService;
-import com.website.springmvc.Services.CategoryService;
 import com.website.springmvc.Services.ComicService;
-import com.website.springmvc.Services.PublishCompanyService;
 import com.website.springmvc.Services.UsersService;
 import com.website.springmvc.entities.Comic;
 import com.website.springmvc.entities.Users;
@@ -25,16 +22,7 @@ import com.website.springmvc.libs.GetModel;
 
 @Controller
 @RequestMapping(value="/controller")
-public class ProductController {
-	@Autowired
-	private CategoryService categoryService;
-	
-	@Autowired
-	private AuthorService authorService;
-	
-	@Autowired
-	private PublishCompanyService publishCompanyService;
-	
+public class ProductController {	
 	@Autowired
 	private ComicService comicService;
 	
@@ -52,94 +40,37 @@ public class ProductController {
 											@RequestParam(name = "s", defaultValue = "1") int sort,
 											HttpSession session){		
 		ModelAndView model = new ModelAndView();
-		
-		String title = "";
-		long id = 1;
-		String href = "";
-		
-		List<Comic> comics;
-		
+		String href = "";		
 		if(action.equalsIgnoreCase("search")) {
-			comics = comicService.getListComic(key, 0, 0, sort);
-						
-			model.addObject("title", "Tìm kiếm " + key);
-			
 			href = "product?a=search&q=" + key;
-			
-			model.addObject("key", "search");			
-			model.addObject("k",key);
 		}
-		else {			
-			if(key.equalsIgnoreCase("category")) {
-				title = categoryService.get(name).getName();
-				id = categoryService.get(name).getId();
-			}	
-			else if(key.equalsIgnoreCase("author")) {
-				title = authorService.get(name).getName();
-				id = authorService.get(name).getId();
-			}
-			else if(key.equalsIgnoreCase("publishing-company")) {
-				title = publishCompanyService.get(name).getName();
-				id = publishCompanyService.get(name).getId();
-			}
-			
-			comics = comicService.getListComic(key, id, 0, 0, sort);
-			
-			model.addObject("title",title);
-			href = "product?a=pl&q=" + key + "&un=" + name;
-			
-			model.addObject("key", key);
-			model.addObject("un", name);
-		}	
-		
-		int totalPage = 0;
-		int totalComic = 0;		
-		
-		totalComic = comics.size();
-		totalPage = totalComic / 12;
-		
-		if(totalComic % 12 != 0){
-			totalPage++;
-		}		
-				
-		if(action.equalsIgnoreCase("search")) {
-			comics = comicService.getListComic(key, 12*(page-1), 12, sort);
+		else if(action.equalsIgnoreCase("nc")) {
+			href = "product?a=nc&q=" + key;
 		}
 		else {
-			comics = comicService.getListComic(key, id, 12*(page-1), 12, sort);
-		}			
-						
-		model.addObject("comiclist", comics);
-		model.addObject("totalpage", totalPage);
-		model.addObject("pageselected", page);
-		model.addObject("totalcomic", totalComic);
+			href = "product?a=pl&q=" + key + "&un=" + name;
+		}
 		
-		model.addObject("sort", sort);
+		getModel.getProductList(model, action, key, name, page, sort);
 		model.addObject("href", href);
-		model.addObject("views","productList");	
-				
-		getModel.getSideBar(model);
+		
+		if(page != 1) {
+			href += "&p=" + page;
+		}
+		else if(sort != 1) {
+			href += "&s=" + sort;
+		}
+		session.setAttribute("url", href);
 						
 		return model;
 	}	
 	
 	@RequestMapping(value = "/detail", method = RequestMethod.GET)
-	public ModelAndView getViewProductDetailPage(@RequestParam(name = "c") String name){
+	public ModelAndView getViewProductDetailPage(@RequestParam(name = "c") String name,
+												HttpSession session){
 		ModelAndView model = new ModelAndView();
-		
-		Long idAuthor = comicService.get(name).getAuthor().getId();
-		Long idCategory = comicService.get(name).getCategory().getId();
-		Long idPC = comicService.get(name).getPublishcompany().getId();
-		
-		getModel.getSideBar(model);
-		
-		model.addObject("views","productDetail");
-		model.addObject("title", comicService.get(name).getName());
-		model.addObject("author",authorService.get(idAuthor));
-		model.addObject("category",categoryService.get(idCategory));
-		model.addObject("publishcompany",publishCompanyService.get(idPC));
-		model.addObject("comic", comicService.get(name));
-		model.addObject("listComicForAuthor", comicService.getListForAuthor(idAuthor));
+		getModel.getProductDetail(model, name, session);		
+		session.setAttribute("url", "detail?c=" + name);
 		
 		return model;
 	}	
@@ -167,21 +98,18 @@ public class ProductController {
 			for (Object[] aRow : listResult) {
 				comic = (Comic) aRow[1];
 				if((long)comic.getId() == (long)idComic) {
-					f = false;					
+					f = false;
 				}
-				else {
-					comics.add(k, (Comic) aRow[1]);
-				}
+				comics.add(k, (Comic) aRow[1]);
 			}
 			if(f) {
 				comics.add(comicService.get(idComic));
 				u.setComics(comics);
+				userService.update(u);
 			}
 			else {
 				str = "exist";
-			}
-			
-			userService.update(u);
+			}						
 		}
 		else if(key == 2) {
 			//remove favorite list

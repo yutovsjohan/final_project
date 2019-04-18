@@ -7,7 +7,7 @@
 <!-- content -->
 <div class="container">
 	<h1 style="font-weight: bold">Giỏ hàng</h1>
-	<c:if test="${mes != null }">
+	<c:if test="${mes != '' }">
 		<div class="alert alert-${alert }" role="alert">
 			${mes }
 		 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>

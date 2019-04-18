@@ -21,7 +21,12 @@ public class CartDetailService {
 	@Autowired
 	DAO<CartDetail> cartDetailDAO;
 	
-	public List<CartDetail> getDetailByIdCart(long idCart){
+	public Long countCartDetailByCart(Long idCart) {
+		Session session = this.sessionFactory.getCurrentSession();
+		return (Long) session.createQuery("select count(id) from CartDetail group by cart.id having cart.id = :idCart").setParameter("idCart", idCart).uniqueResult();
+	}
+	
+	public List<CartDetail> getDetailByIdCart(Long idCart){
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from CartDetail where cart.id = :idCart").setParameter("idCart", idCart).list();
 	}

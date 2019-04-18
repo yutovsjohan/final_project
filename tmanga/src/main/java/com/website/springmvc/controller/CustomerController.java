@@ -1,28 +1,30 @@
 package com.website.springmvc.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.website.springmvc.Services.AddressService;
 import com.website.springmvc.Services.BillService;
-import com.website.springmvc.Services.BillDetailService;
-import com.website.springmvc.Services.ComicService;
-import com.website.springmvc.Services.OrderStatusService;
+import com.website.springmvc.Services.DistrictService;
 import com.website.springmvc.Services.UsersService;
 import com.website.springmvc.config.MyConstants;
+import com.website.springmvc.entities.Address;
 import com.website.springmvc.entities.Bill;
-import com.website.springmvc.entities.BillDetail;
 import com.website.springmvc.entities.Comic;
+import com.website.springmvc.entities.District;
 import com.website.springmvc.entities.Users;
 import com.website.springmvc.libs.GetModel;
 import com.website.springmvc.libs.TripleDES;
@@ -34,16 +36,13 @@ public class CustomerController {
 	private UsersService userService;
 	
 	@Autowired
-	private BillDetailService billDetailService; 
-	
-	@Autowired
 	private BillService billService; 
+		
+	@Autowired
+	private DistrictService districtService;
 	
 	@Autowired
-	private ComicService comicService;
-	
-	@Autowired
-	private OrderStatusService orderStatusService;
+	private AddressService addressService;
 	
 	@Autowired
 	GetModel getModel;
@@ -57,9 +56,10 @@ public class CustomerController {
 			getModel.getCustomerEditInfo(model);
 			model.addObject("mes", mes);
 			model.addObject("alert", alert);
+			session.setAttribute("url", "customer/edit");
 		}
 		else {
-			getModel.getHome(model);			
+			getModel.getHome(model, session);			
 		}
 		return model;
 	}	
@@ -124,9 +124,11 @@ public class CustomerController {
 			model.addObject("totalpage", totalPage);
 			model.addObject("pageselected", page);
 			model.addObject("totalcomic", totalComic);
+			
+			session.setAttribute("url", "customer/favoriteList?p=" + page);
 		}
 		else {
-			getModel.getHome(model);
+			getModel.getHome(model, session);
 		}
 		return model;
 	}
@@ -156,9 +158,11 @@ public class CustomerController {
 			model.addObject("totalpage", totalPage);
 			model.addObject("pageselected", page);
 			model.addObject("totalbill", totalBill);
+			
+			session.setAttribute("url", "customer/orderHistory?p=" + page);
 		}
 		else {
-			getModel.getHome(model);
+			getModel.getHome(model, session);
 		}
 		return model;
 	}
@@ -167,15 +171,137 @@ public class CustomerController {
 	public ModelAndView getOrderDetail(HttpSession session, @RequestParam(name = "id", defaultValue = "0") Long idBill) {
 		ModelAndView model = new ModelAndView();
 		if(session.getAttribute("account") != null && billService.getBillByIdBillAndUser(idBill, ((Users) session.getAttribute("account")).getId()) != null) {
-			getModel.getOrderDetail(model);
-			model.addObject("bill", billService.get(idBill));
-			model.addObject("billDetail", billDetailService.getBillDetailByIdBill(idBill));
-			model.addObject("orderStatus", orderStatusService.getOrderStatusByIdBill(idBill));
+			getModel.getOrderDetail(model, idBill);
+			
 			model.addObject("users", session.getAttribute("account"));
+			
+			if(idBill != (long)0) {
+				session.setAttribute("url", "customer/orderDetail?id=" + idBill);
+			}
+			else {
+				session.setAttribute("url", "customer/orderHistory");
+			}
 		}
 		else {
-			getModel.getHome(model);
+			getModel.getHome(model, session);
 		}
 		return model;
 	}	
+	
+	@RequestMapping(value = "/customer/addressBook", method = RequestMethod.GET)
+	public ModelAndView getAddressBook(HttpSession session, 
+										@RequestParam(name = "mes", defaultValue = "") String mes,
+										@RequestParam(name = "alert", defaultValue = "") String alert) {
+		ModelAndView model = new ModelAndView();
+		if(session.getAttribute("account") != null) {
+			getModel.getAddressBook(model, session);
+			model.addObject("mes", mes);
+			model.addObject("alert", alert);
+			
+			session.setAttribute("url", "customer/addressBook");
+		}
+		else {
+			getModel.getHome(model, session);			
+		}
+		return model;
+	}
+	
+	@RequestMapping(value = "/customer/address", method = RequestMethod.GET)
+	public ModelAndView getCreateAddress(HttpSession session, 
+										@RequestParam(name = "mes", defaultValue = "") String mes,
+										@RequestParam(name = "alert", defaultValue = "") String alert,
+										@RequestParam(name = "mode", defaultValue = "add") String mode,
+										@RequestParam(name = "id", defaultValue = "0") Long idAddress) {
+		ModelAndView model = new ModelAndView();
+		if(session.getAttribute("account") != null) {
+			getModel.getCreateAddress(model, session, mode, idAddress);
+			model.addObject("mes", mes);
+			model.addObject("alert", alert);
+			model.addObject("mode", mode);			
+			
+			String str = "customer/address?mode=" + mode;
+			
+			if(mode.equalsIgnoreCase("edit")) {
+				str += "&id=" + idAddress;
+			}
+			session.setAttribute("url", str);
+		}
+		else {
+			getModel.getHome(model, session);			
+		}
+		return model;
+	}
+	
+	@RequestMapping(value = "/customer/address", method = RequestMethod.POST)
+	public String getSaveAddress(HttpSession session, Model model,
+								@ModelAttribute("Address") Address address,
+								@RequestParam(name = "mode", defaultValue = "add") String mode) {
+		String str = "redirect:addressBook";
+		if(address.getDistrict().getId() == (long)0 || address.getCity().getId() == (long)0) {
+			str = "redirect:add-address";
+			model.addAttribute("mes", "Thêm thất bại");
+			model.addAttribute("alert", "danger");
+		}
+		else {
+			Users u = (Users) session.getAttribute("account");
+			address.setIdUser(u);
+			
+			if(addressService.getDefaultAddressByUser(u.getId()) == null) {
+				address.setChoose((byte) 1);
+			}
+			else if(address.getChoose() == 1){
+				Address add = addressService.getDefaultAddressByUser(u.getId());
+				add.setChoose((byte) 0);
+				addressService.update(add);
+			}
+			
+			if(mode.equalsIgnoreCase("add")) {
+				addressService.add(address);
+				model.addAttribute("mes", "Thêm thành công");
+			}
+			else if(mode.equalsIgnoreCase("edit")) {
+				addressService.update(address);
+				model.addAttribute("mes", "Sửa thành công");
+			}			
+			
+			model.addAttribute("alert", "success");
+		}
+		return str;
+	}
+	
+	@RequestMapping(value = "/customer/getDistrict", method = RequestMethod.GET)
+	public void getDistrictByCity(@RequestParam(name = "city") Long idCity, HttpServletResponse response) {
+		String str = "<option value=\"0\" selected>Chọn Quận / Huyện</option>";
+		
+		if(idCity != (long) 0) {
+			List<District> district = districtService.getDistrictByCity(idCity);
+			for (int i = 0; i < district.size(); i++) {
+				str += "<option value=\"" + district.get(i).getId() + "\">" + district.get(i).getName() + "</option>";
+			}
+		}
+		
+		try {
+			response.getWriter().print(str);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping(value = "/customer/removeAddress", method = RequestMethod.POST)
+	public void getRemoveAddress(@RequestParam(name = "id") Long idAddress, HttpServletResponse response) {
+		String str = "success";
+		
+		if(addressService.get(idAddress) != null) {
+			addressService.delete(idAddress);
+		}
+		else {
+			str = "fail";
+		}
+		
+		try {
+			response.getWriter().print(str);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

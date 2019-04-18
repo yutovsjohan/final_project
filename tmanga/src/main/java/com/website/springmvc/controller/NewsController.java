@@ -1,6 +1,6 @@
 package com.website.springmvc.controller;
 
-import java.util.List;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,36 +23,23 @@ public class NewsController {
 	private NewsService newsService;
 	
 	@RequestMapping(value = {"news", "tin-tuc"}, method = RequestMethod.GET)
-	public ModelAndView getNewsPage(@RequestParam(name = "p", defaultValue = "1") int page){		
+	public ModelAndView getNewsPage(@RequestParam(name = "p", defaultValue = "1") int page,
+									HttpSession session){		
 		ModelAndView model = new ModelAndView();
-		getModel.getNews(model);
+		getModel.getNews(model, page);
 		
-		List<News> news = newsService.getAll();
-		
-		int totalPage = 0;
-		int totalNews = 0;		
-		
-		totalNews = news.size();
-		totalPage = totalNews / 10;
-		
-		if(totalNews % 10 != 0){
-			totalPage++;
-		}
-		
-		news = newsService.getListNews(10*(page-1), 10);
-		
-		model.addObject("news", news);
-		model.addObject("totalpage", totalPage);
-		model.addObject("pageselected", page);
-		model.addObject("totalnews", totalNews);
+		session.setAttribute("url", "news");
 		return model;
 	}	
 	
 	@RequestMapping(value = "news-detail", method = RequestMethod.GET)
-	public ModelAndView getNewsDetailPage(@RequestParam(name = "un", defaultValue = "") String un){
+	public ModelAndView getNewsDetailPage(@RequestParam(name = "un", defaultValue = "") String un,
+											HttpSession session){
 		ModelAndView model = new ModelAndView();
 		News news = newsService.getNewsById(un);
 		getModel.getNewsDetail(model, news);
+		
+		session.setAttribute("url", "news-detail?un=" + un);
 		return model;
 	}	
 	

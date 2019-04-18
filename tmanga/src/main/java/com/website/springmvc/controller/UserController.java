@@ -78,11 +78,15 @@ public class UserController {
 	
 	@RequestMapping(value = {"/login" , "/dang-nhap"}, method = RequestMethod.GET)
 	public ModelAndView getLoginPage(@RequestParam(name = "mes", defaultValue = "") String mes,
-									@RequestParam(name = "alert", defaultValue = "") String alert){
+									@RequestParam(name = "alert", defaultValue = "") String alert,
+									HttpSession session){
 		ModelAndView model = new ModelAndView();		
 		model.addObject("mes", mes);
 		model.addObject("alert", alert);		
 		getModel.getLogin(model);
+		if(session.getAttribute("url") == null) {
+			session.setAttribute("url", "index");
+		}
 		return model;
 	}
 
@@ -138,25 +142,27 @@ public class UserController {
 				}
 			}			
 			else if(checkCart(idUser) != 0) {
-				List<CartDetail> listCartDetail = cartDetailService.getDetailByIdCart(checkCart(idUser));
-				
-				if(listCartDetail != null) {
-					Item item;
-					GioHang gioHang = new GioHang();
-					HashMap<Long, Item> hashCart = new HashMap<>();
+				if(countCartDetailByCart(checkCart(idUser)) != null) {
+					List<CartDetail> listCartDetail = cartDetailService.getDetailByIdCart(checkCart(idUser));
 					
-					for (int i = 0; i < listCartDetail.size(); i++) {
-						item = new Item();
-						item.setComic(listCartDetail.get(i).getComic());
-						item.setAmount(listCartDetail.get(i).getAmount());
-						hashCart.put(listCartDetail.get(i).getComic().getId(), item);
+					if(listCartDetail != null) {
+						Item item;
+						GioHang gioHang = new GioHang();
+						HashMap<Long, Item> hashCart = new HashMap<>();
+						
+						for (int i = 0; i < listCartDetail.size(); i++) {
+							item = new Item();
+							item.setComic(listCartDetail.get(i).getComic());
+							item.setAmount(listCartDetail.get(i).getAmount());
+							hashCart.put(listCartDetail.get(i).getComic().getId(), item);
+						}
+						gioHang.setCart(hashCart);
+						session.removeAttribute("cart");
+						session.setAttribute("cart", gioHang);
 					}
-					gioHang.setCart(hashCart);
-					session.removeAttribute("cart");
-					session.setAttribute("cart", gioHang);
 				}
 			}
-			str = "redirect:/controller/index";			
+			str = "redirect:" + session.getAttribute("url");			
 		}
 		return str;
 	}
@@ -168,13 +174,10 @@ public class UserController {
 		return "redirect:index";
 	}
 	
-	
-
 	private boolean checkEmail(String email) {
 		if(usersService.get(email) == null)
 			return false;
-		else
-			return true;
+		return true;
 	}
 	
 	private long checkLogin(String email, String password) {
@@ -185,7 +188,6 @@ public class UserController {
 				j = u.getId();
 			}
 		}
-			
 		return j;
 	}
 	
@@ -195,5 +197,11 @@ public class UserController {
 			i = cartService.getCartByUser(iduser).getId();
 		}
 		return i;
+	}
+	private Long countCartDetailByCart(Long idCart) {
+		if(cartDetailService.countCartDetailByCart(idCart) != null) {
+			return cartDetailService.countCartDetailByCart(idCart);
+		}
+		return null;
 	}
 }

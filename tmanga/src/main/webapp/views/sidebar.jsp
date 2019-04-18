@@ -84,6 +84,47 @@
 				</c:if>
 			</c:forEach>
 		</div>
-	</div>		
+	</div>
+	
+	<c:if test="${key == 'search' }">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Giá</div>
+			<div class="panel-body">
+				<a href="${pageContext.request.contextPath}/controller/${href}&s=5">
+					<div id="menu_doc" <c:if test="${sort == 5 }"> class="actived" </c:if> >	
+						< 20.000 <u>đ</u>
+					</div>
+				</a>
+				
+				<hr style="border: 1px solid #eee;">
+				<a href="${pageContext.request.contextPath}/controller/${href}&s=6">
+					<div id="menu_doc" <c:if test="${sort == 6 }"> class="actived" </c:if> >	
+						Từ 20.000 <u>đ</u> - 30.000 <u>đ</u>
+					</div>
+				</a>
+				
+				<hr style="border: 1px solid #eee;">
+				<a href="${pageContext.request.contextPath}/controller/${href}&s=7">
+					<div id="menu_doc" <c:if test="${sort == 7 }"> class="actived" </c:if> >	
+						Từ 30.000 <u>đ</u> - 40.000 <u>đ</u>
+					</div>
+				</a>
+				
+				<hr style="border: 1px solid #eee;">
+				<a href="${pageContext.request.contextPath}/controller/${href}&s=8">
+					<div id="menu_doc" <c:if test="${sort == 8 }"> class="actived" </c:if> >	
+						Từ 40.000 <u>đ</u> - 50.000 <u>đ</u>
+					</div>
+				</a>
+				
+				<hr style="border: 1px solid #eee;">
+				<a href="${pageContext.request.contextPath}/controller/${href}&s=9">
+					<div id="menu_doc" <c:if test="${sort == 9 }"> class="actived" </c:if> >	
+						> 50.000 <u>đ</u>
+					</div>
+				</a>
+			</div>
+		</div>	
+	</c:if>
 </div>
 <!-- /menu -->

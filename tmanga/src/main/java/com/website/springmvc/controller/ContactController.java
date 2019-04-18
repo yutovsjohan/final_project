@@ -1,5 +1,7 @@
 package com.website.springmvc.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,11 +25,18 @@ public class ContactController {
 	
 	@RequestMapping(value = {"/lien-he", "/contact"}, method = RequestMethod.GET)
 	public ModelAndView getContactPage(@RequestParam(name = "mes", defaultValue = "") String mes,
-									@RequestParam(name = "alert", defaultValue = "") String alert){		
+									@RequestParam(name = "alert", defaultValue = "") String alert,
+									HttpSession session){		
 		ModelAndView model = new ModelAndView();
 		model.addObject("mes", mes);
 		model.addObject("alert", alert);
-		getModel.getContact(model);						
+		getModel.getContact(model);		
+		
+		String str = "contact";
+		if(!mes.equalsIgnoreCase("")) {
+			str += "?mes=" + mes + "&alert=" + alert;
+		}
+		session.setAttribute("url", str);
 		return model;
 	}
 	

@@ -47,32 +47,36 @@
 				</c:forEach>
 			</div>
 			<input id="route" value="${pageContext.request.contextPath}/controller/favoritelist" hidden/>
+			<input id="fl" value="0" hidden/>
 			
-			<ul class="pagination">
-				<c:if test="${totalpage != 1 && totalpage != 0 }">
-					<c:if test="${1 != pageselected }">
-						<li><a href="${pageContext.request.contextPath}/controller/customer/favoriteList?p=1" rel="next"> << </a></li>
-						<li><a href="${pageContext.request.contextPath}/controller/customer/favoriteList?p=${pageselected - 1}" rel="next"> < </a></li>
-					</c:if>			
-		
-					<c:forEach var = "i" begin="1" end="${totalpage }">
-						<c:choose>
-							<c:when test="${i == pageselected }">
-								<li class="active"><span>${i }</span></li>
-							</c:when>
-							<c:otherwise>
-								<li><a href="${pageContext.request.contextPath}/controller/customer/favoriteList?p=${i}">${i }</a></li>
-							</c:otherwise>
-						</c:choose>
-					</c:forEach>
+			<center>
+				<ul class="pagination">
+					<c:if test="${totalpage != 1 && totalpage != 0 }">
+						<c:if test="${1 != pageselected }">
+							<li><a href="${pageContext.request.contextPath}/controller/customer/favoriteList?p=1" rel="next" style="border-radius:20px"> << </a></li>
+							<li><a href="${pageContext.request.contextPath}/controller/customer/favoriteList?p=${pageselected - 1}" rel="next"> < </a></li>
+						</c:if>			
+			
+						<c:forEach var = "i" begin="1" end="${totalpage }">
+							<c:choose>
+								<c:when test="${i == pageselected }">
+									<li class="active"><span style="border-radius:20px">${i }</span></li>
+								</c:when>
+								<c:otherwise>
+									<li><a href="${pageContext.request.contextPath}/controller/customer/favoriteList?p=${i}">${i }</a></li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+							
+						<c:if test="${totalpage != pageselected }">
+							<li><a href="${pageContext.request.contextPath}/controller/customer/favoriteList?p=${pageselected + 1}" rel="next"> > </a></li>
+							<li><a href="${pageContext.request.contextPath}/controller/customer/favoriteList?p=${totalpage}" rel="next" style="border-radius:20px"> >> </a></li>
+						</c:if>	
 						
-					<c:if test="${totalpage != pageselected }">
-						<li><a href="${pageContext.request.contextPath}/controller/customer/favoriteList?p=${pageselected + 1}" rel="next"> > </a></li>
-						<li><a href="${pageContext.request.contextPath}/controller/customer/favoriteList?p=${totalpage}" rel="next"> >> </a></li>
-					</c:if>	
-					
-				</c:if>
-			</ul>
+					</c:if>
+				</ul>
+			</center>
+			
 		</c:if>
 		
 		<c:if test="${totalcomic == 0 }">

@@ -1,3 +1,50 @@
+/* tiêu chí đang chọn  */
+.tcdc{
+	font-size: 16px;
+    margin-bottom: 20px;
+}
+.tcdc span{
+	background-color: #189eff;
+    color: white;
+    padding: 2px 20px;
+    margin-left: 10px;
+    border-radius: 7px;
+    font-weight: bold;
+    border: 2px solid #189eff;
+}
+
+/* address book */
+.add-address{
+	border: 1px dashed #d8d8d8;
+    border-radius: 4px;
+    text-align: center;
+    padding: 20px;
+    display: block;
+	background: #fff;
+	margin-bottom: 10px;
+}
+
+.add-address span{
+	font-size: 25px;
+    padding-left: 20px;
+}
+
+.defaultAddress{
+	display: inline-block;
+    font-size: 14px;
+    color: #26bc4e;
+    font-weight: 400;
+    padding-left: 25px;
+}
+
+/* edit pagination */
+.pagination li a, .pagination li span {
+    background-color: cyan;
+    margin-right: 10px;
+    color: black;
+    border-radius: 20px;
+}
+
 #menu_doc:hover{
 	background-color: orange;
 	font-weight: bold;
@@ -27,7 +74,7 @@
     text-align: center;
     white-space: nowrap;
     vertical-align: baseline;
-    border-radius: .25rem;
+    border-radius: 3.25rem;
 }
 
 /************************************************************

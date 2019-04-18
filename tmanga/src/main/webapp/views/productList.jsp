@@ -13,32 +13,68 @@
 			<span style="color:orange; font-weight:bold; font-size:20px; float: left" >${title }</span>
 		</c:otherwise>
 	</c:choose>
-	<form method="get" action="product">
-		<c:choose>
-			<c:when test="${key == 'search' }">
-				<input hidden value="search" name="a">
-				<input hidden value="${k }" name="q">
-			</c:when>
-			<c:otherwise>
-				<input hidden value="pl" name="a">
-				<input hidden value="${key }" name="q">
-				<input hidden value="${un }" name="un">
-			</c:otherwise>
-		</c:choose>	
-		<c:if test="${pageselected != 1}">
-			<input hidden value="${pageselected }" name="p" />
-		</c:if>
-		<!-- <button type="submit" class="btn btn-info" style="float: right; margin-left: 10px;">Sắp xếp</button> -->
-		  <select onchange="this.form.submit()" class="form-control" style="float: right; width: 200px; margin-left: 10px;" name="s"> 
-			<option value="1" <c:if test="${sort == 1 }">selected</c:if> >Ngày phát hành</option>
-			<option value="2" <c:if test="${sort == 2 }">selected</c:if> >Sản phẩm bán chạy</option>
-			<option value="3" <c:if test="${sort == 3 }">selected</c:if> >Tên sản phẩm A-Z</option>
-			<option value="4" <c:if test="${sort == 4 }">selected</c:if> >Tên sản phẩm Z-A</option>
-		  </select>      
-	 </form>
+	
+	<c:if test="${key != 'newcomic' }">
+		<form method="get" action="product">
+			<c:choose>
+				<c:when test="${key == 'search' }">
+					<input hidden value="search" name="a">
+					<input hidden value="${k }" name="q">
+				</c:when>			
+				<c:otherwise>
+					<input hidden value="pl" name="a">
+					<input hidden value="${key }" name="q">
+					<input hidden value="${un }" name="un">
+				</c:otherwise>
+			</c:choose>	
+			
+			<!-- <button type="submit" class="btn btn-info" style="float: right; margin-left: 10px;">Sắp xếp</button> -->
+			  <select onchange="this.form.submit()" class="form-control" style="float: right; width: 200px; margin-left: 10px;" name="s"> 
+				<option value="1" <c:if test="${sort == 1 }">selected</c:if> >Ngày phát hành</option>
+				<option value="2" <c:if test="${sort == 2 }">selected</c:if> >Sản phẩm bán chạy</option>
+				<option value="3" <c:if test="${sort == 3 }">selected</c:if> >Tên sản phẩm A-Z</option>
+				<option value="4" <c:if test="${sort == 4 }">selected</c:if> >Tên sản phẩm Z-A</option>
+			  </select>      
+		 </form>
+	</c:if>
 	 
 	 <div class="clearfix"></div>
 	<hr style="border: 1px solid orange; margin-top:0px">
+	
+	<c:if test="${key == 'search' }">
+		<p class="tcdc"><i class="fa fa-info-circle" aria-hidden="true" style="color: orange;"></i> Tiêu chí đang chọn:
+		<c:choose>
+			<c:when test="${sort == 2 }">
+				<span>Sản phẩm bán chạy</span>
+			</c:when>
+			<c:when test="${sort == 3 }">
+				<span>Tên sản phẩm từ A-Z</span>
+			</c:when>
+			<c:when test="${sort == 4 }">
+				<span>Tên sản phẩm từ Z-A</span>
+			</c:when>
+			<c:when test="${sort == 5 }">
+				 <span>Giá thấp hơn 20.000 <u>đ</u></span>
+			</c:when>
+			<c:when test="${sort == 6 }">
+				<span>Giá: 20.000 <u>đ</u> - 30.000 <u>đ</u></span>
+			</c:when>
+			<c:when test="${sort == 7 }">
+				<span>Giá: 30.000 <u>đ</u> - 40.000 <u>đ</u></span>
+			</c:when>
+			<c:when test="${sort == 8 }">
+				<span>Giá: 40.000 <u>đ</u> - 50.000 <u>đ</u></span>
+			</c:when>
+			<c:when test="${sort == 9 }">
+				 <span>Giá lớn hơn 50.000 <u>đ</u></span>
+			</c:when>
+			<c:otherwise>
+				<span>Ngày phát hành</span>
+			</c:otherwise>
+		</c:choose>
+		</p>
+	</c:if>
+			
 	<div class="row">
 		<c:forEach var="comic" items="${comiclist}">
 			<div class="col-lg-3  col-sm-6 col-xs-6" >
@@ -89,31 +125,33 @@
 		</c:forEach>			
 	</div>
 	<input id="route" value="${pageContext.request.contextPath}/controller/favoritelist" hidden/>
-	<ul class="pagination">
-		<c:if test="${totalpage != 1 && totalpage != 0 }">
-			<c:if test="${1 != pageselected }">
-				<li><a href="${pageContext.request.contextPath}/controller/${href }&p=1&s=${sort}" rel="next"> << </a></li>
-				<li><a href="${pageContext.request.contextPath}/controller/${href }&p=${pageselected - 1}&s=${sort}" rel="next"> < </a></li>
-			</c:if>			
-
-			<c:forEach var = "i" begin="1" end="${totalpage }">
-				<c:choose>
-					<c:when test="${i == pageselected }">
-						<li class="active"><span>${i }</span></li>
-					</c:when>
-					<c:otherwise>
-						<li><a href="${pageContext.request.contextPath}/controller/${href }&p=${i}&s=${sort}">${i }</a></li>
-					</c:otherwise>
-				</c:choose>
-			</c:forEach>
+	<center>
+		<ul class="pagination">
+			<c:if test="${totalpage != 1 && totalpage != 0 }">
+				<c:if test="${1 != pageselected }">
+					<li><a href="${pageContext.request.contextPath}/controller/${href }&p=1&s=${sort}" rel="next" style="border-radius:20px"> << </a></li>
+					<li><a href="${pageContext.request.contextPath}/controller/${href }&p=${pageselected - 1}&s=${sort}" rel="next"> < </a></li>
+				</c:if>			
+	
+				<c:forEach var = "i" begin="${start }" end="${end}">
+					<c:choose>
+						<c:when test="${i == pageselected }">
+							<li class="active"><span style="border-radius:20px">${i }</span></li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="${pageContext.request.contextPath}/controller/${href }&p=${i}&s=${sort}">${i }</a></li>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+					
+				<c:if test="${totalpage != pageselected }">
+					<li><a href="${pageContext.request.contextPath}/controller/${href }&p=${pageselected + 1}&s=${sort}" rel="next"> > </a></li>
+					<li><a href="${pageContext.request.contextPath}/controller/${href }&p=${totalpage}&s=${sort}" rel="next" style="border-radius:20px"> >> </a></li>
+				</c:if>	
 				
-			<c:if test="${totalpage != pageselected }">
-				<li><a href="${pageContext.request.contextPath}/controller/${href }&p=${pageselected + 1}&s=${sort}" rel="next"> > </a></li>
-				<li><a href="${pageContext.request.contextPath}/controller/${href }&p=${totalpage}&s=${sort}" rel="next"> >> </a></li>
-			</c:if>	
-			
-		</c:if>
-	</ul>
+			</c:if>
+		</ul>
+	</center>
 	
 </div>
 	
