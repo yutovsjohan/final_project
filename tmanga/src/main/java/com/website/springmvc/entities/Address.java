@@ -2,6 +2,8 @@ package com.website.springmvc.entities;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,7 +15,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "address", catalog = "manga")
-public class Address {
+public class Address implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id

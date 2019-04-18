@@ -10,5 +10,5 @@
 	<hr>
 	${news.content }
 		
-	<div class="fb-comments" data-href="${pageContext.request.contextPath}/controller/news-detail?un=${news.unsignedTitle}" data-numposts="5"></div>
+	<div class="fb-comments" data-href="http://localhost:8080/tmanga/controller/news-detail?un=${news.unsignedTitle}" data-numposts="5"></div>
 </div>

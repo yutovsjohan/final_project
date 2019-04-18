@@ -19,12 +19,14 @@ import org.springframework.web.servlet.ModelAndView;
 import com.website.springmvc.Services.AddressService;
 import com.website.springmvc.Services.BillService;
 import com.website.springmvc.Services.DistrictService;
+import com.website.springmvc.Services.FavoriteListService;
 import com.website.springmvc.Services.UsersService;
 import com.website.springmvc.config.MyConstants;
 import com.website.springmvc.entities.Address;
 import com.website.springmvc.entities.Bill;
 import com.website.springmvc.entities.Comic;
 import com.website.springmvc.entities.District;
+import com.website.springmvc.entities.FavoriteList;
 import com.website.springmvc.entities.Users;
 import com.website.springmvc.libs.GetModel;
 import com.website.springmvc.libs.TripleDES;
@@ -43,6 +45,9 @@ public class CustomerController {
 	
 	@Autowired
 	private AddressService addressService;
+	
+	@Autowired
+	private FavoriteListService favoriteListService;
 	
 	@Autowired
 	GetModel getModel;
@@ -100,27 +105,20 @@ public class CustomerController {
 		if(session.getAttribute("account") != null) {
 			getModel.getFavoriteList(model);		
 			Users u = userService.get(((Users) session.getAttribute("account")).getId());
-			List<Object[]> listResult = userService.getList(u.getId(), 0, 0);
+			List<FavoriteList> list = favoriteListService.getListByUser(u.getId(), 0, 0);
 									
 			int totalPage = 0;
 			int totalComic = 0;		
 			
-			totalComic = listResult.size();
+			totalComic = list.size();
 			totalPage = totalComic / 12;
 			
 			if(totalComic % 12 != 0){
 				totalPage++;
 			}	
-			listResult = userService.getList(u.getId(), 12*(page-1), 12);
-			
-			List<Comic> comics = new ArrayList<Comic>(totalComic);
-			int k=0;
-			for (Object[] aRow : listResult) {
-				comics.add(k, (Comic) aRow[1]);
-				k++;
-			}
-						
-			model.addObject("comiclist", comics);
+			list = favoriteListService.getListByUser(u.getId(), 12*(page-1), 12);
+									
+			model.addObject("favoritelist", list);
 			model.addObject("totalpage", totalPage);
 			model.addObject("pageselected", page);
 			model.addObject("totalcomic", totalComic);

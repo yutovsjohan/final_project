@@ -7,15 +7,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -55,10 +52,8 @@ public class Users implements java.io.Serializable{
 	@Column(name = "passcode", length = 120)
 	private String passcode;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-	@JoinTable(name = "favoritelist", joinColumns = { @JoinColumn(name = "idUser") }, inverseJoinColumns = {
-			@JoinColumn(name = "idComic") })
-	private List<Comic> comics = new ArrayList<Comic>();
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+	private List<FavoriteList> favoriteList = new ArrayList<FavoriteList>();
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idUser")
 	private Set<Bill> bill = new HashSet<Bill>();
@@ -144,13 +139,5 @@ public class Users implements java.io.Serializable{
 
 	public void setPasscode(String passcode) {
 		this.passcode = passcode;
-	}
-
-	public List<Comic> getComics() {
-		return comics;
-	}
-
-	public void setComics(List<Comic> comics) {
-		this.comics = comics;
 	}
 }

@@ -20,6 +20,7 @@ import com.website.springmvc.entities.City;
 import com.website.springmvc.entities.Comic;
 import com.website.springmvc.entities.Contact;
 import com.website.springmvc.entities.District;
+import com.website.springmvc.entities.FavoriteList;
 import com.website.springmvc.entities.News;
 import com.website.springmvc.entities.Notification;
 import com.website.springmvc.entities.OrderStatus;
@@ -38,7 +39,7 @@ public class SpringDatabaseConfig extends WebMvcConfigurerAdapter {
 		sessionFactory.setDataSource(dataSource);
 		sessionFactory.setPackagesToScan(new String[] { "com.website.springmvc.entities" });
 		sessionFactory.setAnnotatedClasses(Author.class, Bill.class, BillDetail.class, Category.class, 
-				Comic.class, Contact.class, News.class, Notification.class, OrderStatus.class,
+				Comic.class, Contact.class, News.class, Notification.class, OrderStatus.class, FavoriteList.class,
 				PublishCompany.class, Role.class, Users.class, Address.class, City.class, District.class);
 		sessionFactory.setHibernateProperties(hibernateProperties());
 		return sessionFactory;

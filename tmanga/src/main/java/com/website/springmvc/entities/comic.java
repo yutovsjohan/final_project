@@ -2,8 +2,10 @@ package com.website.springmvc.entities;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -86,6 +88,9 @@ public class Comic implements java.io.Serializable{
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "comic")
 	private Set<CartDetail> cartdetail = new HashSet<CartDetail>();
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "comic")
+	private List<FavoriteList> favoriteList = new ArrayList<FavoriteList>();
 			
 	public Comic() {
 		super();

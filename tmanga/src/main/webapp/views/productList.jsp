@@ -98,9 +98,9 @@
 							
 							<c:set var = "flag" scope = "session" value = "false"/>
 							<c:if test="${sessionScope.account.email != null}">
-								<c:if test="${!empty sessionScope.account.comics}">
-									<c:forEach var="cfl" items="${sessionScope.account.comics }">
-										<c:if test="${cfl.id == comic.id }">
+								<c:if test="${favoritelist != null}">
+									<c:forEach var="favoritelist" items="${favoritelist }">
+										<c:if test="${favoritelist.comic.id == comic.id }">
 											<c:set var = "flag" scope = "session" value = "true" />		
 										</c:if>									
 									</c:forEach>

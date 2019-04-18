@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.website.springmvc.Services.ComicService;
+import com.website.springmvc.Services.FavoriteListService;
 import com.website.springmvc.Services.UsersService;
 import com.website.springmvc.entities.Comic;
+import com.website.springmvc.entities.FavoriteList;
 import com.website.springmvc.entities.Users;
 import com.website.springmvc.libs.GetModel;
 
@@ -28,6 +30,9 @@ public class ProductController {
 	
 	@Autowired
 	private UsersService userService;
+	
+	@Autowired
+	private FavoriteListService favoriteListService;
 	
 	@Autowired
 	GetModel getModel;
@@ -86,26 +91,15 @@ public class ProductController {
 		}
 		else if(key == 1) {
 			//add favorite list
-			boolean f = true;
 			Users u = (Users) session.getAttribute("account");
 			
-			List<Object[]> listResult = userService.getList(u.getId(), 0, 0);
-			Comic comic = new Comic();
+			FavoriteList favoriteList = favoriteListService.getByUsersAndComic(u.getId(), idComic);
 			
-			List<Comic> comics = new ArrayList<Comic>(listResult.size());
-						
-			int k = 0;
-			for (Object[] aRow : listResult) {
-				comic = (Comic) aRow[1];
-				if((long)comic.getId() == (long)idComic) {
-					f = false;
-				}
-				comics.add(k, (Comic) aRow[1]);
-			}
-			if(f) {
-				comics.add(comicService.get(idComic));
-				u.setComics(comics);
-				userService.update(u);
+			if(favoriteList == null) {
+				favoriteList = new FavoriteList();
+				favoriteList.setComic(comicService.get(idComic));
+				favoriteList.setUser(u);
+				favoriteListService.add(favoriteList);
 			}
 			else {
 				str = "exist";
@@ -114,19 +108,15 @@ public class ProductController {
 		else if(key == 2) {
 			//remove favorite list
 			Users u = (Users) session.getAttribute("account");
-			List<Comic> comics = u.getComics();
-			for(int i = 0; i < comics.size(); i++) {
-				if((long)comics.get(i).getId() == (long)idComic) {
-					comics.remove(i);
-					break;
-				}
-			}
-			if(comics.size() == 0) {
-				comics = null;
-			}
-			u.setComics(comics);
 			
-			userService.update(u);
+			FavoriteList favoriteList = favoriteListService.getByUsersAndComic(u.getId(), idComic);
+			
+			if(favoriteList != null) {
+				favoriteListService.delete(favoriteList);
+			}			
+			else {
+				str = "fail";
+			}
 		}
 		
 		try {

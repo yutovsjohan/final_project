@@ -17,6 +17,7 @@ import com.website.springmvc.Services.CategoryService;
 import com.website.springmvc.Services.CityService;
 import com.website.springmvc.Services.ComicService;
 import com.website.springmvc.Services.DistrictService;
+import com.website.springmvc.Services.FavoriteListService;
 import com.website.springmvc.Services.NewsService;
 import com.website.springmvc.Services.OrderStatusService;
 import com.website.springmvc.Services.PublishCompanyService;
@@ -25,6 +26,7 @@ import com.website.springmvc.entities.Address;
 import com.website.springmvc.entities.City;
 import com.website.springmvc.entities.Comic;
 import com.website.springmvc.entities.District;
+import com.website.springmvc.entities.FavoriteList;
 import com.website.springmvc.entities.News;
 import com.website.springmvc.entities.Users;
 
@@ -65,6 +67,9 @@ public class GetModel {
 	
 	@Autowired
 	private DistrictService districtService;
+	
+	@Autowired
+	private FavoriteListService favoriteListService;
 		
 	public void getSideBar(ModelAndView model) {
 		model.setViewName("layout");
@@ -88,24 +93,9 @@ public class GetModel {
 		
 		if(session.getAttribute("account") != null) {
 			Users u = (Users) session.getAttribute("account");
-			List<Object[]> listResult = usersService.getList(u.getId(), 0, 4);
+			List<FavoriteList> list = favoriteListService.getListByUser(u.getId(), 0, 4);
 			
-			List<Comic> comics = new ArrayList<Comic>(4);
-			int k=0; boolean f = true;
-			for (Object[] aRow : listResult) {
-				if(aRow[1] == null) {
-					f = false;
-					break;
-				}
-				comics.add(k, (Comic) aRow[1]);
-				k++;
-			}
-			
-			if(!f || comics.size() == 0) {
-				comics = null;
-			}
-			
-			model.addObject("favoritelist", comics);
+			model.addObject("favoritelist", list);
 		}
 	}			
 	
@@ -237,24 +227,9 @@ public class GetModel {
 		
 		if(session.getAttribute("account") != null) {
 			Users u = (Users) session.getAttribute("account");
-			List<Object[]> listResult = usersService.getList(u.getId(), 0, 4);
+			List<FavoriteList> list = favoriteListService.getListByUser(u.getId(), 0, 4);
 			
-			List<Comic> comics = new ArrayList<Comic>(4);
-			int k=0; boolean f = true;
-			for (Object[] aRow : listResult) {
-				if(aRow[1] == null) {
-					f = false;
-					break;
-				}
-				comics.add(k, (Comic) aRow[1]);
-				k++;
-			}
-			
-			if(!f || comics.size() == 0) {
-				comics = null;
-			}
-			
-			model.addObject("favoritelist", comics);
+			model.addObject("favoritelist", list);
 		}
 	}
 	
