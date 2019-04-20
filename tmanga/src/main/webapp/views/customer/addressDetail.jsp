@@ -56,7 +56,7 @@
 		    <label for="address">Địa chỉ</label>
 		    <form:textarea path="address" class="form-control" rows="10" value="" name="address" placeholder="Nhập địa chỉ" required="required" id="address"/>
 		  </div>
-		  <c:if test="${mode == 'edit' && Address.choose == 0 }">
+		  <c:if test="${ (mode == 'edit' && Address.choose == 0) || mode == 'add' }">
 			  <div class="form-group">
 			  	<form:input path="choose" type="number" value="0" name="choose" id="choose" hidden="hidden" min="0" max="1"/>
 			    <input type="checkbox" class="form-group" name="chooseDefault" value="0" id="chooseDefault" />

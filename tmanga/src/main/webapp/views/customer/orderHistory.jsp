@@ -14,8 +14,8 @@
 			</div>
 		</c:if> 
 		<c:choose>
-			<c:when test="${bills == null }">
-				<p>Hiện tại bạn chưa có đơn hàng. <a href="index">Quay về trang web</a> để mua hàng.</p>
+			<c:when test="${bills.size() == 0 }">
+				<p>Hiện tại bạn chưa có đơn hàng. <a href="${pageContext.request.contextPath}/controller/index">Quay về trang web</a> để mua hàng.</p>
 			</c:when>
 			<c:otherwise>
 				<table class="table table-hover table-bordered">
@@ -29,13 +29,12 @@
 				          <th>#</th>
 				      </tr>
 				  </thead>
-				  <c:forEach var="bill" items="${bills }">
-				  	<c:if test="${bill.idUser.id == sessionScope.account.id }">
+				  <c:forEach var="bill" items="${bills }">				  	
 					  <tbody>
 					      <tr>
 					         <td>${bill.id }</td>
 					         <td><fmt:formatDate pattern = "dd-MM-yyyy" value = "${bill.orderDate}" /></td>
-					         <td>${sessionScope.account.address }</td>
+					         <td>${bill.address.address }</td>
 					         <td>
 					         	<c:choose>
 					         		<c:when test="${bill.active == 1 }"> <fmt:formatDate pattern = "dd-MM-yyyy" value = "${bill.deliveryDate }"/> </c:when>
@@ -48,7 +47,6 @@
 					         </td>
 					      </tr>
 					  </tbody>
-					</c:if>
 				  </c:forEach>
 				</table>
 				

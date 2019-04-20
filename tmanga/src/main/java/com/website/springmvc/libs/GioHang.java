@@ -83,7 +83,7 @@ public class GioHang {
 	public Item getItemForId(Long id) {
 		Item item = new Item();
 		for (Item i : cart.values()) {
-			if(i.comic.getId() == id) {
+			if((long) i.comic.getId() == (long)id) {
 				item = i;
 			}
 		}

@@ -1,4 +1,56 @@
 $(document).ready(function(){
+	//cancel order
+	$(".cancelOrder").click(function(){
+		if(confirm("Bạn có thực sự muốn hủy đơn hàng ?")){
+			var idBill = $("#idBill").text();
+			var email = $("#email").text();
+						
+			var route = "cancel-order";
+			var href = $("#href").text();
+			if(href == 'customerOrderDetail'){
+				route = "../cancel-order";
+			}
+			
+			$.ajax({
+				url : route,
+				type : 'POST',
+				data : {
+					idBill: idBill,
+					email: email
+				},
+				success: function(data){
+					document.write(data);
+				}
+			})
+		}
+		else{
+			return false;
+		}
+	});
+
+	$("#send-email-confirm-bill").click(function(){
+		var idBill = $("#idBill").text();
+		var email = $("#email").text();
+					
+		var route = "send-email-confirm-bill";
+		var href = $("#href").text();
+		if(href == 'customerOrderDetail'){
+			route = "../send-email-confirm-bill";
+		}
+		
+		$.ajax({
+			url : route,
+			type : 'POST',
+			data : {
+				idBill: idBill,
+				email: email
+			},
+			success: function(data){
+				document.write(data);
+			}
+		})
+	});
+	
 	//delete address
 	$(".removeAddress").click(function(){
 		if(confirm("Bạn có thực sự muốn xóa ?")){

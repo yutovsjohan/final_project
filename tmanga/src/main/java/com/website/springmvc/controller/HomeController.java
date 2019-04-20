@@ -51,12 +51,7 @@ public class HomeController {
 		getModel.getTrackOrder(model);
 		
 		String str = "trackOrder";
-		if(!mes.equalsIgnoreCase("")) {
-			str += "?mes=" + mes + "&alert=" + alert;
-		}
-		else if(!email.equalsIgnoreCase("")) {
-			str += "?email=" + email + "&id=" + idBill;
-		}
+		
 		session.setAttribute("url", str);
 		
 		if(!email.equalsIgnoreCase("") && idBill != 0) {
@@ -66,7 +61,8 @@ public class HomeController {
 					getModel.getOrderDetail(model, idBill);
 					getModel.getSideBar(model);
 					
-					model.addObject("users", usersService.get(idUser));					
+					model.addObject("users", usersService.get(idUser));	
+					model.addObject("href", "trackOrder");
 				}
 				else {
 					mes = "Email và mã đơn hàng không hợp lệ";

@@ -27,7 +27,7 @@
 		<mysql.connector.version>8.0.15</mysql.connector.version>
 		
 	</properties>
-	
+	  
 	<dependencies>
 		<!-- Sending Email -->
 		<dependency>

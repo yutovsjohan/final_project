@@ -3,6 +3,8 @@ package com.website.springmvc.entities;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -46,6 +49,9 @@ public class Address implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idCity", nullable = false)
 	private City city;
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "address")
+	private Set<Bill> bill = new HashSet<Bill>();
 
 	public Address() {
 		super();
@@ -114,6 +120,14 @@ public class Address implements Serializable {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public Set<Bill> getBill() {
+		return bill;
+	}
+
+	public void setBill(Set<Bill> bill) {
+		this.bill = bill;
 	}
 		
 }

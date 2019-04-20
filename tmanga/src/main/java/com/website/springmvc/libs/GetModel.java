@@ -1,6 +1,8 @@
 package com.website.springmvc.libs;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -117,7 +119,7 @@ public class GetModel {
 	
 	public void getForgetPassword(ModelAndView model, String email){
 		getSideBar(model);
-		
+
 		model.addObject("views", "changePassword");
 		model.addObject("title", "Đặt lại mật khẩu mới");
 		model.addObject("email", email);
@@ -249,6 +251,42 @@ public class GetModel {
 		model.addObject("title","Giỏ hàng");
 	}
 	
+	public void getShippingPage(ModelAndView model, Users u){
+		
+		model.setViewName("layout");
+		model.addObject("sb","");
+		model.addObject("views","shipping");
+		model.addObject("title","Thông tin giao hàng");
+		model.addObject("addressList", addressService.getListAddressByUser(u.getId(),0,0));
+	}
+		
+	public void getPaymentPage(ModelAndView model, Long idAddress, HttpSession session){		
+		model.setViewName("layout");
+		model.addObject("sb","");
+		model.addObject("views","payment");
+		model.addObject("title","Thanh toán và đặt mua");
+		
+		Address selectedAddress = addressService.get(idAddress);
+		
+		if(selectedAddress.getChoose() == 0) {
+			Users u = (Users) session.getAttribute("account");
+			Address defaultAddress = addressService.getDefaultAddressByUser(u.getId());
+			defaultAddress.setChoose((byte) 0);
+			addressService.update(defaultAddress);
+			
+			selectedAddress.setChoose((byte) 1);
+			addressService.update(selectedAddress);
+		}
+		
+		model.addObject("address", selectedAddress);
+		
+		Calendar cal = Calendar.getInstance();
+             
+	    cal.add(Calendar.DAY_OF_MONTH, 2);
+	    Date dateAfter = cal.getTime();
+	    model.addObject("deliveryDate", dateAfter);
+	}
+	
 	public void getContact(ModelAndView model){		
 		getSideBar(model);
 		
@@ -341,7 +379,7 @@ public class GetModel {
 		model.addObject("title","Chi tiết đơn hàng");
 	}
 	
-	public void getAddressBook(ModelAndView model, HttpSession session) {
+	public void getAddressBook(ModelAndView model, HttpSession session, int page) {
 		getSideBarCustomer(model);
 				
 		model.addObject("views","customer/addressBook");
@@ -351,6 +389,43 @@ public class GetModel {
 			Users u = (Users) session.getAttribute("account");
 			List<Address> address = addressService.getListAddressByUser(u.getId(), 0, 0);
 			
+			int totalPage = 0;
+			int totalComic = 0;		
+			
+			totalComic = address.size();
+			totalPage = totalComic / 10;
+			
+			if(totalComic % 10 != 0){
+				totalPage++;
+			}		
+			
+			int start = 1, end = 7;
+			
+			if(totalPage > 7){		
+				if(page - 3 > 0){	
+					if(page + 3 >= totalPage){	
+						start =  totalPage - 6;
+						end = totalPage;
+					}	
+					else{	
+						start = page - 3;
+						end = page + 3;
+					}	
+				}	
+			}
+			else {
+				end = totalPage;
+			}
+			
+			model.addObject("start", start);
+			model.addObject("end", end);
+					
+			address = addressService.getListAddressByUser(u.getId(), 10*(page-1), 10);
+			
+			model.addObject("totalpage", totalPage);
+			model.addObject("pageselected", page);
+			model.addObject("totalcomic", totalComic);
+							
 			model.addObject("address", address);
 		}
 	}
@@ -369,7 +444,7 @@ public class GetModel {
 		}
 		
 		if(session.getAttribute("account") != null) {
-			model.addObject("city", cityService.getAll());			
+			model.addObject("city", cityService.getAllSortByName());			
 		}
 	}
 }

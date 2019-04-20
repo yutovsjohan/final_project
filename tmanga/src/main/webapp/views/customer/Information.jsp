@@ -26,10 +26,6 @@
 		    <input type="text" class="form-control" value="${sessionScope.account.name }" name="name" required="required">
 		  </div>
 		  <div class="form-group">
-		    <label for="address">Địa chỉ</label>
-		    <input type="text" class="form-control" value="${sessionScope.account.address }" name="address" required="required">
-		  </div>
-		  <div class="form-group">
 		    <label for="phone">Điện thoại</label>
 		    <input type="text" class="form-control" value="${sessionScope.account.phone }" name="phone" required="required">
 		  </div>

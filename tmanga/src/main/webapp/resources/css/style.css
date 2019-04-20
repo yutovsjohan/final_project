@@ -14,6 +14,22 @@
 }
 
 /* address book */
+.address-active{
+	border: 1px dashed #090;
+}
+
+.address-active > .btnShipping{
+	background: #00b6f0;
+    color: #fff;
+    border: #029fd1;
+} 
+
+.address-unactive{
+	background: #626455;
+    color: #fff;
+    border: #555649;
+}
+
 .add-address{
 	border: 1px dashed #d8d8d8;
     border-radius: 4px;

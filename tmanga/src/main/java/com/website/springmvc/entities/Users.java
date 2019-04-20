@@ -35,10 +35,7 @@ public class Users implements java.io.Serializable{
 	
 	@Column(name = "password", length = 255)
 	private String password;
-	
-	@Column(name = "address", length = 255)
-	private String address;
-	
+		
 	@Column(name = "phone", length = 15)
 	private String phone;
 	
@@ -55,8 +52,8 @@ public class Users implements java.io.Serializable{
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
 	private List<FavoriteList> favoriteList = new ArrayList<FavoriteList>();
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idUser")
-	private Set<Bill> bill = new HashSet<Bill>();
+//	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idUser")
+//	private Set<Bill> bill = new HashSet<Bill>();
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "delivery")
 	private Set<Bill> delivery = new HashSet<Bill>();
@@ -99,14 +96,6 @@ public class Users implements java.io.Serializable{
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
 	}
 
 	public String getPhone() {

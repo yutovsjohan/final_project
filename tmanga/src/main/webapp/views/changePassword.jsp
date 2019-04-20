@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <div class="col-md-9 ">
-		
+
 	<c:if test="${mes != '' }">
 		<div class="alert alert-${alert }" role="alert">
 			${mes }
@@ -12,14 +12,15 @@
 		</div>
 	</c:if> 
 	<br>
-	
+
 	<div class="box">
 		<form action="${pageContext.request.contextPath}/controller/change-password" method="post">
 			<h1>Đặt lại mật khẩu mới</h1>
+			<input type="hidden" name="email" id="email" value="${email }" required="required">
 			<input type="password" name="password" id="password" placeholder="nhập password" required="required">
 			<input type="password" name="repassword" id="repassword" placeholder="nhập lại password" required="required">
-			<input type="text" name="passcode" id="passcode" placeholder="nhập passcode" required="required">
-			<input type="submit" name="" id="submit" value="Cập nhật">
+			<input type="text" name="passcode" id="passcode" placeholder="nhập mã xác nhận" required="required">
+			<input type="submit" name="" id="submit" value="Xác nhận">
 		</form>
 	</div>
 </div>

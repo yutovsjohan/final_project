@@ -59,17 +59,29 @@ public class Bill implements java.io.Serializable{
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "comic")
 	private Set<BillDetail> billdetail = new HashSet<BillDetail>();
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "idUser", nullable = false)
-	private Users idUser;
+//	@ManyToOne(fetch = FetchType.EAGER)
+//	@JoinColumn(name = "idUser", nullable = false)
+//	private Users idUser;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "delivery", nullable = false)
 	private Users delivery;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "idAddress", nullable = false)
+	private Address address;
 		
 	public Bill() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 
 	public Long getId() {
@@ -150,14 +162,6 @@ public class Bill implements java.io.Serializable{
 
 	public void setBilldetail(Set<BillDetail> billdetail) {
 		this.billdetail = billdetail;
-	}
-
-	public Users getIdUser() {
-		return idUser;
-	}
-
-	public void setIdUser(Users idUser) {
-		this.idUser = idUser;
 	}
 
 	public Users getDelivery() {

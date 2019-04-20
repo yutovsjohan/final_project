@@ -23,7 +23,7 @@ public class DistrictService {
 	
 	public List<District> getDistrictByCity(Long idCity) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return session.createQuery("from District where city.id = :keyword").setParameter("keyword", idCity).list();
+		return session.createQuery("from District where city.id = :keyword order by name asc").setParameter("keyword", idCity).list();
 	}
 	
 	public List<District> getAll(){

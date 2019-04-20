@@ -35,7 +35,7 @@
 	       	<form:input path="phone" id="phone" name="phone" placeholder="nhập số điện thoại" required="required" type="text"/> 
 	       		<!--<br><br>-->
 	       	<!-- <p class="contact"><label for="adress">Địa chỉ</label></p> --> 
-	       	<form:input path="address" id="adress" name="address" placeholder="nhập địa chỉ" required="required" type="text"/> 
+	       	<%-- <form:input path="address" id="adress" name="address" placeholder="nhập địa chỉ" required="required" type="text"/> --%> 
 	       		<!--<br><br>-->
 	       	<input class="btn btn-success" name="submit" id="submit" tabindex="5" value="Đăng ký" type="submit"> 	 
  		</form:form>

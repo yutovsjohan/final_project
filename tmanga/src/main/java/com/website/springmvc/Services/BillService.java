@@ -23,12 +23,12 @@ public class BillService {
 	
 	public Bill getBillByIdBillAndUser(Long idBill, Long idUser) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return (Bill) session.createQuery("from Bill where id = :idBill and idUser.id = :idUser").setParameter("idBill", idBill).setParameter("idUser", idUser).uniqueResult();
+		return (Bill) session.createQuery("from Bill where id = :idBill and address.user.id = :idUser").setParameter("idBill", idBill).setParameter("idUser", idUser).uniqueResult();
 	}
 	
 	public List<Bill> getBillByUser(Long iduser, int firstResult, int maxResult) {
 		Session session = this.sessionFactory.getCurrentSession();
-		Query query = session.createQuery("from Bill where idUser.id = :keyword order by orderDate desc").setParameter("keyword", iduser);
+		Query query = session.createQuery("from Bill where address.user.id = :keyword order by orderDate desc").setParameter("keyword", iduser);
 		
 		if(maxResult != 0) {
 			query.setFirstResult(firstResult);

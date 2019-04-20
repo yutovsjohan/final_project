@@ -71,7 +71,6 @@ public class CustomerController {
 
 	@RequestMapping(value = "/customer/edit", method = RequestMethod.POST)
 	public String getEditInfo(@RequestParam(name = "name") String name,
-							@RequestParam(name = "address") String address,
 							@RequestParam(name = "phone") String phone,
 							@RequestParam(name = "password", defaultValue = "") String password,
 							HttpSession session, Model model) {
@@ -79,7 +78,6 @@ public class CustomerController {
 		if(session.getAttribute("account") != null) {
 			Users u = userService.get(((Users) session.getAttribute("account")).getId());
 			u.setName(name);
-			u.setAddress(address);
 			u.setPhone(phone);
 			
 			if(!password.equalsIgnoreCase("")) {
@@ -166,7 +164,9 @@ public class CustomerController {
 	}
 	
 	@RequestMapping(value = "/customer/orderDetail", method = RequestMethod.GET)
-	public ModelAndView getOrderDetail(HttpSession session, @RequestParam(name = "id", defaultValue = "0") Long idBill) {
+	public ModelAndView getOrderDetail(HttpSession session, @RequestParam(name = "id", defaultValue = "0") Long idBill,
+									@RequestParam(name = "mes", defaultValue = "") String mes,
+									@RequestParam(name = "alert", defaultValue = "danger") String alert) {
 		ModelAndView model = new ModelAndView();
 		if(session.getAttribute("account") != null && billService.getBillByIdBillAndUser(idBill, ((Users) session.getAttribute("account")).getId()) != null) {
 			getModel.getOrderDetail(model, idBill);
@@ -179,6 +179,10 @@ public class CustomerController {
 			else {
 				session.setAttribute("url", "customer/orderHistory");
 			}
+			
+			model.addObject("href", "customerOrderDetail");
+			model.addObject("mes", mes);
+			model.addObject("alert", alert);
 		}
 		else {
 			getModel.getHome(model, session);
@@ -189,10 +193,11 @@ public class CustomerController {
 	@RequestMapping(value = "/customer/addressBook", method = RequestMethod.GET)
 	public ModelAndView getAddressBook(HttpSession session, 
 										@RequestParam(name = "mes", defaultValue = "") String mes,
-										@RequestParam(name = "alert", defaultValue = "") String alert) {
+										@RequestParam(name = "alert", defaultValue = "") String alert,
+										@RequestParam(name = "page", defaultValue = "1") int page) {
 		ModelAndView model = new ModelAndView();
 		if(session.getAttribute("account") != null) {
-			getModel.getAddressBook(model, session);
+			getModel.getAddressBook(model, session, page);
 			model.addObject("mes", mes);
 			model.addObject("alert", alert);
 			
@@ -222,7 +227,9 @@ public class CustomerController {
 			if(mode.equalsIgnoreCase("edit")) {
 				str += "&id=" + idAddress;
 			}
-			session.setAttribute("url", str);
+			if(!session.getAttribute("url").toString().equalsIgnoreCase("shipping")) {
+				session.setAttribute("url", str);
+			}			
 		}
 		else {
 			getModel.getHome(model, session);			
@@ -263,7 +270,40 @@ public class CustomerController {
 			}			
 			
 			model.addAttribute("alert", "success");
+			
+			if(session.getAttribute("url").toString().equalsIgnoreCase("shipping")) {
+				str = "redirect:../shipping";
+			}
 		}
+		return str;
+	}
+	
+	@RequestMapping(value = "/customer/defaultAddress", method = RequestMethod.GET)
+	public String updateDefaultAddress(HttpSession session, Model model,								
+								@RequestParam(name = "id", defaultValue = "0") Long idAddress) {
+		String str = "redirect:addressBook";
+		if(session.getAttribute("account") != null) {
+			Users u = (Users) session.getAttribute("account");
+			if(addressService.get(idAddress) != null) {
+				Address oldDefaultAddress = addressService.getDefaultAddressByUser(u.getId());
+				oldDefaultAddress.setChoose((byte) 0);
+				addressService.update(oldDefaultAddress);
+				
+				Address newDefaultAddress = addressService.get(idAddress);
+				newDefaultAddress.setChoose((byte) 1);
+				addressService.update(newDefaultAddress);
+				
+				model.addAttribute("mes", "Thiết lập thành công");
+				model.addAttribute("alert", "success");
+			}
+			else {
+				model.addAttribute("mes", "Thiết lập thất bại");
+				model.addAttribute("alert", "danger");
+			}
+		}
+		else {
+			str = "redirect:index";			
+		}	
 		return str;
 	}
 	

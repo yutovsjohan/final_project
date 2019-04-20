@@ -3,7 +3,6 @@ package com.website.springmvc.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -62,6 +61,9 @@ public class UserController {
 			Users.setRole(Role);
 			
 			Users.setPassword(TripleDES.Encrypt(Users.getPassword(), MyConstants.DES_KEY));
+			
+			String passcode = UUID.randomUUID().toString();
+			Users.setPasscode(passcode);
 			
 			usersService.add(Users);
 			
@@ -187,14 +189,21 @@ public class UserController {
 			u.setPasscode(passcode);
 			usersService.update(u);
 			String content = "";
-			
+
 			content += "<p>Xin chào " + u.getName() + ", chúng tôi thấy là quý khách đang gặp vấn đề về đăng nhập tài khoản. Để lấy lại tài khoản, xin quý khách vui lòng bấm vào link bên dưới, điền đầy đủ thông tin cùng với mã xác nhận để lấy lại tài khoản.</p>";
 			content += "<p>Mã xác nhận của quý khách là: " + u.getPasscode() + "</p>";
 			content += "<a href='http://localhost:8080/tmanga/controller/change-password?email=" + email + "'>Nhấn vào đây để đổi mật khẩu của bạn.</a>";
 			content += "<p>Kính chúc quý khách có một ngày tốt lành.</p>";
 			content += "<h3 style='color: blue; font-weight: bold;''><a href='http://localhost:8080/tmanga/controller/'>T-Manga.vn</a></h3>";
-			
-			SendEmail.sendGrid("yutovsjohan@gmail.com", email, "Quên mật khẩu", content, true);			
+
+			if(SendEmail.sendGrid("yutovsjohan@gmail.com", email, "Quên mật khẩu", content, true)) {
+				model.addAttribute("mes", "Vui lòng kiểm tra email để lấy lại tài khoản");
+				model.addAttribute("alert", "success");
+			}
+			else {
+				model.addAttribute("mes", "Gửi mail không thành công");
+				model.addAttribute("alert", "danger");
+			}
 		}
 		else {
 			model.addAttribute("mes", "Email không tồn tại");
@@ -202,7 +211,7 @@ public class UserController {
 		}
 		return str;
 	}
-	
+
 	@RequestMapping(value = "/change-password", method = RequestMethod.GET)
 	public ModelAndView getForgetPassword(@RequestParam(name = "email", defaultValue = "") String email,
 								@RequestParam(name = "alert", defaultValue = "") String alert,
@@ -211,16 +220,43 @@ public class UserController {
 		ModelAndView model = new ModelAndView();		
 		model.addObject("mes", mes);
 		model.addObject("alert", alert);	
-		
+
 		getModel.getForgetPassword(model, email);
-		
+
 		return model;
 	}
-	
+
 	@RequestMapping(value = "/change-password", method = RequestMethod.POST)
 	public String changePassword(@RequestParam("email") String email, Model model,
-								@RequestParam("password") String password){
-		String str = "";
+								@RequestParam("password") String password,
+								@RequestParam("passcode") String passcode){
+		String str = "redirect:change-password";
+		Users u = usersService.get(email);
+		if(u == null) {
+			model.addAttribute("mes", "Email không tộn tại");
+			model.addAttribute("alert", "danger");
+		}
+		else if(u.getPasscode() == null) {
+			String psc = UUID.randomUUID().toString();
+			u.setPasscode(psc);
+			usersService.update(u);
+			
+			model.addAttribute("mes", "Mã xác nhận không hợp lệ");
+			model.addAttribute("alert", "danger");
+		}
+		else if(u.getPasscode().equalsIgnoreCase(passcode)) {
+			u.setPassword(TripleDES.Encrypt(password, MyConstants.DES_KEY));
+			usersService.update(u);
+			
+			str = "redirect:login";
+			model.addAttribute("mes", "Đổi mật khẩu thành công");
+			model.addAttribute("alert", "success");
+		}
+		else {			
+			model.addAttribute("mes", "Mã xác nhận sai");
+			model.addAttribute("alert", "danger");
+		}
+		model.addAttribute("email", email);
 		return str;
 	}
 	

@@ -43,15 +43,14 @@
 		
 		<br>		
 		
-		<c:if test="${bill.active == 0 }">
-			<a href="#" dataId="${bill.id }" class="btn btn-warning delete"  style="float: left;"><i class="fa fa-trash-o fa-2x" aria-hidden="true"  title="Hủy đơn hàng" data-toggle="modal" data-target="#myModal"> Hủy đơn hàng</i></a>
-	  		<form method="get" action="#">
-			    <input type="text" name="idBill" value="${bill.id }" hidden>
-			    <input type="text" name="email" value="${users.id }" hidden>    
-			    <div class="guimail">
-			      <button class="btn btn-info" type="submit" style="float: right;" ><i class="fa fa-2x fa-envelope-o" aria-hidden="true"></i> Gửi lại mail xác nhận đặt hàng</button>
-			    </div>
-		  	</form>
+		<c:if test="${bill.active != 2 && bill.active != -1 }">
+			<button class="btn btn-warning cancelOrder"  style="float: left; margin-bottom:20px"><i class="fa fa-trash-o fa-2x" aria-hidden="true"  title="Hủy đơn hàng" > Hủy đơn hàng</i></button>			
+		</c:if>
+		
+		<c:if test="${bill.active == 0 }">		  		
+		    <div class="guimail">
+		      <button class="btn btn-info" id="send-email-confirm-bill" style="float: right;" ><i class="fa fa-2x fa-envelope-o" aria-hidden="true"></i> Gửi lại mail xác nhận đặt hàng</button>
+		    </div>
 		    <br><br><br>
 	    </c:if>  
 	    
@@ -66,10 +65,9 @@
 		    <tbody>
 		      <tr>
 		        <td>
-		          <p>Tên : ${users.name }</p>
-		          <p>Địa chỉ : ${users.address }</p>
-		          <p>Điện thoại : ${users.phone }</p>
-		          <p>Email : ${users.email }</p>
+		          <p>Tên : ${bill.address.name}</p>
+		          <p>Địa chỉ : ${bill.address.address }</p>
+		          <p>Điện thoại : ${bill.address.phone }</p>
 		        </td>
 		        <td>
 				<c:if test="${bill.active == 1 }">
@@ -130,28 +128,14 @@
 		  </tbody>
 		</table>
 	    
-	    <c:if test="${users == null }">
+	    <c:if test="${href != 'trackOrder' }">
 		    <br>
 		    <a href="${pageContext.request.contextPath}/controller/customer/orderHistory" class="btn btn-info">Quay lại</a>
 	    </c:if>
-	</div>
-	
-	<div id="myModal" class="modal fade" role="dialog">
-	  <div class="modal-dialog">
-	    <div class="modal-content" style="max-width: 500px; margin: 20%">   
-	    <form method="post" action="#">   
-	      <div class="modal-body">
-	        <p>Bạn có chắc chắn là muốn hủy đơn hàng <b></b> hay không?</p>
-	        <input type="text" class="idhoadon" name="idBill" hidden="">
-	      </div>
-	      <div class="modal-footer">      
-	      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	          <button id="btnAccept" type="submit" class="btn btn-danger">OK</button>        
-	      </div>
-	    </form>
-	    </div>
-	
-	  </div>
+	    <div id="href" hidden>${href }</div>
+	    <div id="idBill" hidden>${bill.id }</div>
+	    <div id="email" hidden>${users.email }</div>
+	     
 	</div>
 	
 </c:if>
