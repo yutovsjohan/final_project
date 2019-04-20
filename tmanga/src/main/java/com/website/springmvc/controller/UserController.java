@@ -291,6 +291,14 @@ public class UserController {
 		}
 	}
 	
+	@RequestMapping(value = "/userAdmin", method = RequestMethod.GET)
+	public ModelAndView getUserAdmin() {
+		ModelAndView model = new ModelAndView();
+		model.setViewName("admin/UserAdmin");
+		model.addObject("users", usersService.getAll());
+		return model;
+	}
+	
 	private boolean checkEmail(String email) {
 		if(usersService.get(email) == null)
 			return false;

@@ -2,6 +2,9 @@ package com.website.springmvc.Services;
 
 import java.util.List;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +19,19 @@ public class ContactService {
 	@Autowired
 	DAO<Contact> contactDAO;
 	
+	@Autowired
+	private SessionFactory sessionFactiory;
+	
+	public Long getUnReadMessage() {
+		Session session = this.sessionFactiory.getCurrentSession();
+		Long count = (Long) session.createQuery("select count(*) from Contact where view = 0").uniqueResult();
+		return count;
+	}
+	public Long getAllMessage() {
+		Session session = this.sessionFactiory.getCurrentSession();
+		Long count = (Long) session.createQuery("select count(*) from Contact").uniqueResult();
+		return count;
+	}
 	public List<Contact> getAll(){
 		return contactDAO.getAll();
 	}

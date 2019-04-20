@@ -28,6 +28,17 @@ public class UsersService {
 		return (Users) session.createQuery("from Users where email = :email").setParameter("email", email).uniqueResult();
 	}
 	
+	public Long getUserNum() {
+		Session session = this.sessionFactory.getCurrentSession();
+		Long userNum = (Long) session.createQuery("select count(*) from Users").uniqueResult();
+		return userNum;
+	}
+	public Long getUserRole(long check) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Users u = (Users) session.get(Users.class, check);
+		return u.getRole().getId();
+	}
+	
 	public Users get(int id) {
 		Session session = this.sessionFactory.getCurrentSession();
 		return (Users) session.get(Users.class, id);

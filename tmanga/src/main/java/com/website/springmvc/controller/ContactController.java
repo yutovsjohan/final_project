@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.website.springmvc.Services.ContactService;
+import com.website.springmvc.Services.UsersService;
 import com.website.springmvc.entities.Contact;
 import com.website.springmvc.libs.GetModel;
 
@@ -19,6 +20,9 @@ import com.website.springmvc.libs.GetModel;
 public class ContactController {
 	@Autowired
 	private ContactService contactService;
+	
+	@Autowired
+	private UsersService userService;
 	
 	@Autowired
 	GetModel getModel;
@@ -52,5 +56,16 @@ public class ContactController {
 		model.addAttribute("mes","Gửi thành công");
 		model.addAttribute("alert","success");
 		return "redirect:/controller/contact";
+	}
+	
+	@RequestMapping(value = "/contactAdmin", method = RequestMethod.GET)
+	public ModelAndView getContactAdmin() {
+		ModelAndView model = new ModelAndView();
+		model.setViewName("admin/ContactAdmin");
+		model.addObject("allMess", contactService.getAllMessage());
+		model.addObject("unView", contactService.getUnReadMessage());
+		model.addObject("userNum",userService.getUserNum());
+		model.addObject("contacts", contactService.getAll());
+		return model;
 	}
 }

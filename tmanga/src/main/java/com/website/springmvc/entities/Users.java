@@ -39,7 +39,7 @@ public class Users implements java.io.Serializable{
 	@Column(name = "phone", length = 15)
 	private String phone;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idRole", nullable = false)
 	private Role role;
 	
