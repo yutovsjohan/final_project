@@ -1,10 +1,12 @@
 package com.website.springmvc.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,19 +48,23 @@ public class UserController {
 	GetModel getModel;
 	
 	@RequestMapping(value = {"/signup" , "/dang-ky"}, method = RequestMethod.GET)
-	public ModelAndView getRegistrationPage(){
+	public ModelAndView getRegistrationPage(@RequestParam(name = "mes", defaultValue = "") String mes,
+										@RequestParam(name = "alert", defaultValue = "") String alert){
 		ModelAndView model = new ModelAndView();
 		getModel.getRegistration(model);
+		model.addObject("mes", mes);
+		model.addObject("alert", alert);
 		return model;
 	}
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public ModelAndView saveUsers(@ModelAttribute("Users") Users Users){
-		ModelAndView model = new ModelAndView();
+	public String saveUsers(@ModelAttribute("Users") Users Users, HttpSession session, Model model){
+		String str = "redirect:signup";
 		if(!checkEmail(Users.getEmail())){
 			Role Role = new Role();
 			Role.setId((long) 2);
 			Users.setRole(Role);
+			Users.setActive((byte) 1);
 			
 			Users.setPassword(TripleDES.Encrypt(Users.getPassword(), MyConstants.DES_KEY));
 			
@@ -67,18 +73,21 @@ public class UserController {
 			
 			usersService.add(Users);
 			
-			getModel.getLogin(model);
+			session.setAttribute("account", usersService.get(Users.getId()));			
+			getSessionCart(session, Users.getId());
 			
-            model.addObject("mes", "Đăng ký thành công");
-			model.addObject("alert", "success");
+			if(session.getAttribute("url") == null) {
+				str = "redirect:index";
+			}
+			else {
+				str = "redirect:" + session.getAttribute("url");
+			}
 		}
 		else{
-			getModel.getRegistration(model);
-			
-            model.addObject("mes","Email này đã có người sử dụng");    	
-			model.addObject("alert", "danger");
+            model.addAttribute("mes","Email này đã có người sử dụng");    	
+			model.addAttribute("alert", "danger");
 		}
-		return model;
+		return str;
 	}
 	
 	@RequestMapping(value = {"/login" , "/dang-nhap"}, method = RequestMethod.GET)
@@ -107,67 +116,14 @@ public class UserController {
 			str = "redirect:/controller/login";
 		} 
 		else {
-			session.setAttribute("account", usersService.get(idUser));
-			
-			if(session.getAttribute("cart") != null) {				
-				Cart cart = new Cart();
-				if(cartService.getCartByUser(idUser) != null) {
-					cart = cartService.getCartByUser(idUser);
-				}
-				else { 
-					cart.setIdUser(((Users) session.getAttribute("account")));
-					cartService.add(cart);
-				}		
-								
-				List<CartDetail> listCartDetail = cartDetailService.getDetailByIdCart(cart.getId());
-				for(int i = 0; i < listCartDetail.size(); i++) {
-					cartDetailService.delete(listCartDetail.get(i).getId());
-				}
-				
-				CartDetail cartDetail = new CartDetail();
-				
-				ArrayList<Item> items =  (ArrayList<Item>) ((GioHang) session.getAttribute("cart")).getList();
-				Long idComic;
-				for (int i = 0; i < items.size(); i++) {
-					idComic = items.get(i).getComic().getId();
-					if(cartDetailService.getDetailByCartAndProduct(cart.getId(), idComic) != null) {
-						cartDetail = cartDetailService.getDetailByCartAndProduct(cart.getId(), idComic);
-					}
-					else {
-						cartDetail.setCart(cart);
-						cartDetail.setComic(items.get(i).getComic());
-					}										
-					cartDetail.setAmount((byte)items.get(i).getAmount());							
-					if(cartDetailService.getDetailByCartAndProduct(cart.getId(), idComic) != null) {
-						cartDetailService.update(cartDetail);
-					}
-					else {
-						cartDetailService.add(cartDetail);
-					}
-				}
-			}			
-			else if(checkCart(idUser) != 0) {
-				if(countCartDetailByCart(checkCart(idUser)) != null) {
-					List<CartDetail> listCartDetail = cartDetailService.getDetailByIdCart(checkCart(idUser));
-					
-					if(listCartDetail != null) {
-						Item item;
-						GioHang gioHang = new GioHang();
-						HashMap<Long, Item> hashCart = new HashMap<>();
-						
-						for (int i = 0; i < listCartDetail.size(); i++) {
-							item = new Item();
-							item.setComic(listCartDetail.get(i).getComic());
-							item.setAmount(listCartDetail.get(i).getAmount());
-							hashCart.put(listCartDetail.get(i).getComic().getId(), item);
-						}
-						gioHang.setCart(hashCart);
-						session.removeAttribute("cart");
-						session.setAttribute("cart", gioHang);
-					}
-				}
+			session.setAttribute("account", usersService.get(idUser));			
+			getSessionCart(session, idUser);			
+			if(session.getAttribute("url") == null) {
+				str = "redirect:index";
 			}
-			str = "redirect:" + session.getAttribute("url");			
+			else {
+				str = "redirect:" + session.getAttribute("url");
+			}		
 		}
 		return str;
 	}
@@ -258,6 +214,81 @@ public class UserController {
 		}
 		model.addAttribute("email", email);
 		return str;
+	}
+	
+	private void getSessionCart(HttpSession session, Long idUser) {
+		if(session.getAttribute("cart") != null) {				
+			Cart cart = new Cart();
+			if(cartService.getCartByUser(idUser) != null) {
+				cart = cartService.getCartByUser(idUser);
+			}
+			else { 
+				cart.setIdUser(((Users) session.getAttribute("account")));
+				cartService.add(cart);
+			}		
+							
+			List<CartDetail> listCartDetail = cartDetailService.getDetailByIdCart(cart.getId());
+			for(int i = 0; i < listCartDetail.size(); i++) {
+				cartDetailService.delete(listCartDetail.get(i).getId());
+			}
+			
+			CartDetail cartDetail = new CartDetail();
+			
+			ArrayList<Item> items =  (ArrayList<Item>) ((GioHang) session.getAttribute("cart")).getList();
+			Long idComic;
+			for (int i = 0; i < items.size(); i++) {
+				idComic = items.get(i).getComic().getId();
+				if(cartDetailService.getDetailByCartAndProduct(cart.getId(), idComic) != null) {
+					cartDetail = cartDetailService.getDetailByCartAndProduct(cart.getId(), idComic);
+				}
+				else {
+					cartDetail.setCart(cart);
+					cartDetail.setComic(items.get(i).getComic());
+				}										
+				cartDetail.setAmount((byte)items.get(i).getAmount());							
+				if(cartDetailService.getDetailByCartAndProduct(cart.getId(), idComic) != null) {
+					cartDetailService.update(cartDetail);
+				}
+				else {
+					cartDetailService.add(cartDetail);
+				}
+			}
+		}			
+		else if(checkCart(idUser) != 0) {
+			if(countCartDetailByCart(checkCart(idUser)) != null) {
+				List<CartDetail> listCartDetail = cartDetailService.getDetailByIdCart(checkCart(idUser));
+				
+				if(listCartDetail != null) {
+					Item item;
+					GioHang gioHang = new GioHang();
+					HashMap<Long, Item> hashCart = new HashMap<>();
+					
+					for (int i = 0; i < listCartDetail.size(); i++) {
+						item = new Item();
+						item.setComic(listCartDetail.get(i).getComic());
+						item.setAmount(listCartDetail.get(i).getAmount());
+						hashCart.put(listCartDetail.get(i).getComic().getId(), item);
+					}
+					gioHang.setCart(hashCart);
+					session.removeAttribute("cart");
+					session.setAttribute("cart", gioHang);
+				}
+			}
+		}
+	}
+	
+	@RequestMapping(value = "/check-email", method = RequestMethod.GET)
+	public void getRemoveItem(@RequestParam("email") String email, HttpServletResponse response){
+		String str = "success";
+		if(checkEmail(email)) {
+			str = "fail";
+		}
+		try {
+			response.getWriter().print(str);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private boolean checkEmail(String email) {

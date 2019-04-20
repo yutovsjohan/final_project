@@ -413,54 +413,5 @@ $(document).ready(function(){
 				}
 			}
 		})
-    });
-    
-//    $('.pagination li').click( function() {
-//    	var data = parseInt($(this).attr('data'));
-//    	reset();  
-//    	$(this).addClass('active');
-//    	
-//    	var page = parseInt($("#page").val());
-//    	var totalpage = parseInt($("#totalpage").val());
-//    	
-//    	if(data == -1){
-//    		page = 1;
-//    	}
-//    	else if(data == -2){
-//    		page--;
-//    	}
-//    	else if(data == -3){
-//    		page++;
-//    	}
-//    	else if(data == -4){
-//    		page = totalpage;
-//    	}
-//    	else {
-//    		page = data;
-//    	}
-//    	    	
-//    	$.ajax({
-//    			url : "pagination",
-//    			type : 'GET',
-//    		data : {
-//    			page : page,
-//    			totalpage : totalpage
-//    		},
-//    		success: function(data){
-//    			$('.pagination').html(data);
-//    		}
-//    	})
-//    	
-//    	
-//    });
-//    
-//    function reset(){
-//    	$('.pagination li').each(function () {
-//    		$(this).removeClass('active');
-//    	})
-//    	$('.listcomic').each(function () {
-//    		$(this).attr('hidden','');
-//    	})
-//    }
-   
+    });   
 })
