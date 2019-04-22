@@ -247,6 +247,16 @@ $(document).ready(function(){
       }
     });
 	
+	$("#showpw").mouseover(function(){
+		$("#password" ).prop("type","text");
+		$("#repassword" ).prop("type","text");		
+	});
+	
+	$("#showpw").mouseout(function(){
+		$("#password" ).prop("type", "password");
+		$("#repassword" ).prop("type","password");	
+	});
+	
 //validate email, password (login, register page)
 	$("form").keyup(function() {
 		$("input[type=submit]").removeAttr('disabled');

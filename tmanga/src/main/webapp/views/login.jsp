@@ -19,7 +19,8 @@
 	<form action="${pageContext.request.contextPath}/controller/login" method="post">
 		<h1>Thông tin đăng nhập</h1>
 		<input type="email" name="email" id="email" placeholder="nhập email" required="required">
-		<input type="password" name="password" placeholder="nhập password" required="required"> <i class="fa fa-eye" aria-hidden="true"></i>
+		<input type="password" name="password" placeholder="nhập password" required="required" id="password">
+		<i id="showpw" class="fa fa-eye" aria-hidden="true" title="Hiện thị password" style="font-size:20px"></i>
 		<input type="submit" name="" id="submit" value="Đăng nhập">
 	</form>
 	<br>
