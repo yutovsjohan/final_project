@@ -17,6 +17,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "comic", catalog = "manga")
@@ -79,6 +84,16 @@ public class Comic implements java.io.Serializable{
 
 	@Column(name = "status")
 	private byte status;
+	
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "created_at")
+	private Date created_at;
+	
+	@UpdateTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_at")
+	private Date updated_at;
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idComic")
 	private Set<Notification> notification = new HashSet<Notification>();
@@ -231,6 +246,14 @@ public class Comic implements java.io.Serializable{
 
 	public void setPublishcompany(PublishCompany publishcompany) {
 		this.publishcompany = publishcompany;
+	}
+
+	public List<FavoriteList> getFavoriteList() {
+		return favoriteList;
+	}
+
+	public void setFavoriteList(List<FavoriteList> favoriteList) {
+		this.favoriteList = favoriteList;
 	}
 
 //	public Set<notification> getNotification() {

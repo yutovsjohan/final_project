@@ -117,12 +117,13 @@
 			<div id="navbar" class="navbar-collapse collapse">
 				<div class="col-sm-7 col-lg-7 col-xs-12 col-md-7">
 				<ul class="nav navbar-nav">
-					<li><a href="${pageContext.request.contextPath}/controller/index" <c:if test="${views == 'index' }">class="actived"</c:if> >Trang chủ</a></li>							
-					<li><a href="${pageContext.request.contextPath}/controller/news" <c:if test="${views == 'news' }">class="actived"</c:if>>Tin tức</a></li>
-					<li><a href="${pageContext.request.contextPath}/controller/introduce" <c:if test="${views == 'introduce' }">class="actived"</c:if> >Giới thiệu</a></li>
-					<li><a href="${pageContext.request.contextPath}/controller/contact" <c:if test="${views == 'contact' }">class="actived"</c:if> >Liên hệ</a></li>
+					<li><a href="${pageContext.request.contextPath}/controller/index" <c:if test="${views == 'index' }">class="actived"</c:if>> <i class="fa fa-home" aria-hidden="true" style="font-size:20px"></i> Trang chủ</a></li>							
+					<li><a href="${pageContext.request.contextPath}/controller/news" <c:if test="${views == 'newsList' }">class="actived"</c:if>> <i class="fa fa-bell" aria-hidden="true" style="font-size:20px"></i> Tin tức</a></li>
+					<li><a href="${pageContext.request.contextPath}/controller/introduce" <c:if test="${views == 'introduce' }">class="actived"</c:if>> <i class="fa fa-building-o" aria-hidden="true" style="font-size:20px"></i> Giới thiệu</a></li>
+					<li><a href="${pageContext.request.contextPath}/controller/contact" <c:if test="${views == 'contact' }">class="actived"</c:if>> <i class="fa fa-envelope" aria-hidden="true" style="font-size:20px"></i> Liên hệ</a></li>
+					<li><a href="${pageContext.request.contextPath}/controller/trackOrder" <c:if test="${views == 'trackOrder' }">class="actived"</c:if>> <i class="fa fa-binoculars" aria-hidden="true" style="font-size:20px"></i> Theo dõi đơn hàng</a></li>
 					
-					<li class="dropdown">
+					<%-- <li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hỗ trợ khách hàng <span class="caret"></span></a>
 						<ul class="dropdown-menu">
 							<li><a href="${pageContext.request.contextPath}/controller/trackOrder" <c:if test="${views == 'trackOrder' }">class="actived"</c:if> >Theo dõi đơn hàng</a></li>
@@ -131,7 +132,7 @@
                             <li><a href="${pageContext.request.contextPath}/controller/#">Phương thức thanh toán</a></li>
                             <li><a href="${pageContext.request.contextPath}/controller/#">Chính sách đổi trả</a></li>
 						</ul>
-					</li>
+					</li> --%>
 				</ul>
 				</div>
 				<div class="col-sm-5 col-lg-5 col-xs-12 col-md-5">

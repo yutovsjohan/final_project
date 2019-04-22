@@ -1,4 +1,21 @@
 $(document).ready(function(){
+	//shipping page
+//	$(".btnShipping").click(function(){
+//		var id = $(this).attr('dataId');
+//		var route = "customer/defaultAddress";
+//		
+//		$.ajax({
+//			url : route,
+//			type : 'GET',
+//			data : {
+//				id: id
+//			},
+//			success: function(data){
+//				
+//			}
+//		})
+//	})
+	
 	//cancel order
 	$(".cancelOrder").click(function(){
 		if(confirm("Bạn có thực sự muốn hủy đơn hàng ?")){
@@ -158,20 +175,24 @@ $(document).ready(function(){
 	});
 	
 //favorite list
-	$('.favoritelist').click(function(){
+	$('.productList').click(function(){
 		var route = $("#route").val();
-		var key = 0;
-		var id = $(this).attr('dataId');
-		if(parseInt($(this).attr('data')) == 0){
-			$(this).html('<i class="fa fa-heart" aria-hidden="true" title="Hủy yêu thích"></i>');
-			$(this).attr('data','1');
-			key = 1;
-		}
-		else{
-			$(this).html('<i class="fa fa-heart-o" aria-hidden="true" title="Thêm vào danh sách yêu thích"></i>');
-			$(this).attr('data','0');
-			key = 2;
-		}
+		var key = 1;
+		var id = $(this).attr('dataId');		
+//		if(parseInt($(this).attr('data')) == 0){		
+//			$(this).removeClass("btn btn-warning favoritelist");
+//			$(this).addClass("btn btn-danger favoritelist");
+//			$(this).html('<i class="fa fa-heart" aria-hidden="true" title="Hủy yêu thích"></i>');
+//			$(this).attr('data','1');
+//			key = 1;
+//		}
+//		else{
+//			$(this).removeClass("btn btn-danger favoritelist");
+//			$(this).addClass("btn btn-warning favoritelist");
+//			$(this).html('<i class="fa fa-heart-o" aria-hidden="true" title="Thêm vào danh sách yêu thích"></i>');
+//			$(this).attr('data','0');
+//			key = 2;
+//		}
 		
 		$.ajax({
 			url : route,
@@ -181,25 +202,25 @@ $(document).ready(function(){
 				id : id
 			},
 			success: function(data){
-				var str = "";
-				if(key == 1){
-					str = "Thêm";
-				}
-				else {
-					str = "Hủy";
-				}
-				if(data == 'fail'){					
-					$('#modal-da-them-vao-gio-hang .modal-body p').html(str + " thất bại");
-					$('#modal-da-them-vao-gio-hang').modal('show');					
-				}
-				else if(data == 'success'){
-					$('#modal-da-them-vao-gio-hang .modal-body p').html(str + " thành công");
-					$('#modal-da-them-vao-gio-hang').modal('show');	
-				}
-				else if(data == 'exist'){
-					$('#modal-da-them-vao-gio-hang .modal-body p').html("Sản phẩm này đã được thêm");
-					$('#modal-da-them-vao-gio-hang').modal('show');
-				}
+//				var str = "";
+//				if(key == 1){
+//					str = "Thêm";
+//				}
+//				else {
+//					str = "Hủy";
+//				}
+//				if(data == 'fail'){					
+//					$('#modal-da-them-vao-gio-hang .modal-body p').html(str + " thất bại");
+//					$('#modal-da-them-vao-gio-hang').modal('show');					
+//				}
+//				else if(data == 'success'){
+//					$('#modal-da-them-vao-gio-hang .modal-body p').html(str + " thành công");
+//					$('#modal-da-them-vao-gio-hang').modal('show');	
+//				}
+//				else if(data == 'exist'){
+//					$('#modal-da-them-vao-gio-hang .modal-body p').html("Sản phẩm này đã được thêm");
+//					$('#modal-da-them-vao-gio-hang').modal('show');
+//				}
 			}
 		});
 	});	
@@ -269,7 +290,7 @@ $(document).ready(function(){
 	});
 	
 	function isValidEmailAddress(email) {
-		var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+		var regex = /^[a-zA-Z0-9._]+@[a-zA-Z0-9]+(\.[a-zA-Z0-9]{2,4}){1,2}$/;
 		 return regex.test(email);
 	};
 	

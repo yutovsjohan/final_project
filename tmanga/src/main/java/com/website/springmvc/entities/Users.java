@@ -52,11 +52,11 @@ public class Users implements java.io.Serializable{
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
 	private List<FavoriteList> favoriteList = new ArrayList<FavoriteList>();
 	
-//	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idUser")
-//	private Set<Bill> bill = new HashSet<Bill>();
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idUser")
+	private Set<Bill> bill = new HashSet<Bill>();
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "delivery")
-	private Set<Bill> delivery = new HashSet<Bill>();
+//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "delivery")
+//	private Set<Bill> delivery = new HashSet<Bill>();
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
 	private Set<Address> addressList = new HashSet<Address>();
@@ -129,4 +129,13 @@ public class Users implements java.io.Serializable{
 	public void setPasscode(String passcode) {
 		this.passcode = passcode;
 	}
+
+	public List<FavoriteList> getFavoriteList() {
+		return favoriteList;
+	}
+
+	public void setFavoriteList(List<FavoriteList> favoriteList) {
+		this.favoriteList = favoriteList;
+	}
+	
 }

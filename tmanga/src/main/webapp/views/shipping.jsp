@@ -24,7 +24,7 @@
 						        </p> 
 						        <p>Địa chỉ: ${add.address }, ${add.district.name }, ${add.city.name }</p>
 						        <p>Điện thoại:  ${add.phone }</p>
-						        <a class="btn btn-info btnShipping <c:if test='${add.choose == 0 }'>address-unactive</c:if>" href="${pageContext.request.contextPath}/controller/payment?id=${add.id}">Giao đến địa chỉ này</a>
+						        <a class="btn btn-info btnShipping <c:if test='${add.choose == 0 }'>address-unactive</c:if>" href="${pageContext.request.contextPath}/controller/payment?id=${add.id}" >Giao đến địa chỉ này</a>
 						        <a class="btn btn-default" href="${pageContext.request.contextPath}/controller/customer/address?mode=edit&id=${add.id}" >Chỉnh sửa</a>
 						    </div>
 						</div>

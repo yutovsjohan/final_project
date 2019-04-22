@@ -84,78 +84,50 @@ public class ProductController {
 	public void favoriteList(HttpServletResponse response, HttpSession session,
 						@RequestParam(name = "key", defaultValue = "0") int key,
 						@RequestParam(name = "id", defaultValue = "0") Long idComic) {
-		String str = "success";
 		
-		if(idComic == 0 || key == 0) {
-			str = "fail";
-		}
-		else if(key == 1) {
-			//add favorite list
-			Users u = (Users) session.getAttribute("account");
+		if(session.getAttribute("account") != null) {
+			String str = "success";
 			
-			FavoriteList favoriteList = favoriteListService.getByUsersAndComic(u.getId(), idComic);
-			
-			if(favoriteList == null) {
-				favoriteList = new FavoriteList();
-				favoriteList.setComic(comicService.get(idComic));
-				favoriteList.setUser(u);
-				favoriteListService.add(favoriteList);
-			}
-			else {
-				str = "exist";
-			}						
-		}
-		else if(key == 2) {
-			//remove favorite list
-			Users u = (Users) session.getAttribute("account");
-			
-			FavoriteList favoriteList = favoriteListService.getByUsersAndComic(u.getId(), idComic);
-			
-			if(favoriteList != null) {
-				favoriteListService.delete(favoriteList);
-			}			
-			else {
+			if(idComic == 0 || key == 0) {
 				str = "fail";
 			}
-		}
-		
-		try {
-			response.getWriter().print(str);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-			
-	@RequestMapping(value = "/pagination", method = RequestMethod.GET)
-	public void pagination(HttpServletResponse response, 
-						@RequestParam(name = "page", defaultValue = "1") int page,
-						@RequestParam(name = "totalpage", defaultValue = "1") int totalpage) {
-		String str = "";
-		if(page != 1) {
-			str += "<li data=\"-1\"> <a rel=\"next\"> << </a></li>";
-			str += "<li data=\"-2\"><a rel=\"next\"> < </a></li>";
-		}
+			else if(key == 1) {
+				//add favorite list
+				Users u = (Users) session.getAttribute("account");
 				
-		for (int j = 1; j <= totalpage ; j++) {
-			if(j == page) {
-				str += "<li class=\"active\" data=\"" + j + "\"><span>" + j + "</span></li>";
+				FavoriteList favoriteList = favoriteListService.getByUsersAndComic(u.getId(), idComic);
+				
+				if(favoriteList == null) {
+					favoriteList = new FavoriteList();
+					favoriteList.setComic(comicService.get(idComic));
+					favoriteList.setUser(u);
+					favoriteListService.add(favoriteList);
+				}
+				else {
+					str = "exist";
+				}						
 			}
-			else {
-				str += "<li data=\"" + j + "\"><a>" + j + "</a></li>";
+			else if(key == 2) {
+				//remove favorite list
+				Users u = (Users) session.getAttribute("account");
+				
+				FavoriteList favoriteList = favoriteListService.getByUsersAndComic(u.getId(), idComic);
+				
+				if(favoriteList != null) {
+					favoriteListService.delete(favoriteList);
+				}			
+				else {
+					str = "fail";
+				}
+			}
+			
+			try {
+				response.getWriter().print(str);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		
-		if(page != totalpage) {
-			str += "<li data=\"-3\"><a rel=\"next\"> > </a></li>";
-			str += "<li data=\"-4\"><a rel=\"next\"> >> </a></li>";
-		}
-		
-		try {
-			response.getWriter().print(str);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 }

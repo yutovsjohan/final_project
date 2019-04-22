@@ -147,7 +147,7 @@ public class ComicService {
 	public List<Comic> getNewComic(int firstResult, int maxResult){
 		Session session = this.sessionFactory.getCurrentSession();
 		Query query = null;
-		query = session.createQuery("from Comic order by publishDate desc");
+		query = session.createQuery("from Comic order by created_at desc");
 						
 		if(maxResult != 0) {
 			query.setFirstResult(firstResult);
@@ -159,7 +159,7 @@ public class ComicService {
 
 	public List<Comic> getNewComicInHomePage(){
 		Session session = this.sessionFactory.getCurrentSession();
-		return session.createQuery("from Comic order by publishDate desc").setMaxResults(4).list();
+		return session.createQuery("from Comic order by created_at desc").setMaxResults(4).list();
 	}
 
 	public List<Comic> getOtherComic(){

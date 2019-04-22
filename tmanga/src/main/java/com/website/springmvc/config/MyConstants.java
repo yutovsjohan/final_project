@@ -5,5 +5,5 @@ public class MyConstants {
     public static final String DES_KEY = "123";
     
     //SENDGRID_API_KEY
-    public static final String SENDGRID_API_KEY = "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";
+    public static final String SENDGRID_API_KEY = "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";
 }

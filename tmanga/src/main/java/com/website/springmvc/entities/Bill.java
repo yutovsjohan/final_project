@@ -53,19 +53,21 @@ public class Bill implements java.io.Serializable{
 	@Column(name = "note", length = 256)
 	private String note;
 	
+	@Column(name = "delivery", length = 255)
+	private String delivery;
+	
+//	@Column(name = "address", length = 255)
+//	private String address;
+	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "bill")
 	private Set<OrderStatus> orderstatus = new HashSet<OrderStatus>();
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "comic")
 	private Set<BillDetail> billdetail = new HashSet<BillDetail>();
 	
-//	@ManyToOne(fetch = FetchType.EAGER)
-//	@JoinColumn(name = "idUser", nullable = false)
-//	private Users idUser;
-	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "delivery", nullable = false)
-	private Users delivery;
+	@JoinColumn(name = "idUser", nullable = false)
+	private Users idUser;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idAddress", nullable = false)
@@ -74,14 +76,6 @@ public class Bill implements java.io.Serializable{
 	public Bill() {
 		super();
 		// TODO Auto-generated constructor stub
-	}
-
-	public Address getAddress() {
-		return address;
-	}
-
-	public void setAddress(Address address) {
-		this.address = address;
 	}
 
 	public Long getId() {
@@ -164,12 +158,28 @@ public class Bill implements java.io.Serializable{
 		this.billdetail = billdetail;
 	}
 
-	public Users getDelivery() {
+	public String getDelivery() {
 		return delivery;
 	}
 
-	public void setDelivery(Users delivery) {
+	public void setDelivery(String delivery) {
 		this.delivery = delivery;
+	}
+	
+	public Users getIdUser() {
+		return idUser;
+	}
+
+	public void setIdUser(Users idUser) {
+		this.idUser = idUser;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 	
 }

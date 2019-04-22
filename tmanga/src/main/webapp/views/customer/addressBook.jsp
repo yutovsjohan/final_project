@@ -28,10 +28,10 @@
 				    <div class="panel-body">
 				        <p>${add.name} 
 				        	<c:if test="${add.choose == 1 }"> <span class="defaultAddress"><i class="fa fa-check-circle"></i> Địa chỉ mặc định</span> </c:if>
-				        	<c:if test="${add.choose == 0 }">				        		
-				        		<c:if test="${add.bill.size() == 0 }">
-				        			<a dataId="${add.id }" class="btn btn-danger removeAddress" style="float:right">Xóa</a>
-				        		</c:if>
+				        	<c:if test="${add.bill.size() == 0 }">
+			        			<a dataId="${add.id }" class="btn btn-danger removeAddress" style="float:right">Xóa</a>
+			        		</c:if>
+				        	<c:if test="${add.choose == 0 }">
 				        		<a href="${pageContext.request.contextPath}/controller/customer/defaultAddress?id=${add.id}" class="btn btn-warning" style="float:right; margin-right:15px" title="Đặt làm địa chỉ mặc định">Mặc định</a>
 				        	</c:if>
 				        	<a class="btn btn-info" href="${pageContext.request.contextPath}/controller/customer/address?mode=edit&id=${add.id}" style="float:right; margin-right:15px">Chỉnh sửa</a>				        	 

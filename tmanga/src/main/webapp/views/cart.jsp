@@ -85,7 +85,14 @@
 				</c:if>
 			</c:when>
 			<c:otherwise>
-				<p class="glyphicon glyphicon-ok"> <span style="font-family:'Roboto', sans-serif">Giỏ hàng của bạn hiện chưa có sản phẩm nào, hãy <a href="${pageContext.request.contextPath}/controller/index">quay lại để mua hàng.</a> </span> </p>
+				<div style="background-color:white">
+					<center>
+						<img src="<c:url value="/images/cart-empty.png" />" class="img-responsive" />
+						<p> Giỏ hàng của bạn hiện chưa có sản phẩm nào.</p>
+						<p><a class="btn btn-info" href="${pageContext.request.contextPath}/controller/index">Tiếp tục mua sắm</a></p>
+						<br>
+					</center>
+				</div>
 			</c:otherwise>
 		</c:choose>		
 	</div>

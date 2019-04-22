@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.website.springmvc.Services.BillService;
 import com.website.springmvc.Services.UsersService;
+import com.website.springmvc.entities.Users;
 import com.website.springmvc.libs.GetModel;
 
 @Controller
@@ -71,6 +72,10 @@ public class HomeController {
 			else {
 				mes = "Email không tồn tại";
 			}
+		}
+		
+		if(session.getAttribute("account") != null){
+			email = ((Users) session.getAttribute("account")).getEmail();
 		}
 		
 		model.addObject("mes", mes);

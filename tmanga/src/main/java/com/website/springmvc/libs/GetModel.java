@@ -143,7 +143,7 @@ public class GetModel {
 			model.addObject("k",key);
 		}
 		else if(action.equalsIgnoreCase("nc")) {
-			comics = comicService.getNewComic(0, 84);
+			comics = comicService.getNewComic(0, 48);
 			
 			model.addObject("title", "Truyện tranh mới");
 			model.addObject("key", "newcomic");
@@ -260,22 +260,27 @@ public class GetModel {
 		model.addObject("addressList", addressService.getListAddressByUser(u.getId(),0,0));
 	}
 		
-	public void getPaymentPage(ModelAndView model, Long idAddress, HttpSession session){		
+	public void getPaymentPage(ModelAndView model, HttpSession session, Long idAddress){		
 		model.setViewName("layout");
 		model.addObject("sb","");
 		model.addObject("views","payment");
 		model.addObject("title","Thanh toán và đặt mua");
 		
 		Address selectedAddress = addressService.get(idAddress);
+		Users u = (Users) session.getAttribute("account");
 		
-		if(selectedAddress.getChoose() == 0) {
-			Users u = (Users) session.getAttribute("account");
-			Address defaultAddress = addressService.getDefaultAddressByUser(u.getId());
-			defaultAddress.setChoose((byte) 0);
-			addressService.update(defaultAddress);
-			
-			selectedAddress.setChoose((byte) 1);
-			addressService.update(selectedAddress);
+		if((long) selectedAddress.getIdUser().getId() == (long) u.getId()) {
+			if(selectedAddress.getChoose() == 0) {				
+				Address defaultAddress = addressService.getDefaultAddressByUser(u.getId());
+				defaultAddress.setChoose((byte) 0);
+				addressService.update(defaultAddress);
+				
+				selectedAddress.setChoose((byte) 1);
+				addressService.update(selectedAddress);
+			}
+		}
+		else {
+			selectedAddress = addressService.getDefaultAddressByUser(u.getId());
 		}
 		
 		model.addObject("address", selectedAddress);
@@ -390,12 +395,12 @@ public class GetModel {
 			List<Address> address = addressService.getListAddressByUser(u.getId(), 0, 0);
 			
 			int totalPage = 0;
-			int totalComic = 0;		
+			int totalAddress = 0;		
 			
-			totalComic = address.size();
-			totalPage = totalComic / 10;
+			totalAddress = address.size();
+			totalPage = totalAddress / 10;
 			
-			if(totalComic % 10 != 0){
+			if(totalAddress % 10 != 0){
 				totalPage++;
 			}		
 			
@@ -424,7 +429,7 @@ public class GetModel {
 			
 			model.addObject("totalpage", totalPage);
 			model.addObject("pageselected", page);
-			model.addObject("totalcomic", totalComic);
+			model.addObject("totalcomic", totalAddress);
 							
 			model.addObject("address", address);
 		}

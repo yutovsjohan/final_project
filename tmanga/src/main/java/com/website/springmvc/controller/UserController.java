@@ -117,8 +117,11 @@ public class UserController {
 		} 
 		else {
 			session.setAttribute("account", usersService.get(idUser));			
-			getSessionCart(session, idUser);			
-			if(session.getAttribute("url") == null) {
+			getSessionCart(session, idUser);
+			if(usersService.getUserRole(idUser)==1) {
+				str = "redirect:adminHome";
+			}
+			else if(session.getAttribute("url") == null) {
 				str = "redirect:index";
 			}
 			else {

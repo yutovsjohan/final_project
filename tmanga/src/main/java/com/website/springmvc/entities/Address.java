@@ -38,6 +38,9 @@ public class Address implements Serializable {
 	@Column(name = "address", length = 255)
 	private String address;
 	
+	@Column(name = "delivery", length = 255)
+	private String delivery;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idUser", nullable = false)
 	private Users user;
@@ -120,6 +123,14 @@ public class Address implements Serializable {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public String getDelivery() {
+		return delivery;
+	}
+
+	public void setDelivery(String delivery) {
+		this.delivery = delivery;
 	}
 
 	public Set<Bill> getBill() {

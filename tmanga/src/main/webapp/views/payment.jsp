@@ -7,6 +7,7 @@
 <div class="container">
 	<c:if test="${sessionScope.cart != null && sessionScope.account != null}">		
 	
+	<form action="${pageContext.request.contextPath}/controller/order" method="post">
 		<div class="row">
 			<div class="col-lg-6 col-md-6 col-sm-6">
 				<div class="panel panel-primary">
@@ -43,7 +44,7 @@
 		                <h3 class="panel-title">Địa chỉ giao hàng</h3>
 		            </div>
 		            <div class="panel-body">
-		            	<a href="${pageContext.request.contextPath}/controller/customer/edit" class="btn btn-warning" style="float:right">Sửa</a>
+		            	<a href="${pageContext.request.contextPath}/controller/customer/address?mode=edit&id=${address.id}" class="btn btn-warning" style="float:right">Sửa</a>
 		               	<p><b>${address.name }</b></p>
 		                <p>${address.address }, ${address.district.name }, ${address.city.name }</p>
 						<p>Điện thoại: ${address.phone }</p>    
@@ -57,14 +58,22 @@
 		                <h3 class="panel-title">Thanh toán và giao hàng</h3>
 		            </div>
 		            <div class="panel-body">
-		               	<p><span class="glyphicon glyphicon-ok" style="color:green"></span> &nbsp;&nbsp; Dự kiến giao hàng: 2 ngày kể từ khi quý khách xác nhận đơn hàng</p>
-		               	<p><span class="glyphicon glyphicon-ok" style="color:green"></span> &nbsp;&nbsp; Thanh toán tiền mặt khi nhận hàng</p>    
+		               	<p><span class="glyphicon glyphicon-ok" style="color:green"></span> &nbsp;&nbsp; Dự kiến giao hàng: <fmt:formatDate pattern = "dd-MM-yyyy" value = "${deliveryDate }" /></p>
+		               			               	
+		               	<div class="form-group">
+						    <label for="pttt"><span class="glyphicon glyphicon-ok" style="color:green"></span>&nbsp;&nbsp; Chọn hình thức thanh toán</label>
+						    <select name="pttt" class="form-control" required="required" id="pttt">
+						    	<option value="0">Thanh toán tiền mặt khi nhận hàng</option>
+						    	<option value="1">Thanh toán bằng thẻ quốc tế Visa</option>
+						    	<option value="2">Thanh toán bằng thẻ ATM</option>
+						    </select>						    	
+						  </div>   
 		            </div>
 		        </div>
 			</div>
-			<%-- <fmt:formatDate pattern = "dd-MM-yyyy" value = "${deliveryDate}" /> --%>
 		</div>
 		
-		<a href="${pageContext.request.contextPath}/controller/order" class="btn btn-success" style="float:right">Đặt mua</a>
+		<button type=submit class="btn btn-success" style="float:right">Đặt mua</button>
+		</form>
 	</c:if>
 </div>

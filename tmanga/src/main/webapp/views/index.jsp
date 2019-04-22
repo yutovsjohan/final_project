@@ -72,44 +72,32 @@
 						<div class="product-image-wrapper">
 							<div class="single-products">
 								<div class="productinfo text-center">
-									<a href="${pageContext.request.contextPath}/controller/detail?c=${ts.unsignedName }">
+									<a href="${pageContext.request.contextPath}/controller/detail?c=${ts.unsignedName }" class="productList" dataId="${ts.id }">
 										<div class="btn btn-primary" style="position: absolute; left: 5px;">${number + 1 }</div>
 										<img src="<c:url value="/images/products/${ts.image }" />" title="${ts.name }" alt="${ts.image }" style="width:150px; height:200px; margin-top:25px;" />
 										<h5 style="height:50px; ">${ts.name }</h5>
 										<h5 style="background-color: green; color:white">Phát hành: <fmt:formatDate pattern = "dd-MM-yyyy" value = "${ts.publishDate }" /></h5>
-										<h5 style="font-size: 18px; color: red;"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${ts.sale}" /> <u>đ</u></h5>
+										<h5 style="font-size: 18px; color: red;">
+											<c:choose>
+												<c:when test="${ts.amount == 0 }">
+													HẾT HÀNG
+												</c:when>
+												<c:otherwise>
+													<fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${ts.sale}" /> <u>đ</u>
+												</c:otherwise>
+											</c:choose>								
+										</h5>
 									</a>
 								
 									<c:choose>
 										<c:when test="${ts.amount == 0 }">
-											<a href="${pageContext.request.contextPath}/controller/#" class="btn btn-danger" title="Báo tôi khi có hàng" style="background-color: crimson; border-color: crimson"><i class="fa fa-bullhorn" aria-hidden="true" ></i></a>
+											<%-- <a href="${pageContext.request.contextPath}/controller/#" class="btn btn-danger" title="Báo tôi khi có hàng" style="background-color: crimson; border-color: crimson"><i class="fa fa-bullhorn" aria-hidden="true" ></i></a> --%>
 										</c:when>
 										<c:otherwise>
 											<button dataId="${ts.id }" dataName="${ts.name }" class="btn btn-info them-vao-gio-hang" title="Thêm vào giỏ hàng" style="background-color: #337ab7; border-color: #337ab7"><i class="fa fa-shopping-cart" aria-hidden="true"></i></button>
 										</c:otherwise>
 									</c:choose>						
-									
-									<c:set var = "flag" scope = "session" value = "false"/>
-									<c:if test="${sessionScope.account.email != null}">
-										<c:if test="${favoritelist != null}">
-											<c:forEach var="favoritelist" items="${favoritelist }">
-												<c:if test="${favoritelist.comic.id == ts.id }">
-												
-													<c:set var = "flag" scope = "session" value = "true" />		
-												</c:if>									
-											</c:forEach>
-										</c:if>
-										
-										<c:choose>
-											<c:when test="${flag == true }">
-												<a class="btn btn-warning favoritelist" data="1" dataId=${ts.id }><i class="fa fa-heart" title="Hủy yêu thích" aria-hidden="true" ></i></a>
-											</c:when>
-											<c:otherwise>
-												<a class="btn btn-warning favoritelist" data="0" dataId=${ts.id }><i class="fa fa-heart-o" title="Thêm vào danh sách yêu thích" aria-hidden="true" ></i></a>
-											</c:otherwise>
-										</c:choose>							
-									</c:if>
-									
+																		
 									<a href="${pageContext.request.contextPath}/controller/detail?c=${ts.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a>
 	
 								</div>
@@ -147,41 +135,30 @@
 					<div class="product-image-wrapper">
 						<div class="single-products">
 							<div class="productinfo text-center">
-								<a href="${pageContext.request.contextPath}/controller/detail?c=${nc.unsignedName }">
+								<a href="${pageContext.request.contextPath}/controller/detail?c=${nc.unsignedName }" class="productList" dataId="${nc.id }">
 									<img src="<c:url value="/images/products/${nc.image }" />" title="${nc.name }" alt="${nc.image }" style="width:150px; height:200px; margin-top:25px;" />
 									<h5 style="height:50px; ">${nc.name }</h5>
 									<h5 style="background-color: green; color:white">Phát hành: <fmt:formatDate pattern = "dd-MM-yyyy" value = "${nc.publishDate }" /></h5>
-									<h5 style="font-size: 18px; color: red;"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${nc.sale}" /> <u>đ</u></h5>
+									<h5 style="font-size: 18px; color: red;">
+										<c:choose>
+											<c:when test="${nc.amount != 0 }">
+												<fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${nc.sale}" /> <u>đ</u>
+											</c:when>
+											<c:otherwise>
+												HẾT HÀNG
+											</c:otherwise>
+										</c:choose>		
+									</h5>
 								</a>
 								
 								<c:choose>
 									<c:when test="${nc.amount == 0 }">
-										<a href="${pageContext.request.contextPath}/controller/#" class="btn btn-danger" title="Báo tôi khi có hàng" style="background-color: crimson; border-color: crimson"><i class="fa fa-bullhorn" aria-hidden="true" ></i></a>
+										<%-- <a href="${pageContext.request.contextPath}/controller/#" class="btn btn-danger" title="Báo tôi khi có hàng" style="background-color: crimson; border-color: crimson"><i class="fa fa-bullhorn" aria-hidden="true" ></i></a> --%>
 									</c:when>
 									<c:otherwise>
 										<button dataId="${nc.id }" dataName="${nc.name }" class="btn btn-info them-vao-gio-hang" title="Thêm vào giỏ hàng" style="background-color: #337ab7; border-color: #337ab7"><i class="fa fa-shopping-cart" aria-hidden="true"></i></button>
 									</c:otherwise>
 								</c:choose>		
-								
-								<c:set var = "flag" scope = "session" value = "false"/>
-									<c:if test="${sessionScope.account.email != null}">
-										<c:if test="${favoritelist != null}">
-											<c:forEach var="favoritelist" items="${favoritelist }">
-												<c:if test="${favoritelist.comic.id == nc.id }">
-													<c:set var = "flag" scope = "session" value = "true" />		
-												</c:if>									
-											</c:forEach>
-										</c:if>
-										
-										<c:choose>
-											<c:when test="${flag == true }">
-												<a class="btn btn-warning favoritelist" data="1" dataId=${nc.id }><i class="fa fa-heart" title="Hủy yêu thích" aria-hidden="true" ></i></a>
-											</c:when>
-											<c:otherwise>
-												<a class="btn btn-warning favoritelist" data="0" dataId=${nc.id }><i class="fa fa-heart-o" title="Thêm vào danh sách yêu thích" aria-hidden="true" ></i></a>
-											</c:otherwise>
-										</c:choose>							
-									</c:if>				
 								
 								<a href="${pageContext.request.contextPath}/controller/detail?c=${nc.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a>
 							</div>
@@ -194,7 +171,7 @@
 	<!--/truyện tranh mới-->
 	
 	<!--Truyện tranh khác-->
-	<div>
+	<%-- <div>
 		<div>
 			<span style="color:orange; font-weight:bold; font-size:20px">TRUYỆN TRANH KHÁC </span>
 			<span><a href="${pageContext.request.contextPath}/controller/product?a=pl&q=category&un=truyen-tranh-khac" style="float:right; margin-left: 10px; margin-top: 7px;">XEM THÊM >></a></span>
@@ -206,11 +183,21 @@
 					<div class="product-image-wrapper">
 						<div class="single-products">
 							<div class="productinfo text-center">
-								<a href="${pageContext.request.contextPath}/controller/detail?c=${oc.unsignedName }">
+								<a href="${pageContext.request.contextPath}/controller/detail?c=${oc.unsignedName }" class="productList" dataId="${oc.id }">
 									<img src="<c:url value="/images/products/${oc.image }" />" title="${oc.name }" alt="${oc.image }" style="width:150px; height:200px; margin-top:25px;" />
 									<h5 style="height:50px; ">${oc.name }</h5>
 									<h5 style="background-color: green; color:white">Phát hành: <fmt:formatDate pattern = "dd-MM-yyyy" value = "${oc.publishDate }" /></h5>
-									<h5 style="font-size: 18px; color: red;"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${oc.sale}" /> <u>đ</u></h5>
+									<h5 style="font-size: 18px; color: red;">
+										<c:choose>
+											<c:when test="${oc.amount == 0 }">
+												HẾT HÀNG
+											</c:when>
+											<c:otherwise>
+												<fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${oc.sale}" /> <u>đ</u>
+											</c:otherwise>
+										</c:choose>	
+										
+									</h5>
 								</a>
 								
 								<c:choose>
@@ -222,26 +209,6 @@
 									</c:otherwise>
 								</c:choose>		
 								
-								<c:set var = "flag" scope = "session" value = "false"/>
-									<c:if test="${sessionScope.account.email != null}">
-										<c:if test="${favoritelist != null}">
-											<c:forEach var="favoritelist" items="${favoritelist }">
-												<c:if test="${favoritelist.comic.id == oc.id }">
-													<c:set var = "flag" scope = "session" value = "true" />		
-												</c:if>									
-											</c:forEach>
-										</c:if>
-										
-										<c:choose>
-											<c:when test="${flag == true }">
-												<a class="btn btn-warning favoritelist" data="1" dataId=${oc.id }><i class="fa fa-heart" title="Hủy yêu thích" aria-hidden="true" ></i></a>
-											</c:when>
-											<c:otherwise>
-												<a class="btn btn-warning favoritelist" data="0" dataId=${oc.id }><i class="fa fa-heart-o" title="Thêm vào danh sách yêu thích" aria-hidden="true" ></i></a>
-											</c:otherwise>
-										</c:choose>							
-									</c:if>						
-								
 								<a href="${pageContext.request.contextPath}/controller/detail?c=${oc.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a>
 	
 							</div>
@@ -250,7 +217,7 @@
 				</div>
 			</c:forEach>
 			
-		</div>
+		</div> --%>
 	<!--/Truyện tranh khác-->
 	
 	<!-- Truyện yêu thích -->
@@ -271,36 +238,35 @@
 				<div class="product-image-wrapper">
 					<div class="single-products">
 						<div class="productinfo text-center">
-							<a href="${pageContext.request.contextPath}/controller/detail?c=${favoritelist.comic.unsignedName }" title="${favoritelist.comic.name }">
+							<a href="${pageContext.request.contextPath}/controller/detail?c=${favoritelist.comic.unsignedName }" class="productList" dataId="${favoritelist.comic.id }" title="${favoritelist.comic.name }">
 								<img src="<c:url value="/images/products/${favoritelist.comic.image }"/>" alt="${favoritelist.comic.name }" style="width:150px; height:200px; margin-top:25px;" />
 								<h5 style="height:50px; ">${favoritelist.comic.name }</h5>
 								<h5 style="background-color: green; color:white">Phát hành: <fmt:formatDate pattern = "dd-MM-yyyy" value = "${favoritelist.comic.publishDate }" /></h5>
 								<h5>
-									<span style="margin-right: 15px; font-size: 18px;  color: red;"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${favoritelist.comic.sale}" /> <u>đ</u></span>
+									<span style="margin-right: 15px; font-size: 18px;  color: red;">
+									<c:choose>
+										<c:when test="${favoritelist.comic.amount == 0 }">
+											HẾT HÀNG
+										</c:when>
+										<c:otherwise>
+											<fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${favoritelist.comic.sale}" /> <u>đ</u>
+										</c:otherwise>
+									</c:choose>
+									
+									</span>
 								</h5>
 							</a>
 							
 							<c:choose>
 								<c:when test="${favoritelist.comic.amount == 0 }">
-									<a href="${pageContext.request.contextPath}/controller/#" class="btn btn-danger" title="Báo tôi khi có hàng" style="background-color: crimson; border-color: crimson"><i class="fa fa-bullhorn" aria-hidden="true" ></i></a>
+									<%-- <a href="${pageContext.request.contextPath}/controller/#" class="btn btn-danger" title="Báo tôi khi có hàng" style="background-color: crimson; border-color: crimson"><i class="fa fa-bullhorn" aria-hidden="true" ></i></a> --%>
 								</c:when>
 								<c:otherwise>
 									<button dataId="${favoritelist.comic.id }" dataName="name }" class="btn btn-info them-vao-gio-hang" title="Thêm vào giỏ hàng" style="background-color: #337ab7; border-color: #337ab7"><i class="fa fa-shopping-cart" aria-hidden="true"></i></button>
 								</c:otherwise>
 							</c:choose>
 							
-							<c:set var = "flag" scope = "session" value = "true"/>
-										
-							<c:choose>
-								<c:when test="${flag == true }">
-									<a class="btn btn-warning favoritelist" data="1" dataId=${comic.id }><i class="fa fa-heart" title="Hủy yêu thích" aria-hidden="true" ></i></a>
-								</c:when>
-								<c:otherwise>
-									<a class="btn btn-warning favoritelist" data="0" dataId=${comic.id }><i class="fa fa-heart-o" title="Thêm vào danh sách yêu thích" aria-hidden="true" ></i></a>
-								</c:otherwise>
-							</c:choose>	
-								
-							<a href="${pageContext.request.contextPath}/controller/detail?c=unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a></div>
+							<a href="${pageContext.request.contextPath}/controller/detail?c=${favoritelist.comic.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a></div>
 					</div>
 				</div>
 			</div>

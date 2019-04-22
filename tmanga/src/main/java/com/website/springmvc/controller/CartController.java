@@ -283,20 +283,21 @@ public class CartController {
 	public ModelAndView getPaymentPage(HttpSession session,
 									@RequestParam(name = "mes", defaultValue = "") String mes,
 									@RequestParam(name = "alert", defaultValue = "") String alert,
-									@RequestParam(name = "id", defaultValue = "0") Long idAddress){
+									@RequestParam(name = "id", defaultValue = "") Long idAddress){
 		ModelAndView model = new ModelAndView();
-		if(session.getAttribute("account") == null || idAddress == (long) 0) {
+		if(session.getAttribute("account") == null) {
 			getModel.getHome(model, session);
 		}
 		else {
-			getModel.getPaymentPage(model, idAddress, session);
-			session.setAttribute("url", "payment?id=" + idAddress);
+			getModel.getPaymentPage(model, session, idAddress);
+			session.setAttribute("url", "payment");
 		}
 		return model;
 	}
 	
-	@RequestMapping(value = "/order", method = RequestMethod.GET)
-	public String getOrder(Model model, HttpSession session){
+	@RequestMapping(value = "/order", method = RequestMethod.POST)
+	public String getOrder(Model model, HttpSession session,
+						@RequestParam(name = "pttt", defaultValue = "0") int pttt){
 		boolean f = true;
 		
 		if(session.getAttribute("cart") != null && session.getAttribute("account") != null) {
@@ -321,8 +322,28 @@ public class CartController {
 				Bill bill = new Bill();
 				bill.setAddress(defaultAddress);
 				bill.setTotal(((GioHang) session.getAttribute("cart")).total() + 15000 );
-                bill.setStatus("Chưa xác nhận đơn hàng");
-				bill.setDelivery(usersService.get((long) 2));
+                bill.setStatus("Đặt hàng thành công");
+                bill.setIdUser(u);
+                				
+                if(pttt == 1) {
+                	bill.setNote("Thanh toán bằng thẻ quốc tế Visa");
+                }
+                else if(pttt == 2) {
+                	bill.setNote("Thanh toán bằng thẻ ATM");
+                }
+                else {
+                	bill.setNote("Thanh toán tiền mặt khi nhận hàng");
+                }
+                
+                Calendar cal = Calendar.getInstance();
+	            
+			    cal.add(Calendar.DAY_OF_MONTH, 2);
+			    Date dateAfter = cal.getTime();
+			    
+			    bill.setDeliveryDate(dateAfter);
+				bill.setActive(1);
+				
+//				bill.setDelivery(usersService.get((long) 2));
 				billService.add(bill);										
 				
 				BillDetail Billdetail = new BillDetail();
@@ -356,7 +377,10 @@ public class CartController {
 				}
 				session.removeAttribute("cart");	
 				
-				sendEmail(u, bill);				
+				sendEmail(u, bill);			
+				
+				 model.addAttribute("idBill", bill.getId());
+				 model.addAttribute("email", u.getEmail());
 			}			
 		}
 		else {
@@ -366,7 +390,9 @@ public class CartController {
 		
 		if(f) {
 			model.addAttribute("alert","success");
-            model.addAttribute("mes","Đặt hàng thành công. Quý khách vui lòng kiểm tra email để xác nhận đơn hàng");
+            model.addAttribute("mes","Đặt hàng thành công");
+                       
+            return "redirect:trackOrder";
 		}
 		else {
 			model.addAttribute("alert","danger");
@@ -497,11 +523,8 @@ public class CartController {
 	private boolean sendEmail(Users u, Bill bill) {
 		String content = "<p><b>Cảm ơn quý khách " + u.getName() + " đã đặt hàng tại T-Manga.vn,</b></p>"; 
 		content += "<p>T-Manga.vn rất vui thông báo đơn hàng #" + bill.getId() + " của quý khách đã được tiếp nhận và đang trong quá trình xử lý.</p>";
-		content += "<p>Quý khách có thể bấm vào <b>Xem chi tiết đơn hàng</b> để kiểm tra lại thông tin đơn hàng của mình</p>";
-		content += "<p><a href='http://localhost:8080/tmanga/controller/trackOrder?idBill="+ bill.getId() + "&email=" + u.getEmail() + "'>Chi tiết đơn hàng</a></p>";
-		content += "<p>Xin quý khách vui lòng kiểm tra kỹ lại hóa đơn của mình, sau đó bấm vào nút <b>Xác nhận đặt hàng</b></p>";
-		content += "<p><a href='http://localhost:8080/tmanga/controller/confirm-order?id="+ bill.getId() + "&email=" + u.getEmail() + "'>Xác nhận đặt hàng</a></p>";
-		content += "<p>Một lần nữa T-Manga.vn cảm ơn quý khách.</p>";
+		content += "<p>Quý khách có thể bấm vào " + "<a href='http://localhost:8080/tmanga/controller/trackOrder?idBill=" + bill.getId() + "&email=" + u.getEmail() + "'>Chi tiết đơn hàng</a>" + " để kiểm tra lại thông tin đơn hàng của mình</p>";
+		content += "<br><p>Một lần nữa T-Manga.vn cảm ơn quý khách.</p>";
 		content += "<p>Kính chúc quý khách có một ngày tốt lành.</p>";
 		content += "<p><a href='http://localhost:8080/tmanga/controller/'><b>T-Manga.vn</b></a></p>";
 				

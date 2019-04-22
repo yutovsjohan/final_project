@@ -22,9 +22,9 @@
 			</div>
 		</c:if> 
 		
-		<c:if test="${bill.active == 0}">			
+		<%-- <c:if test="${bill.active == 0}">			
 	    	<p style="color:red;font-size: 18px; text-align: center; ">Quý khách vui lòng kiểm tra mail và xác nhận đơn đặt hàng</p>
-		</c:if>
+		</c:if> --%>
 		
 		<div class="table-responsive">
 		    <table class="table table-hover table-bordered">
@@ -47,34 +47,32 @@
 			<button class="btn btn-warning cancelOrder"  style="float: left; margin-bottom:20px"><i class="fa fa-trash-o fa-2x" aria-hidden="true"  title="Hủy đơn hàng" > Hủy đơn hàng</i></button>			
 		</c:if>
 		
-		<c:if test="${bill.active == 0 }">		  		
+		<%-- <c:if test="${bill.active == 0 }">		  		
 		    <div class="guimail">
 		      <button class="btn btn-info" id="send-email-confirm-bill" style="float: right;" ><i class="fa fa-2x fa-envelope-o" aria-hidden="true"></i> Gửi lại mail xác nhận đặt hàng</button>
 		    </div>
 		    <br><br><br>
-	    </c:if>  
+	    </c:if>  --%> 
 	    
 	    <div class="table-responsive">
 		  <table class="table table-bordered">
 		    <thead>
 		      <tr>
 		        <th>Thông tin người nhận</th>
-		        <th>Phương thức vận chuyển</th>
+		        <th>Thông tin khác</th>
 		      </tr>
 		    </thead>
 		    <tbody>
 		      <tr>
 		        <td>
 		          <p>Tên : ${bill.address.name}</p>
-		          <p>Địa chỉ : ${bill.address.address }</p>
+		          <p>Địa chỉ : ${bill.address.address }, ${bill.address.district.name }, ${bill.address.city.name }</p>
 		          <p>Điện thoại : ${bill.address.phone }</p>
 		        </td>
 		        <td>
-				<c:if test="${bill.active == 1 }">
 		          <p>Ngày giao hàng dự kiến: <fmt:formatDate pattern = "dd-MM-yyyy" value = "${bill.deliveryDate}" /></p>
-				</c:if>
-		          <p>Phí vận chuyển: 15.000 <u>đ</u></p>
-		          <p>Người giao: ${bill.delivery.name }</p>	          
+		          <p>${bill.note }</p>
+		          <p>Người giao: ${bill.delivery }</p>	          
 		        </td>
 		      </tr>
 		    </tbody>  
@@ -120,9 +118,9 @@
 		        <p>Thành tiền:</p>
 		      </td>
 		      <td colspan="2" style="text-align:left;">
-		      	<p style="color: orange"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${bill.total}" /> <u>đ</u></p>
+		      	<p style="color: orange"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${bill.total - 15000}" /> <u>đ</u></p>
 		      	<p style="color: green">15.000 <u>đ</u></p>
-		      	<p style="color: red"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${bill.total + 15000}" /> VNĐ </p>
+		      	<p style="color: red"><fmt:formatNumber type = "number" maxFractionDigits = "3" value = "${bill.total}" /> VNĐ </p>
 		      </td>
 		    </tr>
 		  </tbody>
