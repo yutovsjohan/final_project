@@ -23,7 +23,7 @@
 			<form:input path="email" id="email" name="email" placeholder="nhập email" required="required" type="email"/>
 			<form:input path="password" type="password" id="password" name="password" placeholder="nhập password" required="required"/> 
 			<input type="password" id="repassword" name="repassword" required="required" placeholder="nhập lại password">
-	       	<form:input path="phone" id="phone" name="phone" placeholder="nhập số điện thoại" required="required" type="text"/>
+	       	<form:input path="phone" id="phone" name="phone" placeholder="nhập số điện thoại" required="required" type="text" maxlength="10"/>
 	       	<i id="showpw" class="fa fa-eye" aria-hidden="true" title="Hiện thị password" style="font-size:20px"></i> 
 	       	<input class="btn btn-success" id="submit" name="submit" id="submit" value="Đăng ký" type="submit"> 	 
  		</form:form>

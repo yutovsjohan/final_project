@@ -16,10 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.website.springmvc.entities.Address;
 import com.website.springmvc.entities.Author;
-import com.website.springmvc.entities.Users;
 import com.website.springmvc.libs.RemoveAccent;
 import com.website.springmvc.Services.AuthorService;;
 
@@ -37,19 +34,19 @@ public class AuthorAdminController {
 		ModelAndView model = new ModelAndView();
 		model.setViewName("admin/AuthorAdmin");
 		List<Author> authors = authorService.getListAuthors(0,0);
-		
+
 		int totalPage = 0;
 		int totalAuthors = 0;		
-		
+
 		totalAuthors = authors.size();
 		totalPage = totalAuthors / 10;
-		
+
 		if(totalAuthors % 10 != 0){
 			totalPage++;
 		}		
-		
+
 		int start = 1, end = 7;
-		
+
 		if(totalPage > 7){		
 			if(page - 3 > 0){	
 				if(page + 3 >= totalPage){	
@@ -65,12 +62,12 @@ public class AuthorAdminController {
 		else {
 			end = totalPage;
 		}
-		
+
 		model.addObject("start", start);
 		model.addObject("end", end);
-				
+
 		authors = authorService.getListAuthors(10*(page-1), 10);
-		
+
 		model.addObject("authors", authors);
 		model.addObject("totalpage", totalPage);
 		model.addObject("pageselected", page);
@@ -83,7 +80,7 @@ public class AuthorAdminController {
 							@RequestParam(name = "mode", defaultValue = "add") String mode,
 							@RequestParam(name = "id", defaultValue = "0") Long idAuthor){
 		String str = "redirect:authorAdmin";
-		
+
 		if(mode.equalsIgnoreCase("add")) {
 			Author author = new Author();
 			author.setName(name);
@@ -108,7 +105,7 @@ public class AuthorAdminController {
 		}		
 		return str;
 	}
-	
+
 	@RequestMapping(value = "/showHideAuthor", method = RequestMethod.POST)
 	public String showHide(HttpSession session, Model model,								
 							@RequestParam(name = "id", defaultValue = "0") Long idAuthor) {
@@ -131,18 +128,18 @@ public class AuthorAdminController {
 		}
 		return str;
 	}
-	
+
 	@RequestMapping(value = "/removeAuthor", method = RequestMethod.POST)
 	public void removeAddress(@RequestParam(name = "id") Long idAuthor, HttpServletResponse response) {
 		String str = "success";
-		
+
 		if(authorService.get(idAuthor) != null) {
 			authorService.delete(idAuthor);
 		}
 		else {
 			str = "fail";
 		}
-		
+
 		try {
 			response.getWriter().print(str);
 		} catch (IOException e) {

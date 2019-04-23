@@ -25,12 +25,12 @@ public class AuthorService {
 		Session session = this.sessionFactory.getCurrentSession();
 		Query query = null;
 		query = session.createQuery("from Author");
-		
+
 		if(maxResult != 0) {
 			query.setFirstResult(firstResult);
 			query.setMaxResults(maxResult);
 		}
-		
+
 		return query.list();
 	}
 	

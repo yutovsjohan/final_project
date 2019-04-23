@@ -134,6 +134,7 @@ $(document).ready(function(){
 	$("#save").click(function(){
 		var city = parseInt($('#city').val());
 		var district = parseInt($('#district').val());
+		var phone = $('#phone').val();
 				 
 		var f = true;
 		
@@ -144,6 +145,10 @@ $(document).ready(function(){
 		
 		else if(district == 0){
 			alert('Bạn chưa chọn Quận / Huyện');
+			f = false;
+		}
+		else if(!$.isNumeric(phone) || phone.length < 10){
+			alert('Điện thoại không hợp lệ');
 			f = false;
 		}
 				
@@ -257,7 +262,7 @@ $(document).ready(function(){
 		$("#repassword" ).prop("type","password");	
 	});
 	
-//validate email, password (login, register page)
+//validate email, password, phone (login, register page)
 	$("form").keyup(function() {
 		$("input[type=submit]").removeAttr('disabled');
 		$("#submit").css({
@@ -276,7 +281,7 @@ $(document).ready(function(){
 	
 	$("#submit").click(function(){
 		var ps = $("#password").val();
-		
+		var phone = $("#phone").val();
 		var email = $("#email").val();
 		var f = true;
 		
@@ -292,7 +297,12 @@ $(document).ready(function(){
 				alert('Mật khẩu không khớp');
 				f = false;				
 			}
-		}		
+		}	
+		
+		if(!$.isNumeric(phone) || phone.length < 10){
+			alert('Điện thoại không hợp lệ');
+			f = false;
+		}
 		
 		if(!f){
 			$("input[type=submit]").attr('disabled','disabled');

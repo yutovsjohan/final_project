@@ -9,7 +9,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>T-Manga</title>
+<title>Nhà xuất bản</title>
 
 <link rel="shortcut icon" href="<c:url value="/images/logo.png" />" />
 <link href="<c:url value="/resources/css/bootstrap.min.css" />"
@@ -108,21 +108,12 @@ html, body, h1, h2, h3, h4, h5 {
 
 	<!-- !PAGE CONTENT! -->
 	<div class="w3-main" style="margin-left: 300px; margin-top: 43px;">
-
-
 		<hr>
-		<div class="w3-container">
-			<div class="col-md-6 col-lg-6 col-xs-6">
-				<h1>Publishing Company Admin</h1>
-			</div>
-			<div class="col-md-3 col-lg-3 col-xs-3"></div>
-			<div class="col-md-3 col-lg-3 col-xs-3">
-				<button class="btn" type="button"
-					style="background-color: green; color: white">Add</button>
-			</div>
-		</div>
+		<h1>Danh sách nhà xuất bản</h1>
+		<button class="btn btn-success publishing" dataMode="add">Thêm nhà xuất bản</button>
 		<hr>
-		<div class="row">
+		
+		<!-- <div class="row">
 			<div class="col-md-1 col-lg-1 col-xs-1">
 				<button class="btn btn-primary dropdown-toggle" type="button"
 					data-toggle="dropdown">
@@ -132,7 +123,7 @@ html, body, h1, h2, h3, h4, h5 {
 
 					<li><a href="#">ID</a></li>
 					<li><a href="#">Name</a></li>
-					<!-- <li><a href="#">Unsigned Name</a></li> -->
+					<li><a href="#">Unsigned Name</a></li>
 					<li><a href="#">Status</a></li>
 
 				</ul>
@@ -159,7 +150,8 @@ html, body, h1, h2, h3, h4, h5 {
 				<input class="form-control" id="myInput" type="text"
 					placeholder="Search..">
 			</div>
-		</div>
+		</div> -->
+		
 		<hr>
 		<div class="row">
 			<div class="col-lg-1 col-md-1 col-xs-1"></div>
@@ -168,22 +160,33 @@ html, body, h1, h2, h3, h4, h5 {
 					<thead>
 						<tr>
 							<th>ID</th>
-							<th>Name</th>
-							<!-- <th>Author UnsignedName</th> -->
-							<th>Status</th>
+							<th>Tên nhà xuất bản</th>
+							<th>Trạng thái</th>
 							<th></th>
 							<th></th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach items="${PubComs}" var="PubCom">
-							<tr>
+							<tr class="PCList" dataId="${PubCom.id }">
 								<td>${PubCom.id}</td>
-								<td>${PubCom.name}</td>
-								<%-- <td>${PubCom.unsignedName}</td> --%>
-								<td>${PubCom.status}</td>
-								<td><button class="btn btn-info">Update</button></td>
-								<td><button class="btn btn-danger">Delete</button></td>
+								<td class="name" dataId="${PubCom.id }">${PubCom.name}</td>
+								<td>
+									<c:choose>
+										<c:when test="${PubCom.status == 0 }">
+											<span class="showHidePC" dataId=${PubCom.id } action="0" style="font-size: 20px;"><i class="fa fa-eye-slash" title="Bấm để hiện lên trên trang web"></i></span>
+										</c:when>
+										<c:otherwise>
+											<span class="showHidePC" dataId=${PubCom.id } action="1" style="font-size: 20px;"><i class="fa fa-eye" title="Bấm để ẩn trên trang web"></i></span>
+										</c:otherwise>
+									</c:choose>
+								</td>
+								<td><button class="btn btn-info publishing" dataId=${PubCom.id } dataMode="edit">Sửa</button></td>
+								<td>
+									<c:if test="${PubCom.comics.size() == 0 }">
+										<button class="btn btn-danger deleteLine" dataId="${PubCom.id }">Xóa</button>
+									</c:if>
+								</td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -192,18 +195,34 @@ html, body, h1, h2, h3, h4, h5 {
 			</div>
 		</div>
 
-		<div class="row">
-			<div class="col-lg-5 col-md-5 col-xs-5"></div>
-			<div class="col-lg-7 col-md-7 col-xs-7">
-				<ul class="pagination">
-					<li class="previous"><a href="#">Previous</a></li>
-					<li><a href="#">1</a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li class="next"><a href="#">Next</a></li>
-				</ul>
-			</div>
-		</div>
+		<center>
+			<ul class="pagination">
+				<c:if test="${totalpage != 1 && totalpage != 0 }">
+					<c:if test="${1 != pageselected }">
+						<li><a href="pubcomAdmin?p=1" rel="next" style="border-radius:20px"> << </a></li>
+						<li><a href="pubcomAdmin?p=${pageselected - 1}" rel="next"> < </a></li>
+					</c:if>			
+
+					<c:forEach var = "i" begin="${start }" end="${end}">
+						<c:choose>
+							<c:when test="${i == pageselected }">
+								<li class="active"><span style="border-radius:20px">${i }</span></li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="pubcomAdmin?p=${i}">${i }</a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+
+					<c:if test="${totalpage != pageselected }">
+						<li><a href="pubcomAdmin?p=${pageselected + 1}" rel="next"> > </a></li>
+						<li><a href="pubcomAdmin?p=${totalpage}" rel="next" style="border-radius:20px"> >> </a></li>
+					</c:if>	
+
+				</c:if>
+			</ul>
+		</center>
+		
 	</div>
 	<hr>
 	<br>
@@ -405,5 +424,102 @@ html, body, h1, h2, h3, h4, h5 {
 <script src="<c:url value="/resources/js/jquery.prettyPhoto.js" />"></script>
 <script src="<c:url value="/resources/js/main.js" />"></script>
 
+
+
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('.publishing').click(function(){
+			  var mode = $(this).attr("dataMode");
+			  var name = prompt("Nhập tên danh mục:");
+			  if (name == null || name == "") {
+			    
+			  }
+			  else {
+				  var route = "publishCompany";
+				  var id = 0;
+				 
+				  if(mode == "edit"){
+					  id = $(this).attr("dataId");
+					  $(".name").each(function(){
+							if($(this).attr("dataId") == id){
+								$(this).text(name);	
+							}						
+					  })
+				  }
+				 $.ajax({
+					url : route,
+					type : 'POST',
+					data : {
+						mode: mode,
+						name: name,
+						id: id
+					},
+					success: function(data){
+						
+					}
+				})
+			  }
+			})
+			
+			$('.showHidePC').click(function(){
+				var id= $(this).attr("dataId");
+				var action = parseInt($(this).attr("action"));
+				
+				if(action == 0){
+					$(this).attr("action","1");
+					$(this).html('<i class="fa fa-eye" title="Bấm để ẩn trên trang web">');
+				}
+				else if(action == 1){
+					$(this).attr("action","0");
+					$(this).html('<i class="fa fa-eye-slash" title="Bấm để hiện lên trên trang web">');
+				}
+				
+				$.ajax({
+					url : "showHidePublishing",
+					type : 'POST',
+					data : {
+						id: id
+					},
+					success: function(data){					
+						
+					}
+				})
+			})
+			
+			$('.deleteLine').click(function(){
+				if(confirm("Bạn có thực sự muốn xóa ?")){
+					var buttonRemoveId = parseInt($(this).attr('dataId'));			
+					var route = "removePublishing";
+					
+					$.ajax({
+						url : route,
+						type : 'POST',
+						data : {
+							id: buttonRemoveId
+						},
+						success: function(data){
+							if(data == 'success'){
+								var divId;
+								$('.PCList').each(function () {
+									divId = parseInt($(this).attr('dataId'));
+									if(buttonRemoveId == divId){
+										$(this).remove();
+									}
+								})
+							}
+							else{
+								alert('Xóa thất bại');
+							}
+						}
+					})
+				 }
+			     else{
+			        return false;
+			     }
+			})
+			
+		})
+	</script>
 </body>
 </html>

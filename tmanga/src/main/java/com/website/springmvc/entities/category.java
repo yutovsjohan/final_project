@@ -32,9 +32,8 @@ public class Category implements java.io.Serializable{
 	@Column(name = "status")
 	private byte status;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
-	private Set<Comic> comics = new HashSet<Comic>();
-	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "category")
+	private Set<Comic> comics = new HashSet<Comic>();	
 	
 	public Category() {
 		super();
@@ -71,6 +70,14 @@ public class Category implements java.io.Serializable{
 
 	public void setStatus(byte status) {
 		this.status = status;
+	}
+
+	public Set<Comic> getComics() {
+		return comics;
+	}
+
+	public void setComics(Set<Comic> comics) {
+		this.comics = comics;
 	}
 
 }

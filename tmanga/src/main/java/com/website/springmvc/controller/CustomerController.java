@@ -248,7 +248,7 @@ public class CustomerController {
 		}
 		else if(mode.equalsIgnoreCase("edit")) {
 			word = "Sửa";
-		}			
+		}
 		
 		if(address.getDistrict().getId() == (long)0 || address.getCity().getId() == (long)0) {
 			str = "redirect:add-address";
@@ -270,13 +270,11 @@ public class CustomerController {
 			
 			if(mode.equalsIgnoreCase("add")) {
 				addressService.add(address);
-				model.addAttribute("mes", word + " thành công");
 			}
 			else if(mode.equalsIgnoreCase("edit")) {
 				addressService.update(address);
-				model.addAttribute("mes", word + " thành công");
 			}			
-			
+			model.addAttribute("mes", word + " thành công");
 			model.addAttribute("alert", "success");
 			
 			if(session.getAttribute("url").toString().equalsIgnoreCase("shipping")) {

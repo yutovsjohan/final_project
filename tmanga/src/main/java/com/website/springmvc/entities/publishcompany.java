@@ -32,7 +32,7 @@ public class PublishCompany implements java.io.Serializable{
 	@Column(name = "status")
 	private byte status;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "publishcompany")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "publishcompany")
 	private Set<Comic> comics = new HashSet<Comic>();
 	
 	
@@ -71,6 +71,14 @@ public class PublishCompany implements java.io.Serializable{
 
 	public void setStatus(byte status) {
 		this.status = status;
+	}
+
+	public Set<Comic> getComics() {
+		return comics;
+	}
+
+	public void setComics(Set<Comic> comics) {
+		this.comics = comics;
 	}
 
 }

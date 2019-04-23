@@ -27,7 +27,7 @@
 		  </div>
 		  <div class="form-group">
 		    <label for="phone">Điện thoại</label>
-		    <input type="text" class="form-control" value="${sessionScope.account.phone }" name="phone" required="required">
+		    <input type="text" class="form-control" value="${sessionScope.account.phone }" name="phone" id="phone" required="required" maxlength="10">
 		  </div>
 		  <div class="form-group">
 		  	<input type="checkbox" name="changePassword" id="changePassword">

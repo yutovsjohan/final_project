@@ -110,19 +110,10 @@ html, body, h1, h2, h3, h4, h5 {
 
 	<!-- !PAGE CONTENT! -->
 	<div class="w3-main" style="margin-left: 300px; margin-top: 43px;">
-
-
-
-
 		<hr>
 		<div class="w3-container">
-			<div class="col-md-3 col-lg-3 col-xs-3">
-				<h1>All Author</h1>
-			</div>
-			<div class="col-md-6 col-lg-6 col-xs-6"></div>
-			<div class="col-md-3 col-lg-3 col-xs-3">
-				<button class="btn btn-success author" dataMode="add" >Add Author</button>
-			</div>
+			<h1>Danh sách tác giả</h1>
+			<button class="btn btn-success author" dataMode="add">Thêm tác giả</button>
 		</div>
 		<hr>
 
@@ -134,9 +125,8 @@ html, body, h1, h2, h3, h4, h5 {
 					<thead>
 						<tr>
 							<th>ID</th>
-							<th>Author Name</th>
-							<!-- <th>Author UnsignedName</th> -->
-							<th>Status</th>
+							<th>Tên tác giả</th>
+							<th>Trạng thái</th>
 							<th></th>
 							<th></th>
 						</tr>
@@ -146,7 +136,6 @@ html, body, h1, h2, h3, h4, h5 {
 							<tr class="authorList" dataId="${author.id }">
 								<td>${author.id}</td>
 								<td class="name" dataId="${author.id }">${author.name}</td>
-								<%-- <td>${author.unsignedName}</td> --%>
 								<td>
 									<c:choose>
 										<c:when test="${author.status == 0 }">
@@ -157,10 +146,10 @@ html, body, h1, h2, h3, h4, h5 {
 										</c:otherwise>
 									</c:choose>
 								</td>
-								<td><button class="btn btn-info author" dataId=${author.id } dataMode="edit">Update</button></td>
+								<td><button class="btn btn-info author" dataId=${author.id } dataMode="edit">Sửa</button></td>
 								<td>
 									<c:if test="${author.comics.size() == 0 }">
-										<button class="btn btn-danger deleteLine" dataId="${author.id }">Delete</button>
+										<button class="btn btn-danger deleteLine" dataId="${author.id }">Xóa</button>
 									</c:if>
 								</td>
 							</tr>
@@ -177,7 +166,7 @@ html, body, h1, h2, h3, h4, h5 {
 						<li><a href="authorAdmin?p=1" rel="next" style="border-radius:20px"> << </a></li>
 						<li><a href="authorAdmin?p=${pageselected - 1}" rel="next"> < </a></li>
 					</c:if>			
-		
+
 					<c:forEach var = "i" begin="${start }" end="${end}">
 						<c:choose>
 							<c:when test="${i == pageselected }">
@@ -188,15 +177,16 @@ html, body, h1, h2, h3, h4, h5 {
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
-						
+
 					<c:if test="${totalpage != pageselected }">
 						<li><a href="authorAdmin?p=${pageselected + 1}" rel="next"> > </a></li>
 						<li><a href="authorAdmin?p=${totalpage}" rel="next" style="border-radius:20px"> >> </a></li>
 					</c:if>	
-					
+
 				</c:if>
 			</ul>
 		</center>
+		
 	</div>
 	<hr>
 	<br>
@@ -359,7 +349,6 @@ html, body, h1, h2, h3, h4, h5 {
 			mySidebar.style.display = "none";
 			overlayBg.style.display = "none";
 		}
-		
 	</script>
 
 </body>
