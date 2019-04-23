@@ -34,7 +34,7 @@
 					      <tr>
 					         <td>${bill.id }</td>
 					         <td><fmt:formatDate pattern = "dd-MM-yyyy" value = "${bill.orderDate}" /></td>
-					         <td>${bill.address }</td>
+					         <td>${bill.address.address }, ${bill.address.district.name }, ${bill.address.city.name }</td>
 					         <td>
 					         	<c:choose>
 					         		<c:when test="${bill.active == 1 || bill.active == 2}"> <fmt:formatDate pattern = "dd-MM-yyyy" value = "${bill.deliveryDate }"/> </c:when>

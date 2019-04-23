@@ -32,7 +32,7 @@ public class Author implements java.io.Serializable{
 	@Column(name = "status")
 	private byte status;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "author")
 	private Set<Comic> comics = new HashSet<Comic>();
 
 	public Author() {

@@ -242,9 +242,17 @@ public class CustomerController {
 								@ModelAttribute("Address") Address address,
 								@RequestParam(name = "mode", defaultValue = "add") String mode) {
 		String str = "redirect:addressBook";
+		String word = "";
+		if(mode.equalsIgnoreCase("add")) {
+			word = "Thêm";
+		}
+		else if(mode.equalsIgnoreCase("edit")) {
+			word = "Sửa";
+		}			
+		
 		if(address.getDistrict().getId() == (long)0 || address.getCity().getId() == (long)0) {
 			str = "redirect:add-address";
-			model.addAttribute("mes", "Thêm thất bại");
+			model.addAttribute("mes", word + " thất bại");
 			model.addAttribute("alert", "danger");
 		}
 		else {
@@ -262,11 +270,11 @@ public class CustomerController {
 			
 			if(mode.equalsIgnoreCase("add")) {
 				addressService.add(address);
-				model.addAttribute("mes", "Thêm thành công");
+				model.addAttribute("mes", word + " thành công");
 			}
 			else if(mode.equalsIgnoreCase("edit")) {
 				addressService.update(address);
-				model.addAttribute("mes", "Sửa thành công");
+				model.addAttribute("mes", word + " thành công");
 			}			
 			
 			model.addAttribute("alert", "success");
