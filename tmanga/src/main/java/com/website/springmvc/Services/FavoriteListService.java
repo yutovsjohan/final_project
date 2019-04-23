@@ -30,7 +30,7 @@ public class FavoriteListService {
 	public List<FavoriteList> getListByUser(Long idUser, int firstResult, int maxResult){
 		Session session = this.sessionFactory.getCurrentSession();
 		Query query = null;
-		query = session.createQuery("from FavoriteList where user.id = :idUser");
+		query = session.createQuery("from FavoriteList where user.id = :idUser order by created_at desc");
 		query.setParameter("idUser", idUser);
 		if(maxResult != 0) {
 			query.setFirstResult(firstResult);

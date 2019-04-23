@@ -94,15 +94,30 @@ public class ProductController {
 			else if(key == 1) {
 				//add favorite list
 				Users u = (Users) session.getAttribute("account");
+				Comic comic = comicService.get(idComic);
 				
-				FavoriteList favoriteList = favoriteListService.getByUsersAndComic(u.getId(), idComic);
+//				FavoriteList favoriteList = favoriteListService.getByUsersAndComic(u.getId(), idComic);
 				
-				if(favoriteList == null) {
-					favoriteList = new FavoriteList();
-					favoriteList.setComic(comicService.get(idComic));
-					favoriteList.setUser(u);
-					favoriteListService.add(favoriteList);
+				if(comic != null && u != null) {
+					if(favoriteListService.getByUsersAndComic(u.getId(), comic.getId()) == null) {
+						List<FavoriteList> list = favoriteListService.getListByUser(u.getId(), 0, 36);
+						
+						if(list.size() == 36) {
+							list.remove(list.lastIndexOf(list));
+						}
+						FavoriteList f = new FavoriteList();
+						f.setComic(comic);
+						f.setUser(u);
+						favoriteListService.add(f);
+					}
 				}
+				
+//				if(favoriteList == null) {
+//					favoriteList = new FavoriteList();
+//					favoriteList.setComic(comicService.get(idComic));
+//					favoriteList.setUser(u);
+//					favoriteListService.add(favoriteList);
+//				}
 				else {
 					str = "exist";
 				}						

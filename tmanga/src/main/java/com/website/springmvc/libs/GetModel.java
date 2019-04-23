@@ -224,7 +224,7 @@ public class GetModel {
 		Long idAuthor = comicService.get(name).getAuthor().getId();
 		Long idCategory = comicService.get(name).getCategory().getId();
 		Long idPC = comicService.get(name).getPublishcompany().getId();
-		
+				
 		getSideBar(model);
 		
 		model.addObject("views","productDetail");
@@ -237,7 +237,21 @@ public class GetModel {
 		
 		if(session.getAttribute("account") != null) {
 			Users u = (Users) session.getAttribute("account");
-			List<FavoriteList> list = favoriteListService.getListByUser(u.getId(), 0, 4);
+			Comic comic = comicService.get(name);
+			List<FavoriteList> list;
+//			if(favoriteListService.getByUsersAndComic(u.getId(), comic.getId()) == null) {
+//				 list = favoriteListService.getListByUser(u.getId(), 0, 36);
+//				
+//				if(list.size() == 36) {
+//					list.remove(list.lastIndexOf(list));
+//				}
+//				FavoriteList f = new FavoriteList();
+//				f.setComic(comic);
+//				f.setUser(u);
+//				favoriteListService.add(f);
+//			}			
+			
+			list = favoriteListService.getListByUser(u.getId(), 0, 4);
 			
 			model.addObject("favoritelist", list);
 		}

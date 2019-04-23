@@ -276,7 +276,7 @@ $(document).ready(function(){
 	
 	$("#submit").click(function(){
 		var ps = $("#password").val();
-		var reps = $("#repassword").val();
+		
 		var email = $("#email").val();
 		var f = true;
 		
@@ -285,10 +285,14 @@ $(document).ready(function(){
 			f = false;				
 		}
 		
-		else if(ps != reps){
-			alert('Mật khẩu không khớp');
-			f = false;				
-		}
+		if( $("#repassword").length ) {
+			var reps = $("#repassword").val();
+			
+			if(ps != reps){
+				alert('Mật khẩu không khớp');
+				f = false;				
+			}
+		}		
 		
 		if(!f){
 			$("input[type=submit]").attr('disabled','disabled');
