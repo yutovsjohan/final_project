@@ -1,4 +1,17 @@
 $(document).ready(function(){
+	//payment page
+	$("#pttt").change(function() {
+		var pttt = parseInt($('#pttt').val());
+		if(pttt == -1){
+			$('#order').attr('disabled', 'disabled');
+			$('#note').removeAttr('hidden');
+		}
+		else{
+			$('#order').removeAttr('disabled');
+			$('#note').attr('hidden','');
+		}
+	})
+	
 	//shipping page
 //	$(".btnShipping").click(function(){
 //		var id = $(this).attr('dataId');
@@ -299,9 +312,11 @@ $(document).ready(function(){
 			}
 		}	
 		
-		if(!$.isNumeric(phone) || phone.length < 10){
-			alert('Điện thoại không hợp lệ');
-			f = false;
+		if( $("#phone").length ) {
+			if(!$.isNumeric(phone) || phone.length < 10){
+				alert('Điện thoại không hợp lệ');
+				f = false;
+			}
 		}
 		
 		if(!f){

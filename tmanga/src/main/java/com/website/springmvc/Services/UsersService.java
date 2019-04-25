@@ -23,6 +23,11 @@ public class UsersService {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
+	public List<Users> getListStaff() {
+		Session session = this.sessionFactory.getCurrentSession();
+		return session.createQuery("from Users where role.id != 2").list();
+	}
+	
 	public Users get(String email) {
 		Session session = this.sessionFactory.getCurrentSession();
 		return (Users) session.createQuery("from Users where email = :email").setParameter("email", email).uniqueResult();

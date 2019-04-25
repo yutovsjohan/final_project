@@ -28,6 +28,7 @@ import com.website.springmvc.Services.BillDetailService;
 import com.website.springmvc.Services.ComicService;
 import com.website.springmvc.Services.OrderStatusService;
 import com.website.springmvc.Services.UsersService;
+import com.website.springmvc.config.MyConstants;
 import com.website.springmvc.entities.Address;
 import com.website.springmvc.entities.Bill;
 import com.website.springmvc.entities.BillDetail;
@@ -283,7 +284,7 @@ public class CartController {
 	public ModelAndView getPaymentPage(HttpSession session,
 									@RequestParam(name = "mes", defaultValue = "") String mes,
 									@RequestParam(name = "alert", defaultValue = "") String alert,
-									@RequestParam(name = "id", defaultValue = "") Long idAddress){
+									@RequestParam(name = "id", defaultValue = "0") Long idAddress){
 		ModelAndView model = new ModelAndView();
 		if(session.getAttribute("account") == null) {
 			getModel.getHome(model, session);
@@ -528,7 +529,7 @@ public class CartController {
 		content += "<p>Kính chúc quý khách có một ngày tốt lành.</p>";
 		content += "<p><a href='http://localhost:8080/tmanga/controller/'><b>T-Manga.vn</b></a></p>";
 				
-		return SendEmail.sendGrid("yutovsjohan@gmail.com", u.getEmail(), "Xác nhận đơn hàng #" + bill.getId(), content, true);
+		return SendEmail.sendGrid(MyConstants.EMAIL, u.getEmail(), "Xác nhận đơn hàng #" + bill.getId(), content, true);
 	}
 		
 	private long checkCart(Long idUser) {

@@ -297,8 +297,11 @@ public class UserController {
 	@RequestMapping(value = "/userAdmin", method = RequestMethod.GET)
 	public ModelAndView getUserAdmin() {
 		ModelAndView model = new ModelAndView();
-		model.setViewName("admin/UserAdmin");
-		model.addObject("users", usersService.getAll());
+		model.setViewName("admin/layoutAdmin");
+		model.addObject("views","UserAdmin");
+		model.addObject("title","Danh sách User");
+		
+		model.addObject("users", usersService.getListStaff());
 		return model;
 	}
 	

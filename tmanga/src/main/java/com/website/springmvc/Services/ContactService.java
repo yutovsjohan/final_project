@@ -15,12 +15,25 @@ import com.website.springmvc.entities.Contact;
 @Transactional
 @Service
 public class ContactService {
+	@Autowired
+	private SessionFactory sessionFactory;
 	
 	@Autowired
 	DAO<Contact> contactDAO;
 	
 	@Autowired
 	private SessionFactory sessionFactiory;
+	
+	public List<Contact> getAll(int firstResult, int maxResult) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from Contact order by created_at desc");
+		
+		if(maxResult != 0) {
+			query.setFirstResult(firstResult);
+			query.setMaxResults(maxResult);
+		}
+		return query.list();
+	}
 	
 	public Long getUnReadMessage() {
 		Session session = this.sessionFactiory.getCurrentSession();

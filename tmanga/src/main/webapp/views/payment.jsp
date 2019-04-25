@@ -61,19 +61,21 @@
 		               	<p><span class="glyphicon glyphicon-ok" style="color:green"></span> &nbsp;&nbsp; Dự kiến giao hàng: <fmt:formatDate pattern = "dd-MM-yyyy" value = "${deliveryDate }" /></p>
 		               			               	
 		               	<div class="form-group">
-						    <label for="pttt"><span class="glyphicon glyphicon-ok" style="color:green"></span>&nbsp;&nbsp; Chọn hình thức thanh toán</label>
+						    <label for="pttt"><span class="glyphicon glyphicon-ok" style="color:green"></span>&nbsp;&nbsp; Thanh toán</label>
 						    <select name="pttt" class="form-control" required="required" id="pttt">
+						    	<option value="-1">--- Chọn hình thức thanh toán ---</option>
 						    	<option value="0">Thanh toán tiền mặt khi nhận hàng</option>
 						    	<option value="1">Thanh toán bằng thẻ quốc tế Visa</option>
 						    	<option value="2">Thanh toán bằng thẻ ATM</option>
 						    </select>						    	
+						    <p style="color:red" id="note">* Bạn cần phải chọn hình thức thanh toán trước khi đặt mua</p>
 						  </div>   
 		            </div>
 		        </div>
 			</div>
 		</div>
 		
-		<button type=submit class="btn btn-success" style="float:right">Đặt mua</button>
+		<button class="btn btn-success" style="float:right" disabled="disabled" id="order">Đặt mua</button>
 		</form>
 	</c:if>
 </div>

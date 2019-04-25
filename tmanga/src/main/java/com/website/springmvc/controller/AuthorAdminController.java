@@ -32,7 +32,10 @@ public class AuthorAdminController {
 									@RequestParam(name = "alert", defaultValue = "") String alert,
 									@RequestParam(name = "p", defaultValue = "1") int page) {
 		ModelAndView model = new ModelAndView();
-		model.setViewName("admin/AuthorAdmin");
+		model.setViewName("admin/layoutAdmin");
+		model.addObject("views","AuthorAdmin");
+		model.addObject("title","Danh sách tác giả");
+		
 		List<Author> authors = authorService.getListAuthors(0,0);
 
 		int totalPage = 0;

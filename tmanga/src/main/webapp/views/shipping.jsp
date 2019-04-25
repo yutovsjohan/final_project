@@ -15,7 +15,7 @@
 		</c:when>
 		<c:otherwise>
 			<div class="row">
-				<c:forEach items="${addressList }" var="add">				
+				<c:forEach items="${addressList }" var="add">
 					<div class="col-lg-6 col-md-6 col-sm-6">
 						<div class="panel panel-default addressBook <c:if test='${add.choose == 1 }'>address-active</c:if>">
 						    <div class="panel-body">
@@ -31,7 +31,8 @@
 					</div>
 				</c:forEach>
 			</div>
-			Bạn muốn giao hàng đến địa chỉ khác? <a href="${pageContext.request.contextPath}/controller/customer/address?mode=add">Thêm địa chỉ giao hàng mới</a>
+			<p>Bạn muốn giao hàng đến địa chỉ khác? <a href="${pageContext.request.contextPath}/controller/customer/address?mode=add">Thêm địa chỉ giao hàng mới</a></p>
+			<a class="btn btn-success" href="${pageContext.request.contextPath}/controller/payment" style="float:right">Tiếp tục đặt hàng</a>
 		</c:otherwise>
 	</c:choose>
 </div>

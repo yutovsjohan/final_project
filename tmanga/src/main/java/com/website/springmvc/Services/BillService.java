@@ -21,6 +21,18 @@ public class BillService {
 	@Autowired
 	DAO<Bill> billDAO;
 	
+	public List<Bill> getAll(int firstResult, int maxResult) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from Bill order by orderDate desc");
+		
+		if(maxResult != 0) {
+			query.setFirstResult(firstResult);
+			query.setMaxResults(maxResult);
+		}
+		return query.list();
+	}
+	
+	
 	public Bill getBillByIdBillAndUser(Long idBill, Long idUser) {
 		Session session = this.sessionFactory.getCurrentSession();
 		return (Bill) session.createQuery("from Bill where id = :idBill and idUser.id = :idUser").setParameter("idBill", idBill).setParameter("idUser", idUser).uniqueResult();

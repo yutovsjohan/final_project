@@ -32,7 +32,10 @@ public class PublishCompanyAdminController {
 									@RequestParam(name = "alert", defaultValue = "") String alert,
 									@RequestParam(name = "p", defaultValue = "1") int page) {
 		ModelAndView model = new ModelAndView();
-		model.setViewName("admin/PublishingAdmin");
+		model.setViewName("admin/layoutAdmin");
+		model.addObject("views","PublishingAdmin");
+		model.addObject("title","Danh sách nhà xuất bản");
+		
 		List<PublishCompany> pubComs = pubcomService.getListPublishCompany(0,0);
 
 		int totalPage = 0;

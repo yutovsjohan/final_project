@@ -25,6 +25,7 @@ import com.website.springmvc.Services.OrderStatusService;
 import com.website.springmvc.Services.PublishCompanyService;
 import com.website.springmvc.Services.UsersService;
 import com.website.springmvc.entities.Address;
+import com.website.springmvc.entities.Bill;
 import com.website.springmvc.entities.City;
 import com.website.springmvc.entities.Comic;
 import com.website.springmvc.entities.District;
@@ -280,9 +281,16 @@ public class GetModel {
 		model.addObject("views","payment");
 		model.addObject("title","Thanh toán và đặt mua");
 		
-		Address selectedAddress = addressService.get(idAddress);
+		Address selectedAddress;
 		Users u = (Users) session.getAttribute("account");
 		
+		if(idAddress == (long) 0) {
+			selectedAddress = addressService.getDefaultAddressByUser(u.getId());
+		}
+		else {
+			selectedAddress = addressService.get(idAddress);
+		}
+				
 		if((long) selectedAddress.getIdUser().getId() == (long) u.getId()) {
 			if(selectedAddress.getChoose() == 0) {				
 				Address defaultAddress = addressService.getDefaultAddressByUser(u.getId());
@@ -464,6 +472,50 @@ public class GetModel {
 		
 		if(session.getAttribute("account") != null) {
 			model.addObject("city", cityService.getAllSortByName());			
+		}
+	}
+	
+	public void getLayoutAdmin(ModelAndView model) {
+		model.setViewName("admin/layoutAdmin");
+	}
+	
+	public void getListBillPage(ModelAndView model, int page) {
+		getLayoutAdmin(model);
+		
+		List<Bill> bills = billService.getAll();
+		
+		int totalPage = 0;
+		int totalBill = 0;		
+		
+		totalBill = bills.size();
+		totalPage = totalBill / 10;
+		
+		if(totalBill % 10 != 0){
+			totalPage++;
+		}
+		
+		bills = billService.getAll(10*(page-1), 10);
+		
+		model.addObject("bills", bills);
+		model.addObject("totalpage", totalPage);
+		model.addObject("pageselected", page);
+		model.addObject("totalbill", totalBill);
+		
+		model.addObject("views","BillAdmin");
+		model.addObject("title","Danh sách đơn hàng");
+	}
+	
+	public void getBillDetailPage(ModelAndView model, Long idBill) {
+		if(idBill == (long) 0 || billService.get(idBill) == null) {
+			
+		}
+		else {
+			getLayoutAdmin(model);
+			model.addObject("bill", billService.get(idBill));
+			model.addObject("billDetail", billDetailService.getBillDetailByIdBill(idBill));
+			model.addObject("orderStatus", orderStatusService.getOrderStatusByIdBill(idBill));
+			model.addObject("views","BillDetailAdmin");
+			model.addObject("title","Chi tiết đơn hàng " + idBill.toString());
 		}
 	}
 }

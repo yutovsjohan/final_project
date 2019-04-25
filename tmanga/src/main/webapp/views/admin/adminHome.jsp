@@ -60,7 +60,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Outcome Statistic</a>
     <a href="userAdmin" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>  User Management</a>
     <a href="cateAdmin" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>  Category Management</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  Orders</a>
+    <a href="bill" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>  Orders Management</a>
     <a href="contactAdmin" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>  Contact Management</a>
     <a href="authorAdmin" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bank fa-fw"></i>  Author Management</a>
     <a href="pubcomAdmin" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  Publishing Company</a>
@@ -300,6 +300,7 @@ function w3_close() {
 	<script src="<c:url value="/resources/js/price-range.js" />" ></script>
     <script src="<c:url value="/resources/js/jquery.prettyPhoto.js" />" ></script>
     <script src="<c:url value="/resources/js/main.js" />" ></script>
+    <script type="text/javascript" language="javascript" src="<c:url value="/resources/js/ckeditor.js" />"></script>
 
 </body>
 </html>

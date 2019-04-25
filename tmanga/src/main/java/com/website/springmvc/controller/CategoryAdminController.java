@@ -32,7 +32,10 @@ public class CategoryAdminController {
 									@RequestParam(name = "alert", defaultValue = "") String alert,
 									@RequestParam(name = "p", defaultValue = "1") int page) {
 		ModelAndView model = new ModelAndView();
-		model.setViewName("admin/CategoryAdmin");
+		model.setViewName("admin/layoutAdmin");
+		model.addObject("views","CategoryAdmin");
+		model.addObject("title","Danh sách danh mục");
+		
 		List<Category> categories = cateService.getListCategories(0,0);
 
 		int totalPage = 0;
