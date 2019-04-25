@@ -1,0 +1,14 @@
+eclipse.preferences.version=1
+encoding//src/main/java/com/website/springmvc/controller/AuthorAdminController.java=UTF-8
+encoding//src/main/java/com/website/springmvc/controller/CartController.java=UTF-8
+encoding//src/main/java/com/website/springmvc/controller/CategoryAdminController.java=UTF-8
+encoding//src/main/java/com/website/springmvc/controller/ContactController.java=UTF-8
+encoding//src/main/java/com/website/springmvc/controller/CustomerController.java=UTF-8
+encoding//src/main/java/com/website/springmvc/controller/HomeController.java=UTF-8
+encoding//src/main/java/com/website/springmvc/controller/ProductController.java=UTF-8
+encoding//src/main/java/com/website/springmvc/controller/ProductManagementController.java=UTF-8
+encoding//src/main/java/com/website/springmvc/controller/PublishCompanyAdminController.java=UTF-8
+encoding//src/main/java/com/website/springmvc/controller/UserController.java=UTF-8
+encoding//src/main/java/com/website/springmvc/libs/GetModel.java=UTF-8
+encoding//src/main/java/com/website/springmvc/libs/RemoveAccent.java=UTF-8
+encoding//src/main/webapp/resources/css/style.css=UTF-8
