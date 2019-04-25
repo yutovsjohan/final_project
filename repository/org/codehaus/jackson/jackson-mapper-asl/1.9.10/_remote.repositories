@@ -1,0 +1,5 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Wed Mar 13 13:01:02 ICT 2019
+jackson-mapper-asl-1.9.10.jar>central=
+jackson-mapper-asl-1.9.10.pom>central=
+jackson-mapper-asl-1.9.10-sources.jar>central=

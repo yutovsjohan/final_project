@@ -1,0 +1,7 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Wed Mar 13 13:00:55 ICT 2019
+xml-apis-1.0.b2-sources.jar>JBoss\ repository=
+xml-apis-1.0.b2.jar>JBoss\ repository=
+xml-apis-1.0.b2.jar>central=
+xml-apis-1.0.b2.pom>JBoss\ repository=
+xml-apis-1.0.b2.pom>central=

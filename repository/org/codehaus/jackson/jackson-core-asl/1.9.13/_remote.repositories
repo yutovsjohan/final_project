@@ -1,0 +1,5 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Tue Mar 12 08:38:00 ICT 2019
+jackson-core-asl-1.9.13.jar>central=
+jackson-core-asl-1.9.13.pom>central=
+jackson-core-asl-1.9.13-sources.jar>central=
