@@ -23,6 +23,11 @@ public class UsersService {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
+	public List<Users> getListDelivery() {
+		Session session = this.sessionFactory.getCurrentSession();
+		return session.createQuery("from Users where role.id = 3").list();
+	}
+	
 	public List<Users> getListStaff() {
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from Users where role.id != 2").list();

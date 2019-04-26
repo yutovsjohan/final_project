@@ -33,7 +33,17 @@
 </table>
 <br>
 
-<c:choose>
+
+<form method="POST" action="answer">
+	<h2 style="color: red">Gửi mail trả lời khách hàng</h2>
+	<textarea class="ckeditor" name="answer" rows="7"
+		placeholder="Nhập nội dung tin nhắn" required="required"></textarea>
+	<input hidden name="id" value="${contact.id }" />
+	<input hidden name="email" value="${contact.sender }"/>
+	<button type="submit" class="btn btn-success guimail">Gửi</button>
+</form>
+
+<%-- <c:choose>
 	<c:when test="${contact.status == 0 }">
 		<form method="POST" action="answer">
 			<h2 style="color: red">Gửi mail trả lời khách hàng</h2>
@@ -50,5 +60,5 @@
 			trả lời
 		</h2>
 	</c:otherwise>
-</c:choose>
+</c:choose> --%>
 

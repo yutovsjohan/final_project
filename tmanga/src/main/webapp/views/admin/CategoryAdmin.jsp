@@ -45,7 +45,7 @@
 						<td><button class="btn btn-info category"
 								dataId=${category.id } dataMode="edit">Sửa</button></td>
 						<td><c:if test="${category.comics.size() == 0 }">
-								<button class="btn btn-danger deleteLine"
+								<button class="btn btn-danger removeCategory"
 									dataId="${category.id }">Xóa</button>
 							</c:if></td>
 					</tr>

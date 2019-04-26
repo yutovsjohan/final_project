@@ -119,6 +119,281 @@ function w3_close() {
     <script src="<c:url value="/resources/js/jquery.prettyPhoto.js" />" ></script>
     <script src="<c:url value="/resources/js/main.js" />" ></script>
 	<script src="<c:url value="/resources/ckeditor/ckeditor.js" />"></script>
+	<script src="<c:url value="/resources/js/style.js" />" ></script>
 	
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('.author').click(function(){
+			  var mode = $(this).attr("dataMode");
+			  var name = prompt("Nhập tên tác giả:");
+			  if (name == null || name == "") {
+			    
+			  }
+			  else {
+				  var route = "author";
+				  var id = 0;
+				 
+				  if(mode == "edit"){
+					  id = $(this).attr("dataId");
+					  $(".name").each(function(){
+							if($(this).attr("dataId") == id){
+								$(this).text(name);	
+							}						
+					  })
+				  }
+				 $.ajax({
+					url : route,
+					type : 'POST',
+					data : {
+						mode: mode,
+						name: name,
+						id: id
+					},
+					success: function(data){
+						
+					}
+				})
+			  }
+			})
+			
+			$('.showHideAuthor').click(function(){
+				var id= $(this).attr("dataId");
+				var action = parseInt($(this).attr("action"));
+				
+				if(action == 0){
+					$(this).attr("action","1");
+					$(this).html('<i class="fa fa-eye" title="Bấm để ẩn trên trang web">');
+				}
+				else if(action == 1){
+					$(this).attr("action","0");
+					$(this).html('<i class="fa fa-eye-slash" title="Bấm để hiện lên trên trang web">');
+				}
+				
+				$.ajax({
+					url : "showHideAuthor",
+					type : 'POST',
+					data : {
+						id: id
+					},
+					success: function(data){					
+						
+					}
+				})
+			})
+			
+			$('.removeAuthor').click(function(){
+				if(confirm("Bạn có thực sự muốn xóa ?")){
+					var buttonRemoveId = parseInt($(this).attr('dataId'));			
+					var route = "removeAuthor";
+					
+					$.ajax({
+						url : route,
+						type : 'POST',
+						data : {
+							id: buttonRemoveId
+						},
+						success: function(data){
+							if(data == 'success'){
+								var divId;
+								$('.authorList').each(function () {
+									divId = parseInt($(this).attr('dataId'));
+									if(buttonRemoveId == divId){
+										$(this).remove();
+									}
+								})
+							}
+							else{
+								alert('Xóa thất bại');
+							}
+						}
+					})
+				 }
+			     else{
+			        return false;
+			     }
+			})
+			
+			$('.category').click(function(){
+			  var mode = $(this).attr("dataMode");
+			  var name = prompt("Nhập tên danh mục:");
+			  if (name == null || name == "") {
+			    
+			  }
+			  else {
+				  var route = "category";
+				  var id = 0;
+				 
+				  if(mode == "edit"){
+					  id = $(this).attr("dataId");
+					  $(".name").each(function(){
+							if($(this).attr("dataId") == id){
+								$(this).text(name);	
+							}						
+					  })
+				  }
+				 $.ajax({
+					url : route,
+					type : 'POST',
+					data : {
+						mode: mode,
+						name: name,
+						id: id
+					},
+					success: function(data){
+						
+					}
+				})
+			  }
+			})
+			
+			$('.showHideCate').click(function(){
+				var id= $(this).attr("dataId");
+				var action = parseInt($(this).attr("action"));
+				
+				if(action == 0){
+					$(this).attr("action","1");
+					$(this).html('<i class="fa fa-eye" title="Bấm để ẩn trên trang web">');
+				}
+				else if(action == 1){
+					$(this).attr("action","0");
+					$(this).html('<i class="fa fa-eye-slash" title="Bấm để hiện lên trên trang web">');
+				}
+				
+				$.ajax({
+					url : "showHideCate",
+					type : 'POST',
+					data : {
+						id: id
+					},
+					success: function(data){					
+						
+					}
+				})
+			})
+			
+			$('.removeCategory').click(function(){
+				if(confirm("Bạn có thực sự muốn xóa ?")){
+					var buttonRemoveId = parseInt($(this).attr('dataId'));			
+					var route = "removeCate";
+					
+					$.ajax({
+						url : route,
+						type : 'POST',
+						data : {
+							id: buttonRemoveId
+						},
+						success: function(data){
+							if(data == 'success'){
+								var divId;
+								$('.cateList').each(function () {
+									divId = parseInt($(this).attr('dataId'));
+									if(buttonRemoveId == divId){
+										$(this).remove();
+									}
+								})
+							}
+							else{
+								alert('Xóa thất bại');
+							}
+						}
+					})
+				 }
+			     else{
+			        return false;
+			     }
+			})
+			
+			$('.publishing').click(function(){
+			  var mode = $(this).attr("dataMode");
+			  var name = prompt("Nhập tên danh mục:");
+			  if (name == null || name == "") {
+			    
+			  }
+			  else {
+				  var route = "publishCompany";
+				  var id = 0;
+				 
+				  if(mode == "edit"){
+					  id = $(this).attr("dataId");
+					  $(".name").each(function(){
+							if($(this).attr("dataId") == id){
+								$(this).text(name);	
+							}						
+					  })
+				  }
+				 $.ajax({
+					url : route,
+					type : 'POST',
+					data : {
+						mode: mode,
+						name: name,
+						id: id
+					},
+					success: function(data){
+						
+					}
+				})
+			  }
+			})
+			
+			$('.showHidePC').click(function(){
+				var id= $(this).attr("dataId");
+				var action = parseInt($(this).attr("action"));
+				
+				if(action == 0){
+					$(this).attr("action","1");
+					$(this).html('<i class="fa fa-eye" title="Bấm để ẩn trên trang web">');
+				}
+				else if(action == 1){
+					$(this).attr("action","0");
+					$(this).html('<i class="fa fa-eye-slash" title="Bấm để hiện lên trên trang web">');
+				}
+				
+				$.ajax({
+					url : "showHidePublishing",
+					type : 'POST',
+					data : {
+						id: id
+					},
+					success: function(data){					
+						
+					}
+				})
+			})
+			
+			$('.removePC').click(function(){
+				if(confirm("Bạn có thực sự muốn xóa ?")){
+					var buttonRemoveId = parseInt($(this).attr('dataId'));			
+					var route = "removePublishing";
+					
+					$.ajax({
+						url : route,
+						type : 'POST',
+						data : {
+							id: buttonRemoveId
+						},
+						success: function(data){
+							if(data == 'success'){
+								var divId;
+								$('.PCList').each(function () {
+									divId = parseInt($(this).attr('dataId'));
+									if(buttonRemoveId == divId){
+										$(this).remove();
+									}
+								})
+							}
+							else{
+								alert('Xóa thất bại');
+							}
+						}
+					})
+				 }
+			     else{
+			        return false;
+			     }
+			})
+			
+		})
+	</script>
 </body>
 </html>

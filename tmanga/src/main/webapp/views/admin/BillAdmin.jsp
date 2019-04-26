@@ -29,7 +29,26 @@
 				<td><fmt:formatDate pattern = "dd-MM-yyyy" value = "${bill.orderDate }" /></td>
 				<td>${bill.status }</td>
 				<td><fmt:formatDate pattern = "dd-MM-yyyy" value = "${bill.deliveryDate }" /></td>
-				<td>${bill.delivery }</td>
+				<td>
+					<c:if test="${bill.active != -1 }">
+						<div class="select-delivery" dataId="${bill.id }">
+							<c:choose>
+								<c:when test="${bill.delivery != null }">
+									${bill.delivery }
+								</c:when>
+								<c:otherwise>
+									<button class="btn btn-info" title="Chọn người giao hàng">Chọn</button>
+								</c:otherwise>
+							</c:choose>	
+						</div>											
+					</c:if>		
+					<select name="delivery" class="delivery" dataId="${bill.id }" hidden>
+						<option value="0">-- Chọn người giao --</option>
+						<c:forEach var="delivery" items="${delivery }">
+							<option value="${delivery.id }" <c:if test="${delivery.name == bill.delivery }">selected</c:if> >${delivery.name }</option>
+						</c:forEach>
+					</select>					
+				</td>
 				<td><a href="billdetail?id=${bill.id }" title="Xem chi tiết đơn hàng"><i class="fa fa-2x fa-info-circle" aria-hidden="true"></i></a></td>
 			</tr>
 		</c:forEach>

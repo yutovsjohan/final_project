@@ -43,7 +43,7 @@
 		
 		<br>		
 		
-		<c:if test="${bill.active != 2 && bill.active != -1 }">
+		<c:if test="${bill.active == 1 }">
 			<button class="btn btn-warning cancelOrder"  style="float: left; margin-bottom:20px"><i class="fa fa-trash-o fa-2x" aria-hidden="true"  title="Hủy đơn hàng" > Hủy đơn hàng</i></button>			
 		</c:if>
 		

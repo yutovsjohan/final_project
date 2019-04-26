@@ -1,4 +1,59 @@
 $(document).ready(function(){
+	//bill admin page
+	$(".select-delivery").click(function(){
+		$(this).attr("hidden","");
+		var id = parseInt($(this).attr("dataId"));
+		$(".delivery").each(function(){
+			if(id == parseInt($(this).attr("dataId"))){
+				$(this).removeAttr("hidden");
+			}			
+		})
+	})
+	
+	$(".delivery").mouseleave(function(){
+		$(this).attr("hidden","");
+		var id = parseInt($(this).attr("dataId"));
+		$(".select-delivery").each(function(){
+			if(id == parseInt($(this).attr("dataId"))){
+				$(this).removeAttr("hidden");
+			}			
+		})
+	})	
+	
+	$(".delivery").change(function(){
+		var idBill = $(this).attr("dataId");
+		var idUser = $(this).val();
+		var route = "select-delivery";
+		
+		$(this).attr("hidden","");
+		if(parseInt(idUser) == 0){
+			$(".select-delivery").each(function(){
+				$(this).removeAttr('hidden');
+			})
+		}
+		else{		
+			$.ajax({
+				url : route,
+				type : 'POST',
+				data : {
+					idBill: idBill,
+					idUser: idUser
+				},
+				success: function(data){
+					if(data != 'fail'){						
+						$(".select-delivery").each(function(){
+							if(idBill == parseInt($(this).attr("dataId"))){
+								$(this).removeAttr('hidden');
+								$(this).text(data);
+							}
+						})
+					}
+				}
+			})
+		}
+		
+	})
+	
 	//payment page
 	$("#pttt").change(function() {
 		var pttt = parseInt($('#pttt').val());

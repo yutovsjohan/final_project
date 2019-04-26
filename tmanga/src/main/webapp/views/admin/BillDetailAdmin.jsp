@@ -35,6 +35,22 @@
 		          <td>${os.content }</td>
 		     	</tr>
 		      </c:forEach>
+		      
+		      <c:if test="${bill.active != 2 }">
+			      <tr>
+			      	<td></td>
+			      	<td>
+			      		<c:choose>
+			      			<c:when test="${bill.active == 1 }">
+			      				<a href="add-order-status?id=${bill.id }" class="btn btn-warning" title="Thêm tình trạng mới">Đang vận chuyển</a>
+			      			</c:when>
+			      			<c:when test="${bill.active == 0 }">
+			      				<a href="add-order-status?id=${bill.id }" class="btn btn-success" title="Thêm tình trạng mới">Giao hàng thành công</a>
+			      			</c:when>
+			      		</c:choose>
+			      	</td>
+			      </tr>
+		      </c:if>
 		    </table>
 		</div>
 		
@@ -111,5 +127,4 @@
 		</table>
 		  		
 	</div>	
-</div>	
-   
+</div>

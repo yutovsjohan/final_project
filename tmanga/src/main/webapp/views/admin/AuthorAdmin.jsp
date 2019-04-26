@@ -45,7 +45,7 @@
 						<td><button class="btn btn-info author" dataId=${author.id }
 								dataMode="edit">Sửa</button></td>
 						<td><c:if test="${author.comics.size() == 0 }">
-								<button class="btn btn-danger deleteLine" dataId="${author.id }">Xóa</button>
+								<button class="btn btn-danger removeAuthor" dataId="${author.id }">Xóa</button>
 							</c:if></td>
 					</tr>
 				</c:forEach>

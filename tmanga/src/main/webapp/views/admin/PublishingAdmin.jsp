@@ -10,46 +10,6 @@
 	nhà xuất bản</button>
 <hr>
 
-<!-- <div class="row">
-			<div class="col-md-1 col-lg-1 col-xs-1">
-				<button class="btn btn-primary dropdown-toggle" type="button"
-					data-toggle="dropdown">
-					Sort By <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-
-					<li><a href="#">ID</a></li>
-					<li><a href="#">Name</a></li>
-					<li><a href="#">Unsigned Name</a></li>
-					<li><a href="#">Status</a></li>
-
-				</ul>
-			</div>
-
-			<div class="col-md-2 col-lg-2 col-xs-2">
-				<button class="btn btn-primary dropdown-toggle" type="button"
-					data-toggle="dropdown">
-					Per Page <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<input class="form-control" id="myInput" type="text"
-						placeholder="Search..">
-					<li><a href="#">1</a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-				</ul>
-			</div>
-			<div class="col-md-2 col-lg-2 col-xs-2">
-				<h6>Publish Company Search</h6>
-			</div>
-			<div class="col-md-2 col-lg-2 col-xs-2">
-				<input class="form-control" id="myInput" type="text"
-					placeholder="Search..">
-			</div>
-		</div> -->
-
-<hr>
 <div class="row">
 	<div class="col-lg-1 col-md-1 col-xs-1"></div>
 	<div class="col-lg-10 col-md-10 col-xs-10">
@@ -83,7 +43,7 @@
 						<td><button class="btn btn-info publishing"
 								dataId=${PubCom.id } dataMode="edit">Sửa</button></td>
 						<td><c:if test="${PubCom.comics.size() == 0 }">
-								<button class="btn btn-danger deleteLine" dataId="${PubCom.id }">Xóa</button>
+								<button class="btn btn-danger removePC" dataId="${PubCom.id }">Xóa</button>
 							</c:if></td>
 					</tr>
 				</c:forEach>

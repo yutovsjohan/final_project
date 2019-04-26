@@ -29,9 +29,6 @@
 							<c:when test="${contact.view == 0 }">
 								<td style="color: green; font-style: italic;"><u>Mới</u></td>
 							</c:when>
-							<c:when test="${contact.status == 0 }">
-								<td><i class="fa fa-times-circle" aria-hidden="true" style="color: red"></i> Chưa trả lời</td>
-							</c:when>
 							<c:otherwise>
 								<td></td>
 							</c:otherwise>	

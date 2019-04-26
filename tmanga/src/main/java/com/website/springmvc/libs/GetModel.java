@@ -501,6 +501,7 @@ public class GetModel {
 		model.addObject("pageselected", page);
 		model.addObject("totalbill", totalBill);
 		
+		model.addObject("delivery", usersService.getListDelivery());
 		model.addObject("views","BillAdmin");
 		model.addObject("title","Danh sách đơn hàng");
 	}
