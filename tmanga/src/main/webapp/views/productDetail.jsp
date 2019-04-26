@@ -46,7 +46,7 @@
 				<table class="table table-hover">
 					<tr>
 						<td>Tác giả</td>
-						<td><a href="${pageContext.request.contextPath}/controller/product?q=author&un=${author.unsignedName }">${author.name }</a></td>
+						<td><a href="${pageContext.request.contextPath}/controller/product?q=author&un=${comic.author.unsignedName }">${comic.author.name }</a></td>
 					</tr>
 					<tr>
 						<td>Tại T-Manga</td>
@@ -56,7 +56,7 @@
 					</tr>
 					<tr>
 						<td>Nhà xuất bản</td>
-						<td><a href="${pageContext.request.contextPath}/controller/product?q=publishing-company&un=${publishcompany.unsignedName }">${publishcompany.name }</a></td>
+						<td><a href="${pageContext.request.contextPath}/controller/product?q=publishing-company&un=${comic.publishcompany.unsignedName }">${comic.publishcompany.name }</a></td>
 					</tr>
 					<tr>
 						<td>Ngày phát hành</td>
@@ -220,7 +220,15 @@
 										</span>
 									</h5>
 								</a>
-																	
+									
+								<c:choose>
+									<c:when test="${favoritelist.comic.amount == 0 }">
+										<%-- <a href="${pageContext.request.contextPath}/controller/#" class="btn btn-danger" title="Báo tôi khi có hàng" style="background-color: crimson; border-color: crimson"><i class="fa fa-bullhorn" aria-hidden="true" ></i></a> --%>
+									</c:when>
+									<c:otherwise>
+										<button dataId="${favoritelist.comic.id }" dataName="${favoritelist.comic.name }" class="btn btn-info them-vao-gio-hang" title="Thêm vào giỏ hàng" style="background-color: #337ab7; border-color: #337ab7"><i class="fa fa-shopping-cart" aria-hidden="true"></i></button>
+									</c:otherwise>
+								</c:choose>								
 								<a href="${pageContext.request.contextPath}/controller/detail?c=${favoritelist.comic.unsignedName }" class="btn btn-info" title="Xem chi tiết"><i class="fa fa-search" aria-hidden="true"></i></a></div>
 						</div>
 					</div>

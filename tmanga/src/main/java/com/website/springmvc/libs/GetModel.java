@@ -223,22 +223,22 @@ public class GetModel {
 	
 	public void getProductDetail(ModelAndView model, String name, HttpSession session){		
 		Long idAuthor = comicService.get(name).getAuthor().getId();
-		Long idCategory = comicService.get(name).getCategory().getId();
-		Long idPC = comicService.get(name).getPublishcompany().getId();
+		//Long idCategory = comicService.get(name).getCategory().getId();
+		//Long idPC = comicService.get(name).getPublishcompany().getId();
 				
 		getSideBar(model);
 		
 		model.addObject("views","productDetail");
 		model.addObject("title", comicService.get(name).getName());
-		model.addObject("author",authorService.get(idAuthor));
-		model.addObject("category",categoryService.get(idCategory));
-		model.addObject("publishcompany",publishCompanyService.get(idPC));
+		//model.addObject("author",authorService.get(idAuthor));
+		//model.addObject("category",categoryService.get(idCategory));
+		//model.addObject("publishcompany",publishCompanyService.get(idPC));
 		model.addObject("comic", comicService.get(name));
 		model.addObject("listComicForAuthor", comicService.getListForAuthor(idAuthor));		
 		
 		if(session.getAttribute("account") != null) {
 			Users u = (Users) session.getAttribute("account");
-			Comic comic = comicService.get(name);
+			//Comic comic = comicService.get(name);
 			List<FavoriteList> list;
 //			if(favoriteListService.getByUsersAndComic(u.getId(), comic.getId()) == null) {
 //				 list = favoriteListService.getListByUser(u.getId(), 0, 36);
@@ -492,10 +492,31 @@ public class GetModel {
 		
 		if(totalBill % 10 != 0){
 			totalPage++;
+		}		
+				
+		bills = billService.getAll(10*(page-1), 10);
+					
+		int start = 1, end = 7;
+		
+		if(totalPage > 7){		
+			if(page - 3 > 0){	
+				if(page + 3 >= totalPage){	
+					start =  totalPage - 6;
+					end = totalPage;
+				}	
+				else{	
+					start = page - 3;
+					end = page + 3;
+				}	
+			}	
+		}
+		else {
+			end = totalPage;
 		}
 		
-		bills = billService.getAll(10*(page-1), 10);
-		
+		model.addObject("start", start);
+		model.addObject("end", end);
+								
 		model.addObject("bills", bills);
 		model.addObject("totalpage", totalPage);
 		model.addObject("pageselected", page);

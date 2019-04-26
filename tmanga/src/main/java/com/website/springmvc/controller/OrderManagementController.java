@@ -38,7 +38,7 @@ public class OrderManagementController {
 	@RequestMapping(value = "/bill" , method = RequestMethod.GET)
 	public ModelAndView getListBillPage(@RequestParam(name = "mes", defaultValue = "") String mes,
 										@RequestParam(name = "alert", defaultValue = "") String alert,
-										@RequestParam(name = "page", defaultValue = "1") int page){
+										@RequestParam(name = "p", defaultValue = "1") int page){
 		ModelAndView model = new ModelAndView();
 		getModel.getListBillPage(model, page);
 		model.addObject("mes", mes);

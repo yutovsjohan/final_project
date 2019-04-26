@@ -55,29 +55,28 @@
 	</tbody> 	
 </table>
 
-
 <center>
 	<ul class="pagination">
 		<c:if test="${totalpage != 1 && totalpage != 0 }">
 			<c:if test="${1 != pageselected }">
-				<li><a href="${pageContext.request.contextPath}/controller/bill?p=1" rel="next" style="border-radius:20px"> << </a></li>
-				<li><a href="${pageContext.request.contextPath}/controller/bill?p=${pageselected - 1}" rel="next"> < </a></li>
+				<li><a href="bill?p=1" rel="next" style="border-radius:20px"> << </a></li>
+				<li><a href="bill?p=${pageselected - 1}" rel="next"> < </a></li>
 			</c:if>			
 
-			<c:forEach var = "i" begin="1" end="${totalpage }">
+			<c:forEach var = "i" begin="${start }" end="${end}">
 				<c:choose>
 					<c:when test="${i == pageselected }">
 						<li class="active"><span style="border-radius:20px">${i }</span></li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="${pageContext.request.contextPath}/controller/bill?p=${i}">${i }</a></li>
+						<li><a href="bill?p=${i}">${i }</a></li>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
 				
 			<c:if test="${totalpage != pageselected }">
-				<li><a href="${pageContext.request.contextPath}/controller/bill?p=${pageselected + 1}" rel="next"> > </a></li>
-				<li><a href="${pageContext.request.contextPath}/controller/bill?p=${totalpage}" rel="next" style="border-radius:20px"> >> </a></li>
+				<li><a href="bill?p=${pageselected + 1}" rel="next"> > </a></li>
+				<li><a href="bill?p=${totalpage}" rel="next" style="border-radius:20px"> >> </a></li>
 			</c:if>	
 			
 		</c:if>
