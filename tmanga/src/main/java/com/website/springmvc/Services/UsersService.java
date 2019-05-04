@@ -23,6 +23,16 @@ public class UsersService {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
+	public Long getCountStaff(){
+		Session session = this.sessionFactory.getCurrentSession();
+		return (Long) session.createQuery("select count(id) from Users where role.id != 2").uniqueResult();
+	}
+	
+	public Long getCountCustomer(){
+		Session session = this.sessionFactory.getCurrentSession();
+		return (Long) session.createQuery("select count(id) from Users where role.id = 2").uniqueResult();
+	}
+	
 	public List<Users> getListDelivery() {
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from Users where role.id = 3").list();

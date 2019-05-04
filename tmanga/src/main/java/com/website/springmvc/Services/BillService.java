@@ -23,6 +23,16 @@ public class BillService {
 	@Autowired
 	DAO<Bill> billDAO;
 	
+	public Long countBillByDate(int day, int month, int year){
+		Session session = this.sessionFactory.getCurrentSession();
+		return (Long) session.createQuery("select count(id) from Bill where year(orderDate) = :year and month(orderDate) = :month and day(orderDate) = :day and active = 2").setParameter("day", day).setParameter("month", month).setParameter("year", year).uniqueResult();
+	}
+
+	public Long getBillUnView(){
+		Session session = this.sessionFactory.getCurrentSession();
+		return (Long) session.createQuery("select count(id) from Bill where view = 0").uniqueResult();
+	}
+	
 	public Long getReportByYear(int year){
 		Session session = this.sessionFactory.getCurrentSession();
 		return (Long) session.createQuery("select sum(total) from Bill where year(orderDate) = :year and active = 2").setParameter("year", year).uniqueResult();

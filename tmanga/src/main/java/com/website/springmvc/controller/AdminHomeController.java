@@ -1,7 +1,11 @@
 package com.website.springmvc.controller;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -45,9 +49,36 @@ public class AdminHomeController {
 			model.setViewName("admin/layoutAdmin");
 			model.addObject("title", "T-Manga | Administrator");
 			model.addObject("views", "adminHome");
-			model.addObject("allMess", contactService.getAllMessage());
-			model.addObject("unView", contactService.getUnReadMessage());
-			model.addObject("userNum",userService.getUserNum());
+			
+//			model.addObject("allMess", contactService.getAllMessage());
+//			model.addObject("userNum",userService.getUserNum());
+			
+			model.addObject("contactUnView", contactService.getUnReadMessage());
+			model.addObject("billUnView", billService.getBillUnView());
+			model.addObject("countCustomer", userService.getCountCustomer());
+			model.addObject("countStaff", userService.getCountStaff());
+			
+			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+			Calendar cal = Calendar.getInstance();
+			cal.add(Calendar.DAY_OF_MONTH, -7);
+			Date date = cal.getTime();
+
+			String[] listString;
+			String str = "", label = "", value = "", temp = "";
+			int day = 0, month = 0, year = 0;
+	        for(int i = 1; i <= 7; i++) { 
+	        	temp = dateFormat.format(date);
+	        	listString = temp.split("/");
+	        	day = Integer.parseInt(listString[2]);
+	        	month = Integer.parseInt(listString[1]);
+	        	year = Integer.parseInt(listString[0]);
+	        	label += day + "/" + month + "/" + year + ",";
+	        	value += billService.countBillByDate(day, month, year).toString() + ",";
+	        	cal.add(Calendar.DAY_OF_MONTH, 1);
+	        	date = cal.getTime();
+	        }
+	        str = label + ";" + value;
+			model.addObject("countBillDaily",str);
 		}
 		else {
 			getModel.getHome(model, session);
