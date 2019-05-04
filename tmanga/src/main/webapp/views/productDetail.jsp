@@ -187,7 +187,7 @@
 	<c:if test="${favoritelist.size() != 0 && sessionScope.account.email != null}">
 		<div class="row">
 			<div class="col-sm-10">
-				<span style="color:orange; font-weight:bold; font-size:20px">Truyện yêu thích</span>
+				<span style="color:orange; font-weight:bold; font-size:20px">Truyện đã xem</span>
 			</div>
 			<div class="col-sm-2" style="margin-top:8px; font-style:italic">
 				<a href="${pageContext.request.contextPath}/controller/customer/favoriteList">XEM THÊM >></a>

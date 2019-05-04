@@ -41,7 +41,7 @@
 				<hr>
 				<a href="${pageContext.request.contextPath}/controller/customer/favoriteList">
 					<div id="menu_doc" <c:if test="${views == 'customer/favoriteList' }">class="actived"</c:if> >					
-						Sản phẩm yêu thích
+						Truyện đã xem
 					</div>
 				</a>
 				

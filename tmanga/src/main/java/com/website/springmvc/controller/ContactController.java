@@ -63,72 +63,84 @@ public class ContactController {
 	}
 	
 	@RequestMapping(value = "/contactAdmin", method = RequestMethod.GET)
-	public ModelAndView getContactAdmin(@RequestParam(name = "p", defaultValue = "1") int page) {
+	public ModelAndView getContactAdmin(@RequestParam(name = "p", defaultValue = "1") int page, HttpSession session) {
 		ModelAndView model = new ModelAndView();
-		model.setViewName("admin/layoutAdmin");
-		model.addObject("views","ContactAdmin");
-		model.addObject("title","Danh sách các tin nhắn");
+		boolean f = getModel.checkAdmin(session);
 		
-		model.addObject("allMess", contactService.getAllMessage());
-		model.addObject("unView", contactService.getUnReadMessage());
-		model.addObject("userNum",userService.getUserNum());
-		
-		List<Contact> contacts = contactService.getAll(0, 0);
-		
-		int totalPage = 0;
-		int totalContact = 0;		
-
-		totalContact = contacts.size();
-		totalPage = totalContact / 10;
-
-		if(totalContact % 10 != 0){
-			totalPage++;
-		}		
-
-		int start = 1, end = 7;
-
-		if(totalPage > 7){		
-			if(page - 3 > 0){	
-				if(page + 3 >= totalPage){	
-					start =  totalPage - 6;
-					end = totalPage;
+		if(f) {
+			getModel.getLayoutAdmin(model);
+			model.addObject("views","ContactAdmin");
+			model.addObject("title","Danh sách các tin nhắn");
+			
+			model.addObject("allMess", contactService.getAllMessage());
+			model.addObject("unView", contactService.getUnReadMessage());
+			model.addObject("userNum",userService.getUserNum());
+			
+			List<Contact> contacts = contactService.getAll(0, 0);
+			
+			int totalPage = 0;
+			int totalContact = 0;		
+	
+			totalContact = contacts.size();
+			totalPage = totalContact / 10;
+	
+			if(totalContact % 10 != 0){
+				totalPage++;
+			}		
+	
+			int start = 1, end = 7;
+	
+			if(totalPage > 7){		
+				if(page - 3 > 0){	
+					if(page + 3 >= totalPage){	
+						start =  totalPage - 6;
+						end = totalPage;
+					}	
+					else{	
+						start = page - 3;
+						end = page + 3;
+					}	
 				}	
-				else{	
-					start = page - 3;
-					end = page + 3;
-				}	
-			}	
+			}
+			else {
+				end = totalPage;
+			}
+	
+			model.addObject("start", start);
+			model.addObject("end", end);
+	
+			contacts = contactService.getAll(10*(page-1), 10);
+	
+			model.addObject("authors", contacts);
+			model.addObject("totalpage", totalPage);
+			model.addObject("pageselected", page);
+			model.addObject("contacts", contacts);
 		}
 		else {
-			end = totalPage;
+			getModel.getHome(model, session);
 		}
-
-		model.addObject("start", start);
-		model.addObject("end", end);
-
-		contacts = contactService.getAll(10*(page-1), 10);
-
-		model.addObject("authors", contacts);
-		model.addObject("totalpage", totalPage);
-		model.addObject("pageselected", page);
-		model.addObject("contacts", contacts);
 		return model;
 	}
 	
 	@RequestMapping(value = "/contactDetail", method = RequestMethod.GET)
-	public ModelAndView getContactDetail(@RequestParam(name = "id", defaultValue = "0") Long idContact) {
+	public ModelAndView getContactDetail(@RequestParam(name = "id", defaultValue = "0") Long idContact, HttpSession session) {
 		ModelAndView model = new ModelAndView();
-		model.setViewName("admin/layoutAdmin");
-		model.addObject("views","ContactDetail");
-		model.addObject("title","Chi tiết tin nhắn");
-		
-		if(contactService.get(idContact) != null) {
-			Contact contact = contactService.get(idContact);
-			contact.setView((byte) 1);
-			contactService.update(contact);
-			model.addObject("contact", contact);
+		boolean f = getModel.checkAdmin(session);
+		if(f) {
+			getModel.getLayoutAdmin(model);
+			model.addObject("views","ContactDetail");
+			model.addObject("title","Chi tiết tin nhắn");
+			
+			if(contactService.get(idContact) != null) {
+				Contact contact = contactService.get(idContact);
+				contact.setView((byte) 1);
+				contactService.update(contact);
+				model.addObject("contact", contact);
+			}
 		}
-		
+		else {
+			getModel.getHome(model, session);
+		}
 		return model;
 	}
 	
@@ -137,20 +149,26 @@ public class ContactController {
 								@RequestParam(name = "mes", defaultValue = "") String mes,
 								@RequestParam(name = "alert", defaultValue = "") String alert,
 								@RequestParam(name = "answer", defaultValue = "") String answer,
-								@RequestParam(name = "email", defaultValue = "") String email) {
+								@RequestParam(name = "email", defaultValue = "") String email, HttpSession session) {
 		String str = "redirect:contactDetail?id=" + idContact;
-		if(contactService.get(idContact) != null) {
-			Contact contact = contactService.get(idContact);
-			contact.setStatus((byte) 1);
-			contactService.update(contact);
-			model.addAttribute("mes","Gửi thành công");
-			model.addAttribute("alert","success");
-			
-			SendEmail.sendGrid(MyConstants.EMAIL, email, "Trả lời thắc mắc" , answer, true);
+		boolean f = getModel.checkAdmin(session);
+		if(f) {
+			if(contactService.get(idContact) != null) {
+				Contact contact = contactService.get(idContact);
+				contact.setStatus((byte) 1);
+				contactService.update(contact);
+				model.addAttribute("mes","Gửi thành công");
+				model.addAttribute("alert","success");
+				
+				SendEmail.sendGrid(MyConstants.EMAIL, email, "Trả lời thắc mắc" , answer, true);
+			}
+			else {
+				model.addAttribute("mes","Gửi thất bại");
+				model.addAttribute("alert","fail");
+			}
 		}
 		else {
-			model.addAttribute("mes","Gửi thất bại");
-			model.addAttribute("alert","fail");
+			str = "redirect:index";
 		}
 		return str;
 	}

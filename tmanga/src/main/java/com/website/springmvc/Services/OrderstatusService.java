@@ -20,6 +20,11 @@ public class OrderStatusService {
 	@Autowired
 	DAO<OrderStatus> orderDAO;
 	
+	public OrderStatus getNewestOrderStatusByIdBill(Long idBill) {
+		Session session = this.sessionFactory.getCurrentSession();
+		return (OrderStatus) session.createQuery("from OrderStatus where idBill = :idBill order by created_at desc").setParameter("idBill", idBill).setFirstResult(0).setMaxResults(1).uniqueResult();
+	}
+	
 	public List<OrderStatus> getOrderStatusByIdBill(Long idBill) {
 		Session session = this.sessionFactory.getCurrentSession();
 		return session.createQuery("from OrderStatus where idBill = :idBill").setParameter("idBill", idBill).list();

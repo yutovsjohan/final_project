@@ -36,21 +36,32 @@
 		     	</tr>
 		      </c:forEach>
 		      
-		      <c:if test="${bill.active != 2 }">
-			      <tr>
-			      	<td></td>
-			      	<td>
-			      		<c:choose>
-			      			<c:when test="${bill.active == 1 }">
-			      				<a href="add-order-status?id=${bill.id }" class="btn btn-warning" title="Thêm tình trạng mới">Đang vận chuyển</a>
-			      			</c:when>
-			      			<c:when test="${bill.active == 0 }">
-			      				<a href="add-order-status?id=${bill.id }" class="btn btn-success" title="Thêm tình trạng mới">Giao hàng thành công</a>
-			      			</c:when>
-			      		</c:choose>
-			      	</td>
-			      </tr>
-		      </c:if>
+		      <c:if test="${bill.active != -1 }">
+			      <c:if test="${bill.active != 2 }">
+				      <tr>
+				      	<td></td>
+				      	<td>
+				      		<c:choose>
+				      			<c:when test="${bill.active == 1 }">
+				      				<button dataId=${bill.id } class="btn btn-warning change-status" title="Thêm tình trạng mới">Đang vận chuyển</button>
+				      			</c:when>
+				      			<c:when test="${bill.active == 0 }">
+				      				<button dataId=${bill.id } class="btn btn-success change-status" title="Thêm tình trạng mới">Giao hàng thành công</button>
+				      			</c:when>			      			
+				      		</c:choose>
+				      	</td>
+				      </tr>
+			      </c:if>
+			      
+			      <c:if test="${bill.active != 1 }">
+			      	<tr>
+			      		<td></td>
+			      		<td>		      	
+		   			 		<button class="btn btn-danger return-status" dataId=${bill.id } title="Quay lại tình trạng trước đó">Quay lại tình trạng trước</button>
+		   			 	</td>
+		   			</tr>
+		   		  </c:if>
+		   	   </c:if>
 		    </table>
 		</div>
 		

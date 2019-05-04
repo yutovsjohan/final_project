@@ -24,6 +24,11 @@ public class ContactService {
 	@Autowired
 	private SessionFactory sessionFactiory;
 	
+	public Long getCountNewContact() {
+		Session session = this.sessionFactory.getCurrentSession();
+		return (Long) session.createQuery("select count(id) from Contact where view = 0").uniqueResult();
+	}
+	
 	public List<Contact> getAll(int firstResult, int maxResult) {
 		Session session = this.sessionFactory.getCurrentSession();
 		Query query = session.createQuery("from Contact order by created_at desc");

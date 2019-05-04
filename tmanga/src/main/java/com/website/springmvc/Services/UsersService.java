@@ -28,9 +28,15 @@ public class UsersService {
 		return session.createQuery("from Users where role.id = 3").list();
 	}
 	
-	public List<Users> getListStaff() {
+	public List<Users> getListStaff(int firstResult, int maxResult, String name) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return session.createQuery("from Users where role.id != 2").list();
+		Query query = session.createQuery("from Users  where role.id != 2 and name like :name").setParameter("name", "%" + name + "%");
+		
+		if(maxResult != 0) {
+			query.setFirstResult(firstResult);
+			query.setMaxResults(maxResult);
+		}
+		return query.list();
 	}
 	
 	public Users get(String email) {

@@ -76,7 +76,16 @@
 						<ul class="nav navbar-nav">
 							<c:choose>
 								<c:when test="${sessionScope.account.email != null}">
-									<li><a href="${pageContext.request.contextPath}/controller/customer/edit"><i class="fa fa-user" ></i> Xin chào ${sessionScope.account.name }</a></li>
+									<c:choose>
+										<c:when test="${sessionScope.account.role.id != 2 && sessionScope.account.active == 1}">
+											<li><a href="${pageContext.request.contextPath}/controller/adminHome"><i class="fa fa-user" ></i> Xin chào ${sessionScope.account.name }</a></li>
+										</c:when>
+										<c:otherwise>
+											<li><a href="${pageContext.request.contextPath}/controller/customer/edit"><i class="fa fa-user" ></i> Xin chào ${sessionScope.account.name }</a></li>
+										</c:otherwise>
+									</c:choose>
+									
+									
 									<li><a href="${pageContext.request.contextPath}/controller/logout"><i class="fa fa-sign-out" ></i> Đăng xuất</a></li>
 								</c:when>
 								<c:otherwise>
@@ -212,7 +221,7 @@
                        	<ul>
 			 				<li><a href="${pageContext.request.contextPath}/controller/cart"><i class="fa fa-angle-double-right"></i> Xem giỏ hàng</a></li>
 							<li><a href="${pageContext.request.contextPath}/controller/customer/edit"><i class="fa fa-angle-double-right"></i> Thông tin cá nhân</a></li>
-							<li><a href="${pageContext.request.contextPath}/controller/customer/favoriteList"><i class="fa fa-angle-double-right"></i> Sách yêu thích</a></li>
+							<li><a href="${pageContext.request.contextPath}/controller/customer/favoriteList"><i class="fa fa-angle-double-right"></i> Truyện đã xem</a></li>
 							<li><a href="${pageContext.request.contextPath}/controller/customer/orderHistory"><i class="fa fa-angle-double-right"></i> Lịch sử giao dịch</a></li>
 						</ul>
                     </li>

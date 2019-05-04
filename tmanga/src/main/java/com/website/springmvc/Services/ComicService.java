@@ -20,6 +20,54 @@ public class ComicService {
 	
 	@Autowired
 	DAO<Comic> comicDao;
+	
+	public List<Comic> getListComicByCategory(Long id, int firstResult, int maxResult){
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query = null;
+		
+		query = session.createQuery("from Comic where idCategory = :id");
+		
+		query.setParameter("id", id);
+		
+		if(maxResult != 0) {
+			query.setFirstResult(firstResult);
+			query.setMaxResults(maxResult);
+		}
+		
+		return query.list();
+	}
+	
+	public List<Comic> getListComicByAuthor(Long id, int firstResult, int maxResult){
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query = null;
+		
+		query = session.createQuery("from Comic where idAuthor = :id");
+		
+		query.setParameter("id", id);
+		
+		if(maxResult != 0) {
+			query.setFirstResult(firstResult);
+			query.setMaxResults(maxResult);
+		}
+		
+		return query.list();
+	}
+	
+	public List<Comic> getListComicByPublishCompany(Long id, int firstResult, int maxResult){
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query = null;
+		
+		query = session.createQuery("from Comic where idPublishCompany = :id");
+		
+		query.setParameter("id", id);
+		
+		if(maxResult != 0) {
+			query.setFirstResult(firstResult);
+			query.setMaxResults(maxResult);
+		}
+		
+		return query.list();
+	}
 		
 	//search
 	public List<Comic> getListComic(String name, int firstResult, int maxResult, int sort){

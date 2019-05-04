@@ -4,51 +4,74 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<hr>
 <div class="w3-container">
-	<h1>Danh sách các tin nhắn</h1>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  		<a class="navbar-brand">Danh sách các tin nhắn</a>
+	<div class="col-sm-4">
+		<form class="navbar-form" role="search" method="get" action="userAdmin">
+			<div class="input-group">
+				<input type="text" class="form-control" placeholder="Nhập email của người gửi" name="q" id="search">
+				<div class="input-group-btn">
+					<button class="btn btn-default" type="submit" style="height:34px"><i class="glyphicon glyphicon-search"></i></button>
+				</div>
+			</div>
+		</form>
+	</div>
+	</nav>
+	
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">			
+		 <a class="navbar-brand">
+			<div class="navbar-form">				
+			    <select class="form-control" id="sort">
+				  	<option value="0">--- Sắp xếp theo ---</option> 
+					<option value="7">Ngày gửi tăng dần</option>
+					<option value="8">Ngày gửi giảm dần</option>
+					<option value="13">Tên email từ A-Z</option>
+					<option value="14">Tên email từ Z-A</option>
+			  	</select>
+			</div>  
+		</a>
+	</nav>	
 </div>
 
-<hr>
-<div class="row">
-	<div class="col-lg-1 col-md-1 col-xs-1"></div>
-	<div class="col-lg-10 col-md-10 col-xs-10">
-		<table class="table table-striped">
-			<thead>
+<div class="w3-container">
+	<table class="table table-striped" id="myTable">
+		<thead>
+			<tr>
+				<th></th>
+				<th>Ngày</th>
+				<th>Email</th>
+				<th>Tiêu đề</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody id="table-list">
+			<c:forEach items="${contacts}" var="contact">
 				<tr>
-					<th></th>
-					<th>Ngày</th>
-					<th>Người gửi</th>
-					<th>Tiêu đề</th>
-					<th></th>
+					<c:choose>
+						<c:when test="${contact.view == 0 }">
+							<td style="color: green; font-style: italic;"><u>Mới</u></td>
+						</c:when>
+						<c:otherwise>
+							<td></td>
+						</c:otherwise>	
+					</c:choose>
+					
+					<td><fmt:formatDate pattern="dd-MM-yyyy"
+							value="${contact.created_at }" /></td>
+					<td>${contact.sender}</td>
+					<td>${contact.title}</td>
+					<td style="color:blue">
+						<a href="contactDetail?id=${contact.id }" title="Xem chi tiết">
+							<i class="fa fa-2x fa-info-circle" aria-hidden="true"></i>
+						</a>							
+					</td>
 				</tr>
-			</thead>
-			<tbody>
-				<c:forEach items="${contacts}" var="contact">
-					<tr>
-						<c:choose>
-							<c:when test="${contact.view == 0 }">
-								<td style="color: green; font-style: italic;"><u>Mới</u></td>
-							</c:when>
-							<c:otherwise>
-								<td></td>
-							</c:otherwise>	
-						</c:choose>
-						
-						<td><fmt:formatDate pattern="dd-MM-yyyy"
-								value="${contact.created_at }" /></td>
-						<td>${contact.sender}</td>
-						<td>${contact.title}</td>
-						<td style="color:blue">
-							<a href="contactDetail?id=${contact.id }" title="Xem chi tiết">
-								<i class="fa fa-2x fa-info-circle" aria-hidden="true"></i>
-							</a>							
-						</td>
-					</tr>
-				</c:forEach>
-			</tbody>
+			</c:forEach>
+		</tbody>
 
-		</table>
-	</div>
+	</table>
 </div>
 
 <center>

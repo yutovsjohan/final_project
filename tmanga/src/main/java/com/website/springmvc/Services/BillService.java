@@ -1,5 +1,7 @@
 package com.website.springmvc.Services;
 
+
+import java.sql.Date;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -20,6 +22,31 @@ public class BillService {
 	
 	@Autowired
 	DAO<Bill> billDAO;
+	
+	public Long getReportByYear(int year){
+		Session session = this.sessionFactory.getCurrentSession();
+		return (Long) session.createQuery("select sum(total) from Bill where year(orderDate) = :year and active = 2").setParameter("year", year).uniqueResult();
+	}
+	
+	public Long getReportByMonth(int month, int year){
+		Session session = this.sessionFactory.getCurrentSession();
+		return (Long) session.createQuery("select sum(total) from Bill where year(orderDate) = :year and month(orderDate) = :month and active = 2").setParameter("month", month).setParameter("year", year).uniqueResult();
+	}
+		
+	public Long getReportByDate(int day, int month, int year){
+		Session session = this.sessionFactory.getCurrentSession();
+		return (Long) session.createQuery("select sum(total) from Bill where year(orderDate) = :year and month(orderDate) = :month and day(orderDate) = :day and active = 2").setParameter("day", day).setParameter("month", month).setParameter("year", year).uniqueResult();
+	}
+	
+//	public List<Object[]> getListMoneyByDate(Date dateStart, Date dateEnd){
+//		Session session = this.sessionFactory.getCurrentSession();
+//		return session.createQuery("select total, day(orderDate), month(orderDate), year(orderDate) from Bill where orderDate between :dateStart and :dateEnd and active = 2 order by orderDate asc").setParameter("dateStart", dateStart).setParameter("dateEnd", dateEnd).list();
+//	}
+	
+	public Long getCountNewBill() {
+		Session session = this.sessionFactory.getCurrentSession();
+		return (Long) session.createQuery("select count(id) from Bill where view = 0").uniqueResult();
+	}
 	
 	public List<Bill> getAll(int firstResult, int maxResult) {
 		Session session = this.sessionFactory.getCurrentSession();

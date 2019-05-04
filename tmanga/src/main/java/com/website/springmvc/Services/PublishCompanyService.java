@@ -18,10 +18,10 @@ public class PublishCompanyService {
 	@Autowired
 	DAO<PublishCompany> publishCompanyDao;
 	
-	public List<PublishCompany> getListPublishCompany(int firstResult, int maxResult){
+	public List<PublishCompany> getListPublishCompany(String name, int firstResult, int maxResult){
 		Session session = this.sessionFactory.getCurrentSession();
 		Query query = null;
-		query = session.createQuery("from PublishCompany");
+		query = session.createQuery("from PublishCompany where name like :keyword").setParameter("keyword", "%" + name + "%");
 
 		if(maxResult != 0) {
 			query.setFirstResult(firstResult);

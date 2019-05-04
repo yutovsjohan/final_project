@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 <body style="background-color:#f0f0fa;">
 <style>
@@ -39,33 +40,31 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
 <!-- Sidebar/menu -->
 <nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
-  <div class="w3-container w3-row">
-    <div class="w3-col s4">
-      <img src="/w3images/avatar2.png" class="w3-circle w3-margin-right" style="width:46px">
-    </div>
-    <div class="w3-col s8 w3-bar">
-      <span>Welcome, <strong>Admin</strong></span><br>
+  <div class="w3-container w3-row">    
+    <div class="w3-col w3-bar">
+      <a href="edit-user"><span>Xin chào, <strong>${sessionScope.account.name }</strong></span></a><br>
       <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
-      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
+      <a href="edit-user" class="w3-bar-item w3-button" title="Chỉnh sửa thông tin cá nhân"><i class="fa fa-user"></i></a>
       <a href="#" class="w3-bar-item w3-button"><i class="fa fa-cog"></i></a>
     </div>
   </div>
   <hr>
   <div class="w3-container">
-    <h5>Dashboard</h5>
+    <h5>Menu</h5>
   </div>
   <div class="w3-bar-block">
-    <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Close Menu</a>
-    <a href="adminHome" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'adminHome' }"> w3-blue </c:if> "><i class="fa fa-users fa-fw"></i>  Overview</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>  Outcome Statistic</a>
-    <a href="userAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'UserAdmin' }"> w3-blue </c:if> "><i class="fa fa-users fa-fw"></i>  User Management</a>
-    <a href="cateAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'CategoryAdmin' }"> w3-blue </c:if> "><i class="fa fa-bullseye fa-fw"></i>  Category Management</a>
-    <a href="bill" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'BillAdmin' }"> w3-blue </c:if> "><i class="fa fa-diamond fa-fw"></i>  Orders Management</a>
-    <a href="contactAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'ContactAdmin' }"> w3-blue </c:if> "><i class="fa fa-bell fa-fw"></i>  Contact Management</a>
-    <a href="authorAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'AuthorAdmin' }"> w3-blue </c:if> "><i class="fa fa-bank fa-fw"></i>  Author Management</a>
-    <a href="pubcomAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'PublishingAdmin' }"> w3-blue </c:if> "><i class="fa fa-history fa-fw"></i>  Publishing Company</a>
-    <a href="comicList" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'ProductMan' }"> w3-blue </c:if> "><i class="fa fa-cog fa-fw"></i>  Product Management</a>
-    <a href="login" class="w3-bar-item w3-button w3-padding"><i class="fa fa-reply fa-fw"></i>  Logout</a><br><br>
+    <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i> Đóng Menu</a>
+    <a href="adminHome" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'adminHome' }"> w3-blue </c:if> "><i class="fa fa-tachometer fa-fw"></i>  Overview</a>
+    <a href="report" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'Report' }"> w3-blue </c:if> "><i class="fa fa-bar-chart fa-fw"></i>  Thống kê doanh thu</a>
+    <a href="bill" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'BillAdmin' }"> w3-blue </c:if> "><i class="fa fa-diamond fa-fw"></i>  Quản lý đơn hàng <c:if test="${countNewOrder != 0 }"><span style="background: red; color: white; border-radius: 10px; padding: 5px; margin: 5px; font-weight: 800;">${countNewOrder }</span> </c:if> </a>
+    <a href="contactAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'ContactAdmin' }"> w3-blue </c:if> "><i class="fa fa-commenting-o fa-fw"></i>  Quản lý tin nhắn <c:if test="${countNewContact != 0 }"><span style="background: green; color: white; border-radius: 10px; padding: 5px; margin: 5px; font-weight: 800;">${countNewContact }</span> </c:if></a>
+    <a href="userAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'UserAdmin' }"> w3-blue </c:if> "><i class="fa fa-users fa-fw"></i>  Quản lý nhân viên </a>    
+    <a href="comicList" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'ProductManList' }"> w3-blue </c:if> "><i class="fa fa-book fa-fw"></i>  Quản lý sản phẩm </a>
+    <a href="cateAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'CategoryAdmin' }"> w3-blue </c:if> "><i class="fa fa-folder-open fa-fw"></i>  Quản lý danh mục </a>    
+    <a href="authorAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'AuthorAdmin' }"> w3-blue </c:if> "><i class="fa fa-male fa-fw"></i>  Quản lý tác giả </a>
+    <a href="pubcomAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'PublishingAdmin' }"> w3-blue </c:if> "><i class="fa fa-bank fa-fw"></i>  Quản lý nhà xuất bản </a>
+    <a href="newsAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'NewsAdmin' }"> w3-blue </c:if> "><i class="fa fa-newspaper-o fa-fw"></i>  Quản lý tin tức </a>
+    <a href="logout" class="w3-bar-item w3-button w3-padding"><i class="fa fa-reply fa-fw"></i> Đăng xuất </a><br><br>
   </div>
 </nav>
 
@@ -119,281 +118,9 @@ function w3_close() {
     <script src="<c:url value="/resources/js/jquery.prettyPhoto.js" />" ></script>
     <script src="<c:url value="/resources/js/main.js" />" ></script>
 	<script src="<c:url value="/resources/ckeditor/ckeditor.js" />"></script>
-	<script src="<c:url value="/resources/js/style.js" />" ></script>
+	<script src="<c:url value="/resources/js/jquery.elevatezoom.js" />" ></script>
+	<script src="<c:url value="/resources/js/style.js" />" ></script>	
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 	
-	<script type="text/javascript">
-		$(document).ready(function(){
-			$('.author').click(function(){
-			  var mode = $(this).attr("dataMode");
-			  var name = prompt("Nhập tên tác giả:");
-			  if (name == null || name == "") {
-			    
-			  }
-			  else {
-				  var route = "author";
-				  var id = 0;
-				 
-				  if(mode == "edit"){
-					  id = $(this).attr("dataId");
-					  $(".name").each(function(){
-							if($(this).attr("dataId") == id){
-								$(this).text(name);	
-							}						
-					  })
-				  }
-				 $.ajax({
-					url : route,
-					type : 'POST',
-					data : {
-						mode: mode,
-						name: name,
-						id: id
-					},
-					success: function(data){
-						
-					}
-				})
-			  }
-			})
-			
-			$('.showHideAuthor').click(function(){
-				var id= $(this).attr("dataId");
-				var action = parseInt($(this).attr("action"));
-				
-				if(action == 0){
-					$(this).attr("action","1");
-					$(this).html('<i class="fa fa-eye" title="Bấm để ẩn trên trang web">');
-				}
-				else if(action == 1){
-					$(this).attr("action","0");
-					$(this).html('<i class="fa fa-eye-slash" title="Bấm để hiện lên trên trang web">');
-				}
-				
-				$.ajax({
-					url : "showHideAuthor",
-					type : 'POST',
-					data : {
-						id: id
-					},
-					success: function(data){					
-						
-					}
-				})
-			})
-			
-			$('.removeAuthor').click(function(){
-				if(confirm("Bạn có thực sự muốn xóa ?")){
-					var buttonRemoveId = parseInt($(this).attr('dataId'));			
-					var route = "removeAuthor";
-					
-					$.ajax({
-						url : route,
-						type : 'POST',
-						data : {
-							id: buttonRemoveId
-						},
-						success: function(data){
-							if(data == 'success'){
-								var divId;
-								$('.authorList').each(function () {
-									divId = parseInt($(this).attr('dataId'));
-									if(buttonRemoveId == divId){
-										$(this).remove();
-									}
-								})
-							}
-							else{
-								alert('Xóa thất bại');
-							}
-						}
-					})
-				 }
-			     else{
-			        return false;
-			     }
-			})
-			
-			$('.category').click(function(){
-			  var mode = $(this).attr("dataMode");
-			  var name = prompt("Nhập tên danh mục:");
-			  if (name == null || name == "") {
-			    
-			  }
-			  else {
-				  var route = "category";
-				  var id = 0;
-				 
-				  if(mode == "edit"){
-					  id = $(this).attr("dataId");
-					  $(".name").each(function(){
-							if($(this).attr("dataId") == id){
-								$(this).text(name);	
-							}						
-					  })
-				  }
-				 $.ajax({
-					url : route,
-					type : 'POST',
-					data : {
-						mode: mode,
-						name: name,
-						id: id
-					},
-					success: function(data){
-						
-					}
-				})
-			  }
-			})
-			
-			$('.showHideCate').click(function(){
-				var id= $(this).attr("dataId");
-				var action = parseInt($(this).attr("action"));
-				
-				if(action == 0){
-					$(this).attr("action","1");
-					$(this).html('<i class="fa fa-eye" title="Bấm để ẩn trên trang web">');
-				}
-				else if(action == 1){
-					$(this).attr("action","0");
-					$(this).html('<i class="fa fa-eye-slash" title="Bấm để hiện lên trên trang web">');
-				}
-				
-				$.ajax({
-					url : "showHideCate",
-					type : 'POST',
-					data : {
-						id: id
-					},
-					success: function(data){					
-						
-					}
-				})
-			})
-			
-			$('.removeCategory').click(function(){
-				if(confirm("Bạn có thực sự muốn xóa ?")){
-					var buttonRemoveId = parseInt($(this).attr('dataId'));			
-					var route = "removeCate";
-					
-					$.ajax({
-						url : route,
-						type : 'POST',
-						data : {
-							id: buttonRemoveId
-						},
-						success: function(data){
-							if(data == 'success'){
-								var divId;
-								$('.cateList').each(function () {
-									divId = parseInt($(this).attr('dataId'));
-									if(buttonRemoveId == divId){
-										$(this).remove();
-									}
-								})
-							}
-							else{
-								alert('Xóa thất bại');
-							}
-						}
-					})
-				 }
-			     else{
-			        return false;
-			     }
-			})
-			
-			$('.publishing').click(function(){
-			  var mode = $(this).attr("dataMode");
-			  var name = prompt("Nhập tên danh mục:");
-			  if (name == null || name == "") {
-			    
-			  }
-			  else {
-				  var route = "publishCompany";
-				  var id = 0;
-				 
-				  if(mode == "edit"){
-					  id = $(this).attr("dataId");
-					  $(".name").each(function(){
-							if($(this).attr("dataId") == id){
-								$(this).text(name);	
-							}						
-					  })
-				  }
-				 $.ajax({
-					url : route,
-					type : 'POST',
-					data : {
-						mode: mode,
-						name: name,
-						id: id
-					},
-					success: function(data){
-						
-					}
-				})
-			  }
-			})
-			
-			$('.showHidePC').click(function(){
-				var id= $(this).attr("dataId");
-				var action = parseInt($(this).attr("action"));
-				
-				if(action == 0){
-					$(this).attr("action","1");
-					$(this).html('<i class="fa fa-eye" title="Bấm để ẩn trên trang web">');
-				}
-				else if(action == 1){
-					$(this).attr("action","0");
-					$(this).html('<i class="fa fa-eye-slash" title="Bấm để hiện lên trên trang web">');
-				}
-				
-				$.ajax({
-					url : "showHidePublishing",
-					type : 'POST',
-					data : {
-						id: id
-					},
-					success: function(data){					
-						
-					}
-				})
-			})
-			
-			$('.removePC').click(function(){
-				if(confirm("Bạn có thực sự muốn xóa ?")){
-					var buttonRemoveId = parseInt($(this).attr('dataId'));			
-					var route = "removePublishing";
-					
-					$.ajax({
-						url : route,
-						type : 'POST',
-						data : {
-							id: buttonRemoveId
-						},
-						success: function(data){
-							if(data == 'success'){
-								var divId;
-								$('.PCList').each(function () {
-									divId = parseInt($(this).attr('dataId'));
-									if(buttonRemoveId == divId){
-										$(this).remove();
-									}
-								})
-							}
-							else{
-								alert('Xóa thất bại');
-							}
-						}
-					})
-				 }
-			     else{
-			        return false;
-			     }
-			})
-			
-		})
-	</script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 $(document).ready(function() {
- 
+	
+// cart page
 $('#r_order').click(function(){
 	$('#r_order').css("display","none");
 	$('#order').css("display","");
@@ -69,7 +70,7 @@ $('.product-quantity input').change( function() {
 				if(amount > 0){
 					$('#modal-da-them-vao-gio-hang .modal-body p').html(data);
 					$('#modal-da-them-vao-gio-hang').modal('show');
-				}
+				}				
 			}
 		}
 	})

@@ -18,6 +18,7 @@ import com.website.springmvc.Services.BillDetailService;
 import com.website.springmvc.Services.CategoryService;
 import com.website.springmvc.Services.CityService;
 import com.website.springmvc.Services.ComicService;
+import com.website.springmvc.Services.ContactService;
 import com.website.springmvc.Services.DistrictService;
 import com.website.springmvc.Services.FavoriteListService;
 import com.website.springmvc.Services.NewsService;
@@ -73,6 +74,9 @@ public class GetModel {
 	
 	@Autowired
 	private FavoriteListService favoriteListService;
+	
+	@Autowired
+	private ContactService contactService;
 		
 	public void getSideBar(ModelAndView model) {
 		model.setViewName("layout");
@@ -146,7 +150,7 @@ public class GetModel {
 		else if(action.equalsIgnoreCase("nc")) {
 			comics = comicService.getNewComic(0, 48);
 			
-			model.addObject("title", "Truyện tranh mới");
+			model.addObject("title", "Truyện mới nhập");
 			model.addObject("key", "newcomic");
 		}
 		else {			
@@ -346,7 +350,7 @@ public class GetModel {
 			totalPage++;
 		}
 		
-		news = newsService.getListNews(10*(page-1), 10);
+		news = newsService.getListNews(10*(page-1), 10, 1);
 		
 		model.addObject("news", news);
 		model.addObject("totalpage", totalPage);
@@ -374,11 +378,19 @@ public class GetModel {
 		model.addObject("sb","customer/sidebarCustomer");
 	}
 	
-	public void getCustomerEditInfo(ModelAndView model) {
-		getSideBarCustomer(model);
-				
-		model.addObject("views","customer/Information");
-		model.addObject("title","Tài khoản của tôi");
+	public void getCustomerEditInfo(ModelAndView model, String href) {
+		if(href.equalsIgnoreCase("edit-user")) {
+			getLayoutAdmin(model);
+			
+			model.addObject("views","../customer/Information");
+			model.addObject("title","Chỉnh sửa thông tin cá nhân");
+		}
+		else {
+			getSideBarCustomer(model);
+					
+			model.addObject("views","customer/Information");
+			model.addObject("title","Tài khoản của tôi");
+		}
 	}
 	
 	public void getFavoriteList(ModelAndView model) {
@@ -477,6 +489,11 @@ public class GetModel {
 	
 	public void getLayoutAdmin(ModelAndView model) {
 		model.setViewName("admin/layoutAdmin");
+		long countNewOrder = 0, countNewContact = 0;
+		countNewOrder = billService.getCountNewBill();
+		countNewContact = contactService.getCountNewContact();
+		model.addObject("countNewOrder", countNewOrder);
+		model.addObject("countNewContact", countNewContact);
 	}
 	
 	public void getListBillPage(ModelAndView model, int page) {
@@ -532,12 +549,161 @@ public class GetModel {
 			
 		}
 		else {
+			Bill bill = billService.get(idBill);
+			bill.setView((byte) 1);
+			billService.update(bill);
+			
 			getLayoutAdmin(model);
-			model.addObject("bill", billService.get(idBill));
+			model.addObject("bill", bill);
 			model.addObject("billDetail", billDetailService.getBillDetailByIdBill(idBill));
 			model.addObject("orderStatus", orderStatusService.getOrderStatusByIdBill(idBill));
 			model.addObject("views","BillDetailAdmin");
 			model.addObject("title","Chi tiết đơn hàng " + idBill.toString());
 		}
+	}
+	
+	public void getUserAdmin(ModelAndView model, int page, String key, String mes, String alert) {
+		getLayoutAdmin(model);
+		model.addObject("views","UserAdmin");
+		model.addObject("title","Danh sách User");
+		
+		List<Users> users = usersService.getListStaff(0,0,key);
+		
+		int totalPage = 0;
+		int totalUsers = 0;		
+		
+		totalUsers = users.size();
+		totalPage = totalUsers / 10;
+		
+		if(totalUsers % 10 != 0){
+			totalPage++;
+		}		
+				
+		users = usersService.getListStaff(10*(page-1), 10,key);
+					
+		int start = 1, end = 7;
+		
+		if(totalPage > 7){		
+			if(page - 3 > 0){	
+				if(page + 3 >= totalPage){	
+					start =  totalPage - 6;
+					end = totalPage;
+				}	
+				else{	
+					start = page - 3;
+					end = page + 3;
+				}	
+			}	
+		}
+		else {
+			end = totalPage;
+		}
+		
+		model.addObject("start", start);
+		model.addObject("end", end);
+								
+		model.addObject("totalpage", totalPage);
+		model.addObject("pageselected", page);
+		model.addObject("totalbill", totalUsers);
+		
+		model.addObject("mes", mes);
+		model.addObject("alert", alert);
+		
+		model.addObject("users", users);
+	}
+	
+	public void getAddUser(ModelAndView model, String mes, String alert) {
+		getLayoutAdmin(model);
+		model.addObject("views","AddUser");
+		model.addObject("title","Thêm nhân viên");
+		model.addObject("mes", mes);
+		model.addObject("alert", alert);
+		model.addObject("Users", new Users());
+	}
+			
+	public void getNewsAdmin(ModelAndView model, int page, String mes, String alert) {
+		getLayoutAdmin(model);
+		model.addObject("views","NewsAdmin");
+		model.addObject("title","Danh sách tin tức");
+		model.addObject("mes", mes);
+		model.addObject("alert", alert);
+		
+		List<News> news = newsService.getAll();
+		
+		int totalPage = 0;
+		int totalNews = 0;		
+		
+		totalNews = news.size();
+		totalPage = totalNews / 10;
+		
+		if(totalNews % 10 != 0){
+			totalPage++;
+		}		
+				
+		news = newsService.getListNews(10*(page-1), 10, 0);
+					
+		int start = 1, end = 7;
+		
+		if(totalPage > 7){		
+			if(page - 3 > 0){	
+				if(page + 3 >= totalPage){	
+					start =  totalPage - 6;
+					end = totalPage;
+				}	
+				else{	
+					start = page - 3;
+					end = page + 3;
+				}	
+			}	
+		}
+		else {
+			end = totalPage;
+		}
+		
+		model.addObject("start", start);
+		model.addObject("end", end);
+								
+		model.addObject("totalpage", totalPage);
+		model.addObject("pageselected", page);
+		model.addObject("totalbill", totalNews);
+		
+		model.addObject("news", news);
+	}
+	
+	public void getNewsDetailAdmin(ModelAndView model, String mes, String alert, Long idNews, String mode, HttpSession session) {
+		getLayoutAdmin(model);
+		model.addObject("views","NewsDetailAdmin");
+		model.addObject("mes", mes);
+		model.addObject("alert", alert);
+		model.addObject("mode", mode);
+		if(mode.equalsIgnoreCase("add")) {
+			model.addObject("title","Thêm tin tức");	
+			model.addObject("News", new News());
+		}
+		else if(mode.equalsIgnoreCase("edit")) {
+			if(idNews == (long) 0 || newsService.get(idNews) == null) {
+				getHome(model, session);
+			}
+			else {
+				if(newsService.get(idNews) != null) {
+					model.addObject("News", newsService.get(idNews));
+					model.addObject("title","Chi tiết tin tức");
+				}
+				else {
+					getHome(model, session);
+				}
+			}
+		}					
+	}
+	
+	public boolean checkAdmin(HttpSession session) {
+		if(session.getAttribute("account") != null) {
+			Users u = usersService.get(((Users) session.getAttribute("account")).getId());			
+			if(u.getRole().getId() == (long)2 || u.getActive() == 0) {
+				return false;
+			}		
+			return true;
+		}
+		return false;		
 	}
 }

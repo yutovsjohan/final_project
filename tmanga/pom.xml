@@ -29,6 +29,12 @@
 	</properties>
 	  
 	<dependencies>
+		<!-- Apache Commons FileUpload -->
+	    <dependency>
+	        <groupId>commons-fileupload</groupId>
+	        <artifactId>commons-fileupload</artifactId>
+	        <version>1.3.2</version>
+		</dependency>
 		<!-- Sending Email -->
 		<dependency>
 			<groupId>com.sendgrid</groupId>

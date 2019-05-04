@@ -21,10 +21,15 @@ public class CategoryService {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	public List<Category> getListCategories(int firstResult, int maxResult){
+	public List<Category> getListName() {
+		Session session = this.sessionFactory.getCurrentSession();
+		return session.createQuery("select id, name from Category").list();
+	}
+	
+	public List<Category> getListCategories(String name, int firstResult, int maxResult){
 		Session session = this.sessionFactory.getCurrentSession();
 		Query query = null;
-		query = session.createQuery("from Category");
+		query = session.createQuery("from Category where name like :keyword").setParameter("keyword", "%" + name + "%");
 
 		if(maxResult != 0) {
 			query.setFirstResult(firstResult);
@@ -43,6 +48,7 @@ public class CategoryService {
 		Session session = this.sessionFactory.getCurrentSession();
 		return (Category) session.createQuery("from Category where unsignedName like :keyword").setParameter("keyword", name).uniqueResult();
 	}
+	
 	public List<Category> getAll() {
 		return categoryDao.getAll();
 	}

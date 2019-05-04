@@ -281,7 +281,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/check-email", method = RequestMethod.GET)
-	public void getRemoveItem(@RequestParam("email") String email, HttpServletResponse response){
+	public void checkMail(@RequestParam("email") String email, HttpServletResponse response){
 		String str = "success";
 		if(checkEmail(email)) {
 			str = "fail";
@@ -295,16 +295,128 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/userAdmin", method = RequestMethod.GET)
-	public ModelAndView getUserAdmin() {
+	public ModelAndView getUserAdmin(@RequestParam(name = "p", defaultValue = "1") int page, 
+									@RequestParam(name = "q", defaultValue = "") String key, HttpSession session,
+									@RequestParam(name = "mes", defaultValue = "") String mes, 
+									@RequestParam(name = "alert", defaultValue = "") String alert) {
 		ModelAndView model = new ModelAndView();
-		model.setViewName("admin/layoutAdmin");
-		model.addObject("views","UserAdmin");
-		model.addObject("title","Danh sách User");
+		boolean f = getModel.checkAdmin(session);
 		
-		model.addObject("users", usersService.getListStaff());
+		if(f) {
+			getModel.getUserAdmin(model, page, key, mes, alert);
+		}
+		else {
+			getModel.getHome(model, session);
+		}
+				
 		return model;
 	}
 	
+	@RequestMapping(value = "/ban-acc", method = RequestMethod.POST)
+	public void getBanOpenAcc(@RequestParam("id") Long id, HttpServletResponse response, HttpSession session){
+		String str = "fail";
+		boolean f = getModel.checkAdmin(session);
+		if(f) {
+			if(usersService.get(id) != null) {
+				Users u = usersService.get(id);
+				if(u.getActive() == 1) {
+					u.setActive((byte) 0);
+				}
+				else if(u.getActive() == 0) {
+					u.setActive((byte) 1);
+				}
+				usersService.update(u);
+				str = Byte.toString(u.getActive());
+			}
+		}
+		try {
+			response.getWriter().print(str);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping(value = "/setup-pw", method = RequestMethod.POST)
+	public void setupPassword(@RequestParam("id") Long id, HttpServletResponse response, HttpSession session){
+		String str = "fail";
+		boolean f = getModel.checkAdmin(session);
+		if(f) {
+			if(usersService.get(id) != null) {
+				Users u = usersService.get(id);
+				u.setPassword(TripleDES.Encrypt("123", MyConstants.DES_KEY));
+				usersService.update(u);
+				str = "success";
+			}
+		}
+		try {
+			response.getWriter().print(str);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping(value = "/add-user", method = RequestMethod.GET)
+	public ModelAndView getAddUser(@RequestParam(name = "mes", defaultValue = "") String mes, 
+									@RequestParam(name = "alert", defaultValue = "") String alert, HttpSession session) {
+		ModelAndView model = new ModelAndView();
+		boolean f = getModel.checkAdmin(session);
+		
+		if(f) {
+			getModel.getAddUser(model, mes, alert);
+		}
+		else {
+			getModel.getHome(model, session);
+		}
+				
+		return model;
+	}
+	
+	@RequestMapping(value = "/user-signup", method = RequestMethod.POST)
+	public String addUser(@ModelAttribute("Users") Users Users, HttpSession session, Model model){
+		String str = "redirect:add-user";
+		if(!checkEmail(Users.getEmail())){			
+			Users.setActive((byte) 1);
+			
+			Users.setPassword(TripleDES.Encrypt(Users.getPassword(), MyConstants.DES_KEY));
+			
+			String passcode = UUID.randomUUID().toString();
+			Users.setPasscode(passcode);
+			
+			usersService.add(Users);
+			str = "redirect:userAdmin";
+			
+			model.addAttribute("mes","Thêm thành công");    	
+			model.addAttribute("alert", "success");
+		}
+		else{
+            model.addAttribute("mes","Email này đã có người sử dụng");    	
+			model.addAttribute("alert", "danger");
+		}
+		return str;
+	}
+	
+	@RequestMapping(value = "/edit-user", method = RequestMethod.GET)
+	public ModelAndView getEditUser(@RequestParam(name = "mes", defaultValue = "") String mes, 
+									@RequestParam(name = "alert", defaultValue = "") String alert, HttpSession session) {
+		ModelAndView model = new ModelAndView();
+		boolean f = getModel.checkAdmin(session);
+		
+		if(f) {
+			String href = "edit-user";
+			getModel.getCustomerEditInfo(model, href);
+			model.addObject("mes",mes);    	
+			model.addObject("alert", alert);
+			model.addObject("href", href);
+		}
+		else {
+			getModel.getHome(model, session);
+		}
+				
+		return model;
+	}
+		
 	private boolean checkEmail(String email) {
 		if(usersService.get(email) == null)
 			return false;

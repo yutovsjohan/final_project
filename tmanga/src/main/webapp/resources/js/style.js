@@ -1,4 +1,849 @@
 $(document).ready(function(){
+	//comic list management
+	$("#change-category").change(function(){
+		var idCate = $("#select-option-change-category").val();
+		if(parseInt(idCate) != 0){
+			var name = $("#select-option-change-category option:selected").text();
+						
+			var count = parseInt($("#select-all").attr("dataCount"));
+			if(count != 0){
+				var route = "change-category";
+				var idComic = 0;
+				$('#table-list tr').each(function() {
+					if($(this).attr("dataAction") == 1){
+						$(this).find(".categoryName").text(name);
+						
+						idCate = $("#select-option-change-category").val();
+						idComic = $(this).attr('dataId');
+						$.ajax({
+							url : route,
+							type : 'POST',
+							data : {
+								idCategory: idCate,
+								idComic: idComic
+							},
+							success: function(data){	
+								if(data == "fail"){
+									alert("Cập nhật thất bại");
+								}
+							}
+						})
+					}	
+				});					
+			}
+			
+		}
+	})
+	
+	$("#select-all").click(function(){		
+		if($("#select-all").prop("checked")){
+			$("#table-list tr").each(function() {
+				$(this).css({
+				    "background-color": "cyan"
+				})
+				$(this).attr("dataAction", "1");
+			})
+			
+			$('.checkbox').each(function(){
+				$(this).attr( "checked", "true");
+				$(this).prop( "checked", "true");	
+			})
+			$("#select-all").attr("dataCount", "10");
+		}
+		else{
+			$("#table-list tr").each(function() {
+				$(this).css({
+				    "background-color": "rgb(240, 240, 250)"
+				})
+				$(this).attr("dataAction", "0");
+			})
+			
+			$('.checkbox').each(function(){
+				$(this).removeAttr( "checked");
+				$(this).removeProp( "checked");			
+			})
+			$("#select-all").attr("dataCount", "0");
+		}
+		
+		if( parseInt($("#select-all").attr("dataCount")) > 0){			
+			$("#change-category").removeAttr("hidden");
+		}
+		else{			
+			$("#change-category").attr("hidden","");
+		}
+		
+	})
+	
+	$("#table-list tr").click(function() {
+		if($(this).attr("dataAction") == 0){
+			$(this).css({
+			    "background-color": "cyan"
+			})
+			$(this).attr("dataAction", "1");
+		}
+		else if($(this).attr("dataAction") == 1){
+			$(this).css({
+			    "background-color": "rgb(240, 240, 250)"
+			})
+			$(this).attr("dataAction", "0");
+		}
+		
+		var idComic = $(this).attr('dataId');
+		var f = true;
+		$('.checkbox').each(function(){
+			if($(this).attr('dataId') == idComic){
+				if($(this).attr("checked")){
+					$(this).removeAttr( "checked");
+					$(this).removeProp( "checked");
+					f = false;
+				}
+				else{					
+					$(this).attr( "checked", "true");
+					$(this).prop( "checked", "true");
+				}
+			}
+		})
+		var count = parseInt($("#select-all").attr("dataCount"));
+		if(f){
+			count++;
+		}
+		else{
+			count--;
+		}
+		$("#select-all").attr("dataCount", count);
+		if(count < 10){
+			$("#select-all").removeProp("checked");
+		}
+		else if(count == 10){
+			$("#select-all").prop("checked", "true");
+		}
+		
+		if(count > 0){
+			$("#change-category").removeAttr("hidden");
+		}
+		else if(count == 0){
+			$("#change-category").attr("hidden","");
+		}
+	})
+	
+	//search (bill management page)
+	$(document).ready(function(){
+	  $("#search").on("keyup", function() {
+	    var value = $(this).val().toLowerCase();
+	    $("#table-list tr").filter(function() {
+	      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+	    });
+	  });
+	});
+	
+	//sort admin page
+	$("#sort").change(function(){
+		var sort = $("#sort").val();
+		//id
+		if(sort == 1){
+			sortTable(0, "int", true);
+		}
+		else if(sort == 2){
+			sortTable(0, "int", false);
+		}
+		//name category, author, publishing company; email (user management page)
+		else if(sort == 3){
+			sortTable(1, "string", true);
+		}
+		else if(sort == 4){
+			sortTable(1, "string", false);
+		}
+		//amount comic (category, author, publishing company); amount comic (product management page)
+		else if(sort == 5){
+			sortTable(3, "int", true);
+		}
+		else if(sort == 6){
+			sortTable(3, "int", false);
+		}
+		//order date(bill order management page)
+		else if(sort == 7){
+			sortTable(1, "date", true);
+		}
+		else if(sort == 8){
+			sortTable(1, "date", false);
+		}
+		//delivery date(bill order management page)
+		else if(sort == 9){
+			sortTable(3, "date", true);
+		}
+		else if(sort == 10){
+			sortTable(3, "date", false);
+		}
+		//delivery(bill order management page) ; name category (product management page)
+		else if(sort == 11){
+			sortTable(4, "string", true);
+		}
+		else if(sort == 12){
+			sortTable(4, "string", false);
+		}
+		//email contact management page
+		else if(sort == 13){
+			sortTable(2, "string", true);
+		}
+		else if(sort == 14){
+			sortTable(2, "string", false);
+		}
+		//name user management page
+		else if(sort == 15){
+			sortTable(0, "string", true);
+		}
+		else if(sort == 16){
+			sortTable(0, "string", false);
+		}
+		//role user management page
+		else if(sort == 17){
+			sortTable(3, "string", true);
+		}		
+	})
+	
+	function sortTable(j, type, isAsc) {
+	  var count = 1; var dateA, dateB;
+	  var table, rows, switching, i, x, y, shouldSwitch, value, temp;
+	  table = document.getElementById("myTable");
+	  switching = true;
+	  /*Make a loop that will continue until
+	  no switching has been done:*/
+	  while (switching) {
+	    //start by saying: no switching is done:
+	    switching = false;
+	    rows = table.rows;
+	    /*Loop through all table rows (except the
+	    first, which contains table headers):*/
+	    for (i = 1; i < (rows.length - 1); i++) {
+	      //start by saying there should be no switching:
+	      shouldSwitch = false;
+	      /*Get the two elements you want to compare,
+	      one from current row and one from the next:*/
+	      x = rows[i].getElementsByTagName("TD")[j];
+	      y = rows[i + 1].getElementsByTagName("TD")[j];
+	      
+	      //check if the two rows should switch place:
+	      if(type == 'int'){
+	    	  if(isAsc){
+	    		  if (parseInt(x.innerText) > parseInt(y.innerText)) {
+	  	  	        //if so, mark as a switch and break the loop:
+	  	  	        shouldSwitch = true;
+	  	  	        break;
+	  	  	      }
+	    	  }
+	    	  else{
+	    		  if (parseInt(x.innerText) < parseInt(y.innerText)) {
+	  	  	        //if so, mark as a switch and break the loop:
+	  	  	        shouldSwitch = true;
+	  	  	        break;
+	  	  	      }
+	    	  }
+	    	  
+	      }
+	      else if(type == "string"){	    	  
+	    	  if(isAsc){
+	    		  if (x.innerText.toLowerCase() > y.innerText.toLowerCase()) {
+	  	  	        //if so, mark as a switch and break the loop:
+	  	  	        shouldSwitch = true;
+	  	  	        break;
+	  	  	      }
+	    	  }
+	    	  else{
+	    		  if (x.innerText.toLowerCase() < y.innerText.toLowerCase()) {
+	  	  	        //if so, mark as a switch and break the loop:
+	  	  	        shouldSwitch = true;
+	  	  	        break;
+	  	  	      }
+	    	  }
+	    	  
+	      }
+	      else if(type == "date"){
+	    	  if(count == 200){
+	    		  return;
+	    	  }
+	    	  count++;
+	    	  value = x.innerText;
+	    	  temp = value.split('-');
+	    	  value = temp.reverse().join('-');
+			  
+	    	  dateA = new Date(value);
+	    	  	    	 	    	  	    	  
+	    	  value = y.innerText;
+	    	  temp = value.split('-');
+	    	  value = temp.reverse().join('-');
+			  
+	    	  dateB = new Date(value);
+	    	  
+	    	  if(isAsc){
+	    		  if (dateA - dateB > 0) {
+	  	  	        //if so, mark as a switch and break the loop:
+	  	  	        shouldSwitch = true;
+	  	  	        break;
+	  	  	      }
+	    	  }
+	    	  else{
+	    		  if (dateA - dateB < 0) {
+	  	  	        //if so, mark as a switch and break the loop:
+	  	  	        shouldSwitch = true;
+	  	  	        break;
+	  	  	      }
+	    	  }
+	      }
+	      
+	    }
+	    if (shouldSwitch) {
+	      /*If a switch has been marked, make the switch
+	      and mark that a switch has been done:*/
+	      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+	      switching = true;
+	    }
+	  }
+	}
+	
+	//report
+	$("#report").click(function(){
+		var dateStart = $('#dateStart').val();
+		var dateEnd = $('#dateEnd').val();
+		var pt = $('#pt').val();
+		
+		var tilte = "";
+		if(pt == 1){
+			title = 'Doanh thu từ ngày ' + dateStart.split('-').reverse().join('-') + " đến ngày " + dateEnd.split('-').reverse().join('-');
+		}
+		else if(pt == 2){
+			var temp = dateStart.split('-');
+			var month = temp[1];
+			var year = temp[0];
+			title = 'Doanh thu từ tháng ' + month + "/" + year; 
+			
+			temp = dateEnd.split('-');
+			month = temp[1];
+			year = temp[0];
+			title += " đến tháng " + month + "/" + year;
+		}
+		else if(pt == 3){
+			var temp = dateStart.split('-');
+			var year = temp[0];
+			title = 'Doanh thu từ năm ' + year; 
+			
+			temp = dateEnd.split('-');
+			year = temp[0];
+			title += " đến năm " + year;
+		}
+		
+		var route = "create-report";
+		var myChart;
+		$("#chart").html('<canvas id="myChart" width="400" height="400"></canvas>');
+				
+		$.ajax({
+			url : route,
+			type : 'POST',
+			data : {
+				dateStart: dateStart,
+				dateEnd: dateEnd,
+				pt: pt
+			},
+			success: function(data){		
+				if(data == 'fail'){
+					alert('Lựa chọn không hợp lệ');
+				}
+				else{
+					var temp = data.split(";"); 
+					var label = temp[0].split(",");
+					var value = temp[1].split(",");
+					console.log(temp);				
+					var ctx = document.getElementById('myChart');
+											
+					myChart = new Chart(ctx, {
+					    type: 'bar',
+					    data: {
+					        labels: label,
+					        datasets: [{
+					            label: title,
+					            data: value,
+					            backgroundColor: [
+					                'rgba(255, 99, 132, 0.2)',
+					                'rgba(54, 162, 235, 0.2)',
+					                'rgba(255, 206, 86, 0.2)',
+					                'rgba(75, 192, 192, 0.2)',
+					                'rgba(153, 102, 255, 0.2)',
+					                'rgba(255, 159, 64, 0.2)',
+					                'rgba(255, 99, 132, 0.2)',
+					                'rgba(54, 162, 235, 0.2)',
+					                'rgba(255, 206, 86, 0.2)',
+					                'rgba(75, 192, 192, 0.2)',
+					                'rgba(153, 102, 255, 0.2)',
+					                'rgba(255, 159, 64, 0.2)',
+					                'rgba(255, 99, 132, 0.2)',
+					                'rgba(54, 162, 235, 0.2)',
+					                'rgba(255, 206, 86, 0.2)',
+					                'rgba(75, 192, 192, 0.2)',
+					                'rgba(153, 102, 255, 0.2)',
+					                'rgba(255, 159, 64, 0.2)',
+					                'rgba(255, 99, 132, 0.2)',
+					                'rgba(54, 162, 235, 0.2)',
+					                'rgba(255, 206, 86, 0.2)',
+					                'rgba(75, 192, 192, 0.2)',
+					                'rgba(153, 102, 255, 0.2)',
+					                'rgba(255, 159, 64, 0.2)',
+					                'rgba(255, 99, 132, 0.2)',
+					                'rgba(54, 162, 235, 0.2)',
+					                'rgba(255, 206, 86, 0.2)',
+					                'rgba(75, 192, 192, 0.2)',
+					                'rgba(153, 102, 255, 0.2)',
+					                'rgba(255, 159, 64, 0.2)',
+					                'rgba(255, 99, 132, 0.2)'
+					            ],
+					            borderColor: [
+					                'rgba(255, 99, 132, 1)',
+					                'rgba(54, 162, 235, 1)',
+					                'rgba(255, 206, 86, 1)',
+					                'rgba(75, 192, 192, 1)',
+					                'rgba(153, 102, 255, 1)',
+					                'rgba(255, 159, 64, 1)',
+					                'rgba(255, 99, 132, 1)',
+					                'rgba(54, 162, 235, 1)',
+					                'rgba(255, 206, 86, 1)',
+					                'rgba(75, 192, 192, 1)',
+					                'rgba(153, 102, 255, 1)',
+					                'rgba(255, 159, 64, 1)',
+					                'rgba(255, 99, 132, 1)',
+					                'rgba(54, 162, 235, 1)',
+					                'rgba(255, 206, 86, 1)',
+					                'rgba(75, 192, 192, 1)',
+					                'rgba(153, 102, 255, 1)',
+					                'rgba(255, 159, 64, 1)',
+					                'rgba(255, 99, 132, 1)',
+					                'rgba(54, 162, 235, 1)',
+					                'rgba(255, 206, 86, 1)',
+					                'rgba(75, 192, 192, 1)',
+					                'rgba(153, 102, 255, 1)',
+					                'rgba(255, 159, 64, 1)',
+					                'rgba(255, 99, 132, 1)',
+					                'rgba(54, 162, 235, 1)',
+					                'rgba(255, 206, 86, 1)',
+					                'rgba(75, 192, 192, 1)',
+					                'rgba(153, 102, 255, 1)',
+					                'rgba(255, 159, 64, 1)',
+					                'rgba(255, 99, 132, 1)'					                
+					            ],
+					            borderWidth: 1
+					        }]
+					    },
+					    options: {
+					        scales: {
+					            yAxes: [{
+					                ticks: {
+					                    beginAtZero: true
+					                }
+					            }]
+					        }
+					    }
+					});
+				}
+								
+			}
+		})
+	});
+		
+	//user admin page
+	$('.setup-pw').click(function(){		
+		if(confirm("Bạn có muốn đặt lại mật khẩu cho tài khoản này không?")){
+			var id = $(this).attr('dataId');
+			var route = "setup-pw";
+			
+			$.ajax({
+				url : route,
+				type : 'POST',
+				data : {
+					id: id
+				},
+				success: function(data){
+					if(data == 'success'){
+						alert('Đặt lại mật khẩu thành công');
+					}			
+					else if(data == 'fail'){
+						alert('Đặt lại mật khẩu thất bại');
+					}
+				}
+			})
+			
+		}
+	})
+	
+	$('.ban-acc').click(function(){
+		var id = $(this).attr('dataId');
+		var route = "ban-acc";
+		var active = parseInt($(this).attr('dataActive'));
+		
+		if(active == 1){
+			$(this).html("<button class='btn btn-warning'>Mở tài khoản</button>");
+			$(this).attr('dataActive','0');
+		}
+		else if(active == 0){
+			$(this).html("<button class='btn btn-danger'>Cấm tài khoản</button>");
+			$(this).attr('dataActive','1');
+		}	
+		
+		$.ajax({
+			url : route,
+			type : 'POST',
+			data : {
+				id: id
+			},
+			success: function(data){
+							
+			}
+		})
+	})
+	
+	//bill detail admin page
+	$('.change-status').click(function(){
+		var id = $(this).attr('dataId');
+		var str = $(this).text();
+		if(confirm("Bạn có muốn chuyển sang trạng thái " + str + " không ?")){
+			window.location.href = "add-order-status?id=" + id;
+		}
+	})
+	
+	$('.return-status').click(function(){
+		var id = $(this).attr('dataId');
+		if(confirm("Bạn có quay lại trạng thái trước đó không ?")){
+			window.location.href = "come-back-order-status?id=" + id;
+		}
+	})
+	
+	//admin page
+	$('.showHideNews').click(function(){
+		var id= $(this).attr("dataId");
+		var action = parseInt($(this).attr("action"));
+		
+		if(action == 0){
+			$(this).attr("action","1");
+			$(this).html('<i class="fa fa-eye" title="Bấm để ẩn trên trang web">');
+		}
+		else if(action == 1){
+			$(this).attr("action","0");
+			$(this).html('<i class="fa fa-eye-slash" title="Bấm để hiện lên trên trang web">');
+		}
+		
+		$.ajax({
+			url : "showHideNews",
+			type : 'POST',
+			data : {
+				id: id
+			},
+			success: function(data){					
+				
+			}
+		})
+	})
+	
+	$('.removeNews').click(function(){
+		if(confirm("Bạn có thực sự muốn xóa ?")){
+			var buttonRemoveId = parseInt($(this).attr('dataId'));			
+			var route = "removeNews";
+			
+			$.ajax({
+				url : route,
+				type : 'POST',
+				data : {
+					id: buttonRemoveId
+				},
+				success: function(data){
+					if(data == 'success'){
+						var divId;
+						$('.newsList').each(function () {
+							divId = parseInt($(this).attr('dataId'));
+							if(buttonRemoveId == divId){
+								$(this).remove();
+							}
+						})
+					}
+					else{
+						alert('Xóa thất bại');
+					}
+				}
+			})
+		 }
+	     else{
+	        return false;
+	     }
+	})
+	
+	//author management page
+	$('.author').click(function(){
+	  var mode = $(this).attr("dataMode");
+	  var name = prompt("Nhập tên tác giả:");
+	  if (name == null || name == "") {
+	    
+	  }
+	  else {
+		  var route = "author";
+		  var id = 0;
+		 
+		  if(mode == "edit"){
+			  id = $(this).attr("dataId");
+			  $(".name").each(function(){
+					if($(this).attr("dataId") == id){
+						$(this).text(name);	
+					}						
+			  })
+		  }
+		 $.ajax({
+			url : route,
+			type : 'POST',
+			data : {
+				mode: mode,
+				name: name,
+				id: id
+			},
+			success: function(data){
+				
+			}
+		})
+	  }
+	})
+	
+	$('.showHideAuthor').click(function(){
+		var id= $(this).attr("dataId");
+		var action = parseInt($(this).attr("action"));
+		
+		if(action == 0){
+			$(this).attr("action","1");
+			$(this).html('<i class="fa fa-eye" title="Bấm để ẩn trên trang web">');
+		}
+		else if(action == 1){
+			$(this).attr("action","0");
+			$(this).html('<i class="fa fa-eye-slash" title="Bấm để hiện lên trên trang web">');
+		}
+		
+		$.ajax({
+			url : "showHideAuthor",
+			type : 'POST',
+			data : {
+				id: id
+			},
+			success: function(data){					
+				
+			}
+		})
+	})
+	
+	$('.removeAuthor').click(function(){
+		if(confirm("Bạn có thực sự muốn xóa ?")){
+			var buttonRemoveId = parseInt($(this).attr('dataId'));			
+			var route = "removeAuthor";
+			
+			$.ajax({
+				url : route,
+				type : 'POST',
+				data : {
+					id: buttonRemoveId
+				},
+				success: function(data){
+					if(data == 'success'){
+						var divId;
+						$('.authorList').each(function () {
+							divId = parseInt($(this).attr('dataId'));
+							if(buttonRemoveId == divId){
+								$(this).remove();
+							}
+						})
+					}
+					else{
+						alert('Xóa thất bại');
+					}
+				}
+			})
+		 }
+	     else{
+	        return false;
+	     }
+	})
+	
+	//category management page
+	$('.category').click(function(){
+	  var mode = $(this).attr("dataMode");
+	  var name = prompt("Nhập tên tác giả:");
+	  if (name == null || name == "") {
+	    
+	  }
+	  else {
+		  var route = "category";
+		  var id = 0;
+		 
+		  if(mode == "edit"){
+			  id = $(this).attr("dataId");
+			  $(".name").each(function(){
+					if($(this).attr("dataId") == id){
+						$(this).text(name);	
+					}						
+			  })
+		  }
+		 $.ajax({
+			url : route,
+			type : 'POST',
+			data : {
+				mode: mode,
+				name: name,
+				id: id
+			},
+			success: function(data){
+				
+			}
+		})
+	  }
+	})
+	
+	$('.showHideCate').click(function(){
+		var id= $(this).attr("dataId");
+		var action = parseInt($(this).attr("action"));
+		
+		if(action == 0){
+			$(this).attr("action","1");
+			$(this).html('<i class="fa fa-eye" title="Bấm để ẩn trên trang web">');
+		}
+		else if(action == 1){
+			$(this).attr("action","0");
+			$(this).html('<i class="fa fa-eye-slash" title="Bấm để hiện lên trên trang web">');
+		}
+		
+		$.ajax({
+			url : "showHideCate",
+			type : 'POST',
+			data : {
+				id: id
+			},
+			success: function(data){					
+				
+			}
+		})
+	})
+	
+	$('.removeCategory').click(function(){
+		if(confirm("Bạn có thực sự muốn xóa ?")){
+			var buttonRemoveId = parseInt($(this).attr('dataId'));			
+			var route = "removeCate";
+			
+			$.ajax({
+				url : route,
+				type : 'POST',
+				data : {
+					id: buttonRemoveId
+				},
+				success: function(data){
+					if(data == 'success'){
+						var divId;
+						$('.cateList').each(function () {
+							divId = parseInt($(this).attr('dataId'));
+							if(buttonRemoveId == divId){
+								$(this).remove();
+							}
+						})
+					}
+					else{
+						alert('Xóa thất bại');
+					}
+				}
+			})
+		 }
+	     else{
+	        return false;
+	     }
+	})
+	
+	//publishing company management page
+	$('.publishing').click(function(){
+	  var mode = $(this).attr("dataMode");
+	  var name = prompt("Nhập tên nhà xuất bản:");
+	  if (name == null || name == "") {
+	    
+	  }
+	  else {
+		  var route = "publishCompany";
+		  var id = 0;
+		 
+		  if(mode == "edit"){
+			  id = $(this).attr("dataId");
+			  $(".name").each(function(){
+					if($(this).attr("dataId") == id){
+						$(this).text(name);	
+					}						
+			  })
+		  }
+		 $.ajax({
+			url : route,
+			type : 'POST',
+			data : {
+				mode: mode,
+				name: name,
+				id: id
+			},
+			success: function(data){
+				
+			}
+		})
+	  }
+	})
+	
+	$('.showHidePC').click(function(){
+		var id= $(this).attr("dataId");
+		var action = parseInt($(this).attr("action"));
+		
+		if(action == 0){
+			$(this).attr("action","1");
+			$(this).html('<i class="fa fa-eye" title="Bấm để ẩn trên trang web">');
+		}
+		else if(action == 1){
+			$(this).attr("action","0");
+			$(this).html('<i class="fa fa-eye-slash" title="Bấm để hiện lên trên trang web">');
+		}
+		
+		$.ajax({
+			url : "showHidePublishing",
+			type : 'POST',
+			data : {
+				id: id
+			},
+			success: function(data){					
+				
+			}
+		})
+	})
+	
+	$('.removePC').click(function(){
+		if(confirm("Bạn có thực sự muốn xóa ?")){
+			var buttonRemoveId = parseInt($(this).attr('dataId'));			
+			var route = "removePublishing";
+			
+			$.ajax({
+				url : route,
+				type : 'POST',
+				data : {
+					id: buttonRemoveId
+				},
+				success: function(data){
+					if(data == 'success'){
+						var divId;
+						$('.PCList').each(function () {
+							divId = parseInt($(this).attr('dataId'));
+							if(buttonRemoveId == divId){
+								$(this).remove();
+							}
+						})
+					}
+					else{
+						alert('Xóa thất bại');
+					}
+				}
+			})
+		 }
+	     else{
+	        return false;
+	     }
+	})
+	
 	//bill admin page
 	$(".select-delivery").click(function(){
 		$(this).attr("hidden","");
@@ -66,23 +911,6 @@ $(document).ready(function(){
 			$('#note').attr('hidden','');
 		}
 	})
-	
-	//shipping page
-//	$(".btnShipping").click(function(){
-//		var id = $(this).attr('dataId');
-//		var route = "customer/defaultAddress";
-//		
-//		$.ajax({
-//			url : route,
-//			type : 'GET',
-//			data : {
-//				id: id
-//			},
-//			success: function(data){
-//				
-//			}
-//		})
-//	})
 	
 	//cancel order
 	$(".cancelOrder").click(function(){
@@ -307,9 +1135,9 @@ $(document).ready(function(){
 	// 	$('.form-change-password').removeAttr('hidden');
 	// })
 
-	$('.guimail').click(function(){
-      $('.guimail').attr('hidden','');
-    });
+//	$('.oneClick').click(function(){
+//      $('.oneClick').attr("disabled","disabled");
+//    });
 	
 	$("#changePassword").change(function(){
       if($(this).is(":checked")){
@@ -347,6 +1175,31 @@ $(document).ready(function(){
 		$("#submit").prop("type","submit");
 	});
 	
+	$("#email").change(function(){
+		var email = $("#email").val();
+		route = "check-email";
+		$.ajax({
+			url : route,
+			type : 'GET',
+			data : {
+				email: email
+			},
+			success: function(data){
+				if(data == 'success'){
+					$("#note").attr("hidden","");
+				}			
+				else if(data == 'fail'){
+					$("#note").removeAttr("hidden");
+					$("input[type=submit]").attr('disabled','disabled');
+					$("#submit").css({
+						"cursor": "default"
+					});
+					$("#submit").prop("type","disable");
+				}
+			}
+		})
+	})
+	
 	$("#submit").click(function(){
 		var ps = $("#password").val();
 		var phone = $("#phone").val();
@@ -373,7 +1226,7 @@ $(document).ready(function(){
 				f = false;
 			}
 		}
-		
+				
 		if(!f){
 			$("input[type=submit]").attr('disabled','disabled');
 			$("#submit").css({
@@ -430,7 +1283,7 @@ $(document).ready(function(){
         zoomWindowFadeOut: 750                
     });    
     
-// button add to cart
+	// button add to cart
     $('.them-vao-gio-hang').click(function(){		
 		var itemcount = parseInt($("#itemcount").text());
 		
@@ -480,7 +1333,8 @@ $(document).ready(function(){
 			}
 		})
 	});
-// add to cart (detail product)
+    
+	// add to cart (detail product)
     $('.addtocart').click(function(){
     	var itemcount = parseInt($("#itemcount").text());
 		var route = "addtocart";
@@ -528,5 +1382,6 @@ $(document).ready(function(){
 				}
 			}
 		})
-    });   
+    }); 
+  
 })

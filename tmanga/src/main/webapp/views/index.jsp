@@ -125,7 +125,7 @@
 
 	<div>
 		<div>
-			<span style="color:orange; font-weight:bold; font-size:20px">TRUYỆN TRANH MỚI </span>
+			<span style="color:orange; font-weight:bold; font-size:20px">TRUYỆN MỚI NHẬP</span>
 			<span><a href="${pageContext.request.contextPath}/controller/product?a=nc&q=new-comic" style="float:right; margin-left: 10px; margin-top: 7px;">XEM THÊM >></a></span>
 			<hr style="border: 1px solid orange; margin-top:0px">
 		</div>

@@ -58,9 +58,11 @@ public class CustomerController {
 										@RequestParam(name = "alert", defaultValue = "") String alert) {
 		ModelAndView model = new ModelAndView();
 		if(session.getAttribute("account") != null) {
-			getModel.getCustomerEditInfo(model);
+			String href = "customer/edit";
+			getModel.getCustomerEditInfo(model,href);
 			model.addObject("mes", mes);
 			model.addObject("alert", alert);
+			model.addObject("href", href);
 			session.setAttribute("url", "customer/edit");
 		}
 		else {
@@ -73,6 +75,7 @@ public class CustomerController {
 	public String getEditInfo(@RequestParam(name = "name") String name,
 							@RequestParam(name = "phone") String phone,
 							@RequestParam(name = "password", defaultValue = "") String password,
+							@RequestParam(name = "href") String href,
 							HttpSession session, Model model) {
 		String str = "";
 		if(session.getAttribute("account") != null) {
@@ -85,11 +88,16 @@ public class CustomerController {
 			}
 			
 			userService.update(u);
-			session.setAttribute("account", u);
 			
+			if(href.equalsIgnoreCase("edit-user")) {
+				str = "redirect:../userAdmin";
+			}
+			else {
+				session.setAttribute("account", u);				
+				str = "redirect:edit";
+			}
 			model.addAttribute("mes", "Sửa thành công");
 			model.addAttribute("alert", "success");
-			str = "redirect:edit";
 		}
 		else {
 			str = "redirect:index";

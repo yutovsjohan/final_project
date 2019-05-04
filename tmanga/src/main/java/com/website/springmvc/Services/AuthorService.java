@@ -21,11 +21,11 @@ public class AuthorService {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	public List<Author> getListAuthors(int firstResult, int maxResult){
+	public List<Author> getListAuthors(String name, int firstResult, int maxResult){
 		Session session = this.sessionFactory.getCurrentSession();
 		Query query = null;
-		query = session.createQuery("from Author");
-
+		query = session.createQuery("from Author where name like :keyword").setParameter("keyword", "%" + name + "%");
+		
 		if(maxResult != 0) {
 			query.setFirstResult(firstResult);
 			query.setMaxResults(maxResult);

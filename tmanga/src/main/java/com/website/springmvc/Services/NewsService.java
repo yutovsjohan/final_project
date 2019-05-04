@@ -26,10 +26,15 @@ public class NewsService {
 		return (News) session.createQuery("from News where unsignedTitle = :keyword").setParameter("keyword", name).uniqueResult();
 	}
 	
-	public List<News> getListNews(int firstResult, int maxResult){
+	public List<News> getListNews(int firstResult, int maxResult, int status){
 		Session session = this.sessionFactory.getCurrentSession();
 		Query query = null;
-		query = session.createQuery("from News order by created_at desc");
+		if(status == 1) {
+			query = session.createQuery("from News where status = 1 order by created_at desc");
+		}
+		else {
+			query = session.createQuery("from News order by created_at desc");
+		}
 		
 		if(maxResult != 0) {
 			query.setFirstResult(firstResult);
