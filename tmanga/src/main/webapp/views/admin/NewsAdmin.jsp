@@ -6,23 +6,37 @@
 
 <hr>
 <div class="w3-container">
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  		<a class="navbar-brand">Danh sách tin tức</a>
-	
-	<div class="col-sm-4">
-		<form class="navbar-form" role="search" method="get" action="newsAdmin">
-			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Tìm tin tức" name="q" id="search">
-				
-				<div class="input-group-btn">
-					<button class="btn btn-default" type="submit" style="height:34px"><i class="glyphicon glyphicon-search"></i></button>
+	<div class="row" style="padding:15px">
+		<div class="col-sm-3" style="font-size: 20px; color:red">
+			Danh sách tin tức
+		</div>
+		<div class="col-sm-4">
+			<form role="search">
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="Tìm tin tức" name="q" id="search">				
+					<div style="margin-top:-34px; float:right">
+						<button class="btn btn-default" type="submit" style="height:34px"><i class="glyphicon glyphicon-search"></i></button>
+					</div>
 				</div>
+			</form>
+		</div>
+		
+		<div class="col-sm-4">
+			<div class="form-group">
+				<select class="form-control" id="sort">
+				  	<option value="0">--- Sắp xếp theo ---</option>						
+					<option value="3">Tin tức từ A-Z</option>
+					<option value="4">Tin tức từ Z-A</option>
+			  	</select>
 			</div>
-		</form>
+		</div>
 	</div>
 	
-	<a href="newsDetail?mode=add" class="btn btn-success" style="margin:8px">Thêm tin tức</a>
-	</nav>
+	<div class="row" style="padding:15px">
+		<div class="col-sm-3" style="float:left; font-size: 20px">
+			<a href="newsDetail?mode=add" class="btn btn-success">Thêm tin tức</a>
+		</div>
+	</div>	
 </div>
 <hr>
 
@@ -35,7 +49,7 @@
 </c:if> 
 
 <div class="w3-container">
-	<table class="table table-striped">
+	<table class="table table-striped" id="myTable">
 		<thead>
 			<tr>
 				<th>Hình</th>

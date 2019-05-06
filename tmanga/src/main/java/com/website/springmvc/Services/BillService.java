@@ -25,7 +25,7 @@ public class BillService {
 	
 	public Long countBillByDate(int day, int month, int year){
 		Session session = this.sessionFactory.getCurrentSession();
-		return (Long) session.createQuery("select count(id) from Bill where year(orderDate) = :year and month(orderDate) = :month and day(orderDate) = :day and active = 2").setParameter("day", day).setParameter("month", month).setParameter("year", year).uniqueResult();
+		return (Long) session.createQuery("select count(id) from Bill where year(orderDate) = :year and month(orderDate) = :month and day(orderDate) = :day").setParameter("day", day).setParameter("month", month).setParameter("year", year).uniqueResult();
 	}
 
 	public Long getBillUnView(){
@@ -48,7 +48,7 @@ public class BillService {
 		return (Long) session.createQuery("select sum(total) from Bill where year(orderDate) = :year and month(orderDate) = :month and day(orderDate) = :day and active = 2").setParameter("day", day).setParameter("month", month).setParameter("year", year).uniqueResult();
 	}
 	
-//	public List<Object[]> getListMoneyByDate(Date dateStart, Date dateEnd){
+//	public List<Object[]> getListByDate(Date dateStart, Date dateEnd){
 //		Session session = this.sessionFactory.getCurrentSession();
 //		return session.createQuery("select total, day(orderDate), month(orderDate), year(orderDate) from Bill where orderDate between :dateStart and :dateEnd and active = 2 order by orderDate asc").setParameter("dateStart", dateStart).setParameter("dateEnd", dateEnd).list();
 //	}

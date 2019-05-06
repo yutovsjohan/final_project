@@ -23,6 +23,11 @@ public class UsersService {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
+	public List<Object[]> getCountUserByRole(){
+		Session session = this.sessionFactory.getCurrentSession();
+		return session.createQuery("select r.id, count(u.id) from Users u right join u.role r group by r.id").list();
+	}
+	
 	public Long getCountStaff(){
 		Session session = this.sessionFactory.getCurrentSession();
 		return (Long) session.createQuery("select count(id) from Users where role.id != 2").uniqueResult();
@@ -41,6 +46,17 @@ public class UsersService {
 	public List<Users> getListStaff(int firstResult, int maxResult, String name) {
 		Session session = this.sessionFactory.getCurrentSession();
 		Query query = session.createQuery("from Users  where role.id != 2 and name like :name").setParameter("name", "%" + name + "%");
+		
+		if(maxResult != 0) {
+			query.setFirstResult(firstResult);
+			query.setMaxResults(maxResult);
+		}
+		return query.list();
+	}
+	
+	public List<Users> getListCustomer(int firstResult, int maxResult, String name) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Query query = session.createQuery("from Users  where role.id = 2 and name like :name").setParameter("name", "%" + name + "%");
 		
 		if(maxResult != 0) {
 			query.setFirstResult(firstResult);

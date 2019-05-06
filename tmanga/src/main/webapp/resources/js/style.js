@@ -1,74 +1,177 @@
 $(document).ready(function(){
-	//page home admin
-	var ctx = document.getElementById('myChartHome');
-	var data = $("#chart").attr('data');
-	var temp = data.split(";"); 
-	var label = temp[0].split(",");
-	var value = temp[1].split(",");
+	//edit product (show date)
+	var views = $("#views").val();
+	var mode = $("#mode").val();
+	if(views == 'ProductMan' && mode == 'edit'){
+		var temp = $("#temp").val(); 
+		var publishDate =  temp.split(" "); 
+		$("#publishDate").val(publishDate[0]);
+	}
 	
-	myChart = new Chart(ctx, {
-	    type: 'bar',
-	    data: {
-	        labels: label,
-	        datasets: [{
-	            label: 'Số đơn hàng',
-	            data: value,
-	            backgroundColor: [
-	                'rgba(255, 99, 132, 0.2)',
-	                'rgba(54, 162, 235, 0.2)',
-	                'rgba(255, 206, 86, 0.2)',
-	                'rgba(75, 192, 192, 0.2)',
-	                'rgba(153, 102, 255, 0.2)',
-	                'rgba(255, 159, 64, 0.2)',
-	                'rgba(255, 99, 132, 0.2)',
-	                'rgba(54, 162, 235, 0.2)',
-	                'rgba(255, 206, 86, 0.2)',
-	                'rgba(75, 192, 192, 0.2)',
-	                'rgba(153, 102, 255, 0.2)',
-	                'rgba(255, 159, 64, 0.2)'	               
-	            ],
-	            borderColor: [
-	                'rgba(255, 99, 132, 1)',
-	                'rgba(54, 162, 235, 1)',
-	                'rgba(255, 206, 86, 1)',
-	                'rgba(75, 192, 192, 1)',
-	                'rgba(153, 102, 255, 1)',
-	                'rgba(255, 159, 64, 1)',
-	                'rgba(255, 99, 132, 1)',
-	                'rgba(54, 162, 235, 1)',
-	                'rgba(255, 206, 86, 1)',
-	                'rgba(75, 192, 192, 1)',
-	                'rgba(153, 102, 255, 1)',
-	                'rgba(255, 159, 64, 1)'	                				                
-	            ],
-	            borderWidth: 1
-	        }]
-	    },
-	    options: {
-	        scales: {
-	            yAxes: [{
-	                ticks: {
-	                    beginAtZero: true
-	                }
-	            }]
-	        }
-	    }
-	});
+//	$("#save-product").click(function(){
+//		var publishDate = $("#publishDate").val();
+//		var idCategory = $("#idCategory").val();
+//		var idAuthor = $("#idAuthor").val();
+//		var idPublishCompany = $("#idPublishCompany").val();
+//		
+//		var route = "comic";
+//		$.ajax({
+//			url : route,
+//			type : 'POST',
+//			data : {
+//				publishDate: publishDate,
+//				idCategory: idCategory,
+//				idAuthor: idAuthor,
+//				idPublishCompany: idPublishCompany
+//			},
+//			success: function(data){	
+//				
+//			}
+//		})
+//	})
+	
+	//page home admin
+	var views = $("#views").attr('data');
+	if(views == 'adminHome'){
+		var ctx = document.getElementById('myChartHome');
+		var data = $("#chart").attr('data');
+		var temp = data.split(";"); 
+		var label = temp[0].split(",");
+		var value = temp[1].split(",");
+		
+		myChart = new Chart(ctx, {
+		    type: 'bar',
+		    data: {
+		        labels: label,
+		        datasets: [{
+		            label: 'Số đơn hàng',
+		            data: value,
+		            backgroundColor: [
+		            	'rgba(75, 192, 192, 0.2)',
+		            	'rgba(75, 192, 192, 0.2)',
+		            	'rgba(75, 192, 192, 0.2)',
+		            	'rgba(75, 192, 192, 0.2)',
+		            	'rgba(75, 192, 192, 0.2)',
+		            	'rgba(75, 192, 192, 0.2)',
+		            	'rgba(75, 192, 192, 0.2)',
+		            ],
+		            borderColor: [
+		            	'rgba(75, 192, 192, 0.2)',
+		            	'rgba(75, 192, 192, 0.2)',
+		            	'rgba(75, 192, 192, 0.2)',
+		            	'rgba(75, 192, 192, 0.2)',
+		            	'rgba(75, 192, 192, 0.2)',
+		            	'rgba(75, 192, 192, 0.2)',
+		            	'rgba(75, 192, 192, 0.2)',
+		            ],
+		            borderWidth: 1
+		        }]
+		    },
+		    options: {
+		        scales: {
+		            yAxes: [{
+		                ticks: {
+		                    beginAtZero: true
+		                }
+		            }]
+		        }
+		    }
+		});
+	}
 	
 	//comic list management
-	$("#change-category").change(function(){
+	
+	$('.showHideComic').click(function(){
+		var id= $(this).attr("dataId");
+		var action = parseInt($(this).attr("action"));
+		
+		if(action == 0){
+			$(this).attr("action","1");
+			$(this).html('<i class="fa fa-eye" title="Bấm để ẩn trên trang web">');
+		}
+		else if(action == 1){
+			$(this).attr("action","0");
+			$(this).html('<i class="fa fa-eye-slash" title="Bấm để hiện lên trên trang web">');
+		}
+		
+		$.ajax({
+			url : "showHideComic",
+			type : 'POST',
+			data : {
+				id: id
+			},
+			success: function(data){					
+				
+			}
+		})
+	})
+	
+	$("#confirm-change-comic").click(function(){
+		var count = parseInt($("#select-all").attr("dataCount"));
+		var price = $("#price").val();
+		var amount = $("#amount").val();
+		if(count != 0){
+			if(price.length != 0){
+				var route = "change-price";
+				var idComic = 0;
+				$('#table-list tr').each(function() {
+					if($(this).attr("dataAction") == 1){
+						$(this).find(".price").text((price/1000).toFixed(3));
+						idComic = $(this).attr('dataId');
+						$.ajax({
+							url : route,
+							type : 'POST',
+							data : {
+								price: price,
+								idComic: idComic
+							},
+							success: function(data){	
+								if(data == "fail"){
+									alert("Cập nhật thất bại");
+								}
+							}
+						})
+					}
+				})
+			}
+			if(amount.length != 0){
+				var route = "change-amount";
+				var idComic = 0;
+				$('#table-list tr').each(function() {
+					if($(this).attr("dataAction") == 1){
+						$(this).find(".amount").text(amount);
+						idComic = $(this).attr('dataId');
+						$.ajax({
+							url : route,
+							type : 'POST',
+							data : {
+								amount: amount,
+								idComic: idComic
+							},
+							success: function(data){	
+								if(data == "fail"){
+									alert("Cập nhật thất bại");
+									$(this).find(".amount").text("");
+								}
+							}
+						})
+					}
+				})
+			}
+		}
+	})
+	
+	$("#change-comic").change(function(){
 		var idCate = $("#select-option-change-category").val();
 		if(parseInt(idCate) != 0){
-			var name = $("#select-option-change-category option:selected").text();
-						
+			var name = $("#select-option-change-category option:selected").text();						
 			var count = parseInt($("#select-all").attr("dataCount"));
 			if(count != 0){
 				var route = "change-category";
 				var idComic = 0;
 				$('#table-list tr').each(function() {
 					if($(this).attr("dataAction") == 1){
-						$(this).find(".categoryName").text(name);
-						
+						$(this).find(".categoryName").text(name);						
 						idCate = $("#select-option-change-category").val();
 						idComic = $(this).attr('dataId');
 						$.ajax({
@@ -93,7 +196,9 @@ $(document).ready(function(){
 	
 	$("#select-all").click(function(){		
 		if($("#select-all").prop("checked")){
+			var count = 0;
 			$("#table-list tr").each(function() {
+				count++;
 				$(this).css({
 				    "background-color": "cyan"
 				})
@@ -104,7 +209,7 @@ $(document).ready(function(){
 				$(this).attr( "checked", "true");
 				$(this).prop( "checked", "true");	
 			})
-			$("#select-all").attr("dataCount", "10");
+			$("#select-all").attr("dataCount", count);
 		}
 		else{
 			$("#table-list tr").each(function() {
@@ -122,10 +227,10 @@ $(document).ready(function(){
 		}
 		
 		if( parseInt($("#select-all").attr("dataCount")) > 0){			
-			$("#change-category").removeAttr("hidden");
+			$("#change-comic").removeAttr("hidden");
 		}
 		else{			
-			$("#change-category").attr("hidden","");
+			$("#change-comic").attr("hidden","");
 		}
 		
 	})
@@ -146,8 +251,10 @@ $(document).ready(function(){
 		
 		var idComic = $(this).attr('dataId');
 		var f = true;
+		var countComic = -1;
 		$('.checkbox').each(function(){
-			if($(this).attr('dataId') == idComic){
+			countComic++;
+			if($(this).attr('dataId') == idComic){				
 				if($(this).attr("checked")){
 					$(this).removeAttr( "checked");
 					$(this).removeProp( "checked");
@@ -167,18 +274,18 @@ $(document).ready(function(){
 			count--;
 		}
 		$("#select-all").attr("dataCount", count);
-		if(count < 10){
+		if(count < countComic){
 			$("#select-all").removeProp("checked");
 		}
-		else if(count == 10){
+		else if(count == countComic){
 			$("#select-all").prop("checked", "true");
 		}
 		
 		if(count > 0){
-			$("#change-category").removeAttr("hidden");
+			$("#change-comic").removeAttr("hidden");
 		}
 		else if(count == 0){
-			$("#change-category").attr("hidden","");
+			$("#change-comic").attr("hidden","");
 		}
 	})
 	
@@ -254,7 +361,14 @@ $(document).ready(function(){
 		//role user management page
 		else if(sort == 17){
 			sortTable(3, "string", true);
-		}		
+		}
+		//price comic management page
+		else if(sort == 18){
+			sortTable(5, "int", true);
+		}
+		else if(sort == 19){
+			sortTable(5, "int", false);
+		}
 	})
 	
 	function sortTable(j, type, isAsc) {
@@ -359,147 +473,166 @@ $(document).ready(function(){
 	//report
 	$("#report").click(function(){
 		var dateStart = $('#dateStart').val();
-		var dateEnd = $('#dateEnd').val();
-		var pt = $('#pt').val();
-		
-		var tilte = "";
-		if(pt == 1){
-			title = 'Doanh thu từ ngày ' + dateStart.split('-').reverse().join('-') + " đến ngày " + dateEnd.split('-').reverse().join('-');
+		if(dateStart == ''){
+			alert('Ngày bắt đầu không hợp lệ');
 		}
-		else if(pt == 2){
-			var temp = dateStart.split('-');
-			var month = temp[1];
-			var year = temp[0];
-			title = 'Doanh thu từ tháng ' + month + "/" + year; 
-			
-			temp = dateEnd.split('-');
-			month = temp[1];
-			year = temp[0];
-			title += " đến tháng " + month + "/" + year;
-		}
-		else if(pt == 3){
-			var temp = dateStart.split('-');
-			var year = temp[0];
-			title = 'Doanh thu từ năm ' + year; 
-			
-			temp = dateEnd.split('-');
-			year = temp[0];
-			title += " đến năm " + year;
-		}
-		
-		var route = "create-report";
-		var myChart;
-		$("#chart").html('<canvas id="myChart" width="400" height="400"></canvas>');
+		else{
+			var dateEnd = $('#dateEnd').val();
+			if(dateEnd == ''){
+				alert('Ngày kết thúc không hợp lệ');
+			}
+			else{
+				var pt = $('#pt').val();
+				var title = 'Biểu đồ ';
+				var label_chart = "Doanh thu";
 				
-		$.ajax({
-			url : route,
-			type : 'POST',
-			data : {
-				dateStart: dateStart,
-				dateEnd: dateEnd,
-				pt: pt
-			},
-			success: function(data){		
-				if(data == 'fail'){
-					alert('Lựa chọn không hợp lệ');
+				var dataUrl = $("#report").attr('dataUrl');
+				if(dataUrl == 'home'){
+					pt = 4;
+					title += 'số lượng đơn hàng từ ngày ' + dateStart.split('-').reverse().join('/') + ' đến ngày ' + dateEnd.split('-').reverse().join('/');
+					label_chart = "Số đơn hàng";
+				}		
+				
+				if(pt == 1){
+					title += 'doanh thu từ ngày ' + dateStart.split('-').reverse().join('/') + ' đến ngày ' + dateEnd.split('-').reverse().join('/');
 				}
-				else{
-					var temp = data.split(";"); 
-					var label = temp[0].split(",");
-					var value = temp[1].split(",");
-					console.log(temp);				
-					var ctx = document.getElementById('myChart');
-											
-					myChart = new Chart(ctx, {
-					    type: 'bar',
-					    data: {
-					        labels: label,
-					        datasets: [{
-					            label: title,
-					            data: value,
-					            backgroundColor: [
-					                'rgba(255, 99, 132, 0.2)',
-					                'rgba(54, 162, 235, 0.2)',
-					                'rgba(255, 206, 86, 0.2)',
-					                'rgba(75, 192, 192, 0.2)',
-					                'rgba(153, 102, 255, 0.2)',
-					                'rgba(255, 159, 64, 0.2)',
-					                'rgba(255, 99, 132, 0.2)',
-					                'rgba(54, 162, 235, 0.2)',
-					                'rgba(255, 206, 86, 0.2)',
-					                'rgba(75, 192, 192, 0.2)',
-					                'rgba(153, 102, 255, 0.2)',
-					                'rgba(255, 159, 64, 0.2)',
-					                'rgba(255, 99, 132, 0.2)',
-					                'rgba(54, 162, 235, 0.2)',
-					                'rgba(255, 206, 86, 0.2)',
-					                'rgba(75, 192, 192, 0.2)',
-					                'rgba(153, 102, 255, 0.2)',
-					                'rgba(255, 159, 64, 0.2)',
-					                'rgba(255, 99, 132, 0.2)',
-					                'rgba(54, 162, 235, 0.2)',
-					                'rgba(255, 206, 86, 0.2)',
-					                'rgba(75, 192, 192, 0.2)',
-					                'rgba(153, 102, 255, 0.2)',
-					                'rgba(255, 159, 64, 0.2)',
-					                'rgba(255, 99, 132, 0.2)',
-					                'rgba(54, 162, 235, 0.2)',
-					                'rgba(255, 206, 86, 0.2)',
-					                'rgba(75, 192, 192, 0.2)',
-					                'rgba(153, 102, 255, 0.2)',
-					                'rgba(255, 159, 64, 0.2)',
-					                'rgba(255, 99, 132, 0.2)'
-					            ],
-					            borderColor: [
-					                'rgba(255, 99, 132, 1)',
-					                'rgba(54, 162, 235, 1)',
-					                'rgba(255, 206, 86, 1)',
-					                'rgba(75, 192, 192, 1)',
-					                'rgba(153, 102, 255, 1)',
-					                'rgba(255, 159, 64, 1)',
-					                'rgba(255, 99, 132, 1)',
-					                'rgba(54, 162, 235, 1)',
-					                'rgba(255, 206, 86, 1)',
-					                'rgba(75, 192, 192, 1)',
-					                'rgba(153, 102, 255, 1)',
-					                'rgba(255, 159, 64, 1)',
-					                'rgba(255, 99, 132, 1)',
-					                'rgba(54, 162, 235, 1)',
-					                'rgba(255, 206, 86, 1)',
-					                'rgba(75, 192, 192, 1)',
-					                'rgba(153, 102, 255, 1)',
-					                'rgba(255, 159, 64, 1)',
-					                'rgba(255, 99, 132, 1)',
-					                'rgba(54, 162, 235, 1)',
-					                'rgba(255, 206, 86, 1)',
-					                'rgba(75, 192, 192, 1)',
-					                'rgba(153, 102, 255, 1)',
-					                'rgba(255, 159, 64, 1)',
-					                'rgba(255, 99, 132, 1)',
-					                'rgba(54, 162, 235, 1)',
-					                'rgba(255, 206, 86, 1)',
-					                'rgba(75, 192, 192, 1)',
-					                'rgba(153, 102, 255, 1)',
-					                'rgba(255, 159, 64, 1)',
-					                'rgba(255, 99, 132, 1)'					                
-					            ],
-					            borderWidth: 1
-					        }]
-					    },
-					    options: {
-					        scales: {
-					            yAxes: [{
-					                ticks: {
-					                    beginAtZero: true
-					                }
-					            }]
-					        }
-					    }
-					});
+				else if(pt == 2){
+					var temp = dateStart.split('-');
+					var month = temp[1];
+					var year = temp[0];
+					title += 'doanh thu từ tháng ' + month + "/" + year; 
+					
+					temp = dateEnd.split('-');
+					month = temp[1];
+					year = temp[0];
+					title += ' đến tháng ' + month + "/" + year;
+				}
+				else if(pt == 3){
+					var temp = dateStart.split('-');
+					var year = temp[0];
+					title += 'doanh thu từ năm ' + year; 
+					
+					temp = dateEnd.split('-');
+					year = temp[0];
+					title += " đến năm " + year;
 				}
 								
+				var route = "create-report";
+				var myChart;				
+					
+				$.ajax({
+					url : route,
+					type : 'POST',
+					data : {
+						dateStart: dateStart,
+						dateEnd: dateEnd,
+						pt: pt
+					},
+					success: function(data){		
+						if(data == 'fail'){
+							alert('Ngày kết thúc phải lớn hơn ngày bắt đầu');
+						}
+						else{
+							$("#chart").html('<canvas id="myChart" width="400" height="400"></canvas>');
+							$("#title-chart").text(title);
+							var temp = data.split(";"); 
+							var label = temp[0].split(",");
+							var value = temp[1].split(",");
+							
+							var ctx = document.getElementById('myChart');
+													
+							myChart = new Chart(ctx, {
+							    type: 'bar',
+							    data: {
+							        labels: label,
+							        datasets: [{
+							            label: label_chart,
+							            data: value,
+							            backgroundColor: [
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)'
+							            ],
+							            borderColor: [
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)',
+							            	'rgba(75, 192, 192, 0.2)'					            	
+							            ],
+							            borderWidth: 1
+							        }]
+							    },
+							    options: {
+							        scales: {
+							            yAxes: [{
+							                ticks: {
+							                    beginAtZero: true
+							                }
+							            }]
+							        }
+							    }
+							});
+						}
+										
+					}
+				})
 			}
-		})
+		}
 	});
 		
 	//user admin page
@@ -610,6 +743,72 @@ $(document).ready(function(){
 					if(data == 'success'){
 						var divId;
 						$('.newsList').each(function () {
+							divId = parseInt($(this).attr('dataId'));
+							if(buttonRemoveId == divId){
+								$(this).remove();
+							}
+						})
+					}
+					else{
+						alert('Xóa thất bại');
+					}
+				}
+			})
+		 }
+	     else{
+	        return false;
+	     }
+	})
+	
+	//role management page
+	$('.role').click(function(){
+	  var mode = $(this).attr("dataMode");
+	  var name = prompt("Nhập tên chức vụ:");
+	  if (name == null || name == "") {
+	    
+	  }
+	  else {
+		  var route = "role";
+		  var id = 0;
+		 
+		  if(mode == "edit"){
+			  id = $(this).attr("dataId");
+			  $(".name").each(function(){
+					if($(this).attr("dataId") == id){
+						$(this).text(name);	
+					}						
+			  })
+		  }
+		 $.ajax({
+			url : route,
+			type : 'POST',
+			data : {
+				mode: mode,
+				name: name,
+				id: id
+			},
+			success: function(data){
+				
+			}
+		})
+	  }
+	})
+	
+	$('.removeRole').click(function(){
+		if(confirm("Bạn có thực sự muốn xóa ?")){
+			var buttonRemoveId = parseInt($(this).attr('dataId'));			
+			var route = "removeRole";
+			
+			$.ajax({
+				url : route,
+				type : 'POST',
+				data : {
+					id: buttonRemoveId
+				},
+				success: function(data){
+					if(data == 'success'){
+						var divId;
+						$('.roleList').each(function () {
 							divId = parseInt($(this).attr('dataId'));
 							if(buttonRemoveId == divId){
 								$(this).remove();
@@ -901,6 +1100,68 @@ $(document).ready(function(){
 	})
 	
 	//bill admin page
+	$(".confirm-delivery-date").click(function(){
+		var route = "select-delivery-date";
+		var idBill = $(this).attr('dataId');
+		var date = "";
+		$(".select-delivery-date").each(function(){
+			if(idBill == parseInt($(this).attr("dataId"))){
+				date = $(this).val();
+			}
+		})
+		$.ajax({
+			url : route,
+			type : 'POST',
+			data : {
+				idBill: idBill,
+				date: date
+			},
+			success: function(data){
+				if(data != 'fail'){						
+					$(".delivery-date").each(function(){
+						if(idBill == parseInt($(this).attr("dataId"))){
+							$(this).removeAttr('hidden');
+							$(this).text(data);
+						}
+					})
+					
+					$(".form-delivery-date").each(function(){
+						if(idBill == parseInt($(this).attr("dataId"))){
+							$(this).attr('hidden','');
+						}
+					})
+				}
+				else{
+					alert('Ngày giao hàng phải lớn hơn ngày đặt hàng');
+				}
+			}
+		})
+	})
+	
+	$(".delivery-date").click(function(){
+		$(this).attr("hidden","");
+		var id = parseInt($(this).attr("dataId"));
+		$(".form-delivery-date").each(function(){
+			if(id == parseInt($(this).attr("dataId"))){
+				$(this).removeAttr("hidden");
+			}			
+		})
+	})
+	
+	$(".cancel-delivery-date").click(function(){
+		var id = parseInt($(this).attr("dataId"));
+		$(".form-delivery-date").each(function(){
+			if(id == parseInt($(this).attr("dataId"))){
+				$(this).attr("hidden","");
+			}			
+		})
+		$(".delivery-date").each(function(){
+			if(id == parseInt($(this).attr("dataId"))){
+				$(this).removeAttr("hidden");
+			}			
+		})
+	})	
+	
 	$(".select-delivery").click(function(){
 		$(this).attr("hidden","");
 		var id = parseInt($(this).attr("dataId"));

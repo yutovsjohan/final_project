@@ -6,33 +6,30 @@
 
 <hr>
 <div class="w3-container">
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  		<a class="navbar-brand">Danh sách các tin nhắn</a>
-	<div class="col-sm-4">
-		<form class="navbar-form" role="search" method="get" action="userAdmin">
-			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Nhập email của người gửi" name="q" id="search">
-				<div class="input-group-btn">
-					<button class="btn btn-default" type="submit" style="height:34px"><i class="glyphicon glyphicon-search"></i></button>
+	<div class="row" style="padding:15px">
+		<div class="col-sm-4" style="font-size: 20px; color:red">
+			Danh sách các tin nhắn
+		</div>
+		<div class="col-sm-4">
+			<form role="search">
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="Nhập email của người gửi" name="q" id="search">
+					<div style="margin-top:-34px; float:right">
+						<button class="btn btn-default" type="submit" style="height:34px"><i class="glyphicon glyphicon-search"></i></button>
+					</div>
 				</div>
-			</div>
-		</form>
+			</form>
+		</div>
+		<div class="col-sm-4">
+			<select class="form-control" id="sort">
+			  	<option value="0">--- Sắp xếp theo ---</option> 
+				<option value="7">Ngày gửi tăng dần</option>
+				<option value="8">Ngày gửi giảm dần</option>
+				<option value="13">Tên email từ A-Z</option>
+				<option value="14">Tên email từ Z-A</option>
+		  	</select>
+		</div>
 	</div>
-	</nav>
-	
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">			
-		 <a class="navbar-brand">
-			<div class="navbar-form">				
-			    <select class="form-control" id="sort">
-				  	<option value="0">--- Sắp xếp theo ---</option> 
-					<option value="7">Ngày gửi tăng dần</option>
-					<option value="8">Ngày gửi giảm dần</option>
-					<option value="13">Tên email từ A-Z</option>
-					<option value="14">Tên email từ Z-A</option>
-			  	</select>
-			</div>  
-		</a>
-	</nav>	
 </div>
 
 <div class="w3-container">

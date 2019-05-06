@@ -77,8 +77,8 @@
 			
 		</c:if>
 		
-		<c:if test="${totalcomic == 0 }">
+		<%-- <c:if test="${totalcomic == 0 }">
 			<h3>Hiện tại bạn chưa có sản phẩm yêu thích</h3>
-		</c:if>
+		</c:if> --%>
 	</div>
 </c:if>

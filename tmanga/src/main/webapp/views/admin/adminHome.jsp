@@ -5,15 +5,10 @@
 
 <!-- !PAGE CONTENT! -->
 <div class="w3-container">
-
-  <!-- Header -->
-  <header class="w3-container" style="padding-top:22px">
-    <h5><b><i class="fa fa-dashboard"></i> Trang chủ</b></h5>
-  </header>
-
+<hr>
   <div class="w3-row-padding w3-margin-bottom">
     <div class="w3-quarter">
-    	<a href="bill">
+    	<a href="bill" title="Bấm vào để xem các đơn hàng">
 	      <div class="w3-container w3-blue w3-padding-16">
 	        <div class="w3-left"><i class="fa fa-shopping-cart w3-xxxlarge"></i></div>
 	        <div class="w3-right">
@@ -26,7 +21,7 @@
     </div>
     
     <div class="w3-quarter">
-    	<a href="contactAdmin">
+    	<a href="contactAdmin" title="Bấm vào để xem các tin nhắn">
 	      <div class="w3-container w3-red w3-padding-16">
 	        <div class="w3-left"><i class="fa fa-comment w3-xxxlarge"></i></div>
 	        <div class="w3-right">
@@ -39,7 +34,7 @@
     </div>
     
     <div class="w3-quarter">
-    	<a href="userAdmin">
+    	<a href="userAdmin?action=staff" title="Bấm vào để xem danh sách nhân viên">
 	      <div class="w3-container w3-orange w3-text-white w3-padding-16">
 	        <div class="w3-left"><i class="fa fa-user-circle w3-xxxlarge"></i></div>
 	        <div class="w3-right">
@@ -52,40 +47,64 @@
     </div>
     
     <div class="w3-quarter">
-      <div class="w3-container w3-teal w3-padding-16">
-        <div class="w3-left"><i class="fa fa-share-alt w3-xxxlarge"></i></div>
-        <div class="w3-right">
-          <h3>${countCustomer }</h3>
-        </div>
-        <div class="w3-clear"></div>
-        <h4>Khách hàng</h4>
-      </div>
+    	<a href="userAdmin?action=customer" title="Bấm vào để xem danh sách khách hàng">
+	      <div class="w3-container w3-teal w3-padding-16">
+	        <div class="w3-left"><i class="fa fa-share-alt w3-xxxlarge"></i></div>
+	        <div class="w3-right">
+	          <h3>${countCustomer }</h3>
+	        </div>
+	        <div class="w3-clear"></div>
+	        <h5>Khách hàng</h5>
+	      </div>
+	    </a>
     </div>  
     
   </div>
   
   <hr>
- 
-  <div style="width: 700px; height: 700px" id="chart" data="${countBillDaily }">
-	<canvas id="myChartHome" width="400" height="400"></canvas>
-  </div>
-	
-  <!-- <div class="w3-container">
-    <h5>Recent Users</h5>
-    <ul class="w3-ul w3-card-4 w3-white">
-      <li class="w3-padding-16">
-        <img src="/w3images/avatar2.png" class="w3-left w3-circle w3-margin-right" style="width:35px">
-        <span class="w3-xlarge">Mike</span><br>
-      </li>
-      <li class="w3-padding-16">
-        <img src="/w3images/avatar5.png" class="w3-left w3-circle w3-margin-right" style="width:35px">
-        <span class="w3-xlarge">Jill</span><br>
-      </li>
-      <li class="w3-padding-16">
-        <img src="/w3images/avatar6.png" class="w3-left w3-circle w3-margin-right" style="width:35px">
-        <span class="w3-xlarge">Jane</span><br>
-      </li>
-    </ul>
-  </div> -->
+  <h2 style="color:red">Xem số đơn hàng theo từng ngày</h2>
+  <br>
+  <div class="row">
+		<div class="col-sm-5">
+			<div class="form-group">
+				<div class="col-sm-4">
+					<label for="dateStart">Ngày bắt đầu</label>
+				</div>
+				<div class="col-sm-7">
+					<input type="date" class="form-control" name="dateStart" required="required" id="dateStart" value="${dateStart }" />
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-5">
+			<div class="form-group">
+				<div class="col-sm-4">
+					<label for="dateEnd">Ngày kết thúc</label>
+				</div>
+				<div class="col-sm-7">
+					<input type="date" class="form-control" name="dateEnd" required="required" id="dateEnd" value="${dateEnd }" />
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-2">
+			<div class="form-group">
+				<div class="col-sm-4">
+					<button class="btn btn-success" id="report" dataUrl="home">Tạo biểu đồ</button>
+				</div>
+			</div>
+		</div>
+	</div>
+  
+  <hr>
+	<div style="color: red">
+		<center>
+			<h3 id="title-chart">Biểu đồ số lượng đơn hàng từ ngày ${dateS } đến ngày ${dateE }</h3>
+		</center>
+	</div>
+
+	<div style="width: 900px; height: 900px" id="chart" data="${countBillDaily }">  	
+		<canvas id="myChartHome" width="400" height="400"></canvas>	
+  	</div>
+  
+  <div id="views" data=${views }></div>
   
  </div>

@@ -9,6 +9,9 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.website.springmvc.Services.AddressService;
@@ -24,14 +27,15 @@ import com.website.springmvc.Services.FavoriteListService;
 import com.website.springmvc.Services.NewsService;
 import com.website.springmvc.Services.OrderStatusService;
 import com.website.springmvc.Services.PublishCompanyService;
+import com.website.springmvc.Services.RoleService;
 import com.website.springmvc.Services.UsersService;
 import com.website.springmvc.entities.Address;
 import com.website.springmvc.entities.Bill;
-import com.website.springmvc.entities.City;
+import com.website.springmvc.entities.Category;
 import com.website.springmvc.entities.Comic;
-import com.website.springmvc.entities.District;
 import com.website.springmvc.entities.FavoriteList;
 import com.website.springmvc.entities.News;
+import com.website.springmvc.entities.Role;
 import com.website.springmvc.entities.Users;
 
 @Service
@@ -77,6 +81,25 @@ public class GetModel {
 	
 	@Autowired
 	private ContactService contactService;
+	
+	@Autowired
+	private RoleService roleService;
+	
+	// Phương thức này được gọi mỗi lần có Submit.
+	@InitBinder
+	public void initBinder(WebDataBinder dataBinder) {
+		Object target = dataBinder.getTarget();
+		if (target == null) {
+			return;
+		}
+		System.out.println("Target=" + target);
+
+		if (target.getClass() == MyUploadForm.class) {
+
+			// Đăng ký để chuyển đổi giữa các đối tượng multipart thành byte[]
+			dataBinder.registerCustomEditor(byte[].class, new ByteArrayMultipartFileEditor());
+		}
+	}
 		
 	public void getSideBar(ModelAndView model) {
 		model.setViewName("layout");
@@ -226,41 +249,48 @@ public class GetModel {
 	}
 	
 	public void getProductDetail(ModelAndView model, String name, HttpSession session){		
-		Long idAuthor = comicService.get(name).getAuthor().getId();
-		//Long idCategory = comicService.get(name).getCategory().getId();
-		//Long idPC = comicService.get(name).getPublishcompany().getId();
-				
+		Comic comic = comicService.get(name, "customer");
+		Long idAuthor = comic.getAuthor().getId();
+						
 		getSideBar(model);
 		
 		model.addObject("views","productDetail");
-		model.addObject("title", comicService.get(name).getName());
+		model.addObject("title", comic.getName());
+		model.addObject("comic", comic);
+		model.addObject("listComicForAuthor", comicService.getListForAuthor(idAuthor));		
+		
 		//model.addObject("author",authorService.get(idAuthor));
 		//model.addObject("category",categoryService.get(idCategory));
 		//model.addObject("publishcompany",publishCompanyService.get(idPC));
-		model.addObject("comic", comicService.get(name));
-		model.addObject("listComicForAuthor", comicService.getListForAuthor(idAuthor));		
-		
+		//Long idCategory = comicService.get(name).getCategory().getId();
+		//Long idPC = comicService.get(name).getPublishcompany().getId();
+	
 		if(session.getAttribute("account") != null) {
+			
+//			if(u.getRole().getId() == (long)2) {
+//				List<FavoriteList> list;
+//				if(favoriteListService.getByUsersAndComic(u.getId(), comic.getId()) == null) {
+//					 list = favoriteListService.getListByUser(u.getId(), 0, 36);
+//					
+//					if(list.size() == 36) {
+//						list.remove(list.lastIndexOf(list));
+//					}
+//					FavoriteList f = new FavoriteList();
+//					f.setComic(comic);
+//					f.setUser(u);
+//					favoriteListService.add(f);
+//				}			
+				
 			Users u = (Users) session.getAttribute("account");
-			//Comic comic = comicService.get(name);
-			List<FavoriteList> list;
-//			if(favoriteListService.getByUsersAndComic(u.getId(), comic.getId()) == null) {
-//				 list = favoriteListService.getListByUser(u.getId(), 0, 36);
-//				
-//				if(list.size() == 36) {
-//					list.remove(list.lastIndexOf(list));
-//				}
-//				FavoriteList f = new FavoriteList();
-//				f.setComic(comic);
-//				f.setUser(u);
-//				favoriteListService.add(f);
-//			}			
-			
-			list = favoriteListService.getListByUser(u.getId(), 0, 4);
-			
-			model.addObject("favoritelist", list);
+			if(u.getRole().getId() == (long)2) {
+				List<FavoriteList> list = favoriteListService.getListByUser(u.getId(), 0, 4);
+				if(list.size() == 0) {
+					list = null;
+				}
+				model.addObject("favoritelist", list);
+			}
 		}
-	}
+	}	
 	
 	public void getCart(ModelAndView model){
 				
@@ -496,11 +526,17 @@ public class GetModel {
 		model.addObject("countNewContact", countNewContact);
 	}
 	
-	public void getListBillPage(ModelAndView model, int page) {
+	public void getListBillPage(ModelAndView model, int page, Long idBill) {
 		getLayoutAdmin(model);
 		
-		List<Bill> bills = billService.getAll();
-		
+		List<Bill> bills;
+		if(idBill != (long)0 && billService.get(idBill) != null ) {
+			bills = new ArrayList<Bill>(1);
+		}
+		else {			
+			bills = billService.getAll();
+		}
+				
 		int totalPage = 0;
 		int totalBill = 0;		
 		
@@ -510,8 +546,13 @@ public class GetModel {
 		if(totalBill % 10 != 0){
 			totalPage++;
 		}		
-				
-		bills = billService.getAll(10*(page-1), 10);
+		
+		if(idBill != (long)0 && billService.get(idBill) != null) {
+			bills.add(billService.get(idBill));
+		}
+		else {
+			bills = billService.getAll(10*(page-1), 10);
+		}
 					
 		int start = 1, end = 7;
 		
@@ -559,15 +600,22 @@ public class GetModel {
 			model.addObject("orderStatus", orderStatusService.getOrderStatusByIdBill(idBill));
 			model.addObject("views","BillDetailAdmin");
 			model.addObject("title","Chi tiết đơn hàng " + idBill.toString());
+			model.addObject("delivery", usersService.getListDelivery());
 		}
 	}
 	
-	public void getUserAdmin(ModelAndView model, int page, String key, String mes, String alert) {
+	public void getUserAdmin(ModelAndView model, int page, String key, String mes, String alert, String action) {
 		getLayoutAdmin(model);
 		model.addObject("views","UserAdmin");
 		model.addObject("title","Danh sách User");
 		
-		List<Users> users = usersService.getListStaff(0,0,key);
+		List<Users> users = null;
+		if(action.equalsIgnoreCase("staff")) {
+			users = usersService.getListStaff(0,0,key);
+		}
+		else if(action.equalsIgnoreCase("customer")) {
+			users = usersService.getListCustomer(0,0,key);
+		} 
 		
 		int totalPage = 0;
 		int totalUsers = 0;		
@@ -578,8 +626,13 @@ public class GetModel {
 		if(totalUsers % 10 != 0){
 			totalPage++;
 		}		
-				
-		users = usersService.getListStaff(10*(page-1), 10,key);
+		
+		if(action.equalsIgnoreCase("staff")) {
+			users = usersService.getListStaff(10*(page-1), 10,key);
+		}
+		else if(action.equalsIgnoreCase("customer")) {
+			users = usersService.getListCustomer(10*(page-1), 10,key);
+		} 
 					
 		int start = 1, end = 7;
 		
@@ -604,11 +657,12 @@ public class GetModel {
 								
 		model.addObject("totalpage", totalPage);
 		model.addObject("pageselected", page);
-		model.addObject("totalbill", totalUsers);
+		model.addObject("totalUsers", totalUsers);
 		
 		model.addObject("mes", mes);
 		model.addObject("alert", alert);
 		
+		model.addObject("action", action);
 		model.addObject("users", users);
 	}
 	
@@ -677,7 +731,7 @@ public class GetModel {
 		model.addObject("alert", alert);
 		model.addObject("mode", mode);
 		if(mode.equalsIgnoreCase("add")) {
-			model.addObject("title","Thêm tin tức");	
+			model.addObject("title","Thêm tin tức");
 			model.addObject("News", new News());
 		}
 		else if(mode.equalsIgnoreCase("edit")) {
@@ -693,7 +747,9 @@ public class GetModel {
 					getHome(model, session);
 				}
 			}
-		}					
+		}
+		MyUploadForm myUploadForm = new MyUploadForm();
+	    model.addObject("myUploadForm", myUploadForm);
 	}
 	
 	public boolean checkAdmin(HttpSession session) {
@@ -705,5 +761,178 @@ public class GetModel {
 			return true;
 		}
 		return false;		
+	}
+	
+	public void getProductListAdmin(ModelAndView model, String q, Long id, String key, int page, String mes, String alert) {
+		getLayoutAdmin(model);
+		model.addObject("views","ProductManList");
+		model.addObject("title","Danh sách truyện");
+		
+		List<Comic> comics;
+		
+		if(q.equalsIgnoreCase("category")) {
+			comics = comicService.getListComicByCategory(id, 0, 0, key);
+		}
+		else if(q.equalsIgnoreCase("author")) {
+			comics = comicService.getListComicByAuthor(id, 0, 0, key);
+		}
+		else if(q.equalsIgnoreCase("publishcompany")) {
+			comics = comicService.getListComicByPublishCompany(id, 0, 0, key);
+		}
+		else {
+			comics = comicService.getAllComic(key, 0, 0);
+		}
+
+		int totalPage = 0;
+		int totalComic = 0;		
+
+		totalComic = comics.size();
+		totalPage = totalComic / 10;
+
+		if(totalComic % 10 != 0){
+			totalPage++;
+		}		
+
+		int start = 1, end = 7;
+
+		if(totalPage > 7){		
+			if(page - 3 > 0){	
+				if(page + 3 >= totalPage){	
+					start =  totalPage - 6;
+					end = totalPage;
+				}	
+				else{	
+					start = page - 3;
+					end = page + 3;
+				}	
+			}	
+		}
+		else {
+			end = totalPage;
+		}
+
+		model.addObject("start", start);
+		model.addObject("end", end);
+
+		if(q.equalsIgnoreCase("category")) {
+			comics = comicService.getListComicByCategory(id, 10*(page-1), 10, key);
+		}
+		else if(q.equalsIgnoreCase("author")) {
+			comics = comicService.getListComicByAuthor(id, 10*(page-1), 10, key);
+		}
+		else if(q.equalsIgnoreCase("publishcompany")) {
+			comics = comicService.getListComicByPublishCompany(id, 10*(page-1), 10, key);
+		}
+		else {
+			comics = comicService.getAllComic(key, 10*(page-1), 10);
+		}
+
+		model.addObject("comics", comics);
+		model.addObject("totalpage", totalPage);
+		model.addObject("pageselected", page);
+		
+		String href = "";
+		if(!q.equalsIgnoreCase("")) {
+			href = "&q=" + q + "&id=" + id;
+		}
+		model.addObject("href", href);
+		
+		List<Category> cate = categoryService.getListName();
+		model.addObject("cateList", cate);
+		
+		model.addObject("mes", mes);
+		model.addObject("alert", alert);
+	}
+	
+	public void getProductDetailAdmin(ModelAndView model, String mes, String alert, Long idComic, String mode, HttpSession session) {
+		getLayoutAdmin(model);		
+		model.addObject("views","ProductMan");
+		model.addObject("mes", mes);
+		model.addObject("alert", alert);
+		model.addObject("mode", mode);
+		if(mode.equalsIgnoreCase("add")) {
+			Users u = ((Users)session.getAttribute("account"));			
+			if( u.getRole().getId() == (long)1) {
+				model.addObject("title","Thêm truyện mới");				
+			}
+			else if( u.getRole().getId() == (long)1) {
+				getHome(model, session);
+			}			
+			else {
+				getProductListAdmin(model, "", (long) 0, "", 1, "", "");
+			}
+//			model.addObject("comic", new Comic());
+		}
+		else {
+			if(idComic == (long) 0 || comicService.get(idComic) == null) {
+				getHome(model, session);
+			}
+			else {
+				if(comicService.get(idComic) != null) {
+					model.addObject("comic", comicService.get(idComic));
+					model.addObject("title","Chi tiết truyện");
+				}
+				else {
+					getHome(model, session);
+				}
+			}
+		}
+		model.addObject("categories", categoryService.getListName());
+		model.addObject("PCs", publishCompanyService.getAll());
+		model.addObject("authorschoice", authorService.getAll());
+		
+		MyUploadForm myUploadForm = new MyUploadForm();
+	    model.addObject("myUploadForm", myUploadForm);
+	}
+	
+	public void getRolePage(ModelAndView model, int page, String key, String mes, String alert) {
+		getLayoutAdmin(model);
+		model.addObject("views","Role");
+		model.addObject("title","Danh sách chức vụ");
+		model.addObject("mes", mes);
+		model.addObject("alert", alert);
+		
+		List<Role> roles = roleService.getAll();
+		
+		int totalPage = 0;
+		int totalRole = 0;		
+		
+		totalRole = roles.size();
+		totalPage = totalRole / 10;
+		
+		if(totalRole % 10 != 0){
+			totalPage++;
+		}		
+				
+		roles = roleService.getListRole(10*(page-1), 10, key);
+					
+		int start = 1, end = 7;
+		
+		if(totalPage > 7){		
+			if(page - 3 > 0){	
+				if(page + 3 >= totalPage){	
+					start =  totalPage - 6;
+					end = totalPage;
+				}	
+				else{	
+					start = page - 3;
+					end = page + 3;
+				}	
+			}	
+		}
+		else {
+			end = totalPage;
+		}
+		
+		model.addObject("start", start);
+		model.addObject("end", end);
+								
+		model.addObject("totalpage", totalPage);
+		model.addObject("pageselected", page);
+		model.addObject("totalRole", totalRole);
+		
+		model.addObject("roles", roles);
+		List<Object[]> list = usersService.getCountUserByRole();
+		model.addObject("countRole", list);
 	}
 }

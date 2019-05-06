@@ -118,7 +118,7 @@
 			<span style="color:orange; font-weight:bold; font-size:20px">Truyện cùng tác giả</span>
 		</div>
 		<div class="col-sm-2" style="margin-top:8px; font-style:italic">
-			<a href="${pageContext.request.contextPath}/controller/product?q=author&un=${author.unsignedName }">XEM THÊM >></a>
+			<a href="${pageContext.request.contextPath}/controller/product?q=author&un=${comic.author.unsignedName }">XEM THÊM >></a>
 		</div>		
 	</div>
 	
@@ -184,7 +184,7 @@
 	</c:forEach>
 	<br><br>
 	
-	<c:if test="${favoritelist.size() != 0 && sessionScope.account.email != null}">
+	<c:if test="${favoritelist.size() != null && favoritelist.size() != 0 && sessionScope.account.email != null}">
 		<div class="row">
 			<div class="col-sm-10">
 				<span style="color:orange; font-weight:bold; font-size:20px">Truyện đã xem</span>

@@ -20,7 +20,6 @@
 <link href="<c:url value="/resources/css/responsive.css" />" rel="stylesheet">
 <link href="<c:url value="/resources/css/main.css" />" rel="stylesheet">
 <link href="<c:url value="/resources/css/style.css" />" rel="stylesheet">
-<link href="<c:url value="/resources/css/product.css" />" rel="stylesheet">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -39,13 +38,14 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 </div>
 
 <!-- Sidebar/menu -->
-<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:255px;" id="mySidebar"><br>
   <div class="w3-container w3-row">    
     <div class="w3-col w3-bar">
       <a href="edit-user"><span>Xin chào, <strong>${sessionScope.account.name }</strong></span></a><br>
       <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
       <a href="edit-user" class="w3-bar-item w3-button" title="Chỉnh sửa thông tin cá nhân"><i class="fa fa-user"></i></a>
-      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-cog"></i></a>
+      <!-- <a href="#" class="w3-bar-item w3-button"><i class="fa fa-cog"></i></a> -->
+      <a href="logout" class="w3-bar-item w3-button" title="Đăng xuất"><i class="fa fa-sign-out"></i></a>
     </div>
   </div>
   <hr>
@@ -58,20 +58,23 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <a href="report" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'Report' }"> w3-blue </c:if> "><i class="fa fa-bar-chart fa-fw"></i>  Thống kê doanh thu</a>
     <a href="bill" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'BillAdmin' }"> w3-blue </c:if> "><i class="fa fa-diamond fa-fw"></i>  Quản lý đơn hàng <c:if test="${countNewOrder != 0 }"><span style="background: red; color: white; border-radius: 10px; padding: 5px; margin: 5px; font-weight: 800;">${countNewOrder }</span> </c:if> </a>
     <a href="contactAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'ContactAdmin' }"> w3-blue </c:if> "><i class="fa fa-commenting-o fa-fw"></i>  Quản lý tin nhắn <c:if test="${countNewContact != 0 }"><span style="background: green; color: white; border-radius: 10px; padding: 5px; margin: 5px; font-weight: 800;">${countNewContact }</span> </c:if></a>
-    <a href="userAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'UserAdmin' }"> w3-blue </c:if> "><i class="fa fa-users fa-fw"></i>  Quản lý nhân viên </a>    
+    <a href="userAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'UserAdmin' }"> w3-blue </c:if> "><i class="fa fa-users fa-fw"></i>  Quản lý người dùng</a>    
     <a href="comicList" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'ProductManList' }"> w3-blue </c:if> "><i class="fa fa-book fa-fw"></i>  Quản lý sản phẩm </a>
     <a href="cateAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'CategoryAdmin' }"> w3-blue </c:if> "><i class="fa fa-folder-open fa-fw"></i>  Quản lý danh mục </a>    
     <a href="authorAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'AuthorAdmin' }"> w3-blue </c:if> "><i class="fa fa-male fa-fw"></i>  Quản lý tác giả </a>
     <a href="pubcomAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'PublishingAdmin' }"> w3-blue </c:if> "><i class="fa fa-bank fa-fw"></i>  Quản lý nhà xuất bản </a>
     <a href="newsAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'NewsAdmin' }"> w3-blue </c:if> "><i class="fa fa-newspaper-o fa-fw"></i>  Quản lý tin tức </a>
-    <a href="logout" class="w3-bar-item w3-button w3-padding"><i class="fa fa-reply fa-fw"></i> Đăng xuất </a><br><br>
+    <c:if test="${sessionScope.account.role.id == 1 }">
+    	<a href="role" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'role' }"> w3-blue </c:if> "><i class="fa fa-cog fa-fw"></i>  Quản lý chức vụ</a>
+    </c:if>
+    <!-- <a href="logout" class="w3-bar-item w3-button w3-padding"><i class="fa fa-reply fa-fw"></i> Đăng xuất </a><br><br> -->
   </div>
 </nav>
 
 <!-- Overlay effect when opening sidebar on small screens -->
 <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
-<div class="w3-main" style="margin-left: 300px; margin-top: 43px;">
+<div class="w3-main" style="margin-left: 250px; margin-top: 43px;">
 	<!-- !PAGE CONTENT! -->
 	<c:if test="${views != ''}">
 		<c:import url="${views }.jsp" />

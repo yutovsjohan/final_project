@@ -67,7 +67,7 @@
 					  <div class="form-group">
 					    <label for="email">	
 							Vui lòng nhập email để tìm kiếm tài khoản.</label>
-					    <input type="email" class="form-control" name="email" placeholder="Nhập email">
+					    <input type="email" class="form-control" name="email" placeholder="Nhập email" required="required">
 					  </div>				  
 					  <div class="guimail">
 					  <button class="btn btn-info forget-password">Tìm kiếm</button>				  

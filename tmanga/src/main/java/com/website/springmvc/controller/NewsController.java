@@ -1,6 +1,11 @@
 package com.website.springmvc.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -12,29 +17,30 @@ import javax.servlet.http.Part;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.website.springmvc.Services.NewsService;
 import com.website.springmvc.entities.News;
 import com.website.springmvc.libs.GetModel;
+import com.website.springmvc.libs.MyUploadForm;
 import com.website.springmvc.libs.RemoveAccent;
-import com.website.springmvc.libs.Upload;
 
 @Controller
 @RequestMapping(value="/controller")
 public class NewsController extends HttpServlet{
 	private static final long serialVersionUID = 1L;
-
+	
 	@Autowired
 	GetModel getModel;
-	
-	@Autowired
-	Upload upload;
-	
+		
 	@Autowired
 	private NewsService newsService;
 	
@@ -97,11 +103,11 @@ public class NewsController extends HttpServlet{
 	public String saveNews(@RequestParam(name = "mes", defaultValue = "") String mes,
 						@RequestParam(name = "alert", defaultValue = "") String alert,
 						@RequestParam(name = "mode", defaultValue = "add") String mode,
-						@RequestParam(name = "file", defaultValue = "") String image,
 //						@RequestParam(name = "title", defaultValue = "") String title,
 //						@RequestParam(name = "content", defaultValue = "") String content,
 //						@RequestParam(name = "summary", defaultValue = "") String summary,
 //						@RequestParam(name = "id", defaultValue = "0") Long idNews,
+						@RequestParam(name = "file", defaultValue = "") CommonsMultipartFile image,
 						@ModelAttribute("News") News news,
 						HttpSession session, Model model, HttpServletRequest request) throws IOException, ServletException{	
 		String str = "redirect:newsAdmin";
@@ -118,17 +124,49 @@ public class NewsController extends HttpServlet{
 //					model.addAttribute("alert", "danger");
 //					return "redirect:newsAdmin";
 //				}
-//			}	
-			
-//			if(!image.equalsIgnoreCase("")) {
-//				Part file = (Part) request.getParts();
-//				if(file != null) {					
-//					news.setImage(upload.getFileName(file));
-//					String uploadRootPath = request.getServletContext().getRealPath("images/news");
-//					upload.uploadFile(uploadRootPath, file);
-//				}
 //			}
-					
+						
+//			String description = myUploadForm.getDescription();
+//			System.out.println("Description: " + description);
+			
+			if(image.getSize() != (long)0) {
+				// Thư mục gốc upload file.
+				String uploadRootPath = request.getServletContext().getRealPath("images/news");
+				System.out.println("uploadRootPath=" + uploadRootPath);
+	
+				File uploadRootDir = new File(uploadRootPath);
+				
+				// Tạo thư mục gốc upload nếu nó không tồn tại.
+				if (!uploadRootDir.exists()) {
+					uploadRootDir.mkdirs();
+				}
+				CommonsMultipartFile fileData = image;
+				
+				List<File> uploadedFiles = new ArrayList<File>();
+				
+				// Tên file gốc tại Client.
+				String name = fileData.getOriginalFilename();
+				System.out.println("Client File Name = " + name);
+				news.setImage(name);
+	
+				if (name != null && name.length() > 0) {
+					try {
+						// Tạo file tại Server.
+						File serverFile = new File(uploadRootDir.getAbsolutePath() + File.separator + name);
+	
+						// Luồng ghi dữ liệu vào file trên Server.
+						BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+						stream.write(fileData.getBytes());
+						stream.close();
+						//
+						uploadedFiles.add(serverFile);
+						System.out.println("Write file: " + serverFile);
+					} catch (Exception e) {
+						System.out.println("Error Write file: " + name);
+					}
+				}
+			}
+		       
 //			news.setTitle(title);
 //			news.setContent(content);
 //			news.setSummary(summary);
@@ -145,7 +183,7 @@ public class NewsController extends HttpServlet{
 				newsService.update(news);
 				model.addAttribute("mes", "Cập nhật thành công");
 			}
-			model.addAttribute("alert", "success");
+			model.addAttribute("alert", "success");			
 		}
 		else {
 			str = "redirect:index";

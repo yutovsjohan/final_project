@@ -6,38 +6,34 @@
 
 <hr>
 <div class="w3-container">
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  		<a class="navbar-brand">Danh sách đơn hàng</a>
-	
-		<div class="col-sm-5">
-			<form class="navbar-form" role="search" method="get" action="userAdmin">
-				<div class="input-group">
+	<div class="row" style="padding:15px">
+		<div class="col-sm-4" style="font-size: 20px; color:red">
+			Danh sách đơn hàng
+		</div>
+		<div class="col-sm-4">
+			<form role="search">
+				<div class="form-group">
 					<input type="text" class="form-control" placeholder="Tìm đơn hàng" name="q" id="search">
-					<div class="input-group-btn">
+					<div style="margin-top:-34px; float:right">
 						<button class="btn btn-default" type="submit" style="height:34px"><i class="glyphicon glyphicon-search"></i></button>
 					</div>
 				</div>
 			</form>
-		</div>	
-	</nav>
-	
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">	
-		<a class="navbar-brand">
-			<div class="navbar-form">				
-			    <select class="form-control" id="sort">
-				  	<option value="0">--- Sắp xếp theo ---</option>
-				  	<option value="1">Mã đơn hàng tăng dần</option>
-					<option value="2">Mã đơn hàng giảm dần</option>
-					<option value="7">Ngày đặt hàng tăng dần</option>
-					<option value="8">Ngày đặt hàng giảm dần</option>
-					<option value="9">Ngày giao hàng tăng dần</option>
-					<option value="10">Ngày giao hàng giảm dần</option> 
-					<option value="11">Tên người giao từ A-Z</option>
-					<option value="12">Tên người giao từ Z-A</option>
-			  	</select>
-			</div>  
-		</a>
-	</nav>
+		</div>
+		<div class="col-sm-4">
+			<select class="form-control" id="sort">
+			  	<option value="0">--- Sắp xếp theo ---</option>
+			  	<option value="1">Mã đơn hàng tăng dần</option>
+				<option value="2">Mã đơn hàng giảm dần</option>
+				<option value="7">Ngày đặt hàng tăng dần</option>
+				<option value="8">Ngày đặt hàng giảm dần</option>
+				<option value="9">Ngày giao hàng tăng dần</option>
+				<option value="10">Ngày giao hàng giảm dần</option> 
+				<option value="11">Tên người giao từ A-Z</option>
+				<option value="12">Tên người giao từ Z-A</option>
+		  	</select>
+		</div>
+	</div>
 </div>
 
 <div class="w3-container">
@@ -59,27 +55,51 @@
 					<td><a href="billdetail?id=${bill.id }" title="Xem chi tiết đơn hàng">${bill.id }</a> <c:if test="${bill.view == 0 }"><span style="background: red; color: white; border-radius: 10px; padding: 5px; margin: 5px; font-weight: 800;">Mới</span> </c:if></td>
 					<td><fmt:formatDate pattern = "dd-MM-yyyy" value = "${bill.orderDate }" /></td>
 					<td>${bill.status }</td>
-					<td><fmt:formatDate pattern = "dd-MM-yyyy" value = "${bill.deliveryDate }" /></td>
+					
+					<c:if test="${sessionScope.account.role.id == 1 }">
+						<td title="Bấm vào để thay đổi ngày giao hàng">
+							<div class="delivery-date" dataId="${bill.id }">
+								<fmt:formatDate pattern = "dd-MM-yyyy" value = "${bill.deliveryDate }" />
+							</div>
+							<div class="form-delivery-date" hidden dataId="${bill.id }">
+								<input type="date" value='<fmt:formatDate pattern = "yyyy-MM-dd" value = "${bill.deliveryDate }" />' class="form-control select-delivery-date" dataId="${bill.id }">
+								<a class="btn btn-success confirm-delivery-date" dataId="${bill.id }">Xác nhận</a>
+								<a class="btn btn-danger cancel-delivery-date" dataId="${bill.id }">Hủy bỏ</a>				
+							</div>		
+						</td>
+					</c:if>
+					<c:if test="${sessionScope.account.role.id != 1 }">
 					<td>
-						<c:if test="${bill.active != -1 }">
-							<div class="select-delivery" dataId="${bill.id }">
-								<c:choose>
-									<c:when test="${bill.delivery != null }">
-										${bill.delivery }
-									</c:when>
-									<c:otherwise>
-										<button class="btn btn-info" title="Chọn người giao hàng">Chọn</button>
-									</c:otherwise>
-								</c:choose>	
-							</div>											
-						</c:if>		
-						<select name="delivery" class="delivery" dataId="${bill.id }" hidden>
-							<option value="0">-- Chọn người giao --</option>
-							<c:forEach var="delivery" items="${delivery }">
-								<option value="${delivery.id }" <c:if test="${delivery.name == bill.delivery }">selected</c:if> >${delivery.name }</option>
-							</c:forEach>
-						</select>					
+						<fmt:formatDate pattern = "dd-MM-yyyy" value = "${bill.deliveryDate }" />
 					</td>
+					</c:if>
+					
+					<c:if test="${sessionScope.account.role.id == 1 }">
+						<td title="Bấm vào để thay đổi người giao">
+							<c:if test="${bill.active != -1 }">
+								<div class="select-delivery" dataId="${bill.id }">
+									<c:choose>
+										<c:when test="${bill.delivery != null }">
+											${bill.delivery }
+										</c:when>
+										<c:otherwise>
+											<button class="btn btn-info" title="Chọn người giao hàng">Chọn</button>
+										</c:otherwise>
+									</c:choose>	
+								</div>											
+							</c:if>		
+							<select name="delivery" class="form-control delivery" dataId="${bill.id }" hidden>
+								<option value="0">-- Chọn người giao --</option>
+								<c:forEach var="delivery" items="${delivery }">
+									<option value="${delivery.id }" <c:if test="${delivery.name == bill.delivery }">selected</c:if> >${delivery.name }</option>
+								</c:forEach>
+							</select>					
+						</td>
+					</c:if>
+					<c:if test="${sessionScope.account.role.id != 1 }">
+						<td>${bill.delivery }</td>
+					</c:if>
+					
 					<td><a href="billdetail?id=${bill.id }" title="Xem chi tiết đơn hàng"><i class="fa fa-2x fa-info-circle" aria-hidden="true"></i></a></td>
 				</tr>
 			</c:forEach>

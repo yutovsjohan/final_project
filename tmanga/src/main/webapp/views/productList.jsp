@@ -34,6 +34,8 @@
 				<option value="2" <c:if test="${sort == 2 }">selected</c:if> >Sản phẩm bán chạy</option>
 				<option value="3" <c:if test="${sort == 3 }">selected</c:if> >Tên sản phẩm A-Z</option>
 				<option value="4" <c:if test="${sort == 4 }">selected</c:if> >Tên sản phẩm Z-A</option>
+				<option value="10" <c:if test="${sort == 10 }">selected</c:if> >Giá tăng dần</option>
+				<option value="11" <c:if test="${sort == 11 }">selected</c:if> >Giá giảm dần</option>
 			  </select>      
 		 </form>
 	</c:if>
@@ -41,7 +43,7 @@
 	 <div class="clearfix"></div>
 	<hr style="border: 1px solid orange; margin-top:0px">
 	
-	<c:if test="${key == 'search' && sort >= 5}">
+	<c:if test="${key == 'search' && sort >= 5 && sort <= 9}">
 		<p class="tcdc"><i class="fa fa-info-circle" aria-hidden="true" style="color: orange;"></i> Tiêu chí đang chọn:
 		<c:choose>			
 			<c:when test="${sort == 5 }">

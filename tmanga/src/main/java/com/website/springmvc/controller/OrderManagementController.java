@@ -1,6 +1,10 @@
 package com.website.springmvc.controller;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -39,12 +43,13 @@ public class OrderManagementController {
 	@RequestMapping(value = "/bill" , method = RequestMethod.GET)
 	public ModelAndView getListBillPage(@RequestParam(name = "mes", defaultValue = "") String mes,
 										@RequestParam(name = "alert", defaultValue = "") String alert,
-										@RequestParam(name = "p", defaultValue = "1") int page, HttpSession session){
+										@RequestParam(name = "p", defaultValue = "1") int page, HttpSession session,
+										@RequestParam(name = "q", defaultValue = "0") Long idBill){
 		ModelAndView model = new ModelAndView();
 		boolean f = getModel.checkAdmin(session);
 		
 		if(f) {
-			getModel.getListBillPage(model, page);
+			getModel.getListBillPage(model, page, idBill);
 			model.addObject("mes", mes);
 			model.addObject("alert", alert);
 		}
@@ -178,6 +183,50 @@ public class OrderManagementController {
 				bill.setDelivery(user.getName());
 				billService.update(bill);
 				str = user.getName();
+			}
+		}		
+			
+		try {
+			response.getWriter().print(str);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping(value = "/select-delivery-date" , method = RequestMethod.POST)
+	public void selectDeliveryDate(@RequestParam(name = "idBill", defaultValue = "0") Long idBill, HttpServletResponse response,
+								@RequestParam(name = "date", defaultValue = "") String strDate, HttpSession session){
+		String str = "fail";
+		boolean f = getModel.checkAdmin(session);
+		
+		if(f) {
+			if(idBill == (long) 0 || strDate.equalsIgnoreCase("") || billService.get(idBill) == null) {
+				str = "fail";
+			}
+			else {
+				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(java.sql.Date.valueOf(strDate));				
+				java.util.Date date = cal.getTime();
+				
+				Bill bill = billService.get(idBill);
+				
+				String temp = dateFormat.format(bill.getOrderDate());
+				Date orderDate = Date.valueOf(temp);
+				
+				temp = dateFormat.format(date);
+				Date deliveryDate = Date.valueOf(temp);
+									
+				if(orderDate.compareTo(deliveryDate) <= 0) {
+					bill.setDeliveryDate(date);
+					billService.update(bill);
+					dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+					str = dateFormat.format(date);
+				}
+				else {					
+					str = "fail";
+				}
 			}
 		}		
 			

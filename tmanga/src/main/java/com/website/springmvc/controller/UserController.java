@@ -20,8 +20,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.website.springmvc.Services.CartDetailService;
 import com.website.springmvc.Services.CartService;
+import com.website.springmvc.Services.RoleService;
 import com.website.springmvc.Services.UsersService;
 import com.website.springmvc.config.MyConstants;
+import com.website.springmvc.entities.Author;
 import com.website.springmvc.entities.Cart;
 import com.website.springmvc.entities.CartDetail;
 import com.website.springmvc.entities.Role;
@@ -29,6 +31,7 @@ import com.website.springmvc.entities.Users;
 import com.website.springmvc.libs.GetModel;
 import com.website.springmvc.libs.GioHang;
 import com.website.springmvc.libs.Item;
+import com.website.springmvc.libs.RemoveAccent;
 import com.website.springmvc.libs.SendEmail;
 import com.website.springmvc.libs.TripleDES;
 
@@ -45,6 +48,9 @@ public class UserController {
 	CartDetailService cartDetailService;
 	
 	@Autowired
+	RoleService roleService;
+	
+	@Autowired
 	GetModel getModel;
 	
 	@RequestMapping(value = {"/signup" , "/dang-ky"}, method = RequestMethod.GET)
@@ -58,34 +64,41 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public String saveUsers(@ModelAttribute("Users") Users Users, HttpSession session, Model model){
+	public String saveUsers(@ModelAttribute("Users") Users Users, HttpSession session, Model model,
+							@RequestParam("repassword") String repassword){
 		String str = "redirect:signup";
-		if(!checkEmail(Users.getEmail())){
-			Role Role = new Role();
-			Role.setId((long) 2);
-			Users.setRole(Role);
-			Users.setActive((byte) 1);
-			
-			Users.setPassword(TripleDES.Encrypt(Users.getPassword(), MyConstants.DES_KEY));
-			
-			String passcode = UUID.randomUUID().toString();
-			Users.setPasscode(passcode);
-			
-			usersService.add(Users);
-			
-			session.setAttribute("account", usersService.get(Users.getId()));			
-			getSessionCart(session, Users.getId());
-			
-			if(session.getAttribute("url") == null) {
-				str = "redirect:index";
-			}
-			else {
-				str = "redirect:" + session.getAttribute("url");
-			}
-		}
-		else{
-            model.addAttribute("mes","Email này đã có người sử dụng");    	
+		if(!Users.getPassword().equalsIgnoreCase(repassword)) {
+			model.addAttribute("mes","Mật khẩu không khớp nhau");    	
 			model.addAttribute("alert", "danger");
+		}
+		else {
+			if(!checkEmail(Users.getEmail())){
+				Role Role = new Role();
+				Role.setId((long) 2);
+				Users.setRole(Role);
+				Users.setActive((byte) 1);
+				
+				Users.setPassword(TripleDES.Encrypt(Users.getPassword(), MyConstants.DES_KEY));
+				
+				String passcode = UUID.randomUUID().toString();
+				Users.setPasscode(passcode);
+				
+				usersService.add(Users);
+				
+				session.setAttribute("account", usersService.get(Users.getId()));			
+				getSessionCart(session, Users.getId());
+				
+				if(session.getAttribute("url") == null) {
+					str = "redirect:index";
+				}
+				else {
+					str = "redirect:" + session.getAttribute("url");
+				}
+			}
+			else{
+	            model.addAttribute("mes","Email này đã có người sử dụng");    	
+				model.addAttribute("alert", "danger");
+			}
 		}
 		return str;
 	}
@@ -109,16 +122,21 @@ public class UserController {
 						@RequestParam("password") String password,
 						HttpSession session, Model model) {
 		String str = "";
-		Long idUser = checkLogin(email, password);
+		long idUser = checkLogin(email, password);
 		if(idUser == -1) {
             model.addAttribute("mes","Email và password của bạn sai");            			
 			model.addAttribute("alert", "danger");
 			str = "redirect:/controller/login";
 		} 
+		else if(idUser == -2) {
+			model.addAttribute("mes","Tài khoản của bạn đã bị khóa");            			
+			model.addAttribute("alert", "danger");
+			str = "redirect:/controller/login";
+		}
 		else {
 			session.setAttribute("account", usersService.get(idUser));			
 			getSessionCart(session, idUser);
-			if(usersService.getUserRole(idUser)==1) {
+			if(usersService.getUserRole(idUser) != 2) {
 				str = "redirect:adminHome";
 			}
 			else if(session.getAttribute("url") == null) {
@@ -158,6 +176,8 @@ public class UserController {
 			if(SendEmail.sendGrid("yutovsjohan@gmail.com", email, "Quên mật khẩu", content, true)) {
 				model.addAttribute("mes", "Vui lòng kiểm tra email để lấy lại tài khoản");
 				model.addAttribute("alert", "success");
+				model.addAttribute("email", email);
+				str = "redirect:change-password";
 			}
 			else {
 				model.addAttribute("mes", "Gửi mail không thành công");
@@ -298,12 +318,17 @@ public class UserController {
 	public ModelAndView getUserAdmin(@RequestParam(name = "p", defaultValue = "1") int page, 
 									@RequestParam(name = "q", defaultValue = "") String key, HttpSession session,
 									@RequestParam(name = "mes", defaultValue = "") String mes, 
-									@RequestParam(name = "alert", defaultValue = "") String alert) {
+									@RequestParam(name = "alert", defaultValue = "") String alert,
+									@RequestParam(name = "action", defaultValue = "staff") String action) {
 		ModelAndView model = new ModelAndView();
 		boolean f = getModel.checkAdmin(session);
 		
 		if(f) {
-			getModel.getUserAdmin(model, page, key, mes, alert);
+			Users u = (Users)session.getAttribute("account");
+			if(u.getRole().getId() != (long) 1 && u.getRole().getId() != (long) 0) {
+				action = "staff";
+			}
+			getModel.getUserAdmin(model, page, key, mes, alert, action);
 		}
 		else {
 			getModel.getHome(model, session);
@@ -364,7 +389,13 @@ public class UserController {
 		boolean f = getModel.checkAdmin(session);
 		
 		if(f) {
-			getModel.getAddUser(model, mes, alert);
+			Users u = (Users)session.getAttribute("account");
+			if(u.getRole().getId() == (long)1) {
+				getModel.getAddUser(model, mes, alert);
+			}
+			else if(u.getRole().getId() != (long)1 && u.getRole().getId() != (long)2) {
+				getModel.getUserAdmin(model, 1, "", "", "", "staff");
+			}
 		}
 		else {
 			getModel.getHome(model, session);
@@ -416,6 +447,82 @@ public class UserController {
 				
 		return model;
 	}
+	
+	@RequestMapping(value = "/role", method = RequestMethod.GET)
+	public ModelAndView getRolePage(@RequestParam(name = "p", defaultValue = "1") int page, 
+									@RequestParam(name = "q", defaultValue = "") String key, HttpSession session,
+									@RequestParam(name = "mes", defaultValue = "") String mes, 
+									@RequestParam(name = "alert", defaultValue = "") String alert) {
+		ModelAndView model = new ModelAndView();
+		boolean f = getModel.checkAdmin(session);
+		
+		if(f) {
+			getModel.getRolePage(model, page, key, mes, alert);
+		}
+		else {
+			getModel.getHome(model, session);
+		}
+				
+		return model;
+	}
+	
+	@RequestMapping(value = "/role", method = RequestMethod.POST)
+	public String saveAuthor(HttpSession session, Model model,
+							@RequestParam("name") String name,
+							@RequestParam(name = "mode", defaultValue = "add") String mode,
+							@RequestParam(name = "id", defaultValue = "0") Long idRole){
+		String str = "redirect:authorAdmin";
+		boolean f = getModel.checkAdmin(session);
+		
+		if(f) {
+			if(mode.equalsIgnoreCase("add")) {
+				Role role = new Role();
+				role.setName(name);				
+				roleService.add(role);
+				model.addAttribute("mes", "Thêm thành công");
+				model.addAttribute("alert", "success");
+			}
+			else if(mode.equalsIgnoreCase("edit")) {
+				if(roleService.get(idRole) == null) {
+					model.addAttribute("mes", "ID không tồn tại");
+					model.addAttribute("alert", "danger");
+				}
+				else{
+					Role role = roleService.get(idRole);
+					role.setName(name);
+					roleService.update(role);
+					model.addAttribute("mes", "Sửa thành công");
+					model.addAttribute("alert", "success");
+				}
+			}	
+		}
+		else {
+			str = "redirect:index";
+		}
+		return str;
+	}
+
+	@RequestMapping(value = "/removeRole", method = RequestMethod.POST)
+	public void removeAddress(@RequestParam(name = "id") Long idRole, HttpServletResponse response,
+								HttpSession session) {
+		String str = "success";
+		boolean f = getModel.checkAdmin(session);
+		
+		
+		if(f && roleService.get(idRole) != null) {
+			roleService.delete(idRole);
+		}
+		else {
+			str = "fail";
+		}
+		
+
+		try {
+			response.getWriter().print(str);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 		
 	private boolean checkEmail(String email) {
 		if(usersService.get(email) == null)
@@ -427,7 +534,10 @@ public class UserController {
 		Users u = usersService.get(email);
 		long j = -1;
 		if(u != null){
-			if(TripleDES.Decrypt(u.getPassword(), MyConstants.DES_KEY).equalsIgnoreCase(password)) {
+			if(u.getActive() == 0) {
+				j = -2;
+			}
+			else if(TripleDES.Decrypt(u.getPassword(), MyConstants.DES_KEY).equalsIgnoreCase(password)) {
 				j = u.getId();
 			}
 		}

@@ -7,7 +7,7 @@
 <hr>
 <div class="w3-container">
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  		<a class="navbar-brand">Thêm nhân viên</a>
+  		<a class="navbar-brand" style="color:red">Thêm nhân viên</a>
 	</nav>
 </div>
 

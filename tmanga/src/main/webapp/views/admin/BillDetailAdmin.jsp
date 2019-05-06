@@ -25,7 +25,7 @@
 		
 		<div class="table-responsive">
 		    <table class="table table-hover table-bordered">
-		      <tr>
+		      <tr style="background-color: aquamarine;">
 		        <th>Ngày</th>
 		        <th>Tình trạng đơn hàng</th>		        
 		      </tr>
@@ -36,39 +36,41 @@
 		     	</tr>
 		      </c:forEach>
 		      
-		      <c:if test="${bill.active != -1 }">
-			      <c:if test="${bill.active != 2 }">
-				      <tr>
-				      	<td></td>
-				      	<td>
-				      		<c:choose>
-				      			<c:when test="${bill.active == 1 }">
-				      				<button dataId=${bill.id } class="btn btn-warning change-status" title="Thêm tình trạng mới">Đang vận chuyển</button>
-				      			</c:when>
-				      			<c:when test="${bill.active == 0 }">
-				      				<button dataId=${bill.id } class="btn btn-success change-status" title="Thêm tình trạng mới">Giao hàng thành công</button>
-				      			</c:when>			      			
-				      		</c:choose>
-				      	</td>
-				      </tr>
-			      </c:if>
-			      
-			      <c:if test="${bill.active != 1 }">
-			      	<tr>
-			      		<td></td>
-			      		<td>		      	
-		   			 		<button class="btn btn-danger return-status" dataId=${bill.id } title="Quay lại tình trạng trước đó">Quay lại tình trạng trước</button>
-		   			 	</td>
-		   			</tr>
-		   		  </c:if>
-		   	   </c:if>
+		      <c:if test="${sessionScope.account.role.id == 1 }">
+			      <c:if test="${bill.active != -1 }">
+				      <c:if test="${bill.active != 2 }">
+					      <tr>
+					      	<td></td>
+					      	<td>
+					      		<c:choose>
+					      			<c:when test="${bill.active == 1 }">
+					      				<button dataId=${bill.id } class="btn btn-warning change-status" title="Thêm tình trạng mới">Đang vận chuyển</button>
+					      			</c:when>
+					      			<c:when test="${bill.active == 0 }">
+					      				<button dataId=${bill.id } class="btn btn-success change-status" title="Thêm tình trạng mới">Giao hàng thành công</button>
+					      			</c:when>			      			
+					      		</c:choose>
+					      	</td>
+					      </tr>
+				      </c:if>
+				      
+				      <c:if test="${bill.active != 1 }">
+				      	<tr>
+				      		<td></td>
+				      		<td>		      	
+			   			 		<button class="btn btn-danger return-status" dataId=${bill.id } title="Quay lại tình trạng trước đó">Quay lại tình trạng trước</button>
+			   			 	</td>
+			   			</tr>
+			   		  </c:if>
+			   	   </c:if>
+			   </c:if>
 		    </table>
 		</div>
 		
 		<div class="table-responsive">
 		  <table class="table table-bordered">
 		    <thead>
-		      <tr>
+		      <tr style="background-color: cyan;">
 		        <th>Thông tin người nhận</th>
 		        <th>Thông tin khác</th>
 		      </tr>
@@ -81,9 +83,51 @@
 		          <p>Điện thoại : ${bill.address.phone }</p>
 		        </td>
 		        <td>
-		          <p>Ngày giao hàng dự kiến: <fmt:formatDate pattern = "dd-MM-yyyy" value = "${bill.deliveryDate}" /></p>
+		          <p <c:if test="${sessionScope.account.role.id == 1 }"> title="Bấm vào để thay đổi ngày giao hàng" </c:if> >
+					Ngày giao hàng dự kiến:
+					<c:if test="${sessionScope.account.role.id == 1 }">
+						<span class="delivery-date" dataId="${bill.id }">
+							<fmt:formatDate pattern = "dd-MM-yyyy" value = "${bill.deliveryDate }" />
+						</span>
+						<div class="form-delivery-date" hidden dataId="${bill.id }">
+							<input type="date" value='<fmt:formatDate pattern = "yyyy-MM-dd" value = "${bill.deliveryDate }" />' class="form-control select-delivery-date" dataId="${bill.id }">
+							<a class="btn btn-success confirm-delivery-date" dataId="${bill.id }">Xác nhận</a>
+							<a class="btn btn-danger cancel-delivery-date" dataId="${bill.id }">Hủy bỏ</a>				
+						</div>
+					</c:if>
+					
+					<c:if test="${sessionScope.account.role.id != 1 }">
+						<fmt:formatDate pattern = "dd-MM-yyyy" value = "${bill.deliveryDate }" />
+					</c:if>
+		          
 		          <p>${bill.note }</p>
-		          <p>Người giao: ${bill.delivery }</p>	          
+		          <p <c:if test="${sessionScope.account.role.id == 1 }"> title="Bấm vào để đổi người giao" </c:if> >
+		          	Người giao:
+		          	<c:if test="${sessionScope.account.role.id == 1 }">
+				        <c:if test="${bill.active != -1}"> 
+				          	<span class="select-delivery" dataId="${bill.id }">
+				          		<c:choose>
+									<c:when test="${bill.delivery != null }">
+										${bill.delivery }
+									</c:when>
+									<c:otherwise>
+										<button class="btn btn-info" title="Chọn người giao hàng">Chọn</button>
+									</c:otherwise>
+								</c:choose>	
+				          	</span>
+				          	<select name="delivery" class="form-control delivery" dataId="${bill.id }" hidden>
+								<option value="0">-- Chọn người giao --</option>
+								<c:forEach var="delivery" items="${delivery }">
+									<option value="${delivery.id }" <c:if test="${delivery.name == bill.delivery }">selected</c:if> >${delivery.name }</option>
+								</c:forEach>
+							</select>
+						</c:if>
+					</c:if>
+					
+					<c:if test="${sessionScope.account.role.id != 1 }">
+						${bill.delivery }
+					</c:if>
+		          </p>	          
 		        </td>
 		      </tr>
 		    </tbody>  
@@ -93,7 +137,7 @@
 		<br>
 		<table class="table table-hover table-bordered">
 		  <thead>
-		      <tr>
+		      <tr style="background-color: orange;">
 		          <th style="text-align: center;">Sản phẩm</th>
 		          <th style="text-align: center;">Số lượng</th>
 		          <th style="text-align: center;">Giá (VNĐ)</th>
@@ -136,6 +180,8 @@
 		    </tr>
 		  </tbody>
 		</table>
+		
+		<a href="bill" class="btn btn-info">Quay lại</a>
 		  		
 	</div>	
 </div>

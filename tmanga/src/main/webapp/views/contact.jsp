@@ -8,7 +8,7 @@
 	<!--contact-page-->
 	<div class="row">    		
 	    <div class="col-sm-12">
-	    	<c:if test="${mes != null }">
+	    	<c:if test="${mes != '' }">
 				<div class="alert alert-${alert }" role="alert">
 					${mes }
 				 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>

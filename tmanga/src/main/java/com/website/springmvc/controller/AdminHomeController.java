@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -58,7 +59,7 @@ public class AdminHomeController {
 			model.addObject("countCustomer", userService.getCountCustomer());
 			model.addObject("countStaff", userService.getCountStaff());
 			
-			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			Calendar cal = Calendar.getInstance();
 			cal.add(Calendar.DAY_OF_MONTH, -7);
 			Date date = cal.getTime();
@@ -67,18 +68,37 @@ public class AdminHomeController {
 			String str = "", label = "", value = "", temp = "";
 			int day = 0, month = 0, year = 0;
 	        for(int i = 1; i <= 7; i++) { 
+	        	cal.add(Calendar.DAY_OF_MONTH, 1);
+	        	date = cal.getTime();
 	        	temp = dateFormat.format(date);
-	        	listString = temp.split("/");
+	        	listString = temp.split("-");
 	        	day = Integer.parseInt(listString[2]);
 	        	month = Integer.parseInt(listString[1]);
 	        	year = Integer.parseInt(listString[0]);
-	        	label += day + "/" + month + "/" + year + ",";
-	        	value += billService.countBillByDate(day, month, year).toString() + ",";
-	        	cal.add(Calendar.DAY_OF_MONTH, 1);
-	        	date = cal.getTime();
+	        	label += day + "/" + month + ",";
+	        	value += billService.countBillByDate(day, month, year).toString() + ",";	        	
 	        }
 	        str = label + ";" + value;
 			model.addObject("countBillDaily",str);
+			
+			cal = Calendar.getInstance();
+			date = cal.getTime();
+			temp = dateFormat.format(date);
+			
+			model.addObject("dateEnd", temp);
+			
+			listString = temp.split("-");
+			model.addObject("dateE",  listString[2] + "/" + listString[1] + "/" + listString[0]);
+			
+			
+			cal.add(Calendar.DAY_OF_MONTH, -6);
+			date = cal.getTime();
+			temp = dateFormat.format(date);
+			
+			model.addObject("dateStart", temp);
+			
+			listString = temp.split("-"); 
+			model.addObject("dateS",  listString[2] + "/" + listString[1] + "/" + listString[0]);
 		}
 		else {
 			getModel.getHome(model, session);
@@ -108,13 +128,16 @@ public class AdminHomeController {
 							@RequestParam(name = "pt", defaultValue = "1") int pt) throws ParseException {
 		String str = "";
 		if(pt == 1) {
-			str = reportByDay(dateStart, dateEnd);
+			str = reportByDay(dateStart, dateEnd, pt);
 		}
 		else if(pt == 2) {
 			str = reportByMonth(dateStart, dateEnd);
 		}
 		else if(pt == 3) {
 			str = reportByYear(dateStart, dateEnd);
+		}
+		else if(pt == 4) {
+			str = reportByDay(dateStart, dateEnd, pt);
 		}
 		else {
 			str = "fail";
@@ -127,28 +150,50 @@ public class AdminHomeController {
 		}
 	}
 	
-	public String reportByDay(String dateStart, String dateEnd) {
-		String str = "", label = "", value = "";
-		String[] dateTemp = dateStart.split("-");
-		int dayStart = Integer.parseInt(dateTemp[2]);
-		int monthStart = Integer.parseInt(dateTemp[1]);
-		int yearStart = Integer.parseInt(dateTemp[0]);
+	public String reportByDay(String dateStart, String dateEnd, int pt) {
+		String str = "", label = "", value = "";		
+				
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		Calendar calStart = Calendar.getInstance();
+		calStart.setTime(java.sql.Date.valueOf(dateStart));		
+		Date dateS = calStart.getTime();
 		
-		dateTemp = dateEnd.split("-");
-		int dayEnd = Integer.parseInt(dateTemp[2]);
-		int monthEnd = Integer.parseInt(dateTemp[1]);
-		int yearEnd = Integer.parseInt(dateTemp[0]);
+		Calendar calEnd = Calendar.getInstance();
+		calEnd.setTime(java.sql.Date.valueOf(dateEnd));		
+		Date dateE = calEnd.getTime();
+		String strTemp = "";
+		String[] listString;
+		int day, month, year;
 		
-		if(yearStart == yearEnd && monthStart == monthEnd) {
-			for(int i = dayStart; i <= dayEnd; i++) {
-				label += i + "/" + monthStart + ",";
-				if(billService.getReportByDate(i, monthStart, yearStart) != null) {				
-					value += billService.getReportByDate(i, monthStart, yearStart).toString() + ",";
-				}
-				else {
-					value += "0,";
-				}
+		if(dateS.compareTo(dateE) <= 0){
+			for(Date temp = dateS;  ; ) {
+				if(temp.after(dateE))
+					break;
+	        	
+				strTemp = dateFormat.format(temp);
+	        	listString = strTemp.split("/");
+	        	        	        	
+	        	day = Integer.parseInt(listString[2]);
+	        	month = Integer.parseInt(listString[1]);
+	        	year = Integer.parseInt(listString[0]);
+	        	
+	        	label += day + "/" + month + ",";
+	        	if(billService.getReportByDate(day, month, year) != null) {		
+	        		if(pt == 1) {
+	        			value += billService.getReportByDate(day, month, year).toString() + ",";
+	        		}
+	        		else if(pt == 4) {
+	        			value += billService.countBillByDate(day, month, year).toString() + ",";
+	        		}
+	        	}
+	        	else {
+	        		value += "0,";
+	        	}
+	        	
+	        	calStart.add(Calendar.DAY_OF_MONTH, 1);
+				temp = calStart.getTime();
 			}
+			
 			str = label + ";" + value;
 		}
 		else {
@@ -159,32 +204,50 @@ public class AdminHomeController {
 	}
 	
 	public String reportByMonth(String dateStart, String dateEnd) {
-		String str = "", label = "", value = "";
-		String[] dateTemp = dateStart.split("-");
-		int monthStart = Integer.parseInt(dateTemp[1]);
-		int yearStart = Integer.parseInt(dateTemp[0]);
+		String str = "", label = "", value = "";		
 		
-		dateTemp = dateEnd.split("-");
-		int monthEnd = Integer.parseInt(dateTemp[1]);
-		int yearEnd = Integer.parseInt(dateTemp[0]);
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		Calendar calStart = Calendar.getInstance();
+		calStart.setTime(java.sql.Date.valueOf(dateStart));		
+		Date dateS = calStart.getTime();
 		
-		if(yearStart == yearEnd) {
-			for(int i = monthStart; i <= monthEnd; i++) {
-				label += "Tháng " + i + "-" + yearStart + ",";
-				if(billService.getReportByMonth(i, yearStart) != null) {				
-					value += billService.getReportByMonth(i, yearStart).toString() + ",";
-				}
-				else {
-					value += "0,";
-				}
+		Calendar calEnd = Calendar.getInstance();
+		calEnd.setTime(java.sql.Date.valueOf(dateEnd));		
+		Date dateE = calEnd.getTime();
+		String strTemp = "";
+		String[] listString;
+		int month, year;
+		
+		if(dateS.compareTo(dateE) <= 0){
+			for(Date temp = dateS;  ; ) {
+				if(temp.after(dateE))
+					break;
+	        	
+				strTemp = dateFormat.format(temp);
+	        	listString = strTemp.split("/");
+	        	
+	        	month = Integer.parseInt(listString[1]);
+	        	year = Integer.parseInt(listString[0]);
+	        	
+	        	label += "Tháng " + month + "-" + year + ",";
+	        	if(billService.getReportByMonth(month, year) != null) {		
+	        		value += billService.getReportByMonth(month, year).toString() + ",";
+	        	}
+	        	else {
+	        		value += "0,";
+	        	}
+	        	
+	        	calStart.add(Calendar.MONTH, 1);
+				temp = calStart.getTime();
 			}
+			
 			str = label + ";" + value;
 		}
 		else {
 			str = "fail";
 		}
 		
-		return str;
+		return str;				
 	}
 	
 	public String reportByYear(String dateStart, String dateEnd) {
@@ -220,7 +283,7 @@ public class AdminHomeController {
 //		dateTemp[2] = String.valueOf(Integer.parseInt(dateTemp[2]) + 1) ;
 //		dateEnd = String.join("-", dateTemp);
 //		
-//		List<Object[]> listResult = billService.getListMoneyByDate(java.sql.Date.valueOf(dateStart) , java.sql.Date.valueOf(dateEnd));
+//		List<Object[]> listResult = billService.getListByDate(java.sql.Date.valueOf(dateStart) , java.sql.Date.valueOf(dateEnd));
 //		dateTemp = dateStart.split("-");
 //		
 //		String str = "", label = "", value = "";

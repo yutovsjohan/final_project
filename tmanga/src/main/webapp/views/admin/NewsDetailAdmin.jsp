@@ -4,10 +4,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<hr>
 <div class="w3-container">
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  		<a class="navbar-brand">${title }</a>
+  		<a class="navbar-brand" style="color:red">${title }</a>
 	</nav>
 </div>
 
@@ -19,19 +18,20 @@
 		</div>
 	</c:if> 
 	
-	<form:form action="newsDetail" method="post" modelAttribute="News" enctype="multipart/form-data;boundary=----WebKitFormBoundaryyrV7KO0BoCBuDbTL">
+	<form:form action="newsDetail" method="post" modelAttribute="News" enctype="multipart/form-data">
 		<input hidden="hidden" value=${mode } name="mode" />
-		<input hidden="hidden" value=${News.id } name="id"/>
+		<form:input path="id" hidden="hidden" name="id"/>
+		<form:input path="image" hidden="hidden" name="image"/>
 		<div class="form-group">
 			<label for="title">Tiêu đề</label>
-			<form:input path="title" value="${News.title }" type="text" class="form-control" name="title" placeholder="nhập tiêu đề tin tức"/>
+			<form:input path="title" value="${News.title }" type="text" class="form-control" name="title" placeholder="nhập tiêu đề tin tức" required="required" />
 		</div>
 		<div class="form-group">			
 			<label for="image">Hình</label><br>		
 			<c:if test="${mode == 'edit' }">
-				<img src="<c:url value="/images/news/${News.image }" />" alt="${News.title}" width=200px height=150px />
-			</c:if>	
-			<input type="file" name="file"/>
+				<img src="<c:url value="/images/news/${News.image }" />" alt="${News.title}" width=200px height=150px name="image" />
+			</c:if>
+			<input type="file" name="file" id="file" value=${News.image }/>			 
 		</div>
 		<div class="form-group">
 			<label for="summary">Nội dung tóm tắt</label>
@@ -39,7 +39,7 @@
 		</div>
 		<div class="form-group ckeditor">
 			<label for="content">Nội dung</label>
-			<form:textarea path="content" class="ckeditor" name="content" rows="20" />			
+			<form:textarea path="content" class="ckeditor" name="content" rows="20" />
 		</div>		
 		<button type="submit" class="btn btn-success">Lưu</button>
 	</form:form>

@@ -58,9 +58,16 @@ public class News implements java.io.Serializable{
 	
 	public News() {
 		super();
-		// TODO Auto-generated constructor stub
+	}
+	
+	public Date getUpdated_at() {
+		return updated_at;
 	}
 
+	public void setUpdated_at(Date updated_at) {
+		this.updated_at = updated_at;
+	}
+	
 	public Long getId() {
 		return id;
 	}

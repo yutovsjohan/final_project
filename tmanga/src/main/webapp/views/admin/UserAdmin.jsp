@@ -5,40 +5,57 @@
 
 <hr>
 <div class="w3-container">
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  		<a class="navbar-brand">Danh sách nhân viên</a>
-	
+	<div class="row" style="padding:15px">
+		<div class="col-sm-4" style="font-size: 20px; color:red">
+			<c:if test="${action == 'staff' }">
+	  			<a class="navbar-brand">Danh sách nhân viên</a>
+	  		</c:if>
+	  		
+	  		<c:if test="${action == 'customer' }">
+	  			<a class="navbar-brand">Danh sách khách hàng</a>
+	  		</c:if>
+		</div>
 		<div class="col-sm-4">
-			<form class="navbar-form" role="search" method="get" action="userAdmin">
-				<div class="input-group">
-					<input type="text" class="form-control" placeholder="Tìm nhân viên" name="q" id="search">
-					<div class="input-group-btn">
+			<form role="search">
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="Tìm Users" name="q" id="search">
+					<div style="margin-top:-34px; float:right">
 						<button class="btn btn-default" type="submit" style="height:34px"><i class="glyphicon glyphicon-search"></i></button>
 					</div>
 				</div>
 			</form>
-		</div>
+		</div>	
+		
+		<div class="col-sm-4">
+		    <select class="form-control" id="sort">
+			  	<option value="0">--- Sắp xếp theo ---</option> 
+				<option value="15">Tên từ A-Z</option>
+				<option value="16">Tên từ Z-A</option>
+				<option value="3">Email từ A-Z</option>
+				<option value="4">Email từ Z-A</option>
+				<option value="17">Sắp xếp theo chức vụ</option>
+		  	</select>
+		</div>	
+	</div>
 	
-	</nav>
-	
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<div class="navbar-brand">
-			<a href="add-user" class="btn btn-success" style="margin:8px">Thêm nhân viên mới</a>
+	<c:if test="${sessionScope.account.role.id == 1 }">
+		<div class="row" style="padding:15px">
+			<c:if test="${action == 'staff' }">
+				<div class="col-sm-4">
+					<a href="add-user" class="btn btn-success" style="margin:8px">Thêm nhân viên mới</a>
+				</div>
+				<div class="col-sm-4">
+					<a href="userAdmin?action=customer" class="btn btn-info" style="margin:8px" title="Xem danh sách khách hàng">Danh sách khách hàng</a>
+				</div>
+			</c:if>
+			
+			<c:if test="${action == 'customer' }">
+				<div class="col-sm-4">
+					<a href="userAdmin" class="btn btn-info" style="margin:8px" title="Xem danh sách nhân viên">Danh sách nhân viên</a>
+				</div>
+			</c:if>		
 		</div>
-							
-		<a class="navbar-brand">
-			<div class="navbar-form">				
-			    <select class="form-control" id="sort">
-				  	<option value="0">--- Sắp xếp theo ---</option> 
-					<option value="15">Tên từ A-Z</option>
-					<option value="16">Tên từ Z-A</option>
-					<option value="3">Email từ A-Z</option>
-					<option value="4">Email từ Z-A</option>
-					<option value="17">Sắp xếp theo chức vụ</option>
-			  	</select>
-			</div>  
-		</a>
-	</nav>
+	</c:if>
 </div>
 
 <c:if test="${mes != '' }">
@@ -58,7 +75,6 @@
 				<th>Điện thoại</th>
 				<th>Chức vụ</th>					
 				<th></th>
-				<th></th>
 			</tr>
 		</thead>
 		<tbody id="table-list">
@@ -68,28 +84,39 @@
 					<td>${user.email}</td>
 					<td>${user.phone}</td>
 					<td>${user.role.name }</td>
-					<c:choose>					
-						<c:when test="${user.id == sessionScope.account.id}">
-							<td colspan="2">
-								<a href="edit-user" class="btn btn-default">Chỉnh sửa thông tin cá nhân</a>
-							</td>
-						</c:when>
-						<c:otherwise>
-							<td>
-								<button class="btn btn-info setup-pw" dataId="${user.id }">Đặt lại mật khẩu</button>
-							</td>
-							<td>
-								<div class="ban-acc" dataId="${user.id}" dataActive="${user.active }">
-									<c:if test="${user.active == 0 }">
-										<button class="btn btn-warning">Mở tài khoản</button>
+					<c:if test="${sessionScope.account.role.id == 1 }">
+						<c:choose>					
+							<c:when test="${user.id == sessionScope.account.id}">
+								<td colspan="2">
+									<a href="edit-user" class="btn btn-default">Chỉnh sửa thông tin cá nhân</a>
+								</td>
+							</c:when>
+							<c:otherwise>
+								<td>
+									<c:if test="${action == 'staff' }">
+										<button class="btn btn-info setup-pw" dataId="${user.id }">Đặt lại mật khẩu</button>
 									</c:if>
-									<c:if test="${user.active == 1 }">
-										<button class="btn btn-danger">Cấm tài khoản</button>
-									</c:if>
-								</div>
-							</td>
-						</c:otherwise>
-					</c:choose>					
+								
+									<div class="ban-acc" dataId="${user.id}" dataActive="${user.active }" style="display: inline;">
+										<c:if test="${user.active == 0 }">
+											<button class="btn btn-warning">Mở tài khoản</button>
+										</c:if>
+										<c:if test="${user.active == 1 }">
+											<button class="btn btn-danger">Khóa tài khoản</button>
+										</c:if>
+									</div>
+								</td>
+							</c:otherwise>
+						</c:choose>		
+					</c:if>
+					
+					<c:if test="${sessionScope.account.role.id != 1 }">
+						<td>
+							<c:if test="${user.id == sessionScope.account.id}">
+								<a href="edit-user" class="btn btn-default">Chỉnh sửa thông tin cá nhân</a>								
+							</c:if>
+						</td>
+					</c:if>			
 				</tr>
 			</c:forEach>
 		</tbody>

@@ -6,41 +6,45 @@
 
 <hr>
 <div class="w3-container">
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  		<a class="navbar-brand">Danh sách nhà xuất bản</a>
-		
-		<div class="col-sm-5">				
-			<form class="navbar-form" role="search" method="get" action="pubcomAdmin">
-				<div class="input-group">
-					<input type="text" class="form-control" placeholder="Tìm nhà xuất bản" name="q" id="search">
-					
-					<div class="input-group-btn">
+	<div class="row" style="padding:15px">
+		<div class="col-sm-3" style="font-size: 20px; color:red">
+			Danh sách nhà xuất bản
+		</div>
+		<div class="col-sm-4">				
+			<form role="search">
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="Tìm nhà xuất bản" name="q" id="search">				
+					<div style="margin-top:-34px; float:right">
 						<button class="btn btn-default" type="submit" style="height:34px"><i class="glyphicon glyphicon-search"></i></button>
 					</div>
 				</div>
 			</form>
-		</div>			
-	</nav>
+		</div>
+		
+		<div class="col-sm-4">
+			<form class="" role="search">
+				<div class="form-group">
+					<select class="form-control" id="sort">
+					  	<option value="0">--- Sắp xếp theo ---</option> 
+						<option value="1">STT tăng dần</option>
+						<option value="2">STT giảm dần</option>
+						<option value="3">Tên danh mục A-Z</option>
+						<option value="4">Tên danh mục Z-A</option>
+						<option value="5">Số lượng truyện tăng dần</option>
+						<option value="6">Số lượng truyện giảm dần</option>
+				  	</select>
+				</div>
+			</form>
+		</div>
+	</div>
 	
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<a class="navbar-brand">
-			<button class="btn btn-success publishing" dataMode="add" style="margin:8px">Thêm	nhà xuất bản</button>
-		</a>
-					
-		<a class="navbar-brand">
-			<div class="navbar-form">				
-			    <select class="form-control" id="sort">
-				  	<option value="0">--- Sắp xếp theo ---</option> 
-					<option value="1">STT tăng dần</option>
-					<option value="2">STT giảm dần</option>
-					<option value="3">Tên danh mục A-Z</option>
-					<option value="4">Tên danh mục Z-A</option>
-					<option value="5">Số lượng truyện tăng dần</option>
-					<option value="6">Số lượng truyện giảm dần</option>
-			  	</select>
-			</div>  
-		</a>
-	</nav>		
+	<c:if test="${sessionScope.account.role.id == 1 }">
+		<div class="row" style="padding:15px">
+			<div class="col-sm-3" style="float:left; font-size: 20px">
+				<button class="btn btn-success publishing" dataMode="add" style="margin:8px">Thêm	nhà xuất bản</button>
+			</div>
+		</div>
+	</c:if>
 </div>
 
 <div class="w3-container">	
@@ -49,7 +53,12 @@
 			<tr>
 				<th>ID</th>
 				<th>Tên nhà xuất bản</th>
-				<th>Trạng thái</th>
+				<c:if test="${sessionScope.account.role.id == 1 }">
+					<th>Trạng thái</th>
+				</c:if>
+				<c:if test="${sessionScope.account.role.id != 1 }">
+					<th>Hiển thị trên trang web</th>
+				</c:if>
 				<th>Số lượng truyện</th>
 				<th></th>
 			</tr>
@@ -59,26 +68,35 @@
 				<tr class="PCList" dataId="${PubCom.id }">
 					<td>${PubCom.id}</td>
 					<td class="name" dataId="${PubCom.id }">${PubCom.name}</td>
-					<td><c:choose>
-							<c:when test="${PubCom.status == 0 }">
+					<td>
+						<c:choose>
+							
+							<c:when test="${PubCom.status == 0 && sessionScope.account.role.id == 1}">
 								<span class="showHidePC" dataId=${PubCom.id } action="0"
 									style="font-size: 20px;"><i class="fa fa-eye-slash"
 									title="Bấm để hiện lên trên trang web"></i></span>
 							</c:when>
-							<c:otherwise>
+							<c:when test="${PubCom.status == 1 && sessionScope.account.role.id == 1}">
 								<span class="showHidePC" dataId=${PubCom.id } action="1"
 									style="font-size: 20px;"><i class="fa fa-eye"
 									title="Bấm để ẩn trên trang web"></i></span>
-							</c:otherwise>
+							</c:when>
+							<c:when test="${PubCom.status == 0 && sessionScope.account.role.id != 1}">
+								<span style="color: red; font-size: 20px;"><i class="fa fa-times-circle" title="Không hiển thị trên trang web"></i></span>
+							</c:when>
+							<c:when test="${PubCom.status == 1 && sessionScope.account.role.id != 1}">
+								<span style="color:green; font-size: 20px;"><i class="fa fa-check-circle" title="Hiển thị trên trang web"></i></span>
+							</c:when>
 						</c:choose>
 					</td>
 					<td>${PubCom.comics.size() }</td>
 					<td>
 						<a href="comicList?q=publishcompany&id=${PubCom.id }" class="btn btn-warning" title="Xem danh sách truyện thuộc nhà xuất bản ${PubCom.name }">Xem</a>
-						<button class="btn btn-info publishing"
-							dataId=${PubCom.id } dataMode="edit">Sửa</button>
-						<c:if test="${PubCom.comics.size() == 0 }">
-							<button class="btn btn-danger removePC" dataId="${PubCom.id }">Xóa</button>
+						<c:if test="${sessionScope.account.role.id == 1 }">
+							<button class="btn btn-info publishing" dataId=${PubCom.id } dataMode="edit">Sửa</button>
+							<c:if test="${PubCom.comics.size() == 0 }">
+								<button class="btn btn-danger removePC" dataId="${PubCom.id }">Xóa</button>
+							</c:if>
 						</c:if>
 					</td>
 				</tr>
