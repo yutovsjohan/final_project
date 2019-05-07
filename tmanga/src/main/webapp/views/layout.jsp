@@ -228,10 +228,20 @@ function googleTranslateElementInit() {
                 	<li class="widget-container widget_nav_menu"><!-- widgets list -->
                     	<h1 class="title-widget">Tài khoản của bạn</h1>
                        	<ul>
-			 				<li><a href="${pageContext.request.contextPath}/controller/cart"><i class="fa fa-angle-double-right"></i> Xem giỏ hàng</a></li>
-							<li><a href="${pageContext.request.contextPath}/controller/customer/edit"><i class="fa fa-angle-double-right"></i> Thông tin cá nhân</a></li>
-							<li><a href="${pageContext.request.contextPath}/controller/customer/favoriteList"><i class="fa fa-angle-double-right"></i> Truyện đã xem</a></li>
-							<li><a href="${pageContext.request.contextPath}/controller/customer/orderHistory"><i class="fa fa-angle-double-right"></i> Lịch sử giao dịch</a></li>
+                       		<li><a href="${pageContext.request.contextPath}/controller/cart"><i class="fa fa-angle-double-right"></i> Xem giỏ hàng</a></li>
+                       		<c:choose>
+	                       		<c:when test="${sessionScope.account != null}">
+									<li><a href="${pageContext.request.contextPath}/controller/customer/edit"><i class="fa fa-angle-double-right"></i> Thông tin cá nhân</a></li>
+									<li><a href="${pageContext.request.contextPath}/controller/customer/favoriteList"><i class="fa fa-angle-double-right"></i> Truyện đã xem</a></li>
+									<li><a href="${pageContext.request.contextPath}/controller/customer/orderHistory"><i class="fa fa-angle-double-right"></i> Lịch sử giao dịch</a></li>	
+	                       		</c:when>
+	                       		<c:otherwise>
+									<li><a class="need-login"><i class="fa fa-angle-double-right"></i> Thông tin cá nhân</a></li>
+									<li><a class="need-login"><i class="fa fa-angle-double-right"></i> Truyện đã xem</a></li>
+									<li><a class="need-login"><i class="fa fa-angle-double-right"></i> Lịch sử giao dịch</a></li>
+	                       		</c:otherwise>
+                       		</c:choose>
+			 				
 						</ul>
                     </li>
 				</ul>

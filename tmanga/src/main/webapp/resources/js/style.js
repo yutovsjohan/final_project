@@ -1,34 +1,27 @@
 $(document).ready(function(){
-	//edit product (show date)
-	var views = $("#views").val();
-	var mode = $("#mode").val();
-	if(views == 'ProductMan' && mode == 'edit'){
-		var temp = $("#temp").val(); 
-		var publishDate =  temp.split(" "); 
-		$("#publishDate").val(publishDate[0]);
-	}
-	
-//	$("#save-product").click(function(){
-//		var publishDate = $("#publishDate").val();
-//		var idCategory = $("#idCategory").val();
-//		var idAuthor = $("#idAuthor").val();
-//		var idPublishCompany = $("#idPublishCompany").val();
-//		
-//		var route = "comic";
-//		$.ajax({
-//			url : route,
-//			type : 'POST',
-//			data : {
-//				publishDate: publishDate,
-//				idCategory: idCategory,
-//				idAuthor: idAuthor,
-//				idPublishCompany: idPublishCompany
-//			},
-//			success: function(data){	
-//				
-//			}
-//		})
+	//update sort (comic management)
+//	$("#sort-by-name").click(function(){
+//		var sort = parseInt($("#sort-by-name").attr('dataSort'));
+//		if(sort == 1){
+//			//asc
+//			sortTable(1, "string", true);
+//			$("#sort-by-name").attr('dataSort','0');
+//			$("#sort-by-name").html('Tên truyện <i class="fa fa-long-arrow-up" aria-hidden="true" style="float:left; margin-right:10px; font-size:20px"></i>');
+//			$("#sort-by-name").prop("title", "Bấm vào để sắp xếp theo tên truyện giảm dần từ Z-A");
+//		}
+//		else if(sort == 0){
+//			//desc
+//			sortTable(1, "string", false);
+//			$("#sort-by-name").attr('dataSort','1');
+//			$("#sort-by-name").html('Tên truyện <i class="fa fa-long-arrow-down" aria-hidden="true" style="float:left; margin-right:10px; font-size:20px"></i>');
+//			$("#sort-by-name").prop("title", "Bấm vào để sắp xếp theo tên truyện tăng dần từ A-Z");
+//		}
 //	})
+	
+	//layout.jsp
+	$(".need-login").click(function(){
+		alert('Bạn cần phải đăng nhập để thực hiện chức năng này');
+	})
 	
 	//page home admin
 	var views = $("#views").attr('data');
@@ -39,12 +32,17 @@ $(document).ready(function(){
 		var label = temp[0].split(",");
 		var value = temp[1].split(",");
 		
+		var label_chart = 'Số đơn hàng';
+		var lang = $("#lang").attr('data');
+		if(lang == 'en'){
+			label_chart = 'Amount orders'
+		}
 		myChart = new Chart(ctx, {
 		    type: 'bar',
 		    data: {
 		        labels: label,
 		        datasets: [{
-		            label: 'Số đơn hàng',
+		            label: label_chart,
 		            data: value,
 		            backgroundColor: [
 		            	'rgba(75, 192, 192, 0.2)',
@@ -80,6 +78,15 @@ $(document).ready(function(){
 	}
 	
 	//comic list management
+	
+	//edit product (show date)
+	var views = $("#views").val();
+	var mode = $("#mode").val();
+	if(views == 'ProductMan' && mode == 'edit'){
+		var temp = $("#temp").val(); 
+		var publishDate =  temp.split(" "); 
+		$("#publishDate").val(publishDate[0]);
+	}
 	
 	$('.showHideComic').click(function(){
 		var id= $(this).attr("dataId");
@@ -210,6 +217,7 @@ $(document).ready(function(){
 				$(this).prop( "checked", "true");	
 			})
 			$("#select-all").attr("dataCount", count);
+			$("#count-comic-selected").text(count + " truyện đã được chọn");
 		}
 		else{
 			$("#table-list tr").each(function() {
@@ -224,6 +232,7 @@ $(document).ready(function(){
 				$(this).removeProp( "checked");			
 			})
 			$("#select-all").attr("dataCount", "0");
+			$("#count-comic-selected").text("");
 		}
 		
 		if( parseInt($("#select-all").attr("dataCount")) > 0){			
@@ -273,6 +282,7 @@ $(document).ready(function(){
 		else{
 			count--;
 		}
+		$("#count-comic-selected").text(count + " truyện đã được chọn");
 		$("#select-all").attr("dataCount", count);
 		if(count < countComic){
 			$("#select-all").removeProp("checked");
@@ -286,6 +296,7 @@ $(document).ready(function(){
 		}
 		else if(count == 0){
 			$("#change-comic").attr("hidden","");
+			$("#count-comic-selected").text("");
 		}
 	})
 	
@@ -372,6 +383,11 @@ $(document).ready(function(){
 	})
 	
 	function sortTable(j, type, isAsc) {
+	  var start = 1;
+	  if($("#change-comic").attr('data') == 'true'){
+		  start = 2;
+	  }
+	  
 	  var count = 1; var dateA, dateB;
 	  var table, rows, switching, i, x, y, shouldSwitch, value, temp;
 	  table = document.getElementById("myTable");
@@ -384,14 +400,14 @@ $(document).ready(function(){
 	    rows = table.rows;
 	    /*Loop through all table rows (except the
 	    first, which contains table headers):*/
-	    for (i = 1; i < (rows.length - 1); i++) {
+	    for (i = start; i < (rows.length - 1); i++) {
 	      //start by saying there should be no switching:
 	      shouldSwitch = false;
 	      /*Get the two elements you want to compare,
 	      one from current row and one from the next:*/
 	      x = rows[i].getElementsByTagName("TD")[j];
 	      y = rows[i + 1].getElementsByTagName("TD")[j];
-	      
+	      	      
 	      //check if the two rows should switch place:
 	      if(type == 'int'){
 	    	  if(isAsc){
@@ -472,49 +488,88 @@ $(document).ready(function(){
 	
 	//report
 	$("#report").click(function(){
+		var lang = $("#lang").attr('data');		
+		
 		var dateStart = $('#dateStart').val();
 		if(dateStart == ''){
-			alert('Ngày bắt đầu không hợp lệ');
+			if(lang == 'vi')
+				alert('Ngày bắt đầu không hợp lệ');
+			else if(lang == 'en')
+				alert('Date start invalid');
 		}
 		else{
 			var dateEnd = $('#dateEnd').val();
 			if(dateEnd == ''){
-				alert('Ngày kết thúc không hợp lệ');
+				if(lang == 'vi')
+					alert('Ngày kết thúc không hợp lệ');
+				else if(lang == 'en')
+					alert('Date end invalid');
 			}
 			else{
 				var pt = $('#pt').val();
 				var title = 'Biểu đồ ';
+				if(lang == 'en')
+					title = 'Chart of ';
+				
 				var label_chart = "Doanh thu";
+				if(lang == 'en')
+					label_chart = "Revenue";
 				
 				var dataUrl = $("#report").attr('dataUrl');
 				if(dataUrl == 'home'){
 					pt = 4;
-					title += 'số lượng đơn hàng từ ngày ' + dateStart.split('-').reverse().join('/') + ' đến ngày ' + dateEnd.split('-').reverse().join('/');
+					
+					if(lang == 'vi')
+						title += 'số lượng đơn hàng từ ngày ' + dateStart.split('-').reverse().join('/') + ' đến ngày ' + dateEnd.split('-').reverse().join('/');
+					if(lang == 'en')
+						title += 'amount orders from ' + dateStart.split('-').reverse().join('/') + ' to ' + dateEnd.split('-').reverse().join('/');
+						
 					label_chart = "Số đơn hàng";
+					if(lang == 'en')
+						label_chart = 'Amount orders';
 				}		
 				
 				if(pt == 1){
-					title += 'doanh thu từ ngày ' + dateStart.split('-').reverse().join('/') + ' đến ngày ' + dateEnd.split('-').reverse().join('/');
+					if(lang == 'vi')
+						title += 'doanh thu từ ngày ' + dateStart.split('-').reverse().join('/') + ' đến ngày ' + dateEnd.split('-').reverse().join('/');
+					if(lang == 'en')
+						title += 'revenue from ' + dateStart.split('-').reverse().join('/') + ' to ' + dateEnd.split('-').reverse().join('/');
 				}
 				else if(pt == 2){
 					var temp = dateStart.split('-');
 					var month = temp[1];
 					var year = temp[0];
-					title += 'doanh thu từ tháng ' + month + "/" + year; 
+					
+					if(lang == 'vi')
+						title += 'doanh thu từ tháng ' + month + "/" + year;
+					if(lang == 'en')
+						title += 'revenue from ' + month + "/" + year;
 					
 					temp = dateEnd.split('-');
 					month = temp[1];
 					year = temp[0];
-					title += ' đến tháng ' + month + "/" + year;
+					
+					if(lang == 'vi')
+						title += ' đến tháng ' + month + "/" + year;
+					if(lang == 'en')
+						title += ' to ' + month + "/" + year;
 				}
 				else if(pt == 3){
 					var temp = dateStart.split('-');
 					var year = temp[0];
-					title += 'doanh thu từ năm ' + year; 
+					
+					if(lang == 'vi')
+						title += 'doanh thu từ năm ' + year; 
+					if(lang == 'en')
+						title += 'revenue from ' + year;
 					
 					temp = dateEnd.split('-');
 					year = temp[0];
-					title += " đến năm " + year;
+					
+					if(lang == 'vi')
+						title += " đến năm " + year;
+					if(lang == 'en')
+						title += " to " + year;
 				}
 								
 				var route = "create-report";
@@ -530,7 +585,10 @@ $(document).ready(function(){
 					},
 					success: function(data){		
 						if(data == 'fail'){
-							alert('Ngày kết thúc phải lớn hơn ngày bắt đầu');
+							if(lang == 'vi')
+								alert('Ngày kết thúc phải lớn hơn ngày bắt đầu');
+							else if(lang == 'en')
+								alert('The end date must be greater than the start date');
 						}
 						else{
 							$("#chart").html('<canvas id="myChart" width="400" height="400"></canvas>');
@@ -540,6 +598,15 @@ $(document).ready(function(){
 							var value = temp[1].split(",");
 							
 							var ctx = document.getElementById('myChart');
+							
+							var backgroundColor_temp = 'rgba(75, 192, 192, 0.2)';
+							var borderColor_temp = 'rgba(75, 192, 192, 0.2)';
+							for (var i = 1; i < 50; i++) {
+								backgroundColor_temp += ';rgba(75, 192, 192, 0.2)';
+								borderColor_temp += ';rgba(75, 192, 192, 0.2)';
+							}
+							var backgroundColor = backgroundColor_temp.split(';');
+							var borderColor = borderColor_temp.split(';');
 													
 							myChart = new Chart(ctx, {
 							    type: 'bar',
@@ -548,72 +615,8 @@ $(document).ready(function(){
 							        datasets: [{
 							            label: label_chart,
 							            data: value,
-							            backgroundColor: [
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)'
-							            ],
-							            borderColor: [
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)',
-							            	'rgba(75, 192, 192, 0.2)'					            	
-							            ],
+							            backgroundColor: backgroundColor,
+							            borderColor: borderColor,
 							            borderWidth: 1
 							        }]
 							    },
@@ -702,18 +705,43 @@ $(document).ready(function(){
 		}
 	})
 	
-	//admin page
+	//news page
+	$('.bannerNews').click(function(){
+		var id= $(this).attr("dataId");
+		var action = parseInt($(this).attr("action"));
+		
+		if(action == 0){
+			$(this).attr("action","1");
+			$(this).html('<i class="fa fa-check-circle" style="color:green" title="Bấm để gỡ ra khỏi banner">');
+		}
+		else if(action == 1){
+			$(this).attr("action","0");
+			$(this).html('<i class="fa fa-times-circle" style="color:red" title="Bấm để hiện lên trên banner">');
+		}
+		
+		$.ajax({
+			url : "bannerNews",
+			type : 'POST',
+			data : {
+				id: id
+			},
+			success: function(data){					
+				
+			}
+		})
+	})
+	
 	$('.showHideNews').click(function(){
 		var id= $(this).attr("dataId");
 		var action = parseInt($(this).attr("action"));
 		
 		if(action == 0){
 			$(this).attr("action","1");
-			$(this).html('<i class="fa fa-eye" title="Bấm để ẩn trên trang web">');
+			$(this).html('<i class="fa fa-eye" style="color:black" title="Bấm để ẩn trên trang web">');
 		}
 		else if(action == 1){
 			$(this).attr("action","0");
-			$(this).html('<i class="fa fa-eye-slash" title="Bấm để hiện lên trên trang web">');
+			$(this).html('<i class="fa fa-eye-slash" style="color:grey" title="Bấm để hiện lên trên trang web">');
 		}
 		
 		$.ajax({
@@ -1216,7 +1244,7 @@ $(document).ready(function(){
 		
 	})
 	
-	//payment page
+	//payment page	
 	$("#pttt").change(function() {
 		var pttt = parseInt($('#pttt').val());
 		if(pttt == -1){
@@ -1228,6 +1256,13 @@ $(document).ready(function(){
 			$('#note').attr('hidden','');
 		}
 	})
+	
+	//order (payment page)
+//	$("#order").click(function(){
+//		if(confirm("Bạn có thực sự muốn đặt hàng không?")){
+//			var pttt = parseInt($('#pttt').val());
+//		}		
+//	})
 	
 	//cancel order
 	$(".cancelOrder").click(function(){

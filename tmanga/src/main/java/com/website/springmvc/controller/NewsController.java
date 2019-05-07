@@ -4,7 +4,11 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -58,10 +62,14 @@ public class NewsController extends HttpServlet{
 	public ModelAndView getNewsDetailPage(@RequestParam(name = "un", defaultValue = "") String un,
 											HttpSession session){
 		ModelAndView model = new ModelAndView();
-		News news = newsService.getNewsById(un);
-		getModel.getNewsDetail(model, news);
-		
-		session.setAttribute("url", "news-detail?un=" + un);
+		News news = newsService.getNewsByUnName(un);
+		if(news != null) {
+			getModel.getNewsDetail(model, news);
+			session.setAttribute("url", "news-detail?un=" + un);
+		}
+		else {
+			getModel.getNews(model, 1);
+		}				
 		return model;
 	}	
 	
@@ -69,12 +77,14 @@ public class NewsController extends HttpServlet{
 	public ModelAndView getNewsAdminPage(@RequestParam(name = "p", defaultValue = "1") int page,
 										@RequestParam(name = "mes", defaultValue = "") String mes,
 										@RequestParam(name = "alert", defaultValue = "") String alert,
+										@RequestParam(name = "q", defaultValue = "") String key,
 										HttpSession session){		
 		ModelAndView model = new ModelAndView();
 		boolean f = getModel.checkAdmin(session);
 		
-		if(f) {
-			getModel.getNewsAdmin(model, page, mes, alert);
+		if(f) {			
+			session.setAttribute("url", "newsAdmin?p=" + page + "&q=" + key);
+			getModel.getNewsAdmin(model, page, mes, alert, key, session);
 		}
 		else {
 			getModel.getHome(model, session);
@@ -90,8 +100,14 @@ public class NewsController extends HttpServlet{
 		ModelAndView model = new ModelAndView();
 		boolean f = getModel.checkAdmin(session);
 		
-		if(f) {
-			getModel.getNewsDetailAdmin(model, mes, alert, idNews, mode, session);
+		if(f) {			
+			if(idNews == (long) 0 || newsService.get(idNews) == null) {
+				getModel.getNewsAdmin(model, 1, mes, alert, "", session);
+			}
+			else {
+				session.setAttribute("url", "newsDetail?id=" + idNews + "&mode=" + mode);
+				getModel.getNewsDetailAdmin(model, mes, alert, idNews, mode, session);
+			}			
 		}
 		else {
 			getModel.getHome(model, session);
@@ -172,7 +188,12 @@ public class NewsController extends HttpServlet{
 //			news.setSummary(summary);
 			
 			if(news.getTitle() != null) {
-				news.setUnsignedTitle(RemoveAccent.changeTitle(news.getTitle()));
+				DateFormat dateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
+				Calendar cal = Calendar.getInstance();
+				Date date = cal.getTime();
+				String temp = dateFormat.format(date);
+				String title = RemoveAccent.changeTitle(news.getTitle()) + "-t" + temp ;
+				news.setUnsignedTitle(title);
 			}
 			
 			if(mode.equalsIgnoreCase("add")) {
@@ -191,10 +212,40 @@ public class NewsController extends HttpServlet{
 		return str;
 	}
 	
+	@RequestMapping(value = "/bannerNews", method = RequestMethod.POST)
+	public String showHideBanner(HttpSession session, Model model,								
+							@RequestParam(name = "id", defaultValue = "0") Long idNews) {
+		String str = "redirect:newsAdmin";
+		boolean f = getModel.checkAdmin(session);
+		
+		if(f) {
+			if(newsService.get(idNews) != null) {
+				News news = newsService.get(idNews);
+				if(news.getBanner() == 0){
+					news.setBanner((byte) 1);
+				}
+				else if(news.getBanner() == 1){
+					news.setBanner((byte) 0);
+				}
+				newsService.update(news);
+				model.addAttribute("mes", "Cập nhật thành công");
+				model.addAttribute("alert", "success");
+			}
+			else{
+				model.addAttribute("mes", "ID không tồn tại");
+				model.addAttribute("alert", "danger");
+			}
+		}
+		else {
+			str = "redirect:index";
+		}
+		return str;
+	}
+	
 	@RequestMapping(value = "/showHideNews", method = RequestMethod.POST)
 	public String showHide(HttpSession session, Model model,								
 							@RequestParam(name = "id", defaultValue = "0") Long idNews) {
-		String str = "redirect:authorAdmin";
+		String str = "redirect:newsAdmin";
 		boolean f = getModel.checkAdmin(session);
 		
 		if(f) {

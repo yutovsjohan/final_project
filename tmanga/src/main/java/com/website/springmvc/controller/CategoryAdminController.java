@@ -40,9 +40,13 @@ public class CategoryAdminController {
 		boolean f = getModel.checkAdmin(session);
 		
 		if(f) {
-			getModel.getLayoutAdmin(model);
+			session.setAttribute("url", "cateAdmin?p=" + page + "&q=" + key);
+			getModel.getLayoutAdmin(model, session);
 			model.addObject("views","CategoryAdmin");
 			model.addObject("title","Danh sách danh mục");
+			if(((String) session.getAttribute("lang")).equalsIgnoreCase("en")) {
+				model.addObject("title","List of Categories");
+			}
 			
 			List<Category> categories = cateService.getListCategories(key, 0, 0);
 	

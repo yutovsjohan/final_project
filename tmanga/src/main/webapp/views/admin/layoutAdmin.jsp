@@ -38,34 +38,36 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 </div>
 
 <!-- Sidebar/menu -->
-<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:255px;" id="mySidebar"><br>
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:270px;" id="mySidebar"><br>
   <div class="w3-container w3-row">    
     <div class="w3-col w3-bar">
-      <a href="edit-user"><span>Xin chào, <strong>${sessionScope.account.name }</strong></span></a><br>
-      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
-      <a href="edit-user" class="w3-bar-item w3-button" title="Chỉnh sửa thông tin cá nhân"><i class="fa fa-user"></i></a>
+      <a href="edit-user" title="<spring:message code='admin.sidebar.title.edituser' />" ><span> <spring:message code="admin.sidebar.label" /> <strong>${sessionScope.account.name }</strong></span></a><br>
+      <a href="edit-user" class="w3-bar-item w3-button" title="<spring:message code='admin.sidebar.title.edituser' />" > <i class="fa fa-user"></i></a>
+      <a href="change-language?lang=en" title="<spring:message code='admin.sidebar.title.language-en' />" ><img src="https://o7planning.org/templates/o7planning/resources/images/languages/en.png" height="25" style="float:right; margin-left: 10px"></a>
+      <a href="change-language?lang=vi" title="<spring:message code='admin.sidebar.title.language-vi' />" ><img src="https://o7planning.org/templates/o7planning/resources/images/languages/vi.png" height="25" style="float:right"></a>      
+      <a href="logout" class="w3-bar-item w3-button" title="<spring:message code='admin.sidebar.title.logout' />"><i class="fa fa-sign-out"></i></a>
+      <!-- <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a> -->
       <!-- <a href="#" class="w3-bar-item w3-button"><i class="fa fa-cog"></i></a> -->
-      <a href="logout" class="w3-bar-item w3-button" title="Đăng xuất"><i class="fa fa-sign-out"></i></a>
     </div>
   </div>
   <hr>
   <div class="w3-container">
-    <h5>Menu</h5>
+    <!-- <h5>Menu</h5> -->
   </div>
   <div class="w3-bar-block">
-    <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i> Đóng Menu</a>
-    <a href="adminHome" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'adminHome' }"> w3-blue </c:if> "><i class="fa fa-tachometer fa-fw"></i>  Trang chủ</a>
-    <a href="report" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'Report' }"> w3-blue </c:if> "><i class="fa fa-bar-chart fa-fw"></i>  Thống kê doanh thu</a>
-    <a href="bill" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'BillAdmin' }"> w3-blue </c:if> "><i class="fa fa-diamond fa-fw"></i>  Quản lý đơn hàng <c:if test="${countNewOrder != 0 }"><span style="background: red; color: white; border-radius: 10px; padding: 5px; margin: 5px; font-weight: 800;">${countNewOrder }</span> </c:if> </a>
-    <a href="contactAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'ContactAdmin' }"> w3-blue </c:if> "><i class="fa fa-commenting-o fa-fw"></i>  Quản lý tin nhắn <c:if test="${countNewContact != 0 }"><span style="background: green; color: white; border-radius: 10px; padding: 5px; margin: 5px; font-weight: 800;">${countNewContact }</span> </c:if></a>
-    <a href="userAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'UserAdmin' }"> w3-blue </c:if> "><i class="fa fa-users fa-fw"></i>  Quản lý người dùng</a>    
-    <a href="comicList" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'ProductManList' }"> w3-blue </c:if> "><i class="fa fa-book fa-fw"></i>  Quản lý sản phẩm </a>
-    <a href="cateAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'CategoryAdmin' }"> w3-blue </c:if> "><i class="fa fa-folder-open fa-fw"></i>  Quản lý danh mục </a>    
-    <a href="authorAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'AuthorAdmin' }"> w3-blue </c:if> "><i class="fa fa-male fa-fw"></i>  Quản lý tác giả </a>
-    <a href="pubcomAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'PublishingAdmin' }"> w3-blue </c:if> "><i class="fa fa-bank fa-fw"></i>  Quản lý nhà xuất bản </a>
-    <a href="newsAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'NewsAdmin' }"> w3-blue </c:if> "><i class="fa fa-newspaper-o fa-fw"></i>  Quản lý tin tức </a>
+    <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="<spring:message code='admin.sidebar.closemenu' />"><i class="fa fa-remove fa-fw"></i> <spring:message code="admin.sidebar.closemenu" /></a>
+    <a href="adminHome" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'adminHome' }"> w3-blue </c:if> "><i class="fa fa-tachometer fa-fw"></i>  <spring:message code="admin.sidebar.dashboard" /> </a>
+    <a href="report" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'Report' }"> w3-blue </c:if> "><i class="fa fa-bar-chart fa-fw"></i>  <spring:message code="admin.sidebar.report" /> </a>
+    <a href="bill" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'BillAdmin' }"> w3-blue </c:if> "><i class="fa fa-diamond fa-fw"></i>  <spring:message code="admin.sidebar.bill" /> <c:if test="${countNewOrder != 0 }"><span style="background: red; color: white; border-radius: 10px; padding: 5px; margin: 5px; font-weight: 800;">${countNewOrder }</span> </c:if> </a>
+    <a href="contactAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'ContactAdmin' }"> w3-blue </c:if> "><i class="fa fa-commenting-o fa-fw"></i>  <spring:message code="admin.sidebar.contact" /> <c:if test="${countNewContact != 0 }"><span style="background: green; color: white; border-radius: 10px; padding: 5px; margin: 5px; font-weight: 800;">${countNewContact }</span> </c:if></a>
+    <a href="userAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'UserAdmin' }"> w3-blue </c:if> "><i class="fa fa-users fa-fw"></i>  <spring:message code="admin.sidebar.user" /> </a>    
+    <a href="comicList" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'ProductManList' }"> w3-blue </c:if> "><i class="fa fa-book fa-fw"></i>  <spring:message code="admin.sidebar.product" /> </a>
+    <a href="cateAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'CategoryAdmin' }"> w3-blue </c:if> "><i class="fa fa-folder-open fa-fw"></i>  <spring:message code="admin.sidebar.category" /> </a>    
+    <a href="authorAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'AuthorAdmin' }"> w3-blue </c:if> "><i class="fa fa-male fa-fw"></i>  <spring:message code="admin.sidebar.author" /> </a>
+    <a href="pubcomAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'PublishingAdmin' }"> w3-blue </c:if> "><i class="fa fa-bank fa-fw"></i>  <spring:message code="admin.sidebar.publishcompany" /> </a>
+    <a href="newsAdmin" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'NewsAdmin' }"> w3-blue </c:if> "><i class="fa fa-newspaper-o fa-fw"></i>  <spring:message code="admin.sidebar.news" /> </a>
     <c:if test="${sessionScope.account.role.id == 1 }">
-    	<a href="role" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'role' }"> w3-blue </c:if> "><i class="fa fa-cog fa-fw"></i>  Quản lý chức vụ</a>
+    	<a href="role" class="w3-bar-item w3-button w3-padding <c:if test="${views == 'role' }"> w3-blue </c:if> "><i class="fa fa-cog fa-fw"></i>  <spring:message code="admin.sidebar.role" /> </a>
     </c:if>
     <!-- <a href="logout" class="w3-bar-item w3-button w3-padding"><i class="fa fa-reply fa-fw"></i> Đăng xuất </a><br><br> -->
   </div>
@@ -74,7 +76,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 <!-- Overlay effect when opening sidebar on small screens -->
 <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
-<div class="w3-main" style="margin-left: 250px; margin-top: 43px;">
+<div class="w3-main" style="margin-left: 275px; margin-top: 43px;">
 	<!-- !PAGE CONTENT! -->
 	<c:if test="${views != ''}">
 		<c:import url="${views }.jsp" />
@@ -88,7 +90,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 	<!-- /Footer -->
 </div>
 
-
+<div id="lang" data="${sessionScope.lang }"></div>
 <script>
 // Get the Sidebar
 var mySidebar = document.getElementById("mySidebar");

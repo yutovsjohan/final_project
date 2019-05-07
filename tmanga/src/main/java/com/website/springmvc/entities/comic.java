@@ -95,9 +95,6 @@ public class Comic implements java.io.Serializable{
     @Column(name = "updated_at")
 	private Date updated_at;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idComic")
-	private Set<Notification> notification = new HashSet<Notification>();
-	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "comic")
 	private Set<BillDetail> billdetail = new HashSet<BillDetail>();
 	

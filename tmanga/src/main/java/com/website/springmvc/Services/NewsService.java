@@ -21,19 +21,20 @@ public class NewsService {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	public News getNewsById(String name){
+	public News getNewsByUnName(String name){
 		Session session = this.sessionFactory.getCurrentSession();
-		return (News) session.createQuery("from News where unsignedTitle = :keyword").setParameter("keyword", name).uniqueResult();
+		return (News) session.createQuery("from News where unsignedTitle = :keyword and status = 1").setParameter("keyword", name).uniqueResult();
 	}
 	
-	public List<News> getListNews(int firstResult, int maxResult, int status){
+	public List<News> getListNews(int firstResult, int maxResult, int status, String key){
 		Session session = this.sessionFactory.getCurrentSession();
 		Query query = null;
 		if(status == 1) {
 			query = session.createQuery("from News where status = 1 order by created_at desc");
 		}
 		else {
-			query = session.createQuery("from News order by created_at desc");
+			query = session.createQuery("from News where title like :key order by created_at desc");
+			query.setParameter("key", "%" + key + "%");
 		}
 		
 		if(maxResult != 0) {
@@ -46,7 +47,7 @@ public class NewsService {
 	
 	public List<News> getNewsForBanner(){
 		Session session = this.sessionFactory.getCurrentSession();
-		return session.createQuery("from News where banner = 1").list();
+		return session.createQuery("from News where banner = 1 and status = 1").list();
 	}
 
 	public List<News> getNews(){

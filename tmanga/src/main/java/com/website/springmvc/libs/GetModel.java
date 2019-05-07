@@ -33,6 +33,7 @@ import com.website.springmvc.entities.Address;
 import com.website.springmvc.entities.Bill;
 import com.website.springmvc.entities.Category;
 import com.website.springmvc.entities.Comic;
+import com.website.springmvc.entities.Contact;
 import com.website.springmvc.entities.FavoriteList;
 import com.website.springmvc.entities.News;
 import com.website.springmvc.entities.Role;
@@ -380,7 +381,7 @@ public class GetModel {
 			totalPage++;
 		}
 		
-		news = newsService.getListNews(10*(page-1), 10, 1);
+		news = newsService.getListNews(10*(page-1), 10, 1, "");
 		
 		model.addObject("news", news);
 		model.addObject("totalpage", totalPage);
@@ -408,12 +409,15 @@ public class GetModel {
 		model.addObject("sb","customer/sidebarCustomer");
 	}
 	
-	public void getCustomerEditInfo(ModelAndView model, String href) {
+	public void getCustomerEditInfo(ModelAndView model, String href, HttpSession session) {
 		if(href.equalsIgnoreCase("edit-user")) {
-			getLayoutAdmin(model);
+			getLayoutAdmin(model, session);
 			
 			model.addObject("views","../customer/Information");
 			model.addObject("title","Chỉnh sửa thông tin cá nhân");
+			if(((String) session.getAttribute("lang")).equalsIgnoreCase("en")) {
+				model.addObject("title","Edit profile");
+			}
 		}
 		else {
 			getSideBarCustomer(model);
@@ -517,17 +521,21 @@ public class GetModel {
 		}
 	}
 	
-	public void getLayoutAdmin(ModelAndView model) {
+	public void getLayoutAdmin(ModelAndView model, HttpSession session) {
 		model.setViewName("admin/layoutAdmin");
 		long countNewOrder = 0, countNewContact = 0;
 		countNewOrder = billService.getCountNewBill();
 		countNewContact = contactService.getCountNewContact();
 		model.addObject("countNewOrder", countNewOrder);
 		model.addObject("countNewContact", countNewContact);
+		
+		if(session.getAttribute("lang") == null || ((String) session.getAttribute("lang")).equalsIgnoreCase("") ) {
+			session.setAttribute("lang", "vi");
+		}
 	}
 	
-	public void getListBillPage(ModelAndView model, int page, Long idBill) {
-		getLayoutAdmin(model);
+	public void getListBillPage(ModelAndView model, int page, Long idBill, HttpSession session) {
+		getLayoutAdmin(model, session);
 		
 		List<Bill> bills;
 		if(idBill != (long)0 && billService.get(idBill) != null ) {
@@ -583,9 +591,12 @@ public class GetModel {
 		model.addObject("delivery", usersService.getListDelivery());
 		model.addObject("views","BillAdmin");
 		model.addObject("title","Danh sách đơn hàng");
+		if(((String) session.getAttribute("lang")).equalsIgnoreCase("en")) {
+			model.addObject("title","List of Bills");
+		}
 	}
 	
-	public void getBillDetailPage(ModelAndView model, Long idBill) {
+	public void getBillDetailPage(ModelAndView model, Long idBill, HttpSession session) {
 		if(idBill == (long) 0 || billService.get(idBill) == null) {
 			
 		}
@@ -594,20 +605,26 @@ public class GetModel {
 			bill.setView((byte) 1);
 			billService.update(bill);
 			
-			getLayoutAdmin(model);
+			getLayoutAdmin(model, session);
 			model.addObject("bill", bill);
 			model.addObject("billDetail", billDetailService.getBillDetailByIdBill(idBill));
 			model.addObject("orderStatus", orderStatusService.getOrderStatusByIdBill(idBill));
 			model.addObject("views","BillDetailAdmin");
-			model.addObject("title","Chi tiết đơn hàng " + idBill.toString());
+			model.addObject("title","Chi tiết đơn hàng #" + idBill.toString());
+			if(((String) session.getAttribute("lang")).equalsIgnoreCase("en")) {
+				model.addObject("title","Bill Detail #" + idBill.toString());
+			}
 			model.addObject("delivery", usersService.getListDelivery());
 		}
 	}
 	
-	public void getUserAdmin(ModelAndView model, int page, String key, String mes, String alert, String action) {
-		getLayoutAdmin(model);
+	public void getUserAdmin(ModelAndView model, int page, String key, String mes, String alert, String action, HttpSession session) {
+		getLayoutAdmin(model, session);
 		model.addObject("views","UserAdmin");
 		model.addObject("title","Danh sách User");
+		if(((String) session.getAttribute("lang")).equalsIgnoreCase("en")) {
+			model.addObject("title","List of Users");
+		}
 		
 		List<Users> users = null;
 		if(action.equalsIgnoreCase("staff")) {
@@ -666,23 +683,29 @@ public class GetModel {
 		model.addObject("users", users);
 	}
 	
-	public void getAddUser(ModelAndView model, String mes, String alert) {
-		getLayoutAdmin(model);
+	public void getAddUser(ModelAndView model, String mes, String alert, HttpSession session) {
+		getLayoutAdmin(model, session);
 		model.addObject("views","AddUser");
 		model.addObject("title","Thêm nhân viên");
+		if(((String) session.getAttribute("lang")).equalsIgnoreCase("en")) {
+			model.addObject("title","Add new staff");
+		}
 		model.addObject("mes", mes);
 		model.addObject("alert", alert);
 		model.addObject("Users", new Users());
 	}
 			
-	public void getNewsAdmin(ModelAndView model, int page, String mes, String alert) {
-		getLayoutAdmin(model);
+	public void getNewsAdmin(ModelAndView model, int page, String mes, String alert, String key, HttpSession session) {
+		getLayoutAdmin(model, session);
 		model.addObject("views","NewsAdmin");
 		model.addObject("title","Danh sách tin tức");
+		if(((String) session.getAttribute("lang")).equalsIgnoreCase("en")) {
+			model.addObject("title","List of News");
+		}
 		model.addObject("mes", mes);
 		model.addObject("alert", alert);
 		
-		List<News> news = newsService.getAll();
+		List<News> news = newsService.getListNews(0, 0, 0, key);
 		
 		int totalPage = 0;
 		int totalNews = 0;		
@@ -694,7 +717,7 @@ public class GetModel {
 			totalPage++;
 		}		
 				
-		news = newsService.getListNews(10*(page-1), 10, 0);
+		news = newsService.getListNews(10*(page-1), 10, 0, key);
 					
 		int start = 1, end = 7;
 		
@@ -725,26 +748,32 @@ public class GetModel {
 	}
 	
 	public void getNewsDetailAdmin(ModelAndView model, String mes, String alert, Long idNews, String mode, HttpSession session) {
-		getLayoutAdmin(model);
+		getLayoutAdmin(model, session);
 		model.addObject("views","NewsDetailAdmin");
 		model.addObject("mes", mes);
 		model.addObject("alert", alert);
 		model.addObject("mode", mode);
 		if(mode.equalsIgnoreCase("add")) {
 			model.addObject("title","Thêm tin tức");
+			if(((String) session.getAttribute("lang")).equalsIgnoreCase("en")) {
+				model.addObject("title","List of News");
+			}
 			model.addObject("News", new News());
 		}
 		else if(mode.equalsIgnoreCase("edit")) {
 			if(idNews == (long) 0 || newsService.get(idNews) == null) {
-				getHome(model, session);
+				getNewsAdmin(model, 1, "", "", "", session);
 			}
 			else {
 				if(newsService.get(idNews) != null) {
 					model.addObject("News", newsService.get(idNews));
 					model.addObject("title","Chi tiết tin tức");
+					if(((String) session.getAttribute("lang")).equalsIgnoreCase("en")) {
+						model.addObject("title","News Detail");
+					}
 				}
 				else {
-					getHome(model, session);
+					getNewsAdmin(model, 1, "", "", "", session);
 				}
 			}
 		}
@@ -763,10 +792,13 @@ public class GetModel {
 		return false;		
 	}
 	
-	public void getProductListAdmin(ModelAndView model, String q, Long id, String key, int page, String mes, String alert) {
-		getLayoutAdmin(model);
+	public void getProductListAdmin(ModelAndView model, String q, Long id, String key, int page, String mes, String alert, HttpSession session) {
+		getLayoutAdmin(model, session);
 		model.addObject("views","ProductManList");
 		model.addObject("title","Danh sách truyện");
+		if(((String) session.getAttribute("lang")).equalsIgnoreCase("en")) {
+			model.addObject("title","List of Comics");
+		}
 		
 		List<Comic> comics;
 		
@@ -833,7 +865,10 @@ public class GetModel {
 		
 		String href = "";
 		if(!q.equalsIgnoreCase("")) {
-			href = "&q=" + q + "&id=" + id;
+			href += "&q=" + q + "&id=" + id;
+		}
+		if(!key.equalsIgnoreCase("")) {
+			href += "&key=" + key;
 		}
 		model.addObject("href", href);
 		
@@ -845,7 +880,7 @@ public class GetModel {
 	}
 	
 	public void getProductDetailAdmin(ModelAndView model, String mes, String alert, Long idComic, String mode, HttpSession session) {
-		getLayoutAdmin(model);		
+		getLayoutAdmin(model, session);		
 		model.addObject("views","ProductMan");
 		model.addObject("mes", mes);
 		model.addObject("alert", alert);
@@ -853,13 +888,16 @@ public class GetModel {
 		if(mode.equalsIgnoreCase("add")) {
 			Users u = ((Users)session.getAttribute("account"));			
 			if( u.getRole().getId() == (long)1) {
-				model.addObject("title","Thêm truyện mới");				
+				model.addObject("title","Thêm truyện mới");	
+				if(((String) session.getAttribute("lang")).equalsIgnoreCase("en")) {
+					model.addObject("title","Add new comic");
+				}
 			}
 			else if( u.getRole().getId() == (long)1) {
 				getHome(model, session);
 			}			
 			else {
-				getProductListAdmin(model, "", (long) 0, "", 1, "", "");
+				getProductListAdmin(model, "", (long) 0, "", 1, "", "", session);
 			}
 //			model.addObject("comic", new Comic());
 		}
@@ -871,6 +909,9 @@ public class GetModel {
 				if(comicService.get(idComic) != null) {
 					model.addObject("comic", comicService.get(idComic));
 					model.addObject("title","Chi tiết truyện");
+					if(((String) session.getAttribute("lang")).equalsIgnoreCase("en")) {
+						model.addObject("title","Comic Detail");
+					}
 				}
 				else {
 					getHome(model, session);
@@ -885,10 +926,14 @@ public class GetModel {
 	    model.addObject("myUploadForm", myUploadForm);
 	}
 	
-	public void getRolePage(ModelAndView model, int page, String key, String mes, String alert) {
-		getLayoutAdmin(model);
+	public void getRolePage(ModelAndView model, int page, String key, String mes, String alert, HttpSession session) {
+		getLayoutAdmin(model, session);
 		model.addObject("views","Role");
 		model.addObject("title","Danh sách chức vụ");
+		if(((String) session.getAttribute("lang")).equalsIgnoreCase("en")) {
+			model.addObject("title","List of Roles");
+		}
+		
 		model.addObject("mes", mes);
 		model.addObject("alert", alert);
 		
@@ -934,5 +979,74 @@ public class GetModel {
 		model.addObject("roles", roles);
 		List<Object[]> list = usersService.getCountUserByRole();
 		model.addObject("countRole", list);
+	}
+	
+	public void getContactAdminPage(ModelAndView model, int page, String key, HttpSession session) {
+		getLayoutAdmin(model, session);
+		model.addObject("views","ContactAdmin");
+		model.addObject("title","Danh sách các tin nhắn");
+		if(((String) session.getAttribute("lang")).equalsIgnoreCase("en")) {
+			model.addObject("title","List of Messages");
+		}
+		
+		List<Contact> contacts = contactService.getAll(0, 0, key);
+		
+		int totalPage = 0;
+		int totalContact = 0;		
+
+		totalContact = contacts.size();
+		totalPage = totalContact / 10;
+
+		if(totalContact % 10 != 0){
+			totalPage++;
+		}		
+
+		int start = 1, end = 7;
+
+		if(totalPage > 7){		
+			if(page - 3 > 0){	
+				if(page + 3 >= totalPage){	
+					start =  totalPage - 6;
+					end = totalPage;
+				}	
+				else{	
+					start = page - 3;
+					end = page + 3;
+				}	
+			}	
+		}
+		else {
+			end = totalPage;
+		}
+
+		model.addObject("start", start);
+		model.addObject("end", end);
+
+		contacts = contactService.getAll(10*(page-1), 10, key);
+
+		model.addObject("authors", contacts);
+		model.addObject("totalpage", totalPage);
+		model.addObject("pageselected", page);
+		model.addObject("contacts", contacts);
+	}
+	
+	public void getContactDetail(ModelAndView model, Long idContact, HttpSession session) {
+		getLayoutAdmin(model, session);
+		model.addObject("views","ContactDetail");
+		model.addObject("title","Chi tiết tin nhắn");
+		
+		if(((String) session.getAttribute("lang")).equalsIgnoreCase("en")) {
+			model.addObject("title","Message Detail");
+		}
+		
+		if(contactService.get(idContact) != null) {
+			Contact contact = contactService.get(idContact);
+			contact.setView((byte) 1);
+			contactService.update(contact);
+			model.addObject("contact", contact);
+		}
+		else {
+			getContactAdminPage(model, 1, "", session);
+		}
 	}
 }

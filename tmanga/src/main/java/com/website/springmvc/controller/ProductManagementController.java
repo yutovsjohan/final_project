@@ -5,7 +5,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -65,8 +68,16 @@ public class ProductManagementController {
 		ModelAndView model = new ModelAndView();
 		boolean f = getModel.checkAdmin(session);
 		
-		if(f || (!q.equalsIgnoreCase("") && id != 0) ) {
-			getModel.getProductListAdmin(model, q, id, key, page, mes, alert);		
+		if(f) {
+			if(!q.equalsIgnoreCase("") && id == (long)0 ) {
+				q = "";
+			}
+			String str = "comicList?p=" + page + "&key=" + key;
+			if(id != (long)0) {
+				str += "&q=" + q + "&id=" + id;
+			}
+			session.setAttribute("url", str);
+			getModel.getProductListAdmin(model, q, id, key, page, mes, alert, session);		
 		}
 		else {
 			getModel.getHome(model, session);
@@ -84,6 +95,10 @@ public class ProductManagementController {
 		boolean f = getModel.checkAdmin(session);
 		
 		if(f) {
+			session.setAttribute("url", "comic?mode=" + mode);
+			if(idComic != (long)0) {
+				session.setAttribute("url", "comic?mode=" + mode + "&id=" + idComic);
+			}
 			getModel.getProductDetailAdmin(model, mes, alert, idComic, mode, session);
 		}
 		else {
@@ -159,9 +174,15 @@ public class ProductManagementController {
 				}		
 			}
 		    
-			comic.setName(name);
-			if(name != null) {
-				comic.setUnsignedName(RemoveAccent.changeTitle(comic.getName()));
+			
+			if(name != null && !name.equalsIgnoreCase("") && !name.equalsIgnoreCase(comic.getName())) {
+				comic.setName(name);
+				DateFormat dateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
+				Calendar cal = Calendar.getInstance();
+				java.util.Date date = cal.getTime();
+				String temp = dateFormat.format(date);
+				String title = RemoveAccent.changeTitle(comic.getName()) + "-t" + temp ;
+				comic.setUnsignedName(RemoveAccent.changeTitle(title));
 			}
 			if(!publishDate.equalsIgnoreCase("")) {
 				comic.setPublishDate(Date.valueOf(publishDate));
@@ -299,4 +320,14 @@ public class ProductManagementController {
 		}
 		return str;
 	}
+	
+	/*@RequestMapping(value = "/test", method = RequestMethod.GET)
+	public void test() {
+		Comic comic;
+		for(long i=1; i<= 440; i++) {
+			comic = comicService.get(i);
+			comic.setPrice(comic.getSale());
+			comicService.update(comic);
+		}
+	}*/
 }

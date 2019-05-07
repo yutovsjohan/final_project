@@ -40,9 +40,13 @@ public class AuthorAdminController {
 		boolean f = getModel.checkAdmin(session);
 		
 		if(f) {
-			getModel.getLayoutAdmin(model);
+			session.setAttribute("url", "authorAdmin?p=" + page + "&q=" + key);
+			getModel.getLayoutAdmin(model, session);
 			model.addObject("views","AuthorAdmin");
 			model.addObject("title","Danh sách tác giả");
+			if(((String) session.getAttribute("lang")).equalsIgnoreCase("en")) {
+				model.addObject("title","List of Authors");
+			}
 			
 			List<Author> authors = authorService.getListAuthors(key, 0, 0);
 	
@@ -83,6 +87,7 @@ public class AuthorAdminController {
 			model.addObject("totalpage", totalPage);
 			model.addObject("pageselected", page);
 			model.addObject("key", key);
+			
 		}
 		else {
 			getModel.getHome(model, session);

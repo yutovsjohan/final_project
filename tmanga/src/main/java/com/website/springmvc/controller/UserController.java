@@ -55,11 +55,17 @@ public class UserController {
 	
 	@RequestMapping(value = {"/signup" , "/dang-ky"}, method = RequestMethod.GET)
 	public ModelAndView getRegistrationPage(@RequestParam(name = "mes", defaultValue = "") String mes,
-										@RequestParam(name = "alert", defaultValue = "") String alert){
+										@RequestParam(name = "alert", defaultValue = "") String alert,
+										HttpSession session){
 		ModelAndView model = new ModelAndView();
-		getModel.getRegistration(model);
-		model.addObject("mes", mes);
-		model.addObject("alert", alert);
+		if(session.getAttribute("account") != null) {
+			getModel.getHome(model, session);			
+		}
+		else {
+			getModel.getRegistration(model);
+			model.addObject("mes", mes);
+			model.addObject("alert", alert);
+		}		
 		return model;
 	}
 	
@@ -107,12 +113,17 @@ public class UserController {
 	public ModelAndView getLoginPage(@RequestParam(name = "mes", defaultValue = "") String mes,
 									@RequestParam(name = "alert", defaultValue = "") String alert,
 									HttpSession session){
-		ModelAndView model = new ModelAndView();		
-		model.addObject("mes", mes);
-		model.addObject("alert", alert);		
-		getModel.getLogin(model);
-		if(session.getAttribute("url") == null) {
-			session.setAttribute("url", "index");
+		ModelAndView model = new ModelAndView();
+		if(session.getAttribute("account") != null) {
+			getModel.getHome(model, session);			
+		}
+		else {
+			model.addObject("mes", mes);
+			model.addObject("alert", alert);		
+			getModel.getLogin(model);
+			if(session.getAttribute("url") == null) {
+				session.setAttribute("url", "index");
+			}
 		}
 		return model;
 	}
@@ -324,11 +335,12 @@ public class UserController {
 		boolean f = getModel.checkAdmin(session);
 		
 		if(f) {
+			session.setAttribute("url", "userAdmin?p=" + page + "&q=" + key + "&action=" + action);
 			Users u = (Users)session.getAttribute("account");
 			if(u.getRole().getId() != (long) 1 && u.getRole().getId() != (long) 0) {
 				action = "staff";
 			}
-			getModel.getUserAdmin(model, page, key, mes, alert, action);
+			getModel.getUserAdmin(model, page, key, mes, alert, action, session);
 		}
 		else {
 			getModel.getHome(model, session);
@@ -389,12 +401,13 @@ public class UserController {
 		boolean f = getModel.checkAdmin(session);
 		
 		if(f) {
+			session.setAttribute("url", "add-user");
 			Users u = (Users)session.getAttribute("account");
 			if(u.getRole().getId() == (long)1) {
-				getModel.getAddUser(model, mes, alert);
+				getModel.getAddUser(model, mes, alert, session);
 			}
 			else if(u.getRole().getId() != (long)1 && u.getRole().getId() != (long)2) {
-				getModel.getUserAdmin(model, 1, "", "", "", "staff");
+				getModel.getUserAdmin(model, 1, "", "", "", "staff", session);
 			}
 		}
 		else {
@@ -435,8 +448,9 @@ public class UserController {
 		boolean f = getModel.checkAdmin(session);
 		
 		if(f) {
+			session.setAttribute("url", "edit-user");
 			String href = "edit-user";
-			getModel.getCustomerEditInfo(model, href);
+			getModel.getCustomerEditInfo(model, href, session);
 			model.addObject("mes",mes);    	
 			model.addObject("alert", alert);
 			model.addObject("href", href);
@@ -457,7 +471,8 @@ public class UserController {
 		boolean f = getModel.checkAdmin(session);
 		
 		if(f) {
-			getModel.getRolePage(model, page, key, mes, alert);
+			session.setAttribute("url", "role?p=" + page + "&q=" + key);
+			getModel.getRolePage(model, page, key, mes, alert, session);
 		}
 		else {
 			getModel.getHome(model, session);
@@ -471,7 +486,7 @@ public class UserController {
 							@RequestParam("name") String name,
 							@RequestParam(name = "mode", defaultValue = "add") String mode,
 							@RequestParam(name = "id", defaultValue = "0") Long idRole){
-		String str = "redirect:authorAdmin";
+		String str = "redirect:role";
 		boolean f = getModel.checkAdmin(session);
 		
 		if(f) {

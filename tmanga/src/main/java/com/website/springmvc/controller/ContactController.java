@@ -63,58 +63,14 @@ public class ContactController {
 	}
 	
 	@RequestMapping(value = "/contactAdmin", method = RequestMethod.GET)
-	public ModelAndView getContactAdmin(@RequestParam(name = "p", defaultValue = "1") int page, HttpSession session) {
+	public ModelAndView getContactAdmin(@RequestParam(name = "p", defaultValue = "1") int page, HttpSession session,
+										@RequestParam(name = "q", defaultValue = "") String key) {
 		ModelAndView model = new ModelAndView();
 		boolean f = getModel.checkAdmin(session);
 		
 		if(f) {
-			getModel.getLayoutAdmin(model);
-			model.addObject("views","ContactAdmin");
-			model.addObject("title","Danh sách các tin nhắn");
-			
-			model.addObject("allMess", contactService.getAllMessage());
-			model.addObject("unView", contactService.getUnReadMessage());
-			model.addObject("userNum",userService.getUserNum());
-			
-			List<Contact> contacts = contactService.getAll(0, 0);
-			
-			int totalPage = 0;
-			int totalContact = 0;		
-	
-			totalContact = contacts.size();
-			totalPage = totalContact / 10;
-	
-			if(totalContact % 10 != 0){
-				totalPage++;
-			}		
-	
-			int start = 1, end = 7;
-	
-			if(totalPage > 7){		
-				if(page - 3 > 0){	
-					if(page + 3 >= totalPage){	
-						start =  totalPage - 6;
-						end = totalPage;
-					}	
-					else{	
-						start = page - 3;
-						end = page + 3;
-					}	
-				}	
-			}
-			else {
-				end = totalPage;
-			}
-	
-			model.addObject("start", start);
-			model.addObject("end", end);
-	
-			contacts = contactService.getAll(10*(page-1), 10);
-	
-			model.addObject("authors", contacts);
-			model.addObject("totalpage", totalPage);
-			model.addObject("pageselected", page);
-			model.addObject("contacts", contacts);
+			session.setAttribute("url", "contactAdmin?p=" + page + "&q=" + key);
+			getModel.getContactAdminPage(model, page, key, session);
 		}
 		else {
 			getModel.getHome(model, session);
@@ -126,16 +82,13 @@ public class ContactController {
 	public ModelAndView getContactDetail(@RequestParam(name = "id", defaultValue = "0") Long idContact, HttpSession session) {
 		ModelAndView model = new ModelAndView();
 		boolean f = getModel.checkAdmin(session);
-		if(f) {
-			getModel.getLayoutAdmin(model);
-			model.addObject("views","ContactDetail");
-			model.addObject("title","Chi tiết tin nhắn");
-			
-			if(contactService.get(idContact) != null) {
-				Contact contact = contactService.get(idContact);
-				contact.setView((byte) 1);
-				contactService.update(contact);
-				model.addObject("contact", contact);
+		if(f) {						
+			if(idContact == (long) 0 || contactService.get(idContact) == null) {
+				getModel.getContactAdminPage(model, 1, "", session);
+			}
+			else {
+				session.setAttribute("url", "contactDetail?id=" + idContact);
+				getModel.getContactDetail(model, idContact, session);
 			}
 		}
 		else {

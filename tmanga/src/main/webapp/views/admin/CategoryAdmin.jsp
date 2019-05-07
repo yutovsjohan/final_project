@@ -7,7 +7,7 @@
 <div class="w3-container">
 	<div class="row" style="padding:15px">
 		<div class="col-sm-3" style="font-size: 20px; color:red">
-			Danh sách danh mục
+			${title }
 		</div>
 		<div class="col-sm-4">				
 			<form role="search">

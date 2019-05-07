@@ -356,7 +356,7 @@ public class CartController {
 					Billdetail.setBill(bill);				
 					Billdetail.setComic(comic);
 					Billdetail.setAmount((byte) items.get(i).getAmount());
-					Billdetail.setPrice(items.get(i).getComic().getPrice());
+					Billdetail.setPrice(items.get(i).getComic().getSale());
 					billDetailService.add(Billdetail);
 					
 					comic.setQuantitySold(comic.getQuantitySold() + items.get(i).getAmount());

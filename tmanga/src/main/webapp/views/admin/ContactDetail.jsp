@@ -6,7 +6,7 @@
 
 <div class="w3-container">
 	<hr>
-	<h2 style="color:red">Chi tiết tin nhắn</h2>
+	<h2 style="color:red">${title }</h2>
 	
 	<c:if test="${mes != null }">
 		<div class="alert alert-${alert }" role="alert">
@@ -47,7 +47,7 @@
 			<button type="submit" class="btn btn-success guimail">Gửi</button>
 		</form>
 	</c:if>
-	
+	<br>
 	<c:if test="${sessionScope.account.role.id != 1 }">
 		<a href="contactAdmin" class="btn btn-info">Quay lại</a>
 		<hr>

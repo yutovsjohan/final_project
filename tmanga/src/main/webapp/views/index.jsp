@@ -9,10 +9,11 @@
 	<div id="myCarousel" class="carousel slide" data-ride="carousel">
 		<!-- Indicators -->
 		<ol class="carousel-indicators">
-			<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-			<li data-target="#myCarousel" data-slide-to="1" class=""></li>
-			<li data-target="#myCarousel" data-slide-to="2" class=""></li>
-
+			<c:set var = "number" scope = "session" value = "0"/>
+			<c:forEach var="banner" items="${news}">
+				<c:set var = "number" scope = "session" value = "${number + 1 }" />
+				<li data-target="#myCarousel" data-slide-to="${number - 1 }" class="<c:if test='${number == 1 }'> active </c:if> "> </li>
+			</c:forEach>			
 		</ol>
 		<!-- Wrapper for slides -->
 		<div class="carousel-inner">

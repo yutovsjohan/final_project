@@ -8,7 +8,7 @@
 <div class="w3-container">	
 	<div class="row" style="padding:15px">
 		<div class="col-sm-3" style="font-size: 20px; color:red">
-			Danh sách truyện
+			${title }
 		</div>
 		<div class="col-sm-4">
 			<form role="search">
@@ -25,8 +25,8 @@
 			<div class="form-group">
 				<select class="form-control" id="sort">
 				  	<option value="0">--- Sắp xếp theo ---</option>						
-					<option value="3">Tên danh mục A-Z</option>
-					<option value="4">Tên danh mục Z-A</option>
+					<option value="3">Tên truyện từ A-Z</option>
+					<option value="4">Tên truyện từ Z-A</option>
 					<option value="5">Số lượng tăng dần</option>
 					<option value="6">Số lượng giảm dần</option>
 					<option value="11">Danh mục từ A-Z</option>
@@ -86,7 +86,7 @@
 
 <div class="w3-container">
 	<table class="table" id="myTable">
-		<thead>
+		<thead>						
 			<tr>
 				<c:if test="${sessionScope.account.role.id == 1 }">
 					<th>
@@ -95,6 +95,7 @@
 						</c:if>
 					</th>
 				</c:if>
+				<!-- <th id="sort-by-name" dataSort="1" title="Bấm vào để sắp xếp theo tên truyện">Tên truyện <i class="fa fa-arrows-v" aria-hidden="true" style="float:left; margin-right:10px; font-size:20px"></i></th> -->
 				<th>Tên truyện</th>
 				<th>Hình</th>
 				<th>Số lượng</th>
@@ -107,12 +108,11 @@
 					<th>Hiển thị trên trang web</th>
 				</c:if>
 				<th></th>
-			</tr>
+			</tr>	
+			
 			<c:if test="${sessionScope.account.role.id == 1 }">
-				<tr id="change-comic" hidden style="padding:15px; background-color: orange; border-radius: 10px; text-align: center;">
-					<td></td>
-					<td></td>
-					<td></td>
+				<tr id="change-comic" data="true" hidden style="padding:15px; background-color: orange; border-radius: 10px; text-align: center;">
+					<td id="count-comic-selected" colspan="3" style="color:white; font-size:18px; font-weight:bold"></td>
 					<td>
 						<div class="form-group">
 							<input type="number" id="amount" min=0 max=100 class="form-control" />				
@@ -140,7 +140,7 @@
 						</div>
 					</td>
 				</tr>
-			</c:if>
+			</c:if>		
 		</thead>
 		<tbody id="table-list">
 			<c:forEach items="${comics}" var="product">
@@ -179,7 +179,7 @@
 					</td>
 					<td>
 						<c:if test="${sessionScope.account.role.id == 1 }">
-							<a href="comic?id=${product.id }&mode=edit" class="btn btn-info">Sửa</a>
+							<a href="comic?id=${product.id }&mode=edit" class="btn btn-info edit-comic">Sửa</a>
 						</c:if> 
 						<c:if test="${sessionScope.account.role.id != 1 }">
 							<a href="comic?id=${product.id }&mode=view" class="btn btn-info">Xem</a>

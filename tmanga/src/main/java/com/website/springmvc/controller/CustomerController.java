@@ -59,7 +59,7 @@ public class CustomerController {
 		ModelAndView model = new ModelAndView();
 		if(session.getAttribute("account") != null) {
 			String href = "customer/edit";
-			getModel.getCustomerEditInfo(model,href);
+			getModel.getCustomerEditInfo(model,href, session);
 			model.addObject("mes", mes);
 			model.addObject("alert", alert);
 			model.addObject("href", href);

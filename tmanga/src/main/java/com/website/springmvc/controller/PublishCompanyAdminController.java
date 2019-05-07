@@ -40,9 +40,13 @@ public class PublishCompanyAdminController {
 		boolean f = getModel.checkAdmin(session);
 		
 		if(f) {
-			getModel.getLayoutAdmin(model);
+			session.setAttribute("url", "pubcomAdmin?p=" + page + "&q=" + key);
+			getModel.getLayoutAdmin(model, session);
 			model.addObject("views","PublishingAdmin");
 			model.addObject("title","Danh sách nhà xuất bản");
+			if(((String) session.getAttribute("lang")).equalsIgnoreCase("en")) {
+				model.addObject("title","List of Publishing Companies");
+			}
 			
 			List<PublishCompany> pubComs = pubcomService.getListPublishCompany(key, 0, 0);
 	

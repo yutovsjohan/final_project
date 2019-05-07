@@ -29,9 +29,11 @@ public class ContactService {
 		return (Long) session.createQuery("select count(id) from Contact where view = 0").uniqueResult();
 	}
 	
-	public List<Contact> getAll(int firstResult, int maxResult) {
+	public List<Contact> getAll(int firstResult, int maxResult, String email) {
 		Session session = this.sessionFactory.getCurrentSession();
-		Query query = session.createQuery("from Contact order by created_at desc");
+		Query query = session.createQuery("from Contact where sender like :email order by created_at desc");
+		
+		query.setParameter("email", "%" + email + "%");
 		
 		if(maxResult != 0) {
 			query.setFirstResult(firstResult);

@@ -22,7 +22,6 @@ import com.website.springmvc.entities.Contact;
 import com.website.springmvc.entities.District;
 import com.website.springmvc.entities.FavoriteList;
 import com.website.springmvc.entities.News;
-import com.website.springmvc.entities.Notification;
 import com.website.springmvc.entities.OrderStatus;
 import com.website.springmvc.entities.PublishCompany;
 import com.website.springmvc.entities.Role;
@@ -39,7 +38,7 @@ public class SpringDatabaseConfig extends WebMvcConfigurerAdapter {
 		sessionFactory.setDataSource(dataSource);
 		sessionFactory.setPackagesToScan(new String[] { "com.website.springmvc.entities" });
 		sessionFactory.setAnnotatedClasses(Author.class, Bill.class, BillDetail.class, Category.class, 
-				Comic.class, Contact.class, News.class, Notification.class, OrderStatus.class, FavoriteList.class,
+				Comic.class, Contact.class, News.class, OrderStatus.class, FavoriteList.class,
 				PublishCompany.class, Role.class, Users.class, Address.class, City.class, District.class);
 		sessionFactory.setHibernateProperties(hibernateProperties());
 		return sessionFactory;
@@ -48,7 +47,7 @@ public class SpringDatabaseConfig extends WebMvcConfigurerAdapter {
 	private Properties hibernateProperties() {
 		Properties properties = new Properties();
 		properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-		properties.put("hibernate.show_sql", true);
+		properties.put("hibernate.show_sql", false);
 		properties.put("hibernate.format_sql", true);
 		properties.put("hibernate.hbm2ddl.auto", "update");
 		return properties;

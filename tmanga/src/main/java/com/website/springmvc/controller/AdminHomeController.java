@@ -4,15 +4,14 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,16 +39,23 @@ public class AdminHomeController {
 	@Autowired
 	GetModel getModel;
 	
+	@Autowired
+	ResourceBundleMessageSource messageSource;
+				
 	@RequestMapping(value = "/adminHome", method = RequestMethod.GET)
 	public ModelAndView getAdminHome(HttpSession session) {
 		ModelAndView model = new ModelAndView();
 		boolean f = getModel.checkAdmin(session);
 				
 		if(f) {
-			getModel.getLayoutAdmin(model);
+			getModel.getLayoutAdmin(model, session);
 			model.setViewName("admin/layoutAdmin");
-			model.addObject("title", "T-Manga | Administrator");
 			model.addObject("views", "adminHome");
+			model.addObject("title", "T-Manga | Quản trị");
+			if(((String) session.getAttribute("lang")).equalsIgnoreCase("en")) {
+				model.addObject("title", "T-Manga | Administrator");
+			}
+			
 			
 //			model.addObject("allMess", contactService.getAllMessage());
 //			model.addObject("userNum",userService.getUserNum());
@@ -99,11 +105,32 @@ public class AdminHomeController {
 			
 			listString = temp.split("-"); 
 			model.addObject("dateS",  listString[2] + "/" + listString[1] + "/" + listString[0]);
+						
+			session.setAttribute("url", "adminHome");			
 		}
 		else {
 			getModel.getHome(model, session);
 		}
 		return model;
+	}
+	
+	@RequestMapping(value = "/change-language", method = RequestMethod.GET)
+	public String changeLanguage(HttpSession session, @RequestParam(name = "lang", defaultValue = "vi") String lang) {
+		String str = "";
+		if(session.getAttribute("url") == null || ((String) session.getAttribute("url")).equalsIgnoreCase("") ) {
+			session.setAttribute("url","adminHome");
+		}
+		if(lang.equalsIgnoreCase("en")) {
+			messageSource.setBasenames("messages_en");
+			session.setAttribute("lang", "en");
+		}
+		else if(lang.equalsIgnoreCase("vi")) {
+			messageSource.setBasenames("messages_vn");
+			session.setAttribute("lang", "vi");
+		}
+		str = "redirect:" + session.getAttribute("url");
+		
+		return str;
 	}
 	
 	@RequestMapping(value = "/report", method = RequestMethod.GET)
@@ -112,9 +139,13 @@ public class AdminHomeController {
 		boolean f = getModel.checkAdmin(session);
 				
 		if(f) {
-			getModel.getLayoutAdmin(model);
-			model.addObject("title", "Thống kê");
+			session.setAttribute("url", "report");
+			getModel.getLayoutAdmin(model, session);
+			model.addObject("title", "Thống kê doanh thu");
 			model.addObject("views", "Report");
+			if(((String) session.getAttribute("lang")).equalsIgnoreCase("en")) {
+				model.addObject("title", "Revenue Statistic");
+			}
 		}
 		else {
 			getModel.getHome(model, session);
@@ -125,16 +156,16 @@ public class AdminHomeController {
 	@RequestMapping(value = "/create-report", method = RequestMethod.POST)
 	public void createReport(HttpServletResponse response, @RequestParam(name = "dateStart", defaultValue = "") String dateStart,
 							@RequestParam(name = "dateEnd", defaultValue = "") String dateEnd,
-							@RequestParam(name = "pt", defaultValue = "1") int pt) throws ParseException {
+							@RequestParam(name = "pt", defaultValue = "1") int pt, HttpSession session) throws ParseException {
 		String str = "";
 		if(pt == 1) {
 			str = reportByDay(dateStart, dateEnd, pt);
 		}
 		else if(pt == 2) {
-			str = reportByMonth(dateStart, dateEnd);
+			str = reportByMonth(dateStart, dateEnd, session);
 		}
 		else if(pt == 3) {
-			str = reportByYear(dateStart, dateEnd);
+			str = reportByYear(dateStart, dateEnd, session);
 		}
 		else if(pt == 4) {
 			str = reportByDay(dateStart, dateEnd, pt);
@@ -203,7 +234,7 @@ public class AdminHomeController {
 		return str;
 	}
 	
-	public String reportByMonth(String dateStart, String dateEnd) {
+	public String reportByMonth(String dateStart, String dateEnd, HttpSession session) {
 		String str = "", label = "", value = "";		
 		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -229,7 +260,14 @@ public class AdminHomeController {
 	        	month = Integer.parseInt(listString[1]);
 	        	year = Integer.parseInt(listString[0]);
 	        	
-	        	label += "Tháng " + month + "-" + year + ",";
+	        	
+	        	if(((String) session.getAttribute("lang")).equalsIgnoreCase("vi")) {
+	        		label += "Tháng " + month + "/" + year + ",";
+				}
+				if(((String) session.getAttribute("lang")).equalsIgnoreCase("en")) {
+					label += "Month " + month + "/" + year + ",";
+				}
+				
 	        	if(billService.getReportByMonth(month, year) != null) {		
 	        		value += billService.getReportByMonth(month, year).toString() + ",";
 	        	}
@@ -250,7 +288,7 @@ public class AdminHomeController {
 		return str;				
 	}
 	
-	public String reportByYear(String dateStart, String dateEnd) {
+	public String reportByYear(String dateStart, String dateEnd, HttpSession session) {
 		String str = "", label = "", value = "";
 		String[] dateTemp = dateStart.split("-");
 		int yearStart = Integer.parseInt(dateTemp[0]);
@@ -259,7 +297,12 @@ public class AdminHomeController {
 		int yearEnd = Integer.parseInt(dateTemp[0]);
 		
 		for(int i = yearStart; i <= yearEnd; i++) {
-			label += "Năm " + i + ",";
+			if(((String) session.getAttribute("lang")).equalsIgnoreCase("vi")) {
+				label += "Năm " + i + ",";
+			}
+			if(((String) session.getAttribute("lang")).equalsIgnoreCase("en")) {
+				label += "Year " + i + ",";
+			}
 			if(billService.getReportByYear(i) != null) {				
 				value += billService.getReportByYear(i).toString() + ",";
 			}

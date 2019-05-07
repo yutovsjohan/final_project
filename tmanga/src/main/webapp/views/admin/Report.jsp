@@ -4,19 +4,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <hr>
 <div class="w3-container">
-	<h2 style="color:red">Thống kê doanh thu</h2>
+	<h2 style="color:red"><spring:message code="admin.sidebar.report" /></h2>
 	<br>
 	
 	<div class="row">
 		<div class="col-sm-3">
 			<div class="form-group">
-				<label for="dateStart">Ngày bắt đầu</label>
+				<label for="dateStart"><spring:message code="admin.home.dateStart" /></label>
 				<input type="date" class="form-control" name="dateStart" required="required" id="dateStart" value="2019-05-01" />
 			</div>
 		</div>
 		<div class="col-sm-3">
 			<div class="form-group">
-				<label for="dateEnd">Ngày kết thúc</label>
+				<label for="dateEnd"><spring:message code="admin.home.dateEnd" /></label>
 				<input type="date" class="form-control" name="dateEnd" required="required" id="dateEnd" value="2019-05-01" />
 			</div>
 		</div>
@@ -25,14 +25,14 @@
 		<div class="col-sm-4">
 			<div class="form-group">
 				<select class="form-control" id="pt">
-					<option value="1">Thống kê theo từng ngày</option>
-					<option value="2">Thống kê theo từng tháng</option>
-					<option value="3">Thống kê theo từng năm</option>
+					<option value="1"><spring:message code="admin.report.bydate" /></option>
+					<option value="2"><spring:message code="admin.report.bymonth" /></option>
+					<option value="3"><spring:message code="admin.report.byyear" /></option>
 				</select>
 			</div>
 		</div>
 		<div class="col-sm-2">
-			<button class="btn btn-success" id="report" dataUrl="report">Tạo biểu đồ</button>
+			<button class="btn btn-success" id="report" dataUrl="report"><spring:message code="admin.home.createchart" /></button>
 		</div>
 	</div>
 	

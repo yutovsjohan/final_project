@@ -49,7 +49,12 @@ public class OrderManagementController {
 		boolean f = getModel.checkAdmin(session);
 		
 		if(f) {
-			getModel.getListBillPage(model, page, idBill);
+			String str = "bill?p=" + page;
+			if(idBill != (long)0) {
+				str += "q=" + idBill;
+			}
+			session.setAttribute("url", str );
+			getModel.getListBillPage(model, page, idBill, session);
 			model.addObject("mes", mes);
 			model.addObject("alert", alert);
 		}
@@ -67,7 +72,8 @@ public class OrderManagementController {
 		boolean f = getModel.checkAdmin(session);
 		
 		if(f) {
-			getModel.getBillDetailPage(model, idBill);
+			session.setAttribute("url", "billdetail?id=" + idBill);
+			getModel.getBillDetailPage(model, idBill, session);
 			model.addObject("mes", mes);
 			model.addObject("alert", alert);
 		}

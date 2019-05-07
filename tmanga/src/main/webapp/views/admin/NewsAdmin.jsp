@@ -8,7 +8,7 @@
 <div class="w3-container">
 	<div class="row" style="padding:15px">
 		<div class="col-sm-3" style="font-size: 20px; color:red">
-			Danh sách tin tức
+			${title }
 		</div>
 		<div class="col-sm-4">
 			<form role="search">
@@ -54,7 +54,8 @@
 			<tr>
 				<th>Hình</th>
 				<th>Tin tức</th>
-				<th>Trạng thái</th>
+				<th title="Hiển thị trên trang web">Trạng thái</th>
+				<th title="Hiển thị lên trên banner">Banner</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -70,13 +71,25 @@
 					<td><c:choose>
 							<c:when test="${news.status == 0 }">
 								<span class="showHideNews" dataId=${news.id } action="0"
-									style="font-size: 20px;"><i class="fa fa-eye-slash"
+									style="font-size: 20px; color:grey"><i class="fa fa-eye-slash"
 									title="Bấm để hiện lên trên trang web"></i></span>
 							</c:when>
 							<c:otherwise>
 								<span class="showHideNews" dataId=${news.id } action="1"
 									style="font-size: 20px;"><i class="fa fa-eye"
 									title="Bấm để ẩn trên trang web"></i></span>
+							</c:otherwise>
+						</c:choose></td>
+					<td><c:choose>
+							<c:when test="${news.banner == 0 }">
+								<span class="bannerNews" dataId=${news.id } action="0"
+									style="font-size: 20px; color:red"><i class="fa fa-times-circle"
+									title="Bấm để hiện lên trên banner"></i></span>
+							</c:when>
+							<c:otherwise>
+								<span class="bannerNews" dataId=${news.id } action="1"
+									style="font-size: 20px; color:green"><i class="fa fa-check-circle"
+									title="Bấm để gỡ ra khỏi banner"></i></span>
 							</c:otherwise>
 						</c:choose></td>
 					<td>
