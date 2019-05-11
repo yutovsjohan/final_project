@@ -1,0 +1,49 @@
+-------------------------------- GUIDE --------------------------------
+step 1: Install required softwares:
+	- Eclipse (Recommended version: Eclipse Jee 2018-09)
+	- Source tree
+	- DBeaver
+	- Apache maven (Recommended version: 3.5 0)
+	- Apache tomcat (Recommended version: 9)
+	
+step 2: 
+	- Use Source tree pull folder "final_project" from bitbucket 
+	- link: https://bitbucket.org/jdev006_group3/final_project/src/master/
+	
+step 3: 
+	- After that, use DBeaver create new database "manga" 
+	- and add file database "manga.sql" in folder "document" to it
+	
+step 4: 
+	- Open Eclipse, import maven project from folder "tmanga"
+	- Start maven, tomcat, start project
+
+step 5: (if it has error when import project)
+	+ Sometimes it will have a font error
+		- First, go to Window -> References -> General -> Workspace
+		- Next, tab Text file encoding, select Other, select UTF-8
+	
+	+ Or the class name is not properly formatted
+		- How to fix: edit those error class names in the correct format (Camel case)
+		
+	+ After the error is over, start project again
+	
+step 6: 
+	- Open browser (Recommended: CocCoc)
+	- Input url: http://localhost:8080/tmanga/controller/
+	
+			-----------------------------------------------
+			
+Note: 
+	+ Available admin account:
+		- email: tmangavn@gmail.com
+		- password: 123
+		
+	+ Available delivery account:
+		- email: annguyen995@gmail.com 
+		- password: 123
+		
+		- email: pinnguyen129596@gmail.com
+		- password: 123
+
+--------------------------------- END ---------------------------------
