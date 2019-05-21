@@ -24,6 +24,7 @@ import com.website.springmvc.Services.RoleService;
 import com.website.springmvc.Services.UsersService;
 import com.website.springmvc.config.MyConstants;
 import com.website.springmvc.entities.Author;
+import com.website.springmvc.entities.Bill;
 import com.website.springmvc.entities.Cart;
 import com.website.springmvc.entities.CartDetail;
 import com.website.springmvc.entities.Role;
@@ -82,7 +83,7 @@ public class UserController {
 				Role Role = new Role();
 				Role.setId((long) 2);
 				Users.setRole(Role);
-				Users.setActive((byte) 1);
+				Users.setActive((byte) 2);
 				
 				Users.setPassword(TripleDES.Encrypt(Users.getPassword(), MyConstants.DES_KEY));
 				
@@ -538,6 +539,78 @@ public class UserController {
 			e.printStackTrace();
 		}
 	}
+	
+	@RequestMapping(value = "/active-account", method = RequestMethod.GET)
+	public String activeAccount(@RequestParam(name = "id", defaultValue = "0") Long idUser, HttpSession session, Model model) {
+		String str = "redirect:login";
+		if(idUser != (long)0) {
+			Users u = (Users) session.getAttribute("account");	
+			if(u != null) {
+				if(u.getRole().getId() == (long)2 || u.getActive() != 0) {
+					u.setActive((byte) 1);
+					usersService.update(u);
+					
+					if(((String) session.getAttribute("url")).equalsIgnoreCase("customer/edit")) {
+						str = "redirect:customer/edit";
+					}
+					else if(((String) session.getAttribute("url")).equalsIgnoreCase("cart")) {
+						str = "redirect:cart";
+					}					
+					
+					model.addAttribute("mes", "Kích hoạt thành công");
+					model.addAttribute("alert", "success");
+				}
+				else {
+					model.addAttribute("mes", "Bạn không thể thực hiện chức năng này");
+					model.addAttribute("alert", "danger");
+				}
+			}
+			else {
+				model.addAttribute("mes", "Tài khoản không tồn tại");
+				model.addAttribute("alert", "danger");
+			}
+		}
+		else {
+			model.addAttribute("mes", "Tài khoản không tồn tại");
+			model.addAttribute("alert", "danger");
+		}
+		return str;
+	}
+	
+	@RequestMapping(value = "/send-email-confirm-account", method = RequestMethod.POST)
+	public void sendEmailConfirmAccount(@RequestParam(name = "id", defaultValue = "0") Long idUser, HttpServletResponse response, HttpSession session) {
+		String str = "success";	
+		Users u = (Users) session.getAttribute("account");
+		if(u != null) {
+			sendEmail(u);
+		}
+		else {
+			str = "fail";
+		}		
+
+		try {
+			response.getWriter().print(str);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private boolean sendEmail(Users u) {
+		String content = "";
+		content += "<br><p>Cám ơn quý khách đã đăng ký tài khoản tại T-Manga</p>";
+		content += "<p>Để kích hoạt tài khoản, vui lòng bấm vào link bên dưới:</p>";
+		content += "<p><a href='http://localhost:8080/tmanga/controller/active-account?id=" + u.getId() + "'> http://localhost:8080/tmanga/controller/active-account?id=" + u.getId() + " </a></p>";
+		content += "<p>All the best,</p>";
+		content += "<p><a href='http://localhost:8080/tmanga/controller/'><b>T-Manga.vn</b></a></p>";
+		
+//		content += "<br><p>Thank you for registering at T-Manga</p>";
+//		content += "<p>To activate your registration, please visit this URL:</p>";
+//		content += "<p><a href='http://localhost:8080/tmanga/controller/active-account?id=" + u.getId() + "'> http://localhost:8080/tmanga/controller/active-account?id=" + u.getId() + " </a></p>";
+//		content += "<br><p>All the best,</p>";
+//		content += "<p><a href='http://localhost:8080/tmanga/controller/'><b>T-Manga.vn</b></a></p>";
+				
+		return SendEmail.sendGrid(MyConstants.EMAIL, u.getEmail(), "Xác nhận tài khoản", content, true);
+	}
 		
 	private boolean checkEmail(String email) {
 		if(usersService.get(email) == null)
@@ -572,5 +645,5 @@ public class UserController {
 			return cartDetailService.countCartDetailByCart(idCart);
 		}
 		return null;
-	}
+	}	
 }

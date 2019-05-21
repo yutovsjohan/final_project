@@ -195,6 +195,7 @@ public class AdminHomeController {
 		String strTemp = "";
 		String[] listString;
 		int day, month, year;
+		long total = 0;
 		
 		if(dateS.compareTo(dateE) <= 0){
 			for(Date temp = dateS;  ; ) {
@@ -212,6 +213,7 @@ public class AdminHomeController {
 	        	if(billService.getReportByDate(day, month, year) != null) {		
 	        		if(pt == 1) {
 	        			value += billService.getReportByDate(day, month, year).toString() + ",";
+	        			total += billService.getReportByDate(day, month, year);
 	        		}
 	        		else if(pt == 4) {
 	        			value += billService.countBillByDate(day, month, year).toString() + ",";
@@ -225,7 +227,7 @@ public class AdminHomeController {
 				temp = calStart.getTime();
 			}
 			
-			str = label + ";" + value;
+			str = label + ";" + value + ";" + total;
 		}
 		else {
 			str = "fail";
@@ -248,6 +250,7 @@ public class AdminHomeController {
 		String strTemp = "";
 		String[] listString;
 		int month, year;
+		long total = 0;
 		
 		if(dateS.compareTo(dateE) <= 0){
 			for(Date temp = dateS;  ; ) {
@@ -270,6 +273,7 @@ public class AdminHomeController {
 				
 	        	if(billService.getReportByMonth(month, year) != null) {		
 	        		value += billService.getReportByMonth(month, year).toString() + ",";
+	        		total += billService.getReportByMonth(month, year);
 	        	}
 	        	else {
 	        		value += "0,";
@@ -279,7 +283,7 @@ public class AdminHomeController {
 				temp = calStart.getTime();
 			}
 			
-			str = label + ";" + value;
+			str = label + ";" + value + ";" + total;
 		}
 		else {
 			str = "fail";
@@ -295,6 +299,7 @@ public class AdminHomeController {
 		
 		dateTemp = dateEnd.split("-");
 		int yearEnd = Integer.parseInt(dateTemp[0]);
+		long total = 0;
 		
 		for(int i = yearStart; i <= yearEnd; i++) {
 			if(((String) session.getAttribute("lang")).equalsIgnoreCase("vi")) {
@@ -305,12 +310,13 @@ public class AdminHomeController {
 			}
 			if(billService.getReportByYear(i) != null) {				
 				value += billService.getReportByYear(i).toString() + ",";
+				total += billService.getReportByYear(i);
 			}
 			else {
 				value += "0,";
 			}
 		}
-		str = label + ";" + value;
+		str = label + ";" + value + ";" + total;
 		
 		return str;
 	}

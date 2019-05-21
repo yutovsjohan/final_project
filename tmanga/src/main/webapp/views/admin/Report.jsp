@@ -37,8 +37,9 @@
 	</div>
 	
 	<hr>
+	<p id="total"></p>
 	<div style="color:red">
-		<center><h3 id="title-chart"></h3></center>
+		<center><h3 id="title-chart"></h3></center>		
 	</div>
 	
 	<div style="width: 1000px;" id="chart">

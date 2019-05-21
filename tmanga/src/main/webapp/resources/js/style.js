@@ -1,4 +1,31 @@
 $(document).ready(function(){
+	//send-email-confirm-account
+	$("#send-email-confirm-account").click(function(){
+		$("#send-email-confirm-account").css('display','none');
+		var idUser = $("#send-email-confirm-account").attr("dataId");
+		var data = $("#send-email-confirm-account").attr("data");
+		var route = "send-email-confirm-account";
+		if(data == 'customer'){
+			route = "../send-email-confirm-account";
+		}
+		$.ajax({
+			url : route,
+			type : 'POST',
+			data : {
+				idUser: idUser
+			},
+			success: function(data){					
+				if(data == 'success'){					
+					alert('Gửi mail thành công');
+				}
+				else if(data == 'fail'){
+					alert('Gửi mail thất bại');
+					$("#send-email-confirm-account").css('display','');
+				}
+			}
+		})
+	})
+	
 	//update sort (comic management)
 //	$("#sort-by-name").click(function(){
 //		var sort = parseInt($("#sort-by-name").attr('dataSort'));
@@ -489,6 +516,7 @@ $(document).ready(function(){
 	//report
 	$("#report").click(function(){
 		var lang = $("#lang").attr('data');		
+		$("#total").text('');
 		
 		var dateStart = $('#dateStart').val();
 		if(dateStart == ''){
@@ -596,6 +624,17 @@ $(document).ready(function(){
 							var temp = data.split(";"); 
 							var label = temp[0].split(",");
 							var value = temp[1].split(",");
+							
+							var total;
+							if(lang == 'vi'){
+								total = "Tổng doanh thu: ";
+							}
+							else if(lang == 'en'){
+								total = "Total revenue: ";
+							}
+							 
+							total += (temp[2]/1000).toFixed(3) + " đ";
+							$("#total").text(total);
 							
 							var ctx = document.getElementById('myChart');
 							

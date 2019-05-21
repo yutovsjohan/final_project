@@ -15,7 +15,7 @@
 		<br><br>
 	</c:if> 	
 	<div id="mycart">
-		<c:choose>
+		<c:choose>			
 			<c:when test="${sessionScope.cart != null}">				
 				<div class="shopping-cart">			 
 				  <div class="column-labels">
@@ -81,7 +81,14 @@
 				</c:if> 
 				
 				<c:if test="${sessionScope.account != null}">
-					<a href="${pageContext.request.contextPath}/controller/shipping" class="btn btn-info" style="float:right">Tiến hành đặt hàng</a>
+					<c:if test="${sessionScope.account.active == 2}">				
+						<p style="color:red">Chưa xác nhận tài khoản</p>
+						<button class="btn btn-info" id="send-email-confirm-account" dataId="${sessionScope.account.id}">Bấm vào đây để gửi mail xác nhận tài khoản</button>				
+					</c:if>
+					
+					<c:if test="${sessionScope.account.active != 2}">
+						<a href="${pageContext.request.contextPath}/controller/shipping" class="btn btn-info" style="float:right">Tiến hành đặt hàng</a>
+					</c:if>
 				</c:if>
 			</c:when>
 			<c:otherwise>

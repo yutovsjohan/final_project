@@ -10,6 +10,12 @@
 			<h2 style="color: chocolate">Thông tin tài khoản</h2>
 			<hr>
 			
+			<c:if test="${sessionScope.account.active == 2}">
+				<p style="color:red">Chưa xác nhận tài khoản</p>
+				<button class="btn btn-info" id="send-email-confirm-account" dataId="${sessionScope.account.id}" data="customer">Bấm vào đây để gửi mail xác nhận tài khoản</button>
+				<hr>
+			</c:if>
+			
 			<c:if test="${mes != '' }">
 				<div class="alert alert-${alert }" role="alert">
 					${mes }
