@@ -14,7 +14,7 @@
 		<jdk.version>1.7</jdk.version>
 
 		<!-- Spring -->
-		<spring.version>4.2.1.RELEASE</spring.version>
+		<spring.version>5.2.7.RELEASE</spring.version>
 
 		<!-- Web -->
 		<jstl.version>1.2</jstl.version>
