@@ -22,7 +22,7 @@
 
 		<!-- Other -->
 		<jackson.version>2.5.4</jackson.version>
-		<hibernate.version>4.3.5.Final</hibernate.version>
+		<hibernate.version>5.4.24.Final</hibernate.version>
 		<org.aspectj-version>1.7.4</org.aspectj-version>
 		<mysql.connector.version>8.0.15</mysql.connector.version>
 		
